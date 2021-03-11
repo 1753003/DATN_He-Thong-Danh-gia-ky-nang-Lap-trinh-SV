@@ -69,8 +69,11 @@ export default defineConfig({
           authority: ['admin', 'user'],
           routes: [
             {
-              path: '/',
-              redirect: '/dashboard/analysis',
+              path: '/home',
+              name: 'home',
+              icon: 'home',
+              component: './guest/index'
+              
             },
             {
               path: '/dashboard',
