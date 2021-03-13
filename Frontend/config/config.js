@@ -63,6 +63,36 @@ export default defineConfig({
           ],
         },
         {
+          path: '/company',
+          component: '../layouts/BasicLayout',
+          routes: [
+            {
+              path: '/company/home',
+              name: 'Home',
+              icon: 'home',
+              component: './Company/Home',
+            },
+            {
+              path: '/company/tests',
+              name: 'Tests',
+              icon: 'UnorderedListOutlined',
+              component: './Company/Tests',
+            },
+            {
+              path: '/company/report',
+              name: 'Report',
+              icon: 'PicLeftOutlined',
+              component: './Company/Report',
+            },
+            {
+              path: '/company/class',
+              name: 'Class',
+              icon: 'FundOutlined',
+              component: './Company/Class',
+            },
+          ],
+        },
+        {
           path: '/',
           component: '../layouts/BasicLayout',
           Routes: ['src/pages/Authorized'],
@@ -72,8 +102,7 @@ export default defineConfig({
               path: '/home',
               name: 'home',
               icon: 'home',
-              component: './guest/index'
-              
+              component: './guest/index',
             },
             {
               path: '/dashboard',
