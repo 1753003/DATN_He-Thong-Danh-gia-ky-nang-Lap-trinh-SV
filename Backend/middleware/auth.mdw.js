@@ -15,12 +15,21 @@ module.exports = function (req, res, next) {
           message: 'Invalid access token.'
         })
     }
-    // console.log('guest', req.method );
     next();
-  } else {
-    // console.log('guest', req.method );
+  } else if (!refreshToken) {
     return res.status(400).json({
       message: 'Access token not found.'
     })
+  }
+  else {
+    try {
+        const decoded = jwt.verify(accessToken, 'secretkeyy');
+        req.accessTokenPayload = decoded;
+        console.log(decoded);
+      } catch (err) {
+          return res.status(401).json({
+            message: 'Invalid access token.'
+          })
+      }
   }
 }

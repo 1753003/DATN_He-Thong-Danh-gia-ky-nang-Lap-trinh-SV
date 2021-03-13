@@ -118,7 +118,7 @@ router.post('/login', async function (req, res) {
         },
         'secretkeyy',
         {
-          expiresIn: "30000s"
+          expiresIn: "10s"
         }
       );
 
@@ -136,6 +136,66 @@ router.post('/login', async function (req, res) {
     });
   
   
+})
+
+router.post('/refreshToken', async function(req, res) {
+  if (req.body.refreshToken) {
+    const list = await userModel.getAll();
+    try 
+    {
+      const decoded = jwt.verify(req.body.refreshToken, 'secretkeyy');
+      var check = false;
+      list.forEach(item => {
+        if (item.UserID == decoded.uid && item.RefreshToken == req.body.refreshToken)
+        {
+          check = true;
+        }
+      })
+      if (check === true) {
+        var accessToken = jwt.sign(
+          {
+            uid: decoded.uid
+          }, 
+          'secretkeyy', 
+          {
+            expiresIn: ""
+          });
+        res.json({accessToken: accessToken});
+      } else
+      res.json({
+        message: "Wrong refresh token"
+      })
+    } catch (err) {
+      const decoded = jwt.verify(req.body.refreshToken, 'secretkeyy', {ignoreExpiration: true});
+      var check = false;
+      list.forEach(item => {
+        if (item.UserID == decoded.uid && item.RefreshToken == req.body.refreshToken)
+        {
+          check = true;
+        }
+      })
+      if (check) {
+        var accessToken = jwt.sign(
+          {
+            uid: decoded.uid
+          }, 
+          'secretkeyy', 
+          {
+            expiresIn: "300s"
+          });
+        var accessToken = jwt.sign(
+          {
+            uid: decoded.uid
+          }, 
+          'secretkeyy', 
+          {
+            expiresIn: "1d"
+          });
+        res.json({accessToken: accessToken, refreshToken: refreshToken});
+      }
+      res.json('Wrong refresh token')
+    }
+  }
 })
 
 module.exports = router;
