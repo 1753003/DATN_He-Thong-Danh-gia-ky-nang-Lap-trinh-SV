@@ -31,8 +31,13 @@ module.exports = {
   async updateCode(uid, code) {
       await db('userlogin').where('UserID', uid).update('Code',code);
   },
-  async getComputedStyle(uid) {
-
+  async updateRefreshToken(uid, token) {
+    await db('userlogin').update('RefreshToken',token).where('UserID',uid);
+  },
+  async getByUID(uid) {
+    const list = await db('userlogin').where('UserID', uid);
+    console.log(list[0])
+    return list[0];
   },
   async getAll() {
       return await db('userlogin')
