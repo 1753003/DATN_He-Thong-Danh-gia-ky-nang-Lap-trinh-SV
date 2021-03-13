@@ -26,6 +26,8 @@ const UserLayout = (props) => {
     breadcrumb,
     ...props,
   });
+
+  console.log(props);
   return (
     <HelmetProvider>
       <Helmet>

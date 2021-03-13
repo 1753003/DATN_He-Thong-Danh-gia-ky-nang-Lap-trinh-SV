@@ -1,6 +1,6 @@
 import { stringify } from 'querystring';
 import { history } from 'umi';
-import { fakeAccountLogin } from '@/services/login';
+import { fakeAccountLogin, Login } from '@/services/login';
 import { setAuthority } from '@/utils/authority';
 import { getPageQuery } from '@/utils/utils';
 import { message } from 'antd';
@@ -12,16 +12,26 @@ const Model = {
   },
   effects: {
     *login({ payload }, { call, put }) {
-      const response = yield call(fakeAccountLogin, payload);
+      const response = yield call(Login, payload);
       yield put({
         type: 'changeLoginStatus',
-        payload: response,
+        payload: {
+          currentAuthority: 'user',
+          status: 'ok',
+          type: 'account'
+        },
       }); // Login successfully
-
-      if (response.status === 'ok') {
+      localStorage.setItem('currentUser',payload.email);
+      //Save token into cookie
+      var d = new Date();
+      d.setTime(d.getTime() + (1*24*60*60*1000));
+      var expires = "expires="+ d.toUTCString();
+      document.cookie = "accessToken" + "=" + response.accessToken + "; " + expires;
+      document.cookie = "refreshToken" + "=" + response.refreshToken + "; " + expires;
+      //if (response.status === 'ok') {
         const urlParams = new URL(window.location.href);
         const params = getPageQuery();
-        message.success('🎉 🎉 🎉  登录成功！');
+        message.success('🎉 🎉 🎉  OKELA！');
         let { redirect } = params;
 
         if (redirect) {
@@ -38,9 +48,11 @@ const Model = {
             return;
           }
         }
-
-        history.replace(redirect || '/');
-      }
+        if (response.type = "developer")
+          history.replace('/developer');
+        else
+          history.replace('/creator');
+      //}
     },
 
     logout() {
