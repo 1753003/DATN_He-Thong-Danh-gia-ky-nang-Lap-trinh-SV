@@ -17,14 +17,13 @@ app.use(bodyParser.urlencoded({limit: "50mb", extended: true, parameterLimit:500
 app.use(cors({credentials: true}));
 app.use(cookieParser()); 
 
-
-  
+const auth = require('./middleware/auth.mdw');
 
 app.get('/', function(req, res) {
     res.json("Running...");
 })
 app.use('/api/auth', require('./routes/auth.route'));
-
+app.use('/api/test',auth,require('./routes/test.route'))
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, function() {

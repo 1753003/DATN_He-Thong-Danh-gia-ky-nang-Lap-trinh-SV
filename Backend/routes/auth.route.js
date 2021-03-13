@@ -96,18 +96,46 @@ router.post('/confirmEmail', async function (req, res) {
 router.post('/confirmCode', async function (req, res) {
   
 })
-router.post('/', async function (req, res) {
-  var accessToken = jwt.sign(
-    {
-      uid: user.uid
-    }, 
-    'secretkeyy', 
-    {
-      expiresIn: "300s"
+router.post('/login', async function (req, res) {  
+  const email = req.body.email;
+  const password = req.body.password;
+
+  firebase.auth().signInWithEmailAndPassword(email, password)
+    .then((userCredential) => {
+      // Signed in
+      var user = userCredential.user;
+      var accessToken = jwt.sign(
+        {
+          uid: user.uid
+        }, 
+        'secretkeyy', 
+        {
+          expiresIn: "300s"
+        });
+      var refreshToken = jwt.sign(
+        {
+          uid: user.uid
+        },
+        'secretkeyy',
+        {
+          expiresIn: "30000s"
+        }
+      );
+
+      userModel.updateRefreshToken(user.uid, refreshToken);
+      res.json({
+        accessToken: accessToken,
+        refreshToken: refreshToken,
+        type: 'developer'
+      })
+    })
+    .catch((error) => {
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      res.status(204).json(error.message);
     });
   
   
-  var result = {"aToken":accessToken, "rfToken":refreshToken}
 })
 
 module.exports = router;
