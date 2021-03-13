@@ -1,0 +1,115 @@
+@import '~antd/es/style/themes/default.less';
+
+.container {
+  .header {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    background-color: white;
+
+    .headerLeft {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      h1 {
+        margin: 0px 75px 0px 10px;
+        font-size: 18px;
+      }
+      img {
+        width: 83px;
+        height: 50px;
+      }
+    }
+  }
+  .content {
+    display: flex;
+    margin: 20px;
+    .testContainer {
+      width: 70%;
+      margin-right: 20px;
+      .testContainerHeader {
+        padding: 20px;
+        background-color: white;
+      }
+      .listTest {
+        padding: 20px;
+        background-color: #e4e2e2;
+      }
+    }
+    .description {
+      width: 30%;
+    }
+  }
+}
+
+.button {
+  width: 116px;
+  height: 43px;
+  margin-left: 20px;
+}
+
+.buttonAddTest {
+  width: 116px;
+  height: 43px;
+}
+
+.testInfoContainer {
+  display: flex;
+  width: 100%;
+  height: 98px;
+  background-color: white;
+  border-radius: 20px;
+  .collectionImg {
+    width: 111px;
+    height: 98px;
+    border-radius: 20px;
+  }
+  .infoContainer {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+    .title {
+      height: 20px;
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    .testMoreInfo {
+      .MoreOutlined {
+        display: flex;
+        justify-content: flex-end;
+      }
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      margin: 5px;
+    }
+  }
+}
+
+.questions {
+  position: absolute;
+  height: 21px;
+  margin-top: 70px;
+  margin-left: 13px;
+  padding-right: 3px;
+  padding-left: 3px;
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 5px;
+}
+.seeAll {
+  color: white;
+  font-size: 14px;
+}
+
+.modalList {
+  margin-top: 20px;
+  padding: 20px;
+  border: 1px solid black;
+}

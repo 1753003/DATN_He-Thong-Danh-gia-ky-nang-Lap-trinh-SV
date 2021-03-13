@@ -38,16 +38,76 @@ export default defineConfig({
           routes: [
             {
               path: '/user',
-              component: '../layouts/UserLayout',
+              redirect: '/user/login',
+            },
+            {
+              name: 'register-result',
+              icon: 'smile',
+              path: '/user/register-result',
+              component: './user/register-result',
+            },
+            {
+              name: 'register',
+              icon: 'smile',
+              path: '/user/register',
+              component: './user/register',
+            },
+            {
+              component: '404',
+            },
+          ],
+        },
+        {
+          path: '/creator',
+          component: '../layouts/SecurityLayout',
+          authority: ['admin'],
+          routes: [
+            {
+              path: '/creator',
+              component: '../layouts/BasicLayout',
+              authority: ['dev'],
               routes: [
                 {
-                  name: 'login',
-                  path: '/user/login',
-                  component: './User/login',
+                  path: '/creator',
+                  redirect: '/creator/home',
+                },
+                {
+                  path: '/creator/home',
+                  name: 'Home',
+                  icon: 'home',
+                  component: './Creator/Home',
+                },
+                {
+                  path: '/creator/tests',
+                  name: 'Tests',
+                  icon: 'UnorderedListOutlined',
+                  component: './Creator/Tests',
+                },
+                {
+                  path: '/creator/collectionDetail',
+                  name: 'Home',
+                  icon: 'home',
+                  hideInMenu: true,
+                  component: './Creator/CollectionDetail',
+                },
+                {
+                  path: '/creator/report',
+                  name: 'Report',
+                  icon: 'PicLeftOutlined',
+                  component: './Creator/Report',
+                },
+                {
+                  path: '/creator/class',
+                  name: 'Class',
+                  icon: 'FundOutlined',
+                  component: './Creator/Class',
+                },
+                {
+                  component: './404',
                 },
               ],
             },
-          ]
+          ],
         },
         {
           path: '/developer',
@@ -79,44 +139,41 @@ export default defineConfig({
           ],
         },
         {
-          path: '/creator',
-          component: '../layouts/SecurityLayout',
+          path: '/',
+          component: '../layouts/BasicLayout',
+          Routes: ['src/pages/Authorized'],
+          authority: ['admin', 'user'],
           routes: [
             {
-              path: '/creator',
-              component: '../layouts/BasicLayout',
-              authority: ['dev'],
-              routes: [
-                {
-                  path: '/creator',
-                  redirect: '/creator/welcome',
-                },
-                {
-                  path: '/creator/welcome',
-                  name: 'welcome',
-                  icon: 'smile',
-                  component: './Welcome',
-                },
-                {
-                  component: './404',
-                },
-              ],
+              path: '/home',
+              name: 'home',
+              icon: 'home',
+              component: './guest/index',
             },
             {
-              component: './404',
+              path: '/dashboard',
+              name: 'dashboard',
+              icon: 'dashboard',
+              routes: [
+                {
+                  name: 'login',
+                  path: '/user/login',
+                  component: './User/login',
+                },
+              ],
             },
           ],
         },
         {
-          path : '/',
-          component : '../layouts/GuestLayout',
+          path: '/',
+          component: '../layouts/GuestLayout',
           routes: [
             {
               path: '/',
-              component: './guest/index'
-            }
-          ]
-        }
+              component: './guest/index',
+            },
+          ],
+        },
       ],
     },
     {
