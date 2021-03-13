@@ -1,8 +1,8 @@
 import React from 'react';
 import styles from './index.less';
 import { Typography } from 'antd';
-import Collection from '@/components/CompanyComponents/Collection';
-import Test from '@/components/CompanyComponents/Test';
+import Collection from '@/components/CreatorComponents/Collection';
+import Test from '@/components/CreatorComponents/Test';
 
 const Home = () => {
   return (

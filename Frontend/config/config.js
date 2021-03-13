@@ -58,56 +58,45 @@ export default defineConfig({
           ],
         },
         {
-          path: '/company',
-          component: '../layouts/BasicLayout',
+          path: '/creator',
+          component: '../layouts/SecurityLayout',
+          authority: ['admin'],
           routes: [
             {
-              path: '/company/home',
-              name: 'Home',
-              icon: 'home',
-              component: './Company/Home',
-            },
-            {
-              path: '/company/tests',
-              name: 'Tests',
-              icon: 'UnorderedListOutlined',
-              component: './Company/Tests',
-            },
-            {
-              path: '/company/report',
-              name: 'Report',
-              icon: 'PicLeftOutlined',
-              component: './Company/Report',
-            },
-            {
-              path: '/company/class',
-              name: 'Class',
-              icon: 'FundOutlined',
-              component: './Company/Class',
-            },
-          ],
-        },
-        {
-          path: '/',
-          component: '../layouts/BasicLayout',
-          Routes: ['src/pages/Authorized'],
-          authority: ['admin', 'user'],
-          routes: [
-            {
-              path: '/home',
-              name: 'home',
-              icon: 'home',
-              component: './guest/index',
-            },
-            {
-              path: '/dashboard',
-              name: 'dashboard',
-              icon: 'dashboard',
+              path: '/creator',
+              component: '../layouts/BasicLayout',
+              authority: ['dev'],
               routes: [
                 {
-                  name: 'login',
-                  path: '/user/login',
-                  component: './User/login',
+                  path: '/creator',
+                  redirect: '/creator/home',
+                },
+                {
+                  path: '/creator/home',
+                  name: 'Home',
+                  icon: 'home',
+                  component: './Creator/Home',
+                },
+                {
+                  path: '/creator/tests',
+                  name: 'Tests',
+                  icon: 'UnorderedListOutlined',
+                  component: './Creator/Tests',
+                },
+                {
+                  path: '/creator/report',
+                  name: 'Report',
+                  icon: 'PicLeftOutlined',
+                  component: './Creator/Report',
+                },
+                {
+                  path: '/creator/class',
+                  name: 'Class',
+                  icon: 'FundOutlined',
+                  component: './Creator/Class',
+                },
+                {
+                  component: './404',
                 },
               ],
             },
@@ -143,31 +132,28 @@ export default defineConfig({
           ],
         },
         {
-          path: '/creator',
-          component: '../layouts/SecurityLayout',
+          path: '/',
+          component: '../layouts/BasicLayout',
+          Routes: ['src/pages/Authorized'],
+          authority: ['admin', 'user'],
           routes: [
             {
-              path: '/creator',
-              component: '../layouts/BasicLayout',
-              authority: ['dev'],
-              routes: [
-                {
-                  path: '/creator',
-                  redirect: '/creator/welcome',
-                },
-                {
-                  path: '/creator/welcome',
-                  name: 'welcome',
-                  icon: 'smile',
-                  component: './Welcome',
-                },
-                {
-                  component: './404',
-                },
-              ],
+              path: '/home',
+              name: 'home',
+              icon: 'home',
+              component: './guest/index',
             },
             {
-              component: './404',
+              path: '/dashboard',
+              name: 'dashboard',
+              icon: 'dashboard',
+              routes: [
+                {
+                  name: 'login',
+                  path: '/user/login',
+                  component: './User/login',
+                },
+              ],
             },
           ],
         },
