@@ -3,6 +3,7 @@
 .container {
   display: flex;
   flex-direction: row;
+  margin: 24px;
 
   .quickReportContainer {
     display: flex;
@@ -16,8 +17,7 @@
   .collectionContainer {
     width: 50%;
     // height: 90vh;
-    margin-right: 20px;
-    margin-left: 20px;
+    margin: 0px 20px;
     padding: 20px 40px;
     color: white;
     background-color: #011831;
@@ -45,5 +45,19 @@
   text-align: left;
 }
 
-
+@media screen and (max-width: 1000px) {
+  .container {
+    flex-direction: column;
+    .quickReportContainer {
+      width: 100%;
+    }
+    .collectionContainer {
+      width: 100%;
+      margin: 20px 0px;
+    }
+    .myTestContainer {
+      width: 100%;
+    }
+  }
+}
 

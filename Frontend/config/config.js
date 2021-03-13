@@ -84,6 +84,13 @@ export default defineConfig({
                   component: './Creator/Tests',
                 },
                 {
+                  path: '/creator/collectionDetail',
+                  name: 'Home',
+                  icon: 'home',
+                  hideInMenu: true,
+                  component: './Creator/CollectionDetail',
+                },
+                {
                   path: '/creator/report',
                   name: 'Report',
                   icon: 'PicLeftOutlined',
