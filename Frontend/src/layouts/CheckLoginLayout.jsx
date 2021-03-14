@@ -7,7 +7,7 @@ class CheckLoginLayout extends React.Component {
   state = {
     isReady: false,
   };
-
+ 
   render() {
     const { isReady } = this.state;
     const { children, loading, currentUser } = this.props; 
