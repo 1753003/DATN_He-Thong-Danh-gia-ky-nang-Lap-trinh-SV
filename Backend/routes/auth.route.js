@@ -138,6 +138,46 @@ router.post('/login', async function (req, res) {
   
 })
 
+router.post('/loginFacebook', async function (req, res) {  
+  console.log(req.body);
+  const uid = req.body.UserID;
+  const user = await userModel.getByUID(uid);
+  var accessToken = jwt.sign(
+    {
+      uid: uid
+    }, 
+    'secretkeyy', 
+    {
+      expiresIn: "300s"
+    });
+  var refreshToken = jwt.sign(
+    {
+      uid: uid
+    },
+    'secretkeyy',
+    {
+      expiresIn: "1d"
+    }
+  );
+
+  if (user == null || user == undefined)
+  {
+    const type = req.body.UserType
+    if (type === "developer")
+      await userModel.createUserDeveloper(uid, refreshToken, req.body.DevMail, "FB");
+    else if (type === "creator") 
+      await userModel.createUserCreator(uid, refreshToken, req.body.DevMail, "FB");
+  
+  }
+
+  const result = {
+    accessToken: accessToken,
+    refreshToken: refreshToken,
+  }
+
+  res.json(result);
+})
+
 router.post('/refreshToken', async function(req, res) {
   if (req.body.refreshToken) {
     const list = await userModel.getAll();

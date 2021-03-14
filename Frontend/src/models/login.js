@@ -1,6 +1,6 @@
 import { stringify } from 'querystring';
 import { history } from 'umi';
-import { fakeAccountLogin, Login } from '@/services/login';
+import { fakeAccountLogin, Login, LoginWithFacebook } from '@/services/login';
 import { setAuthority } from '@/utils/authority';
 import { getPageQuery } from '@/utils/utils';
 import { message } from 'antd';
@@ -54,7 +54,51 @@ const Model = {
           history.replace('/creator');
       //}
     },
+    *loginFacebook({ payload }, { call, put }) {
+      console.log(payload)
+      const response = yield call(LoginWithFacebook, payload);
+      yield put({
+        type: 'changeLoginStatus',
+        payload: {
+          currentAuthority: 'user',
+          status: 'ok',
+          type: 'account'
+        },
+      }); // Login successfully
+      localStorage.setItem('currentUser', payload.DevName);
+      localStorage.setItem('imageURL', payload.DevImage);
+      //Save token into cookie
+      var d = new Date();
+      d.setTime(d.getTime() + (1*24*60*60*1000));
+      var expires = "expires="+ d.toUTCString();
+      document.cookie = "accessToken" + "=" + response.accessToken + "; " + expires;
+      document.cookie = "refreshToken" + "=" + response.refreshToken + "; " + expires;
+      //if (response.status === 'ok') {
+        const urlParams = new URL(window.location.href);
+        const params = getPageQuery();
+        message.success('🎉 🎉 🎉  OKELA！');
+        let { redirect } = params;
 
+        if (redirect) {
+          const redirectUrlParams = new URL(redirect);
+
+          if (redirectUrlParams.origin === urlParams.origin) {
+            redirect = redirect.substr(urlParams.origin.length);
+
+            if (redirect.match(/^\/.*#/)) {
+              redirect = redirect.substr(redirect.indexOf('#') + 1);
+            }
+          } else {
+            window.location.href = '/';
+            return;
+          }
+        }
+        if (response.type = "developer")
+          history.replace('/developer');
+        else
+          history.replace('/creator');
+      //}
+    },
     logout() {
       const { redirect } = getPageQuery(); // Note: There may be security issues, please note
 

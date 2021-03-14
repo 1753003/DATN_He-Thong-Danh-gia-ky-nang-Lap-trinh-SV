@@ -15,6 +15,21 @@ export function Login(params) {
   })
 }
 
+export function LoginWithFacebook(params) {
+  console.log(params)
+  return new Promise( (resolve, reject) => {
+      axios.post('http://localhost:5000/api/auth/loginFacebook', params)
+      .then((response) => {
+          // handle success
+          resolve(response.data)
+      })
+      .catch((error) => {
+          // handle error
+         
+      })
+  })
+}
+
 export async function fakeAccountLogin(params) {
   return request('/api/login/account', {
     method: 'POST',
