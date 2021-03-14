@@ -91,6 +91,20 @@ export default defineConfig({
                   component: './Creator/CollectionDetail',
                 },
                 {
+                  path: '/creator/testDetail',
+                  name: 'Home',
+                  icon: 'home',
+                  hideInMenu: true,
+                  component: './Creator/TestDetail',
+                },
+                {
+                  path: '/creator/createTest',
+                  name: 'Home',
+                  icon: 'home',
+                  hideInMenu: true,
+                  component: './Creator/CreateTest',
+                },
+                {
                   path: '/creator/report',
                   name: 'Report',
                   icon: 'PicLeftOutlined',
