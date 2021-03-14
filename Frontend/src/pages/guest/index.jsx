@@ -3,43 +3,57 @@ import { Row, Col, Button, Menu } from 'antd';
 import { HomeOutlined, UnorderedListOutlined, InfoCircleOutlined, UserOutlined } from '@ant-design/icons'
 const { SubMenu } = Menu;
 import { history } from 'umi'
-import { circle } from './circle'
+import Avatar from '@/components/GlobalHeader/AvatarDropdown'
 class Header extends React.Component {
     state = {
         current: 'home',
-      };
+    };
     
-      handleClick = e => {
+    handleClick = e => {
         this.setState({ current: e.key });
         if (e.key === 'signup')
             history.push('/user/login');
-      };
+        else if (e.key ==='signout') {
+            localStorage.removeItem('currentUser');
+            localStorage.removeItem('imageURL');
+            history.push('/user/login')
+        }
+    }
     
-      render() {
-        const { current } = this.state;
-        return (
-          <Menu onClick={this.handleClick} selectedKeys={[current]} mode="horizontal" theme="dark"
-            style = {{
-                margin: '10px',
-                backgroundColor: '#011730',
-            }}>
-            <Menu.Item key="home" icon={<HomeOutlined />}> 
-              Home      
+    
+    isLogin = localStorage.getItem('currentUser');
+    render() {
+    const { current } = this.state;
+    return (
+        <Menu onClick={this.handleClick} selectedKeys={[current]} mode="horizontal" theme="dark"
+        style = {{
+            margin: '10px',
+            backgroundColor: '#011730',
+        }}>
+        <Menu.Item key="home" icon={<HomeOutlined />}> 
+            Home      
+        </Menu.Item>
+        <SubMenu key="introduce" title="Introduce" icon={<UnorderedListOutlined />}>
+            <Menu.Item key="introduce:1">Developers</Menu.Item>
+            <Menu.Item key="introduce:2">Creators</Menu.Item> 
+            <Menu.Item key="introduce:3">About us</Menu.Item>             
+        </SubMenu>
+        <Menu.Item key="about" icon={<InfoCircleOutlined />}>
+            About us
+        </Menu.Item>   
+        {this.isLogin ? 
+            <Menu.Item key="signout" icon={<UserOutlined/>}> 
+                Sign out
             </Menu.Item>
-            <SubMenu key="introduce" title="Introduce" icon={<UnorderedListOutlined />}>
-                <Menu.Item key="introduce:1">Developers</Menu.Item>
-                <Menu.Item key="introduce:2">Creators</Menu.Item> 
-                <Menu.Item key="introduce:3">About us</Menu.Item>             
-            </SubMenu>
-            <Menu.Item key="about" icon={<InfoCircleOutlined />}>
-                About us
-            </Menu.Item>         
-            <Menu.Item key="signup" icon={<UserOutlined />}>
-              Sign up
+            :
+            <Menu.Item key="signup" icon={<UserOutlined/>}>
+                Sign up
             </Menu.Item>
-          </Menu>
-        );
-      }
+        }
+        
+        </Menu>
+    );
+    }
 }
 class Home extends React.Component {
     render()
