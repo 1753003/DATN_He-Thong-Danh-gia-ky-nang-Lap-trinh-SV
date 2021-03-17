@@ -45,7 +45,7 @@ const Register = ({ submitting, dispatch, userAndregister }) => {
     const account = form.getFieldValue('mail');
 
     if (userAndregister.status === 'ok') {
-      message.success('注册成功！');
+      message.success('Success！');
       history.push({
         pathname: '/user/register-result',
         state: {
@@ -360,7 +360,7 @@ const Register = ({ submitting, dispatch, userAndregister }) => {
   );
 };
 
-export default connect(({ userAndregister, loading }) => ({
+export default connect(({ userRegister, loading }) => ({
   userAndregister,
   submitting: loading.effects['userAndregister/submit'],
 }))(Register);
