@@ -47,7 +47,7 @@ export default defineConfig({
                 {
                   name: 'login',
                   path: '/user/login',
-                  component: './user/login'
+                  component: './user/login',
                 },
                 {
                   name: 'register-result',
@@ -75,8 +75,8 @@ export default defineConfig({
                   component: '404',
                 },
               ],
-            }
-          ]
+            },
+          ],
         },
         {
           path: '/creator',
@@ -129,6 +129,13 @@ export default defineConfig({
                   name: 'Report',
                   icon: 'PicLeftOutlined',
                   component: './Creator/Report',
+                },
+                {
+                  path: '/creator/reportDetail',
+                  name: 'Report Detail',
+                  hideInMenu: true,
+                  icon: 'PicLeftOutlined',
+                  component: './Creator/ReportDetail',
                 },
                 {
                   path: '/creator/class',
