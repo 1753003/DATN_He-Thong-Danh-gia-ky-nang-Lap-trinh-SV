@@ -27,17 +27,23 @@ router.post('/signup', async function (req, res) {
         var type = req.body.type;
         var result;
         if (type === "developer")
-          result = await userModel.createUserDeveloper(user.uid, refreshToken, req.body.email, req.body.password);
+          result = await userModel.createUserDeveloper(user.uid, '', req.body.email, req.body.password);
         else if (type === "creator") 
-          result = await userModel.createUserCreator(user.uid, refreshToken, req.body.email, req.body.password)
+          result = await userModel.createUserCreator(user.uid, '', req.body.email, req.body.password)
         else
           result = "Incorrect Type of User"
-        res.json(result);
+        res.json({
+          status: 'Ok',
+          uid: result
+        });
     })
     .catch((error) => {
         var errorCode = error.code;
         var errorMessage = error.message;
-        res.json(errorMessage);
+        res.json({
+          status: 'Fail',
+          message: errorMessage
+        });
   });
 })
 
@@ -61,7 +67,7 @@ router.post('/confirmEmail', async function (req, res) {
   for ( var i = 0; i < 6; i++ ) {
     result += characters.charAt(Math.floor(Math.random() * charactersLength));
   }
-  userModel.updateCode(uid.UserID,result);
+  await userModel.updateCode(uid.UserID,result);
   console.log(uid.UserID);
   var mailOptions = {
     from: 'group7.17clc@gmail.com',
@@ -87,8 +93,21 @@ router.post('/confirmEmail', async function (req, res) {
 })
 
 router.post('/confirmCode', async function (req, res) {
-  
+  const uid = req.body.uid;
+
+  const user = await userModel.getByUID(uid);
+  console.log(user)
+  console.log(user.Code, req.body.code);
+  if (user.Code === req.body.code)
+    res.json({
+      codeMessage: 'OK'
+    })
+  else
+    res.json({
+      codeMessage: 'FAIL'
+    })
 })
+
 router.post('/login', async function (req, res) {  
   const email = req.body.email;
   const password = req.body.password;

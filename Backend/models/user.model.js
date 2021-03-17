@@ -34,6 +34,7 @@ module.exports = {
   async updateRefreshToken(uid, token) {
     await db('userlogin').update('RefreshToken',token).where('UserID',uid);
   },
+  
   async getByUID(uid) {
     const list = await db('userlogin').where('UserID', uid);
     console.log(list[0])
