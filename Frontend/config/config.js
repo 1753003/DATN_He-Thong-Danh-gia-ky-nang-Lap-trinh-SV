@@ -38,29 +38,49 @@ export default defineConfig({
           routes: [
             {
               path: '/user',
-              redirect: '/user/login',
-            },
-            {
-              name: 'register-result',
-              icon: 'smile',
-              path: '/user/register-result',
-              component: './user/register-result',
-            },
-            {
-              name: 'register',
-              icon: 'smile',
-              path: '/user/register',
-              component: './user/register',
-            },
-            {
-              component: '404',
-            },
-          ],
+              component: '../layouts/UserLayout',
+              routes: [
+                {
+                  path: '/user',
+                  redirect: '/user/login',
+                },
+                {
+                  name: 'login',
+                  path: '/user/login',
+                  component: './user/login'
+                },
+                {
+                  name: 'register-result',
+                  icon: 'smile',
+                  path: '/user/register-result',
+                  component: './user/register-result',
+                },
+                {
+                  name: 'register',
+                  icon: 'smile',
+                  path: '/user/register',
+                  component: './user/register/registerHome',
+                },
+                {
+                  name: 'Register Creator',
+                  path: '/user/register/creator',
+                  component: './user/register/registerCreator',
+                },
+                {
+                  name: 'Register Developer',
+                  path: '/user/register/developer',
+                  component: './user/register/registerDeveloper',
+                },
+                {
+                  component: '404',
+                },
+              ],
+            }
+          ]
         },
         {
           path: '/creator',
           component: '../layouts/SecurityLayout',
-          authority: ['admin'],
           routes: [
             {
               path: '/creator',
@@ -149,32 +169,6 @@ export default defineConfig({
             },
             {
               component: './404',
-            },
-          ],
-        },
-        {
-          path: '/',
-          component: '../layouts/BasicLayout',
-          Routes: ['src/pages/Authorized'],
-          authority: ['admin', 'user'],
-          routes: [
-            {
-              path: '/home',
-              name: 'home',
-              icon: 'home',
-              component: './guest/index',
-            },
-            {
-              path: '/dashboard',
-              name: 'dashboard',
-              icon: 'dashboard',
-              routes: [
-                {
-                  name: 'login',
-                  path: '/user/login',
-                  component: './User/login',
-                },
-              ],
             },
           ],
         },

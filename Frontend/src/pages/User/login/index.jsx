@@ -62,9 +62,25 @@ const Login = (props) => {
       payload: { ...values, type },
     });
   };
-
+  const loginGoogle = () => {
+    firebase.auth()
+    .signInWithPopup(provider)
+    .then((result) => {
+      /** @type {firebase.auth.OAuthCredential} */
+      var user = result.user;
+      // ...
+    }).catch((error) => {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      // The email of the user's account used.
+      var email = error.email;
+      // The firebase.auth.AuthCredential type that was used.
+      var credential = error.credential;
+      // ...
+    });
+  }
   const loginFacebook = () => {
-    
     var provider = new firebase.auth.FacebookAuthProvider();
     firebase
       .auth()
@@ -161,7 +177,7 @@ const Login = (props) => {
               }}
               placeholder={intl.formatMessage({
                 id: 'pages.login.username.placeholder',
-                defaultMessage: '用户名: admin or user',
+                defaultMessage: 'Enter your email',
               })}
               rules={[
                 {
@@ -169,7 +185,7 @@ const Login = (props) => {
                   message: (
                     <FormattedMessage
                       id="pages.login.username.required"
-                      defaultMessage="请输入用户名!"
+                      defaultMessage="Please input your email!"
                     />
                   ),
                 },
@@ -183,7 +199,7 @@ const Login = (props) => {
               }}
               placeholder={intl.formatMessage({
                 id: 'pages.login.password.placeholder',
-                defaultMessage: '密码: ant.design',
+                defaultMessage: 'Enter your password',
               })}
               rules={[
                 {
@@ -191,7 +207,7 @@ const Login = (props) => {
                   message: (
                     <FormattedMessage
                       id="pages.login.password.required"
-                      defaultMessage="请输入密码！"
+                      defaultMessage="Please input your password"
                     />
                   ),
                 },
@@ -298,7 +314,15 @@ const Login = (props) => {
               float: 'right',
             }}
           >
-            <FormattedMessage id="pages.login.forgotPassword" defaultMessage="忘记密码" />
+            <FormattedMessage id="pages.login.forgotPassword" defaultMessage="Forgot password?" />
+          </a>
+          <a
+            style={{
+              float: 'right',
+            }}
+            href="/user/register"
+          >
+            <FormattedMessage id="pages.login.register" defaultMessage="Do not have an account?" />
           </a>
         </div>
       </ProForm>

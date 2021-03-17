@@ -23,20 +23,13 @@ router.post('/signup', async function (req, res) {
         .then(async (userCredential) => {
         // Signed in 
         var user = userCredential.user;
-        var refreshToken = jwt.sign(
-          {
-            uid: user.uid
-          }, 
-          'secretkeyRefresh', 
-          {
-            expiresIn: "3000s"
-          });
+
         var type = req.body.type;
         var result;
         if (type === "developer")
-          result =  await userModel.createUserDeveloper(user.uid, refreshToken, req.body.email, req.body.password);
+          result = await userModel.createUserDeveloper(user.uid, refreshToken, req.body.email, req.body.password);
         else if (type === "creator") 
-          result =  await userModel.createUserCreator(user.uid, refreshToken, req.body.email, req.body.password)
+          result = await userModel.createUserCreator(user.uid, refreshToken, req.body.email, req.body.password)
         else
           result = "Incorrect Type of User"
         res.json(result);
