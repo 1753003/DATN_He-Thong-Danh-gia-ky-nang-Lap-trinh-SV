@@ -15,7 +15,8 @@ const Model = {
         type: 'registerHandle',
         payload: response,
       });
-      const response2 = yield call(ConfirmEmail, payload);
+      if (response.status === 'Ok')
+        yield call(ConfirmEmail, payload);
     },
     *confirmCode({ payload }, { call, put, select}) {
       const state = yield select(state => state);

@@ -68,7 +68,7 @@ class registerCreator extends React.Component {
                             padding: '20px',
                             backgroundColor: 'white'
                         }}>
-                        {this.props.userRegister.status === 'start' ?
+                        {(this.props.userRegister.status === 'start' || this.props.userRegister.status === 'Fail')?
                         (   
                             <Form layout="vertical" 
                                 hideRequiredMark

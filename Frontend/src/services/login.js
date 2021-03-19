@@ -6,10 +6,12 @@ export function Login(params) {
       axios.post('http://localhost:5000/api/auth/login', params)
       .then((response) => {
           // handle success
+          console.log(response.data)
           resolve(response.data)
       })
       .catch((error) => {
           // handle error
+          console.log(error)
          
       })
   })

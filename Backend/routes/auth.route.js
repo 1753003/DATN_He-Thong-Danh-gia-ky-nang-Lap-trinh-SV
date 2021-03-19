@@ -19,6 +19,7 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 router.post('/signup', async function (req, res) {
+    const userByEmail = await userModel.getByEmail(req.body.email);
     firebase.auth().createUserWithEmailAndPassword(req.body.email, req.body.password)
         .then(async (userCredential) => {
         // Signed in 
@@ -37,14 +38,24 @@ router.post('/signup', async function (req, res) {
           uid: result
         });
     })
-    .catch((error) => {
+    .catch(async (error) => {
         var errorCode = error.code;
         var errorMessage = error.message;
+
+        if (errorCode === 'auth/email-already-in-use')
+        {         
+          if (userByEmail.UserStatus === 'not active')
+            res.json({
+              status: 'Ok',
+              uid: userByEmail.UserID
+            })
+        }
         res.json({
           status: 'Fail',
           message: errorMessage
         });
   });
+
 })
 
 router.post('/confirmEmail', async function (req, res) {
@@ -68,7 +79,6 @@ router.post('/confirmEmail', async function (req, res) {
     result += characters.charAt(Math.floor(Math.random() * charactersLength));
   }
   await userModel.updateCode(uid.UserID,result);
-  console.log(uid.UserID);
   var mailOptions = {
     from: 'group7.17clc@gmail.com',
     to: req.body.email,
@@ -96,12 +106,13 @@ router.post('/confirmCode', async function (req, res) {
   const uid = req.body.uid;
 
   const user = await userModel.getByUID(uid);
-  console.log(user)
-  console.log(user.Code, req.body.code);
-  if (user.Code === req.body.code)
+
+  if (user.Code === req.body.code) {
+    userModel.updateStatus(uid, 'active');
     res.json({
       codeMessage: 'OK'
     })
+  }
   else
     res.json({
       codeMessage: 'FAIL'
@@ -111,22 +122,26 @@ router.post('/confirmCode', async function (req, res) {
 router.post('/login', async function (req, res) {  
   const email = req.body.email;
   const password = req.body.password;
-
+  
   firebase.auth().signInWithEmailAndPassword(email, password)
-    .then((userCredential) => {
+    .then(async (userCredential) => {
       // Signed in
+      
       var user = userCredential.user;
+      const temp = await userModel.getByUID(user.uid);
       var accessToken = jwt.sign(
         {
-          uid: user.uid
+          uid: user.uid,
+          type: temp.UserType
         }, 
         'secretkeyy', 
         {
-          expiresIn: "300s"
+          expiresIn: "1d",
         });
       var refreshToken = jwt.sign(
         {
-          uid: user.uid
+          uid: user.uid,
+          type: temp.UserType
         },
         'secretkeyy',
         {
@@ -135,23 +150,25 @@ router.post('/login', async function (req, res) {
       );
 
       userModel.updateRefreshToken(user.uid, refreshToken);
+      
+      console.log(temp)
       res.json({
         accessToken: accessToken,
         refreshToken: refreshToken,
-        type: 'developer'
+        type: temp.UserType
       })
     })
     .catch((error) => {
+      console.log(error);
       var errorCode = error.code;
       var errorMessage = error.message;
-      res.status(204).json(error.message);
+      res.status(204).json(errorMessage);
     });
   
   
 })
 
 router.post('/loginFacebook', async function (req, res) {  
-  console.log(req.body);
   const uid = req.body.UserID;
   const user = await userModel.getByUID(uid);
   var accessToken = jwt.sign(
@@ -185,6 +202,7 @@ router.post('/loginFacebook', async function (req, res) {
   const result = {
     accessToken: accessToken,
     refreshToken: refreshToken,
+    type: req.body.UserType
   }
 
   res.json(result);
@@ -210,7 +228,7 @@ router.post('/refreshToken', async function(req, res) {
           }, 
           'secretkeyy', 
           {
-            expiresIn: ""
+            expiresIn: "300s"
           });
         res.json({accessToken: accessToken});
       } else

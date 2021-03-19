@@ -16,11 +16,12 @@ const Model = {
       yield put({
         type: 'changeLoginStatus',
         payload: {
-          currentAuthority: 'user',
+          currentAuthority: response.type,
           status: 'ok',
           type: 'account'
         },
       }); // Login successfully
+      console.log(response.type);
       localStorage.setItem('currentUser',payload.email);
       //Save token into cookie
       var d = new Date();
@@ -48,7 +49,8 @@ const Model = {
             return;
           }
         }
-        if (response.type = "developer")
+        console.log(response);
+        if (response.type === "developer")
           history.replace('/developer');
         else
           history.replace('/creator');
@@ -60,7 +62,7 @@ const Model = {
       yield put({
         type: 'changeLoginStatus',
         payload: {
-          currentAuthority: 'user',
+          currentAuthority: response.type,
           status: 'ok',
           type: 'account'
         },
@@ -99,17 +101,18 @@ const Model = {
           history.replace('/creator');
       //}
     },
-    logout() {
-      const { redirect } = getPageQuery(); // Note: There may be security issues, please note
+    logout() {       
+        localStorage.removeItem('currentUser');
+        localStorage.removeItem('antd-pro-authority');
+        var d = new Date();
+        d.setTime(d.getTime() - 1);
+        var expires = "expires="+ d.toUTCString();
+        document.cookie = "accessToken" + "=" + '' + "; " + expires;
+        document.cookie = "refreshToken" + "=" + '' + "; " + expires;
 
-      if (window.location.pathname !== '/user/login' && !redirect) {
         history.replace({
           pathname: '/user/login',
-          search: stringify({
-            redirect: window.location.href,
-          }),
         });
-      }
     },
   },
   reducers: {
