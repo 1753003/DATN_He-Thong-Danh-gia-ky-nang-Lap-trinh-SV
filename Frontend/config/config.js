@@ -81,6 +81,7 @@ export default defineConfig({
         {
           path: '/creator',
           component: '../layouts/SecurityLayout',
+          authority: ['dev'],
           routes: [
             {
               path: '/creator',
