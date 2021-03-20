@@ -24,6 +24,7 @@ app.get('/', function(req, res) {
 })
 app.use('/api/auth', require('./routes/auth.route'));
 app.use('/api/creator', auth, require('./routes/creator.route'))
+app.use('/api/practice', auth, require('./routes/practice.route'))
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, function() {
