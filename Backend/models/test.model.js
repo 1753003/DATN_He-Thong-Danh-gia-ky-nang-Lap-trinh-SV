@@ -1,5 +1,5 @@
 const db = require('../utils/db');
-
+const reportModel = require('../models/report.model')
 module.exports = {
     async createTest(generalInformation, listQuestion) {
         await db('test').insert(generalInformation).then(async TestID => {
@@ -35,7 +35,8 @@ module.exports = {
                     })
                     .where('TestID', TestID[0])
                 })               
-            })                    
+            })     
+            await reportModel.createReport(generalInformation.TestName, TestID[0]);               
         })
     },
     async getTestByUID(uid) {
@@ -46,5 +47,38 @@ module.exports = {
             item.TotalDone = num[0][0].count;
         }
         return res;
+    },
+
+    async getTestByID (testID) {
+        const test = (await db('test').where('TestID',testID))[0];
+        const listQuestionID = test.QuestionID;
+        const listQuestion = [];
+        for (const item of listQuestionID) {
+            const question = (await db('question').where('ID', item))[0];
+            var res = {};
+            res.ID = question.ID;
+            res.QuestionType = question.QuestionType;
+            res.Score = question.Score;
+            if (question.QuestionType == 'MultipleChoice') {
+                const multipleQuestion = (await db('multiplechoice').where('QuestionID', question.ID))[0];
+                res.Description = multipleQuestion.MCDescription;
+                res.Answer = multipleQuestion.Answer;
+                res.CorrectAnswer = multipleQuestion.CorrectAnswer;
+            }
+            else if (question.QuestionType == 'Code') {
+                const codeQuestion = (await db('coding').where('QuestionID', question.ID))[0];
+                res.Description = codeQuestion.CodeDescription;
+                res.Language_allowed = codeQuestion.Language_allowed;
+                res.RunningTime = codeQuestion.RunningTime;
+                res.MemoryUsage = codeQuestion.MemoryUsage;
+                res.TestCase = codeQuestion.TestCase;
+            }
+            listQuestion.push(res);
+        }
+        var result = {
+            "generalInformation": test,
+            "listQuestion": listQuestion
+        }
+        return result;
     }
 }
