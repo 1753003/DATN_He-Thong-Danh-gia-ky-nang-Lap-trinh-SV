@@ -1,20 +1,28 @@
 import React from 'react';
-import {Row, Col, Form, Input, Select, Button} from 'antd';
+import {Row, Col, Form, Input, Select, Button, Alert, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { connect } from 'dva';
+import { Redirect, history } from 'umi';
 
 const { Option } = Select;
 class registerCreator extends React.Component {
     state = {
-        status: 'code'
+        status: 'start',
+        message: '',
+        uid: ''
     }
   
-    onFinish = (values) => {
-        console.log('Success:', values);
+    onFinish = (values) => {      
         if (values !== undefined) {
-            this.setState({
-                status: 'code'
-            })
+            this.props.dispatch({
+                type: 'userRegister/submit',
+                payload: {
+                    email: values.email,
+                    password: values.password,
+                    type: 'creator'
+                },
+            });
+                 
         }
     };
     
@@ -22,9 +30,20 @@ class registerCreator extends React.Component {
         console.log('Failed:', errorInfo);
     };
 
+    onFinishConfirmCode = (values) => {
+        if (values !== undefined)
+        this.props.dispatch({
+            type: 'userRegister/confirmCode',
+            payload: values.code
+        })
+    }
 
+    success = () => {
+        message.success('Register successfully')
+        history.push('/user/login')
+    }
     render() {
-        console.log(this.state);
+        console.log(this.props.userRegister.message);
         return (
             <div>
                 <Row style = {{paddingLeft: '20px',
@@ -49,12 +68,15 @@ class registerCreator extends React.Component {
                             padding: '20px',
                             backgroundColor: 'white'
                         }}>
-                        {this.state.status === 'start' ?
-                        (
+                        {(this.props.userRegister.status === 'start' || this.props.userRegister.status === 'Fail')?
+                        (   
                             <Form layout="vertical" 
                                 hideRequiredMark
                                 onFinish={this.onFinish}
                                 onFinishFailed={this.onFinishFailed()}>
+                            {
+                                this.props.userRegister.message === '' ? '' : <Alert message={this.props.userRegister.message} type="error" />
+                            }
                             <Row gutter={16}>
                             <Col span={12}>
                                 <Form.Item
@@ -138,9 +160,20 @@ class registerCreator extends React.Component {
                         </Form>                  
                         )
                         :
-                        (this.state.status === 'code' ?
+                        (this.props.userRegister.status === 'Ok' ?
                             (
                                 <div>
+                                    {
+                                        this.props.userRegister.codeMessage === '' ? '' :
+                                        (
+                                            this.props.userRegister.codeMessage === 'OK' ?
+                                            (                                                          
+                                                this.success()                                    
+                                            )
+                                            :
+                                            <Alert message={this.props.userRegister.codeMessage} type="error" />
+                                        )
+                                    }
                                     <h3>We have sent an email containing the code to the email you registered, please confirm</h3>
                                     <Form 
                                         onFinish={this.onFinishConfirmCode}
