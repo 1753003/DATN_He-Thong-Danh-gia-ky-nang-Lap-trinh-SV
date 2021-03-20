@@ -39,7 +39,7 @@ const practiceHome = () => {
               xxl: 4, }}
             dataSource={data}
             renderItem={item => (
-              <Link to={"/developer/practice/list?name="+ encodeURIComponent(item.title)}>
+              <Link to={"/developer/practice/list?listName="+ encodeURIComponent(item.title)}>
               <List.Item>
                 <Card className={styles.card}
                 hoverable

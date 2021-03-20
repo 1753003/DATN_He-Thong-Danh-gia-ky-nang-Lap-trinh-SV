@@ -36,7 +36,7 @@ const practiceList = ({location}) => {
     },
     {
       path: '',
-      breadcrumbName: decodeURIComponent(location.query.name),
+      breadcrumbName: decodeURIComponent(location.query.listName),
     },
   ];
   function itemRender(route, params, routes, paths) {
@@ -53,10 +53,10 @@ const practiceList = ({location}) => {
       <PageHeader
         className="site-page-header"
         breadcrumb={{ routes, itemRender }}
-        title={decodeURIComponent(location.query.name)}
+        title={decodeURIComponent(location.query.listName)}
         subTitle=""
       />
-      <Link to={"/developer/practice/questions?name="+ decodeURIComponent(location.query.name) + "&set=array"}>example</Link>
+      <Link to={"/developer/practice/questions?listName="+ encodeURIComponent(decodeURIComponent(location.query.listName)) + "&name=array"}>array</Link>
     </div>
   );
 }

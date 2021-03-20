@@ -28,12 +28,12 @@ const questionList = ({location}) => {
       breadcrumbName: 'Practice',
     },
     {
-      path: `/developer/practice/list?name=${decodeURIComponent(location.query.name)}`,
-      breadcrumbName: decodeURIComponent(location.query.name),
+      path: `/developer/practice/list?listName=${encodeURIComponent(decodeURIComponent(location.query.listName))}`,
+      breadcrumbName: decodeURIComponent(location.query.listName),
     },
     {
       path: '',
-      breadcrumbName: decodeURIComponent(location.query.set),
+      breadcrumbName: decodeURIComponent(location.query.name),
     },
   ];
   function itemRender(route, params, routes, paths) {
@@ -50,7 +50,7 @@ const questionList = ({location}) => {
       <PageHeader
         className="site-page-header"
         breadcrumb={{ routes, itemRender }}
-        title={decodeURIComponent(location.query.set)}
+        title={decodeURIComponent(location.query.listName)}
         subTitle=""
       />
       <Row>
