@@ -7,7 +7,9 @@ import 'brace/mode/javascript'
 import 'brace/mode/javascript'
 import 'brace/theme/monokai'
 import  { Button, Checkbox, Input } from 'antd'
+import {connect} from 'dva'
 const { TextArea } = Input;
+const defaultInput = "default input";
 class CodeEditor extends Component{
   state ={
     customInput: false,
@@ -25,13 +27,35 @@ class CodeEditor extends Component{
     })
     // console.log(val)
   }
+  handleCustomValChange = (e) => {
+    this.setState({
+      customVal: e.target.value
+    })
+  }
+  handleRun = () => {
+    let input= "";
+    let code = "";
+    if(this.state.customInput == false)
+      input = defaultInput
+    else if(this.state.customVal == "")
+      input = defaultInput
+    else
+      input = this.state.customVal
+    code = this.state.codeVal;
+    const data = {
+      input,
+      code
+    }
+    console.log(this.state.customInput, data)
+  }
   render(){
     return(<>
       <div>
         <AceEditor
+        
         width="100%"
         height="400px"
-        showPrintMargin
+        showPrintMargin = {false}
         showGutter
         highlightActiveLine
         mode="javascript"
@@ -45,17 +69,16 @@ class CodeEditor extends Component{
         onChange={this.handleCodeEditorChange.bind(this)}
         />
       </div>
-      <Button type="primary">Run</Button>
+      <Button type="primary" onClick={this.handleRun.bind(this)}>Run</Button>
       <Button type="primary">Submit</Button>
       <Checkbox 
-      onChange={this.handleCheckBoxChange}
+      onChange={this.handleCheckBoxChange.bind(this)}
       >Custom Input
       </Checkbox>
       <TextArea
       allowClear
       disabled={!this.state.customInput}
-      // value={value}
-      // onChange={this.onChange}
+      onChange={this.handleCustomValChange.bind(this)}
       placeholder="Put your custom input here."
       autoSize={{ minRows: 3, maxRows: 5 }}
       />
@@ -64,4 +87,6 @@ class CodeEditor extends Component{
   }
 }
 
-export default CodeEditor;
+export default connect(({})=>({
+
+}))(CodeEditor);

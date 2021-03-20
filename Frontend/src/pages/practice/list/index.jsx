@@ -7,6 +7,7 @@ import {
   PageHeader
 } from 'antd'
 import {history, Link} from 'umi'
+import { connect } from 'dva'
 
 const data = [
   {
@@ -60,4 +61,6 @@ const practiceList = ({location}) => {
   );
 }
 
-export default practiceList;
+export default connect(({})=>({
+
+}))(practiceList);

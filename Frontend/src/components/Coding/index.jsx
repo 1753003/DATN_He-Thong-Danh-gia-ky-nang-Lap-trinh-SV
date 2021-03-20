@@ -13,6 +13,7 @@ import {
   Alert
 } from 'antd'
 import {history, Link} from 'umi'
+import { connect } from 'dva'
 import CodeEditor from '../CodeEditor'
 
 const {TabPane} = Tabs;
@@ -70,4 +71,6 @@ class Coding extends Component{
 }
 
 
-export default Coding;
+export default connect(({})=>({
+
+}))(Coding);

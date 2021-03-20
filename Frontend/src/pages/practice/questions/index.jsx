@@ -11,13 +11,13 @@ import {
 } from 'antd'
 import {history, Link} from 'umi'
 import Coding from '@/components/Coding';
-
+import { connect } from 'dva'
 const { TabPane } = Tabs;
 function callback(key) {
   console.log(key);
 }
 
-const practiceList = ({location}) => {
+const questionList = ({location}) => {
   const routes = [
     {
       path: '/developer',
@@ -83,4 +83,6 @@ const practiceList = ({location}) => {
   );
 }
 
-export default practiceList;
+export default connect(({})=>({
+
+}))(questionList);
