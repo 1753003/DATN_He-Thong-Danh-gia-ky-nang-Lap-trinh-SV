@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import './style.less'
 import {
   Typography,
@@ -17,7 +17,7 @@ function callback(key) {
   console.log(key);
 }
 
-const questionList = ({location}) => {
+const questionList = ({location, practice, dispatch, loading}) => {
   const routes = [
     {
       path: '/developer',
@@ -37,6 +37,13 @@ const questionList = ({location}) => {
     },
   ];
   function itemRender(route, params, routes, paths) {
+    useEffect(()=>{
+      dispatch({
+        type:'practice/getPracticeListDetail',
+        payload: {'id':1}
+      })
+      console.log(practice)
+    }, [])
     // console.log(route.path)
     const last = routes.indexOf(route) === routes.length - 1;
     return last ? (
@@ -45,13 +52,15 @@ const questionList = ({location}) => {
       <Link to={route.path}>{route.breadcrumbName}</Link>
     );
   }
+
+  console.log(practice)
   return (
     <div>
       <PageHeader
         className="site-page-header"
         breadcrumb={{ routes, itemRender }}
-        title={decodeURIComponent(location.query.listName)}
-        subTitle=""
+        title={practice.listDetail?.generalInformation?.PracticeName}
+        subTitle={practice.listDetail?.generalInformation?.BriefDescription}
       />
       <Row>
       <Col className="tabs" span={19}>
@@ -74,7 +83,7 @@ const questionList = ({location}) => {
       <Col className="info" flex='auto' span={4}>
         <Row justify="space-between">
           <Col >Author<br/>Difficulty<br/>Max Score</Col>
-          <Col style={{textAlign:'right'}}>Nguyen Van A<br/>Medium<br/>100</Col>
+          <Col style={{textAlign:'right'}}>Admin<br/>{practice.listDetail?.generalInformation?.DifficultLevel}<br/>{practice.listDetail?.generalInformation?.Score}</Col>
         </Row>
       </Col>
       </Row>
@@ -83,6 +92,7 @@ const questionList = ({location}) => {
   );
 }
 
-export default connect(({})=>({
-
+export default connect(({practice, loading})=>({
+  practice: practice,
+  loading: loading.effects['practice/getPracticeListDetail']
 }))(questionList);

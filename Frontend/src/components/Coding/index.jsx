@@ -43,11 +43,12 @@ Concatenate  with the string you read as input and print the result on a new lin
 `
 
 class Coding extends Component{
+
   render(){
     return (
       <>
         <div className="problem">
-          {problem}
+          {this.props.description}
         </div>
         <Divider></Divider>
         <div className="code-editor">
@@ -71,6 +72,6 @@ class Coding extends Component{
 }
 
 
-export default connect(({})=>({
-
+export default connect(({practice})=>({
+  description: practice.listDetail?.listQuestion[0]?.Description
 }))(Coding);
