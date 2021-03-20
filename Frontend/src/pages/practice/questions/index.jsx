@@ -1,14 +1,16 @@
 import React from 'react'
-import styles from './style.less'
+import './style.less'
 import {
   Typography,
   Card,
   List,
   PageHeader,
   Tabs,
+  Row,
+  Col
 } from 'antd'
 import {history, Link} from 'umi'
-import coding from '@/components/coding';
+import Coding from '@/components/Coding';
 
 const { TabPane } = Tabs;
 function callback(key) {
@@ -35,7 +37,7 @@ const practiceList = ({location}) => {
     },
   ];
   function itemRender(route, params, routes, paths) {
-    console.log(route.path)
+    // console.log(route.path)
     const last = routes.indexOf(route) === routes.length - 1;
     return last ? (
       <span>{route.breadcrumbName}</span>
@@ -51,19 +53,32 @@ const practiceList = ({location}) => {
         title={decodeURIComponent(location.query.set)}
         subTitle=""
       />
-      <div>
-        <Tabs defaultActiveKey="1" onChange={callback}>
-          <TabPane tab="Tab 1" key="1">
-            <coding></coding>
+      <Row>
+      <Col className="tabs" span={19}>
+        <Tabs className="custom" type="card" size="large">
+          <TabPane tab="Problem" key="1">
+            <Coding></Coding>
           </TabPane>
-          <TabPane tab="Tab 2" key="2">
-            Content of Tab Pane 2
+          <TabPane tab="Submission" key="2">
+            <p>Content of Tab Pane 2</p>
+            <p>Content of Tab Pane 2</p>
+            <p>Content of Tab Pane 2</p>
           </TabPane>
-          <TabPane tab="Tab 3" key="3">
-            Content of Tab Pane 3
+          <TabPane tab="Discussion" key="3">
+            <p>Content of Tab Pane 3</p>
+            <p>Content of Tab Pane 3</p>
+            <p>Content of Tab Pane 3</p>
           </TabPane>
         </Tabs>
-      </div>
+      </Col>
+      <Col className="info" flex='auto' span={4}>
+        <Row justify="space-between">
+          <Col >Author<br/>Difficulty<br/>Max Score</Col>
+          <Col style={{textAlign:'right'}}>Nguyen Van A<br/>Medium<br/>100</Col>
+        </Row>
+      </Col>
+      </Row>
+      
     </div>
   );
 }
