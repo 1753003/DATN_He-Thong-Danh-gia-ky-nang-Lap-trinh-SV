@@ -1,27 +1,25 @@
 const db = require('../utils/db');
 
 module.exports = {
-  async createUserDeveloper(uid, rftoken, email, pwd) {
+  async createUserDeveloper(uid, email, type, status ) {
     await db('userlogin').insert({
         UserID: uid,
         UserName: email,
-        UserPwd: pwd,
-        UserType: "developer",
-        UserStatus: 'not active',
-        RefreshToken: rftoken,
+        UserPwd: '',
+        UserType: type,
+        UserStatus: status,
     })
     return uid;
   },
-  async createUserCreator(uid, rftoken, email, pwd) {
+  async createUserCreator(uid, email, type, status ) {
     await db('userlogin').insert({
-        UserID: uid,
-        UserName: email,
-        UserPwd: pwd,
-        UserType: "creator",
-        UserStatus: 'not active',
-        RefreshToken: rftoken,
-    })
-    return uid;
+      UserID: uid,
+      UserName: email,
+      UserPwd: '',
+      UserType: type,
+      UserStatus: status,
+  })
+  return uid;
   },
   async getByEmail(email) {
       const list = await db('userlogin').where('UserName', email);
