@@ -16,9 +16,10 @@ router.get('/', async function (req, res) {
 router.post('/test', async function (req, res) {
    var generalInformation = req.body.generalInformation;
    generalInformation.CreatedBy = req.uid;
+  
    await testModel.createTest(generalInformation, req.body.listQuestion);
-
    res.json("OK");
+  
 })
 
 router.get('/test', async function (req, res) {
@@ -75,7 +76,7 @@ router.patch('/collection', async function (req, res) {
    res.json('OK');
 })
 
-router.get('/getCollectionDetail/:id', async function (req, res) {
+router.get('/collection/:id', async function (req, res) {
    const collection = await collectionModel.getCollectionByID(req.params.id);
    res.json(collection); 
 })
