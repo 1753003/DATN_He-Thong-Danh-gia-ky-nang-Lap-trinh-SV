@@ -169,46 +169,45 @@ export default defineConfig({
                   name: 'welcome',
                   icon: 'smile',
                   component: './Welcome',
-                }
-                ,
-        {
-          name: 'Practice',
-          path: '/developer/practice',
-          component: '../layouts/BlankLayout',
-          routes: [
-            {
-              path: '/developer/practice',
-              redirect: '/developer/practice/home'
-            },
-            {
-              path: '/developer/practice',
-              routes: [
-                {
-                  path: '/developer/',
-                  redirect: '/developer/practice/home'
                 },
                 {
-                  path: '/developer/practice/home',
-                  component: './practice/home',
+                  name: 'Practice',
+                  path: '/developer/practice',
+                  component: '../layouts/BlankLayout',
+                  routes: [
+                    {
+                      path: '/developer/practice',
+                      redirect: '/developer/practice/home',
+                    },
+                    {
+                      path: '/developer/practice',
+                      routes: [
+                        {
+                          path: '/developer/',
+                          redirect: '/developer/practice/home',
+                        },
+                        {
+                          path: '/developer/practice/home',
+                          component: './practice/home',
+                        },
+                        {
+                          path: '/developer/practice/list',
+                          component: './practice/list',
+                        },
+                        {
+                          path: '/developer/practice/questions',
+                          component: './practice/questions',
+                        },
+                      ],
+                    },
+                  ],
                 },
-                {
-                  path: '/developer/practice/list',
-                  component: './practice/list',
-                },
-                {
-                  path: '/developer/practice/questions',
-                  component: './practice/questions',
-                },
-              ]
-            }
-          ],
-        },
                 {
                   component: './404',
                 },
               ],
             },
-            
+
             {
               component: './404',
             },
