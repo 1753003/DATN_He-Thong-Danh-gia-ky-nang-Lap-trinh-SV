@@ -163,6 +163,11 @@ export default defineConfig({
                   component: './Welcome',
                 },
                 {
+                  path: '/developer/test',
+                  name: 'Test',
+                  component: './developer/test/test.jsx',
+                },
+                {
                   component: './404',
                 },
               ],
