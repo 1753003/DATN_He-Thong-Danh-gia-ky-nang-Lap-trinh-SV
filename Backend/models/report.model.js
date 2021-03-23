@@ -31,7 +31,7 @@ module.exports = {
         for (const item of listSubmission) {
             const userName = (await db.raw(`select UserName from userlogin, submissions
                                             where TestID = ${testID} and 
-                                            userlogin.UserID = submissions.DevID`))[0][0];
+                                            userlogin.UserID = submissions.DevID`))[0][0].UserName;
             const numberNotFinish = numOfQuestion - item.AnsweredNumber;
             listNotFinish.push({
                 userName: userName,
