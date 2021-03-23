@@ -5,7 +5,7 @@ module.exports = function (req, res, next) {
   const accessToken = req.headers['accesstoken'];
   const refreshToken = req.headers['refreshtoken'];
   const aToken = req.headers['Cookie'];
-  console.log(req.headers);
+  // console.log(req.headers);
   if (accessToken) {
     try {
       const decoded = jwt.verify(accessToken, 'secretkeyy');
