@@ -40,7 +40,6 @@ const practiceList = ({location}) => {
     },
   ];
   function itemRender(route, params, routes, paths) {
-    console.log(route.path)
     const last = routes.indexOf(route) === routes.length - 1;
     return last ? (
       <span>{route.breadcrumbName}</span>

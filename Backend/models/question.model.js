@@ -6,7 +6,6 @@ module.exports = {
   },
   async getPracticeQuestionListDetail(ID){
     const list = await this.getPracticeQuestionList(ID);
-    console.log(list)
     const listDetail = [];
     for (const id of list.QuestionID) {
       const question = (await db('question').where('ID', id))[0];
