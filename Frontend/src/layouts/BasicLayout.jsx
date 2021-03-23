@@ -97,7 +97,7 @@ const BasicLayout = (props) => {
       },
     [location.pathname],
   );
-  console.log("Basic");
+
   const { formatMessage } = useIntl();
   return (
     <>

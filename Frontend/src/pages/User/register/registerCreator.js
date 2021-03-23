@@ -162,40 +162,12 @@ class registerCreator extends React.Component {
                         :
                         (this.props.userRegister.status === 'Ok' ?
                             (
-                                <div>
-                                    {
-                                        this.props.userRegister.codeMessage === '' ? '' :
-                                        (
-                                            this.props.userRegister.codeMessage === 'OK' ?
-                                            (                                                          
-                                                this.success()                                    
-                                            )
-                                            :
-                                            <Alert message={this.props.userRegister.codeMessage} type="error" />
-                                        )
-                                    }
-                                    <h3>We have sent an email containing the code to the email you registered, please confirm</h3>
-                                    <Form 
-                                        onFinish={this.onFinishConfirmCode}
-                                    >
-                                        <Form.Item
-                                            name="code"
-                                            label="Code"
-                                            rules={[
-                                                {
-                                                required: true,
-                                                message: 'Please enter the code',
-                                                },
-                                            ]}
-                                        >
-                                            <Input></Input>
-                                        </Form.Item> 
-                                        <Form.Item>
-                                            <Button type="primary" htmlType="submit">  
-                                            Confirm code
-                                            </Button>
-                                        </Form.Item>
-                                    </Form>
+                                <div>                               
+                                    <Alert message={this.props.userRegister.codeMessage} type="error" />                                     
+                                    <h3>We have sent an email containing the confirm link to the email you registered, please confirm</h3>
+                                    <Button type="Primary" onClick={()=>{this.onFinishConfirm()}}>
+                                        Back to login
+                                    </Button>
                                     <p><i>Haven't received email? </i><a>Resent email</a></p>
                                 </div>
                             )

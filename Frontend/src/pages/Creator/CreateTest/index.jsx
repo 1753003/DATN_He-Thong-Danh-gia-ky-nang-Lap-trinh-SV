@@ -1,19 +1,34 @@
 import React, { useState } from 'react';
 import styles from './index.less';
-import { Button, Drawer, Select, Input, Row, Col, Form, Divider, InputNumber } from 'antd';
+import {
+  Button,
+  Drawer,
+  Select,
+  Input,
+  Row,
+  Col,
+  Form,
+  Divider,
+  InputNumber,
+  Alert,
+  Card,
+} from 'antd';
 import {
   PlusOutlined,
   QuestionOutlined,
   FileTextOutlined,
   DollarCircleOutlined,
+  CheckOutlined,
+  CloseOutlined,
 } from '@ant-design/icons';
+import ReactMarkdown from 'react-markdown';
 
 const { Option } = Select;
 const CreateTest = () => {
   const [option, setOption] = useState('quiz');
   const [quiz, setQuiz] = useState([]);
   const [information, setInformation] = useState({});
-  const [selectedQuiz, setSelectedQuiz] = useState(1);
+  const [selectedQuiz, setSelectedQuiz] = useState({});
   const [visibleDrawer, setVisibleDrawer] = useState(false);
   const [form] = Form.useForm();
 
@@ -24,8 +39,6 @@ const CreateTest = () => {
   const onClose = () => {
     setVisibleDrawer(false);
   };
-
-  console.log(information);
 
   return (
     <div className={styles.container}>
@@ -43,9 +56,13 @@ const CreateTest = () => {
         <div className={styles.left}>
           {quiz?.map((item) => {
             return (
-              <div className={styles.quizContainer} onClick={() => handleChangeQuiz(item)}>
+              <Button
+                className={styles.quizContainer}
+                onClick={() => handleChangeQuiz(item)}
+                type={item.ID === selectedQuiz.ID ? 'primary' : 'default'}
+              >
                 {item.ID} - {item.QuestionType}
-              </div>
+              </Button>
             );
           })}
           <Button
@@ -60,53 +77,55 @@ const CreateTest = () => {
               });
               setQuiz(newQuiz);
             }}
+            type="primary"
+            style={{ marginTop: 20 }}
           >
-            Create New
+            Create New Quiz
           </Button>
         </div>
         <div className={styles.mid}>
           <RenderMiddle option={option} selectedQuiz={selectedQuiz} setQuiz={setQuiz} quiz={quiz} />
         </div>
-        <div className={styles.right}>
-          <div className={styles.option}>
-            <div className={styles.optionTitle}>
-              <QuestionOutlined />
-              Question Type
+        {selectedQuiz.ID && (
+          <div className={styles.right}>
+            <div className={styles.option}>
+              <div className={styles.optionTitle}>
+                <QuestionOutlined />
+                Question Type
+              </div>
+              <Select
+                style={{ width: '100%' }}
+                value={selectedQuiz.QuestionType}
+                onChange={(value) => {
+                  const newQuiz = [...quiz];
+                  newQuiz.forEach((item) => {
+                    if (item.ID === selectedQuiz.ID) item.QuestionType = value;
+                  });
+                  setQuiz(newQuiz);
+                }}
+              >
+                <Option value="quiz">Quiz</Option>
+                <Option value="code">Code</Option>
+              </Select>
             </div>
-            <Select
-              style={{ width: '100%' }}
-              value={selectedQuiz.QuestionType}
-              onChange={(value) => {
-                // setOption(value);
-                // console.log(value);
-                const newQuiz = [...quiz];
-                newQuiz.forEach((item) => {
-                  if (item.ID === selectedQuiz.ID) item.QuestionType = value;
-                });
-                setQuiz(newQuiz);
-              }}
-            >
-              <Option value="quiz">Quiz</Option>
-              <Option value="code">Code</Option>
-            </Select>
-          </div>
-          <div className={styles.option}>
-            <div className={styles.optionTitle}>
-              <DollarCircleOutlined />
-              Points
+            <div className={styles.option}>
+              <div className={styles.optionTitle}>
+                <DollarCircleOutlined />
+                Points
+              </div>
+              <InputNumber
+                onChange={(value) => {
+                  const newQuiz = [...quiz];
+                  newQuiz.forEach((item) => {
+                    if (item.ID === selectedQuiz.ID) item.Score = value.target.value;
+                  });
+                  setQuiz(newQuiz);
+                }}
+                value={selectedQuiz.Score}
+                style={{ width: '100%' }}
+              />
             </div>
-            <Input
-              onChange={(value) => {
-                const newQuiz = [...quiz];
-                newQuiz.forEach((item) => {
-                  if (item.ID === selectedQuiz.ID) item.Score = value.target.value;
-                });
-                setQuiz(newQuiz);
-              }}
-              value={selectedQuiz.Score}
-            />
-          </div>
-          {/* <div className={styles.option}>
+            {/* <div className={styles.option}>
             <div className={styles.optionTitle}>
               <FileTextOutlined />
               Answer Options
@@ -116,8 +135,10 @@ const CreateTest = () => {
               <Option value="multiple">Multiple Option</Option>
             </Select>
           </div> */}
-        </div>
+          </div>
+        )}
       </div>
+
       <DrawerForm
         visible={visibleDrawer}
         onClose={onClose}
@@ -129,6 +150,24 @@ const CreateTest = () => {
 };
 
 const RenderMiddle = ({ option, selectedQuiz, setQuiz, quiz }) => {
+  console.log(selectedQuiz);
+  const [code, setCode] = useState('');
+  const onChangeAnswer = (answer, id) => {
+    const newQuiz = [...quiz];
+    newQuiz.forEach((quiz) => {
+      if (quiz.ID === selectedQuiz.ID) {
+        quiz.Choices.forEach((choice) => {
+          // console.log(`${typeof choice.id} + ${typeof e.target.name}`);
+          if (choice.id === id) choice.answer = answer;
+        });
+      }
+    });
+    setQuiz(newQuiz);
+  };
+
+  const onChangeCodeDescription = (e) => {
+    setCode(e.target.value);
+  };
   switch (selectedQuiz.QuestionType) {
     case 'quiz':
       return (
@@ -136,11 +175,11 @@ const RenderMiddle = ({ option, selectedQuiz, setQuiz, quiz }) => {
           <Input.TextArea
             placeholder="Typing your question here ..."
             autoSize={{ minRows: 6, maxRows: 6 }}
-            value={selectedQuiz.Question}
+            value={selectedQuiz.MCDescription}
             onChange={(value) => {
               const newQuiz = [...quiz];
               newQuiz.forEach((item) => {
-                if (item.ID === selectedQuiz.ID) item.Question = value.target.value;
+                if (item.ID === selectedQuiz.ID) item.MCDescription = value.target.value;
               });
               setQuiz(newQuiz);
             }}
@@ -150,7 +189,7 @@ const RenderMiddle = ({ option, selectedQuiz, setQuiz, quiz }) => {
               <div className={styles.choices}>
                 <div>Answer {item.id}</div>
                 <Input
-                  style={{ height: '40px', width: '80%' }}
+                  style={{ height: '40px', width: '70%' }}
                   value={item.choice}
                   id={item.id}
                   onChange={(value) => {
@@ -166,6 +205,24 @@ const RenderMiddle = ({ option, selectedQuiz, setQuiz, quiz }) => {
                     setQuiz(newQuiz);
                   }}
                 />
+                <div>Answer: </div>
+                <div>
+                  {item.answer ? (
+                    <Button
+                      type="primary"
+                      icon={<CheckOutlined />}
+                      style={{ backgroundColor: '#a0d911', border: 'none' }}
+                      onClick={() => onChangeAnswer(false, item.id)}
+                    />
+                  ) : (
+                    <Button
+                      type="primary"
+                      icon={<CloseOutlined />}
+                      style={{ backgroundColor: 'red', border: 'none' }}
+                      onClick={() => onChangeAnswer(true, item.id)}
+                    />
+                  )}
+                </div>
               </div>
             );
           })}
@@ -191,9 +248,23 @@ const RenderMiddle = ({ option, selectedQuiz, setQuiz, quiz }) => {
         </div>
       );
     case 'code':
-      return <div>Nothing</div>;
+      return (
+        <div className={styles.codeContainer}>
+          <Card title="Preview" style={{ marginBottom: '20px' }}>
+            <ReactMarkdown>{code}</ReactMarkdown>
+          </Card>
+          <Input.TextArea onChange={onChangeCodeDescription} />
+        </div>
+      );
     default:
-      return <div>Nothing</div>;
+      return (
+        <Alert
+          message="Note"
+          description="Please add more quiz to show Quiz Infomation"
+          type="info"
+          style={{ margin: '0px 20px' }}
+        />
+      );
   }
 };
 
@@ -244,8 +315,8 @@ const DrawerForm = ({ visible, onClose, form, setInformation }) => {
         <Row gutter={16}>
           <Col span={24}>
             <Form.Item
-              name="Description"
-              label="Description(*)"
+              name="BriefDescription"
+              label="Brief Description(*)"
               rules={[{ required: true, message: 'Please enter user name' }]}
             >
               <Input placeholder="Please enter user name" />
@@ -255,7 +326,7 @@ const DrawerForm = ({ visible, onClose, form, setInformation }) => {
         <Row gutter={16}>
           <Col span={24}>
             <Form.Item
-              name="Language"
+              name="LanguageAllowed"
               label="Programming language (*)"
               rules={[{ required: true, message: 'Please select an owner' }]}
             >
@@ -271,11 +342,15 @@ const DrawerForm = ({ visible, onClose, form, setInformation }) => {
         <Row gutter={16}>
           <Col span={24}>
             <Form.Item
-              name="Time"
+              name="TimeTime"
               label="Time(*)"
               rules={[{ required: true, message: 'Please enter user name' }]}
             >
-              <Input placeholder="Enter maximum time to do this test..." />
+              <InputNumber
+                placeholder="Enter maximum time to do this test..."
+                style={{ width: '100%' }}
+                min={0}
+              />
             </Form.Item>
           </Col>
         </Row>
@@ -286,7 +361,7 @@ const DrawerForm = ({ visible, onClose, form, setInformation }) => {
               label="Max score (*)"
               rules={[{ required: true, message: 'Please enter user name' }]}
             >
-              <InputNumber min={0} />
+              <InputNumber min={0} style={{ width: '100%' }} />
             </Form.Item>
           </Col>
           <Col span={12}>
@@ -295,14 +370,14 @@ const DrawerForm = ({ visible, onClose, form, setInformation }) => {
               label="Pass score"
               rules={[{ required: true, message: 'Please enter user name' }]}
             >
-              <InputNumber min={0} />
+              <InputNumber min={0} style={{ width: '100%' }} />
             </Form.Item>
           </Col>
         </Row>
         <Row gutter={16}>
           <Col span={24}>
             <Form.Item
-              name="Level"
+              name="DifficultLevel"
               label="Level"
               rules={[{ required: true, message: 'Please enter user name' }]}
             >
@@ -319,8 +394,8 @@ const DrawerForm = ({ visible, onClose, form, setInformation }) => {
         <Row gutter={16}>
           <Col span={24}>
             <Form.Item
-              name="TimeStart"
-              label="Time start"
+              name="StartTime"
+              label="Start Time"
               rules={[{ required: true, message: 'Please enter user name' }]}
             >
               <Input placeholder="" />
@@ -330,8 +405,8 @@ const DrawerForm = ({ visible, onClose, form, setInformation }) => {
         <Row gutter={16}>
           <Col span={24}>
             <Form.Item
-              name="TimeEnd"
-              label="Time end"
+              name="EndTime"
+              label="End Time"
               rules={[{ required: true, message: 'Please enter user name' }]}
             >
               <Input placeholder="" />
@@ -343,8 +418,8 @@ const DrawerForm = ({ visible, onClose, form, setInformation }) => {
         <Row gutter={16}>
           <Col span={24}>
             <Form.Item
-              name="Permission"
-              label="Permisson"
+              name="Permissions"
+              label="Permissons"
               rules={[{ required: true, message: 'Please select permission' }]}
             >
               <Select placeholder="Please select permission">

@@ -51,7 +51,7 @@ const LoginMessage = ({ content }) => (
 
 const Login = (props) => {
   const { userLogin = {}, submitting } = props;
-  const { status, type: loginType } = userLogin;
+  const { status, type: loginType, message } = userLogin;
   const [type, setType] = useState('account');
   const intl = useIntl();
 
@@ -63,11 +63,30 @@ const Login = (props) => {
     });
   };
   const loginGoogle = () => {
+    var provider = new firebase.auth.GoogleAuthProvider();
     firebase.auth()
     .signInWithPopup(provider)
     .then((result) => {
       /** @type {firebase.auth.OAuthCredential} */
+      var credential = result.credential;
+
+      // This gives you a Google Access Token. You can use it to access the Google API.
+      var token = credential.accessToken;
+      // The signed-in user info.
       var user = result.user;
+      const { dispatch } = props;
+        dispatch({
+          type:'login/loginGoogle',
+          payload: {
+            UserID: user.uid,
+            UserType: 'developer',
+            UserStatus: 'active',
+            DevImage: user.photoURL,
+            DevName: user.displayName,
+            DevMail: user.email,
+            PhoneNumber: user.phoneNumber
+          }
+        })
       // ...
     }).catch((error) => {
       // Handle Errors here.
@@ -77,7 +96,7 @@ const Login = (props) => {
       var email = error.email;
       // The firebase.auth.AuthCredential type that was used.
       var credential = error.credential;
-      // ...
+      console.log(errorMessage)
     });
   }
   const loginFacebook = () => {
@@ -109,14 +128,12 @@ const Login = (props) => {
         // ...
       })
       .catch((error) => {
-      // Handle Errors here.
-      var errorCode = error.code;
       var errorMessage = error.message;
-      // The email of the user's account used.
-      var email = error.email;
-      // The firebase.auth.AuthCredential type that was used.
-      var credential = error.credential;
-      console.log(error)
+      const { dispatch } = props;
+      dispatch({
+        type: 'login/changeMessage',
+        payload: errorMessage,
+      });
     // ...
     });
   }
@@ -161,10 +178,7 @@ const Login = (props) => {
 
         {status === 'error' && loginType === 'account' && !submitting && (
           <LoginMessage
-            content={intl.formatMessage({
-              id: 'pages.login.accountLogin.errorMessage',
-              defaultMessage: '账户或密码错误（admin/ant.design)',
-            })}
+            content={message}
           />
         )}
         {type === 'account' && (
@@ -313,6 +327,7 @@ const Login = (props) => {
             style={{
               float: 'right',
             }}
+            href="/user/forgotPassword"
           >
             <FormattedMessage id="pages.login.forgotPassword" defaultMessage="Forgot password?" />
           </a>
@@ -329,7 +344,7 @@ const Login = (props) => {
       <Space className={styles.other}>
         <FormattedMessage id="pages.login.loginWith" defaultMessage="其他登录方式" />
         <FacebookOutlined className={styles.icon} onClick = {()=>{loginFacebook()}} />
-        <GoogleOutlined className={styles.icon} />
+        <GoogleOutlined className={styles.icon} onClick = {() => {loginGoogle()}} />
         <GithubOutlined className={styles.icon} />
       </Space>
     </div>
@@ -337,6 +352,6 @@ const Login = (props) => {
 };
 
 export default connect(({ login, loading }) => ({
-  userLogin: login,
+  userLogin: login, 
   submitting: loading.effects['login/login'],
 }))(Login);

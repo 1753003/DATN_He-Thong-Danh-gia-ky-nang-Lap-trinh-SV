@@ -15,6 +15,7 @@ import {
 import {history, Link} from 'umi'
 import { connect } from 'dva'
 import CodeEditor from '../CodeEditor'
+import PageLoading from '@/pages/dashboard/analysis/components/PageLoading'
 
 const {TabPane} = Tabs;
 const TestCase = (name, key, m, i, e, o) => (
@@ -30,41 +31,45 @@ const TestCase = (name, key, m, i, e, o) => (
   </TabPane>
 )
 
-const problem = `
-Task
-Complete the code in the editor below. The variables , , and  are already declared and initialized for you. You must:
-
-Declare  variables: one of type int, one of type double, and one of type String.
-Read  lines of input from stdin (according to the sequence given in the Input Format section below) and initialize your  variables.
-Use the  operator to perform the following operations:
-Print the sum of  plus your int variable on a new line.
-Print the sum of  plus your double variable to a scale of one decimal place on a new line.
-Concatenate  with the string you read as input and print the result on a new line.
-`
-
 class Coding extends Component{
-
+  state = {
+    alertType: "error",
+    alertMessage:"",
+    alertDescription:"",
+  }
   render(){
     return (
       <>
-        <div className="problem">
+        <div className="problem" >
           {this.props.description}
         </div>
         <Divider></Divider>
         <div className="code-editor">
           <CodeEditor></CodeEditor>
-          
-          <Alert 
-            message="Error"
-            description="This is an error message about copywriting."
-            type="error"
+            {this.props.loading!=false?((this.props.practice.isRun||this.props.practice.isSubmit)&&<PageLoading></PageLoading>):<div>
+            <Alert 
+            style={{ whiteSpace: 'pre-wrap' }}
+            message={this.props.judge.result?.status.description}
+            description={atob(this.props.judge.result?.compile_output)+'\n'+atob(this.props.judge.result?.message)+atob(this.props.judge.result?.stdout) +atob(this.props.judge.result?.stderr) }
+            type={this.props.judge.result?.status.id==3?'success':'error'}
             showIcon></Alert>
-          <div>
             <Divider orientation='left'>Test Case</Divider>
             <Tabs tabPosition="left">
-              {TestCase('Test Case 1', 1, "Success","asd","asd","asd")}
+            {
+              this.props.testCases.map((tc,i) => {
+                let title = 'Test Case '+ (i+1);
+                if(this.props.practice.isRun){
+                  title = "Example Test Case";
+                  if(i > 0)
+                    {
+                      return null;
+                    }
+                    return TestCase(title, i+1, tc.Output == atob(this.props.judge.result?.stdout)?"Success":"Failed",tc.Input,tc.Output.toString(),atob(this.props.judge.result?.stdout))
+                }
+                
+              })}
             </Tabs>
-          </div>
+          </div>}
         </div>
       </>
     );
@@ -72,6 +77,10 @@ class Coding extends Component{
 }
 
 
-export default connect(({practice})=>({
-  description: practice.listDetail?.listQuestion[0]?.Description
+export default connect(({practice, judge, loading})=>({
+  judge,
+  practice,
+  loading: loading.effects['judge/getResult'],
+  description: practice.listDetail?.listQuestion[0]?.Description,
+  testCases: practice.listDetail?.listQuestion[0].TestCase
 }))(Coding);

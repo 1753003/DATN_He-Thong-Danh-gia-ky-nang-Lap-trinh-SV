@@ -39,8 +39,6 @@ const Tests = ({ location }) => {
         return <Collection />;
       case 'tests':
         return <MyTests />;
-      case 'favorite':
-        return <Favorite />;
       default:
         return <Collection />;
     }
@@ -62,9 +60,6 @@ const Tests = ({ location }) => {
           </Menu.Item>
           <Menu.Item key="tests" icon={<StarOutlined />}>
             My Tests
-          </Menu.Item>
-          <Menu.Item key="favorite" icon={<UserOutlined />}>
-            Favorite
           </Menu.Item>
         </Menu>
       </div>
