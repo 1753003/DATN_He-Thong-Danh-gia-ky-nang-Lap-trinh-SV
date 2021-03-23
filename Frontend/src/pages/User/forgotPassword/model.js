@@ -1,27 +1,27 @@
-import { Register, ConfirmEmail, ConfirmCode } from './service';
+import { ForgotPassword } from './service';
 
 const Model = {
-  namespace: 'userRegister',
+  namespace: 'forgotPassword',
   state: {
-    status: 'start',
+    status: '',
     message: '',
     codeMessage: '',
     uid: ''
   },
   effects: {
     *submit({ payload }, { call, put }) {
-      const response = yield call(Register, payload);
+      const response = yield call(ForgotPassword, payload);
       yield put({
-        type: 'registerHandle',
+        type: 'handle',
         payload: response,
       });
     },
   },
   reducers: {
-    registerHandle(state, { payload }) {
+    handle(state, { payload }) {
       console.log(payload);
       if (payload.status === 'Ok')
-        return { ...state, status: payload.status, uid: payload.uid };
+        return { ...state, status: payload.status};
       return { ...state, status: payload.status, message: payload.message };
     },
   },
