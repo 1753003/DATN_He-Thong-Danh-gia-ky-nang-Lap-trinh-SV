@@ -1,23 +1,44 @@
-import { fakeRegister } from './service';
+import { Register, ConfirmEmail, ConfirmCode } from './service';
 
 const Model = {
-  namespace: 'userAndregister',
+  namespace: 'userRegister',
   state: {
-    status: undefined,
+    status: 'start',
+    message: '',
+    codeMessage: '',
+    uid: ''
   },
   effects: {
     *submit({ payload }, { call, put }) {
-      const response = yield call(fakeRegister, payload);
+      const response = yield call(Register, payload);
       yield put({
         type: 'registerHandle',
         payload: response,
       });
+      if (response.status === 'Ok')
+        yield call(ConfirmEmail, payload);
     },
+    *confirmCode({ payload }, { call, put, select}) {
+      const state = yield select(state => state);
+      console.log(state)
+      const response = yield call(ConfirmCode, payload, state.userRegister.uid);
+      yield put({
+        type: 'confirmCodeHandle',
+        payload: response
+      })  
+    }
   },
   reducers: {
     registerHandle(state, { payload }) {
-      return { ...state, status: payload.status };
+      console.log(payload);
+      if (payload.status === 'Ok')
+        return { ...state, status: payload.status, uid: payload.uid };
+      return { ...state, status: payload.status, message: payload.message };
     },
+    confirmCodeHandle(state, { payload }) {
+      console.log(payload);
+      return { ...state, codeMessage: payload.codeMessage}
+    }
   },
 };
 export default Model;

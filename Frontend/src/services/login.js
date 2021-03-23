@@ -1,4 +1,36 @@
 import request from '@/utils/request';
+import axios from 'axios';
+
+export function Login(params) {
+  return new Promise( (resolve, reject) => {
+      axios.post('http://localhost:5000/api/auth/login', params)
+      .then((response) => {
+          // handle success
+          console.log(response.data)
+          resolve(response.data)
+      })
+      .catch((error) => {
+          // handle error
+          console.log(error)
+         
+      })
+  })
+}
+
+export function LoginWithFacebook(params) {
+  console.log(params)
+  return new Promise( (resolve, reject) => {
+      axios.post('http://localhost:5000/api/auth/loginFacebook', params)
+      .then((response) => {
+          // handle success
+          resolve(response.data)
+      })
+      .catch((error) => {
+          // handle error
+         
+      })
+  })
+}
 
 export async function fakeAccountLogin(params) {
   return request('/api/login/account', {

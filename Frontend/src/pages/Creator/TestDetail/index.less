@@ -1,0 +1,82 @@
+@import '~antd/es/style/themes/default.less';
+
+.container {
+  display: flex;
+  padding: 20px;
+
+  // background-color: white;
+  .left {
+    width: 30%;
+    background-color: white;
+    .testName {
+      padding: 20px 10px 10px 20px;
+      font-weight: 500;
+      font-size: 20px;
+
+    }
+    .editContainer {
+      display: flex;
+      justify-content: space-between;
+      padding: 0px 20px;
+    }
+    img {
+      width: 100%;
+    }
+    .otherInfo {
+      padding: 0px 20px;
+    }
+  }
+  .right {
+    width: 70%;
+    margin-left: 20px;
+    overflow: scroll;
+    height: 88vh;
+    // background-color: white;
+    .questionContainer {
+      background-color: white;
+      margin-bottom: 20px;
+      padding: 20px;
+      .question {
+        font-weight: bold;
+      }
+      .mark {
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+      }
+      .multipleChoiceContainer {
+        background-color: #011831;
+        color: white;
+        font-weight: bold;
+        padding: 20px;
+        padding-bottom: 10px;
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 1px solid gray;
+        
+      }
+    }
+  }
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.modal {
+  .listGroup {
+    display: flex;
+    justify-content: space-between;
+    background-color: #f1f1f1;
+    padding: 10px;
+    border: 1px solid white;
+  }
+}
+
+.modalTitle {
+  background-color: #ececec;
+  padding: 10px;
+  border: 1px solid white;
+  border-bottom: none;
+  margin-bottom: 0px;
+}

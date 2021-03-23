@@ -1,6 +1,6 @@
 import { stringify } from 'querystring';
 import { history } from 'umi';
-import { fakeAccountLogin } from '@/services/login';
+import { fakeAccountLogin, Login, LoginWithFacebook } from '@/services/login';
 import { setAuthority } from '@/utils/authority';
 import { getPageQuery } from '@/utils/utils';
 import { message } from 'antd';
@@ -12,16 +12,27 @@ const Model = {
   },
   effects: {
     *login({ payload }, { call, put }) {
-      const response = yield call(fakeAccountLogin, payload);
+      const response = yield call(Login, payload);
       yield put({
         type: 'changeLoginStatus',
-        payload: response,
+        payload: {
+          currentAuthority: response.type,
+          status: 'ok',
+          type: 'account'
+        },
       }); // Login successfully
-
-      if (response.status === 'ok') {
+      console.log(response.type);
+      localStorage.setItem('currentUser',payload.email);
+      //Save token into cookie
+      var d = new Date();
+      d.setTime(d.getTime() + (1*24*60*60*1000));
+      var expires = "expires="+ d.toUTCString();
+      document.cookie = "accessToken" + "=" + response.accessToken + "; " + expires;
+      document.cookie = "refreshToken" + "=" + response.refreshToken + "; " + expires;
+      //if (response.status === 'ok') {
         const urlParams = new URL(window.location.href);
         const params = getPageQuery();
-        message.success('🎉 🎉 🎉  登录成功！');
+        message.success('🎉 🎉 🎉  OKELA！');
         let { redirect } = params;
 
         if (redirect) {
@@ -38,22 +49,70 @@ const Model = {
             return;
           }
         }
-
-        history.replace(redirect || '/');
-      }
+        console.log(response);
+        if (response.type === "developer")
+          history.replace('/developer');
+        else
+          history.replace('/creator');
+      //}
     },
+    *loginFacebook({ payload }, { call, put }) {
+      console.log(payload)
+      const response = yield call(LoginWithFacebook, payload);
+      yield put({
+        type: 'changeLoginStatus',
+        payload: {
+          currentAuthority: response.type,
+          status: 'ok',
+          type: 'account'
+        },
+      }); // Login successfully
+      localStorage.setItem('currentUser', payload.DevName);
+      localStorage.setItem('imageURL', payload.DevImage);
+      //Save token into cookie
+      var d = new Date();
+      d.setTime(d.getTime() + (1*24*60*60*1000));
+      var expires = "expires="+ d.toUTCString();
+      document.cookie = "accessToken" + "=" + response.accessToken + "; " + expires;
+      document.cookie = "refreshToken" + "=" + response.refreshToken + "; " + expires;
+      //if (response.status === 'ok') {
+        const urlParams = new URL(window.location.href);
+        const params = getPageQuery();
+        message.success('🎉 🎉 🎉  OKELA！');
+        let { redirect } = params;
 
-    logout() {
-      const { redirect } = getPageQuery(); // Note: There may be security issues, please note
+        if (redirect) {
+          const redirectUrlParams = new URL(redirect);
 
-      if (window.location.pathname !== '/user/login' && !redirect) {
+          if (redirectUrlParams.origin === urlParams.origin) {
+            redirect = redirect.substr(urlParams.origin.length);
+
+            if (redirect.match(/^\/.*#/)) {
+              redirect = redirect.substr(redirect.indexOf('#') + 1);
+            }
+          } else {
+            window.location.href = '/';
+            return;
+          }
+        }
+        if (response.type = "developer")
+          history.replace('/developer');
+        else
+          history.replace('/creator');
+      //}
+    },
+    logout() {       
+        localStorage.removeItem('currentUser');
+        localStorage.removeItem('antd-pro-authority');
+        var d = new Date();
+        d.setTime(d.getTime() - 1);
+        var expires = "expires="+ d.toUTCString();
+        document.cookie = "accessToken" + "=" + '' + "; " + expires;
+        document.cookie = "refreshToken" + "=" + '' + "; " + expires;
+
         history.replace({
           pathname: '/user/login',
-          search: stringify({
-            redirect: window.location.href,
-          }),
         });
-      }
     },
   },
   reducers: {

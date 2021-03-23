@@ -6,7 +6,15 @@ import {
   TaobaoCircleOutlined,
   UserOutlined,
   WeiboCircleOutlined,
+  FacebookFilled,
+  FacebookOutlined,
+  GoogleOutlined,
+  GithubOutlined
 } from '@ant-design/icons';
+
+import firebase from "firebase/app";
+import "firebase/auth";
+
 import { Alert, Space, message, Tabs } from 'antd';
 import React, { useState } from 'react';
 import ProForm, { ProFormCaptcha, ProFormCheckbox, ProFormText } from '@ant-design/pro-form';
@@ -14,6 +22,22 @@ import { useIntl, connect, FormattedMessage } from 'umi';
 import { getFakeCaptcha } from '@/services/login';
 import styles from './index.less';
 
+const firebaseConfig = {
+  apiKey: "AIzaSyC_FKi-svb2idZpvqsfPFWASeHUS60O9eU",
+  authDomain: "devcheckpro.firebaseapp.com",
+  projectId: "devcheckpro",
+  storageBucket: "devcheckpro.appspot.com",
+  messagingSenderId: "594608048066",
+  appId: "1:594608048066:web:fe4fadd828cdc36181f85b",
+  measurementId: "G-44GFLD429W"
+};
+
+// Initialize Firebase
+try {
+  firebase.initializeApp(firebaseConfig);
+} catch(e) {
+
+}
 const LoginMessage = ({ content }) => (
   <Alert
     style={{
@@ -38,6 +62,64 @@ const Login = (props) => {
       payload: { ...values, type },
     });
   };
+  const loginGoogle = () => {
+    firebase.auth()
+    .signInWithPopup(provider)
+    .then((result) => {
+      /** @type {firebase.auth.OAuthCredential} */
+      var user = result.user;
+      // ...
+    }).catch((error) => {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      // The email of the user's account used.
+      var email = error.email;
+      // The firebase.auth.AuthCredential type that was used.
+      var credential = error.credential;
+      // ...
+    });
+  }
+  const loginFacebook = () => {
+    var provider = new firebase.auth.FacebookAuthProvider();
+    firebase
+      .auth()
+      .signInWithPopup(provider)
+      .then((result) => {
+        /** @type {firebase.auth.OAuthCredential} */
+        var credential = result.credential;
+        console.log(result.user)
+        var user = result.user;
+        const { dispatch } = props;
+        dispatch({
+          type:'login/loginFacebook',
+          payload: {
+            UserID: user.uid,
+            UserType: 'developer',
+            UserStatus: 'not active',
+            DevImage: user.photoURL,
+            DevName: user.displayName,
+            DevMail: user.email,
+            PhoneNumber: user.phoneNumber
+          }
+        })
+        // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+        //var accessToken = credential.accessToken;
+
+        // ...
+      })
+      .catch((error) => {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      // The email of the user's account used.
+      var email = error.email;
+      // The firebase.auth.AuthCredential type that was used.
+      var credential = error.credential;
+      console.log(error)
+    // ...
+    });
+  }
 
   return (
     <div className={styles.main}>
@@ -88,14 +170,14 @@ const Login = (props) => {
         {type === 'account' && (
           <>
             <ProFormText
-              name="userName"
+              name="email"
               fieldProps={{
                 size: 'large',
                 prefix: <UserOutlined className={styles.prefixIcon} />,
               }}
               placeholder={intl.formatMessage({
                 id: 'pages.login.username.placeholder',
-                defaultMessage: '用户名: admin or user',
+                defaultMessage: 'Enter your email',
               })}
               rules={[
                 {
@@ -103,7 +185,7 @@ const Login = (props) => {
                   message: (
                     <FormattedMessage
                       id="pages.login.username.required"
-                      defaultMessage="请输入用户名!"
+                      defaultMessage="Please input your email!"
                     />
                   ),
                 },
@@ -117,7 +199,7 @@ const Login = (props) => {
               }}
               placeholder={intl.formatMessage({
                 id: 'pages.login.password.placeholder',
-                defaultMessage: '密码: ant.design',
+                defaultMessage: 'Enter your password',
               })}
               rules={[
                 {
@@ -125,7 +207,7 @@ const Login = (props) => {
                   message: (
                     <FormattedMessage
                       id="pages.login.password.required"
-                      defaultMessage="请输入密码！"
+                      defaultMessage="Please input your password"
                     />
                   ),
                 },
@@ -232,15 +314,23 @@ const Login = (props) => {
               float: 'right',
             }}
           >
-            <FormattedMessage id="pages.login.forgotPassword" defaultMessage="忘记密码" />
+            <FormattedMessage id="pages.login.forgotPassword" defaultMessage="Forgot password?" />
+          </a>
+          <a
+            style={{
+              float: 'right',
+            }}
+            href="/user/register"
+          >
+            <FormattedMessage id="pages.login.register" defaultMessage="Do not have an account?" />
           </a>
         </div>
       </ProForm>
       <Space className={styles.other}>
         <FormattedMessage id="pages.login.loginWith" defaultMessage="其他登录方式" />
-        <AlipayCircleOutlined className={styles.icon} />
-        <TaobaoCircleOutlined className={styles.icon} />
-        <WeiboCircleOutlined className={styles.icon} />
+        <FacebookOutlined className={styles.icon} onClick = {()=>{loginFacebook()}} />
+        <GoogleOutlined className={styles.icon} />
+        <GithubOutlined className={styles.icon} />
       </Space>
     </div>
   );
