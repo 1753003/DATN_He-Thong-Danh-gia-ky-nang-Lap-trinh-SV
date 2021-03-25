@@ -118,6 +118,7 @@ class CodeEditor extends Component{
       type:'judge/sendCodeBatch',
       payload: batch
     })
+    
   }
   
   render(){

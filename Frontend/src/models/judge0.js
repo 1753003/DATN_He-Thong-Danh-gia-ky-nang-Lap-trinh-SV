@@ -3,6 +3,7 @@ import { history } from 'umi';
 import { createSubmission, createSubmissionBatch, getSubmission, getSubmissionBatch } from '@/services/judge0'
 import { setAuthority } from '@/utils/authority';
 import { getPageQuery } from '@/utils/utils';
+import { saveSubmission } from '@/services/practice';
 
 const Model = {
   namespace: 'judge',
@@ -87,9 +88,15 @@ const Model = {
       yield put({
         type: 'setDone',
       })
-      //save submission
-      // const state = yield select(state => state.judge)
-      console.log(state.result.submissions, data)
+      //savedb
+      // const state = yield select(state => state.practice)
+      // let temp = state.listDetail.listQuestion
+      // console.log(temp)
+      let uid = 'zcwVw4Rjp7b0lRmVZQt6ZXmspql1'
+      let pid = 1
+      const state = yield select(state => state.judge)
+      console.log(state.result)
+      yield saveSubmission(pid,uid,state.result.submissions)
     },
     
   },

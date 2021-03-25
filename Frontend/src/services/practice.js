@@ -42,7 +42,7 @@ export function getSubmissionList(pid, uid) {
 export function saveSubmission(pid, uid, jsonData) {
   let tcPassed = 0;
   let total = 0
-  console.log(jsonData)
+  console.log('afslkdfnm,xcvnksajdtoireatjtlkasdfglkasda',jsonData)
   for(var res of jsonData){
     total +=1;
     res.status_id == 3 ? tcPassed +=1: tcPassed=tcPassed;
@@ -52,25 +52,28 @@ export function saveSubmission(pid, uid, jsonData) {
     'SubmissionType':'Coding',
     'PracticeID':pid,
     'DevID':uid,
-    'CorrectPercent': Number((tcPassed/total*100).toFixed(2)),
-    'DoingTime':'',
-    "Score":'',
-    'Answer':jsonData
+    'CorrectPercent': Number((tcPassed/total).toFixed(4))*100,
+    'DoingTime':'100',
+    "Score":Number((tcPassed/total))*100,
+    'Answer':JSON.stringify(jsonData),
+    'AnsweredNumber':1
   }
   return new Promise((resolve, reject) => {
-  axios.post(`http://localhost:5000/api/practice/submissions`, {
-    headers: {
-      'accessToken': Cookies.get('accessToken')
-    }
-    },{data:submission})
-    .then((response) => {
-    // handle success
-    // console.log(response.data)
-    resolve(response.data)
-    })
-    .catch((error) => {
-    // handle error
-    console.log(error)
-    })
+    var options = {
+      method: 'POST',
+      url: 'http://localhost:5000/api/practice/submissions',
+      headers: {
+        'accessToken': Cookies.get('accessToken'),
+        'refreshToken': Cookies.get('refreshToken')
+      },
+      data:submission
+    };
+    // console.log('sendcode')
+    axios.request(options).then((response) => {
+      resolve(response.data)
+    }).catch((error) => {
+      console.error(error);
+    });
+  
   })
 }

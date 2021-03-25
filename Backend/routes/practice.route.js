@@ -21,6 +21,12 @@ router.get('/:id', async function (req, res) {
   const list = await questionModel.getPracticeQuestionListDetail(qid)
   res.json(list);
 })
+router.post('/submissions', async function (req, res) {
+  const data = req.body;
+  console.log(data)
+  const ret = await practiceModel.saveSubmissions(data)
+  res.json(ret);
+})
 
 
 module.exports = router;

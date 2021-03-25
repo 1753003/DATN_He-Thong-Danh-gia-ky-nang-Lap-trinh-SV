@@ -1,6 +1,7 @@
 import { stringify } from 'querystring';
 import { history } from 'umi';
 import { getPracticeListDetail, getSubmissionList } from '@/services/practice'
+import { saveSubmission } from '@/services/practice';
 import { setAuthority } from '@/utils/authority';
 import { getPageQuery } from '@/utils/utils';
 
@@ -11,9 +12,14 @@ const Model = {
     isRun: false,
     isSubmit: false,
     submissions: null,
-    currentSubmission: null
+    currentSubmission: null,
+    currentQuestionID: null,
   },
   effects: {
+    *saveSubmission({ payload }, { call, put,select }){
+      //save submission
+      
+    },
     *getSubmissionList({ payload }, { call, put }) {
       let uid = 'zcwVw4Rjp7b0lRmVZQt6ZXmspql1'
       let pid = payload

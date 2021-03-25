@@ -191,6 +191,9 @@ const SubmissionDetail = ({dispatch, practice, loading}) =>{
           </TabPane>);
         })}
         </Tabs>)};
+
+const current = JSON.parse(practice.currentSubmission.Answer);
+console.log(current)
   return (
     <>{!practice.currentSubmission?<PageLoading></PageLoading>:<div>
     <PageHeader
@@ -207,17 +210,9 @@ const SubmissionDetail = ({dispatch, practice, loading}) =>{
       <p> score: {practice.currentSubmission.Score}</p>
       <p>correctPercent: {practice.currentSubmission.correctPercent}</p>
       <Divider orientation='left'>Submitted Answer</Divider>
-      {editor(`#include <iostream>
-#include <string>
-
-int main(void) {
-    std::string a;
-    std::cin>>a;
-  std::cout<<(a==a?"true":"false");
-  return 0;
-}`)}
+      {editor(u_atob(current[0].source_code))}
       <Divider orientation='left'>Test Cases</Divider>
-    {Testcases(data)}
+    {Testcases(current)}
       </div>}
     </>
   );
