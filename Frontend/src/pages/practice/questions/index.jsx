@@ -14,6 +14,7 @@ import Coding from '@/components/Coding';
 import { connect } from 'dva'
 import { result } from 'lodash-es';
 import PageLoading from '@/components/PageLoading';
+import Submission from '@/components/Submission';
 const { TabPane } = Tabs;
 
 const questionList = ({location, practice, dispatch, loading}) => {
@@ -66,9 +67,7 @@ const questionList = ({location, practice, dispatch, loading}) => {
             <Coding></Coding>
           </TabPane>
           <TabPane tab="Submission" key="2">
-            <p>Content of Tab Pane 2</p>
-            <p>Content of Tab Pane 2</p>
-            <p>Content of Tab Pane 2</p>
+            <Submission></Submission>
           </TabPane>
           <TabPane tab="Discussion" key="3">
             <p>Content of Tab Pane 3</p>

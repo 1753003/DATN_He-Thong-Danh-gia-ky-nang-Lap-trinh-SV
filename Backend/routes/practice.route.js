@@ -9,10 +9,23 @@ router.get('/', async function (req, res) {
   res.json(list);
 })
 
+router.get('/submissions', async function (req, res) {
+  console.log('submisisons')
+  const pid = req.query.pid;
+  const uid = req.query.uid;
+  const list = await practiceModel.getSubmissions(pid,uid)
+  res.json(list);
+})
 router.get('/:id', async function (req, res) {
   const qid = req.params.id;
   const list = await questionModel.getPracticeQuestionListDetail(qid)
   res.json(list);
+})
+router.post('/submissions', async function (req, res) {
+  const data = req.body;
+  console.log(data)
+  const ret = await practiceModel.saveSubmissions(data)
+  res.json(ret);
 })
 
 

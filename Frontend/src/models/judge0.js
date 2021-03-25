@@ -3,13 +3,15 @@ import { history } from 'umi';
 import { createSubmission, createSubmissionBatch, getSubmission, getSubmissionBatch } from '@/services/judge0'
 import { setAuthority } from '@/utils/authority';
 import { getPageQuery } from '@/utils/utils';
+import { saveSubmission } from '@/services/practice';
 
 const Model = {
   namespace: 'judge',
   state: {
     isDone: true,
     token: null,
-    result: null
+    result: null,
+    savetoDb: null,
   },
   effects: {
     *sendCode({ payload }, { call, put }) {
@@ -46,7 +48,7 @@ const Model = {
       })
       
     },
-    *sendCodeBatch({ payload }, { call, put }) {
+    *sendCodeBatch({ payload }, { call, put, select }) {
       yield put({
         type: 'setResult',
         payload: null
@@ -86,11 +88,23 @@ const Model = {
       yield put({
         type: 'setDone',
       })
-      //save submission
+      //savedb
+      // const state = yield select(state => state.practice)
+      // let temp = state.listDetail.listQuestion
+      // console.log(temp)
+      let uid = 'zcwVw4Rjp7b0lRmVZQt6ZXmspql1'
+      let pid = 1
+      const state = yield select(state => state.judge)
+      console.log(state.result)
+      yield saveSubmission(pid,uid,state.result.submissions)
     },
     
   },
   reducers: {
+    setDataDB(state, {payload}){
+      console.log('dsjahfklashglksdf')
+      return { ...state, saveToDb: payload };
+    },
     setToken(state, {payload}) {
       return { ...state, token: payload.token};
     },
