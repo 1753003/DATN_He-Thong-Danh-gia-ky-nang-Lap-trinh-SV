@@ -7,24 +7,60 @@ import { getPageQuery } from '@/utils/utils';
 const Model = {
   namespace: 'judge',
   state: {
-    isDone: false,
+    isDone: true,
     token: null,
     result: null
   },
   effects: {
     *sendCode({ payload }, { call, put }) {
+      yield put({
+        type: 'setResult',
+        payload : null
+      })
+      yield put({
+        type: 'practice/setIsRun',
+        payload : true
+      })
+      yield put({
+        type: 'setDone',
+      })
       const res = yield createSubmission(payload)
       yield put({
         type: 'setToken',
         payload: res.token
       })
+      let data =null;
+      // console.log(payload, state.isDone)
+      
+      data = yield getSubmission(res.token)
+      data = JSON.parse(JSON.stringify(data, function (key, value) {
+        return (value == null) ? "" : value
+      }));
+      // console.log('res',res)
+      yield put({
+        type: 'setResult',
+        payload: data
+      })
       yield put({
         type: 'setDone',
       })
+      
     },
     *sendCodeBatch({ payload }, { call, put }) {
+      yield put({
+        type: 'setResult',
+        payload: null
+      })
+      yield put({
+        type: 'practice/setIsSubmit',
+        payload : true
+      })
+      yield put({
+        type: 'setDone',
+      })
       const res = yield createSubmissionBatch(payload)
       // console.log(res)
+      
       const token_batch= []
       for(var tk of res){
         token_batch.push(tk.token)
@@ -35,43 +71,33 @@ const Model = {
         type: 'setToken',
         payload: token
       })
-      yield put({
-        type: 'setDone',
-      })
-    },
-    *getResult(isBatch, { call, put, select }){
-      yield put({
-        type: 'setDone',
-      })
-      const state = yield select(state => state.judge)
-      let res =null;
-
-      if(!isBatch.payload)
-        res = yield getSubmission(state.token)
-      else
-        res = yield getSubmissionBatch(state.token)
-      res = JSON.parse(JSON.stringify(res, function (key, value) {
+      let data =null;
+      // console.log(payload, state.isDone)
+      data = yield getSubmissionBatch(token)
+      data = JSON.parse(JSON.stringify(data, function (key, value) {
         return (value == null) ? "" : value
       }));
       // console.log('res',res)
       yield put({
         type: 'setResult',
-        payload: res
+        payload: data
       })
-      // yield put({
-      //   type: 'practice/setIsRun'
-      // })
+
+      yield put({
+        type: 'setDone',
+      })
+      //save submission
     },
     
   },
   reducers: {
-    setToken(state, { payload }) {
-      return { ...state, token: payload};
+    setToken(state, {payload}) {
+      return { ...state, token: payload.token};
     },
     setDone(state) {
       return { ...state, isDone:!state.isDone };
     },
-    setResult(state, { payload }) {
+    setResult(state, { payload}) {
       return { ...state, result: payload };
     },
   },

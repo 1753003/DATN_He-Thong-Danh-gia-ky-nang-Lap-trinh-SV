@@ -2,8 +2,8 @@ import { resolvePlugin } from '@babel/core';
 import axios from 'axios';
 import Cookies from 'js-cookie'
 const headers = {
-  // 'x-rapidapi-key':'e05f2e82fbmsh521814293fd8497p1c37eejsn41455443ccca',
-  'x-rapidapi-key':'6a9ce86be5msh47bcde19f6e53cdp175931jsn629e34418bd3',
+  'x-rapidapi-key':'e05f2e82fbmsh521814293fd8497p1c37eejsn41455443ccca',
+  // 'x-rapidapi-key':'6a9ce86be5msh47bcde19f6e53cdp175931jsn629e34418bd3',
   'x-rapidapi-host':'judge0-ce.p.rapidapi.com'
   }
 export function createSubmission(data) {
@@ -15,7 +15,7 @@ export function createSubmission(data) {
       headers: headers,
       data
     };
-    
+    // console.log('sendcode')
     axios.request(options).then((response) => {
       resolve(response.data)
     }).catch((error) => {
@@ -32,7 +32,7 @@ export function createSubmissionBatch(data) {
       headers: headers,
       data
     };
-    
+    // console.log('sendcodebatch')
     axios.request(options).then((response) => {
       resolve(response.data)
     }).catch((error) => {
@@ -41,6 +41,7 @@ export function createSubmissionBatch(data) {
   })
 }
 export function getSubmissionBatch(param) {
+  // console.log('getbatch')
   return new Promise( (resolve, reject) => {
     var options = {
       method: 'GET',
@@ -67,7 +68,8 @@ export function getSubmissionBatch(param) {
     
   })
 }
-  export function getSubmission(param) {
+  export function saveSubmission(param) {
+    // console.log('get')
     return new Promise( (resolve, reject) => {
       var options = {
         method: 'GET',
@@ -91,3 +93,26 @@ export function getSubmissionBatch(param) {
 }
 
 
+export function getSubmission(param) {
+  // console.log('get')
+  return new Promise( (resolve, reject) => {
+    var options = {
+      method: 'GET',
+      url: `https://judge0-ce.p.rapidapi.com/submissions/${param}`,
+      params: {
+        base64_encoded: 'true',
+        fields: '*'
+      },
+      headers
+    };
+    axios.request(options).then(function (res) {
+      if("In Queue Processing".includes(res.data.status.description))
+            resolve(getSubmission(param))
+        else
+          resolve(res.data)
+    }).catch(function (error) {
+      console.error(error);
+    });
+    
+  })
+}

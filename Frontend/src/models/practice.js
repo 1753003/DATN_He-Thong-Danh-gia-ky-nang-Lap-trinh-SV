@@ -36,11 +36,11 @@ const Model = {
     setListDetail(state, { payload }) {
       return { ...state, listDetail: payload.listDetail };
     },
-    setIsRun(state) {
-      return { ...state, isRun: !state.isRun };
+    setIsRun(state, {payload}) {
+      return { ...state, isRun: payload, isSubmit: !payload };
     },
-    setIsSubmit(state) {
-      return { ...state, isSubmit: !state.isSubmit };
+    setIsSubmit(state, {payload}) {
+      return { ...state, isRun: !payload, isSubmit: payload };
     },
   },
 };

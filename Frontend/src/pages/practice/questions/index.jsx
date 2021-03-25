@@ -13,9 +13,10 @@ import {history, Link} from 'umi'
 import Coding from '@/components/Coding';
 import { connect } from 'dva'
 import { result } from 'lodash-es';
+import PageLoading from '@/components/PageLoading';
 const { TabPane } = Tabs;
 
-const questionList = ({location, practice, dispatch, judge}) => {
+const questionList = ({location, practice, dispatch, loading}) => {
   const routes = [
     {
       path: '/developer',
@@ -50,7 +51,7 @@ const questionList = ({location, practice, dispatch, judge}) => {
     );
   }
 
-  return (
+  return (loading?<PageLoading></PageLoading>:
     <div>
       <PageHeader
         className="site-page-header"

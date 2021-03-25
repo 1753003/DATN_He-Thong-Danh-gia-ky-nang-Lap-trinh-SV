@@ -5,21 +5,25 @@ import 'brace/mode/javascript'
 import 'brace/mode/c_cpp'
 import 'brace/mode/java'
 import 'brace/theme/monokai'
+import "brace/ext/language_tools"
+import StatusBar from  "brace/ext/statusbar"
 import  { Button, Checkbox, Input } from 'antd'
 import {connect} from 'dva'
-import { template } from 'lodash-es';
+import { u_atob, u_btoa } from '@/utils/string';
 const { TextArea } = Input;
-const defaultInput = "default";
 
 class CodeEditor extends Component{
   state ={
     customInput: false,
     codeVal: "",
-    customVal: ""
+    customVal: "",
+    isSubmitBatch: false,
+    showCustom: false
   }
   handleCheckBoxChange = () => {
     this.setState({
-      customInput: !this.state.customInput
+      customInput: !this.state.customInput,
+      showCustom:!this.state.showCustom
     })
   }
   handleCodeEditorChange = (val) => {
@@ -32,8 +36,8 @@ class CodeEditor extends Component{
       customVal: e.target.value
     })
   }
-  handleSendCode = (input) => new Promise((resolve, reject) => {
-    let code = this.state.codeVal;
+  handleSendCode = (input, expected_output) => new Promise((resolve, reject) => {
+    let code = this.state.codeVal
     let lang_id = 54 //54 C++ 71 python
     if(this.state.customInput == false)
       input = input
@@ -43,12 +47,15 @@ class CodeEditor extends Component{
       input = this.state.customVal
     // code = JSON.stringify(this.state.codeVal);
     code = code.replace(/(^")|("$)/g, '');
-    code = btoa(code)
+    code = u_btoa(code)
+
     const data = {
       "source_code":code,
       "language_id": lang_id,
-      "stdin": btoa(input)
+      "stdin": u_btoa(input),
+      "expected_output": u_btoa(expected_output)
     }
+    
     this.props.dispatch({
       type:'judge/sendCode',
       payload: data
@@ -56,26 +63,28 @@ class CodeEditor extends Component{
     resolve()
   })
   handleRun = () => {
-
-    this.handleSendCode(this.props.testCases[0].Input[0])
-    this.props.dispatch({
-      type:'practice/changeStatusRun',
-    })
+    this.handleSendCode(this.props.testCases[0].Input[0],this.props.testCases[0].Output[0])
   }
   handleSubmit = () => {
+    this.setState
+    ({
+      isSubmitBatch: true
+    })
     let batch_Submission = []
     
     let code = this.state.codeVal;
     let lang_id = 54 //54 C++ 71 python
     code = code.replace(/(^")|("$)/g, '');
-    code = btoa(code)
+    code = u_btoa(code)
     for (var tc of this.props.testCases){
-      console.log(tc.Input[0])
+      // console.log(tc.Input[0])
       var input = tc.Input[0]
+      var expected_output = tc.Output[0]
       let data = {
         "source_code":code,
         "language_id": lang_id,
-        "stdin": btoa(input)
+        "stdin": u_btoa(input),
+        "expected_output": u_btoa(expected_output)
       }
         batch_Submission.push(data)
       }
@@ -87,28 +96,14 @@ class CodeEditor extends Component{
       type:'judge/sendCodeBatch',
       payload: batch
     })
-    this.props.dispatch({
-      type:'practice/changeStatusSubmit',
-    })
   }
-  componentDidUpdate(){
-    console.log(this.props.practice)
-    console.log(this.props.testCases)
-    if (this.props.judge.isDone&&(this.props.practice.isSubmit||this.props.practice.isRun))
-      {
-        let isSubmit = false
-        if(this.props.practice.isSubmit)
-            isSubmit = true;
-        this.props.dispatch({
-        type:'judge/getResult',
-        payload: isSubmit})
-        
-    }
-  }
+  
   render(){
+    console.log(StatusBar)
     return(<>
       <div>
         <AceEditor
+        
         style={{ whiteSpace: 'pre-wrap' }}
         width="100%"
         height="400px"
@@ -127,6 +122,7 @@ class CodeEditor extends Component{
         }}
         onChange={this.handleCodeEditorChange.bind(this)}
         />
+        <div>{StatusBar.StatusBar}</div>
       </div>
       <Button type="primary" onClick={this.handleRun.bind(this)}>Run</Button>
       <Button type="primary" onClick={this.handleSubmit.bind(this)}>Submit</Button>
@@ -134,13 +130,13 @@ class CodeEditor extends Component{
       onChange={this.handleCheckBoxChange.bind(this)}
       >Custom Input
       </Checkbox>
-      <TextArea
+      {this.state.showCustom&&<TextArea
       allowClear
       disabled={!this.state.customInput}
       onChange={this.handleCustomValChange.bind(this)}
       placeholder="Put your custom input here."
       autoSize={{ minRows: 3, maxRows: 5 }}
-      />
+      />}
       </>
     )
   }
