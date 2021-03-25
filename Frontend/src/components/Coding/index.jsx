@@ -106,6 +106,8 @@ class Coding extends Component{
       alertDescription=(tcPassed<total)?'Try again.':'You solved this challenge.'
       //  testcases
       finalResult = this.props.judge.result.submissions
+
+      console.log(finalResult)
     }
     
     //if isSubmit

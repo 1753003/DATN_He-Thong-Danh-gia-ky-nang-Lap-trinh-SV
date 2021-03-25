@@ -9,7 +9,8 @@ const Model = {
   state: {
     isDone: true,
     token: null,
-    result: null
+    result: null,
+    savetoDb: null,
   },
   effects: {
     *sendCode({ payload }, { call, put }) {
@@ -46,7 +47,7 @@ const Model = {
       })
       
     },
-    *sendCodeBatch({ payload }, { call, put }) {
+    *sendCodeBatch({ payload }, { call, put, select }) {
       yield put({
         type: 'setResult',
         payload: null
@@ -87,10 +88,16 @@ const Model = {
         type: 'setDone',
       })
       //save submission
+      // const state = yield select(state => state.judge)
+      console.log(state.result.submissions, data)
     },
     
   },
   reducers: {
+    setDataDB(state, {payload}){
+      console.log('dsjahfklashglksdf')
+      return { ...state, saveToDb: payload };
+    },
     setToken(state, {payload}) {
       return { ...state, token: payload.token};
     },

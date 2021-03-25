@@ -7,10 +7,12 @@ import 'brace/mode/java'
 import 'brace/theme/monokai'
 import "brace/ext/language_tools"
 import StatusBar from  "brace/ext/statusbar"
-import  { Button, Checkbox, Input } from 'antd'
+import  { Button, Checkbox, Input, notification } from 'antd'
 import {connect} from 'dva'
 import { u_atob, u_btoa } from '@/utils/string';
+import "../Coding/style.less"
 const { TextArea } = Input;
+
 
 class CodeEditor extends Component{
   state ={
@@ -63,9 +65,29 @@ class CodeEditor extends Component{
     resolve()
   })
   handleRun = () => {
+    if (this.state.codeVal==""){
+        notification.error({
+          message: 'Hey Listen!',
+          description:
+            'Dont leave your code blank',
+          className:"code-notification",
+          type:'error'
+        });
+        return;
+      }
     this.handleSendCode(this.props.testCases[0].Input[0],this.props.testCases[0].Output[0])
   }
   handleSubmit = () => {
+    if (this.state.codeVal==""){
+      notification.open({
+        message: 'Hey Listen!',
+        description:
+          'Dont leave your code blank',
+        className:"code-notification",
+        type:'error'
+      });
+      return;
+    }
     this.setState
     ({
       isSubmitBatch: true
