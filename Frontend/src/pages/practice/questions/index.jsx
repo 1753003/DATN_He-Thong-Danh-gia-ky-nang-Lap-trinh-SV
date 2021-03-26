@@ -18,6 +18,13 @@ import Submission from '@/components/Submission';
 const { TabPane } = Tabs;
 
 const questionList = ({location, practice, dispatch, loading}) => {
+  const [tabChange, onTabChange] = useState(false)
+  useEffect(()=>{
+    dispatch({
+      type:'practice/',
+      payload: tabChange
+    })
+  },[tabChange]);
   const routes = [
     {
       path: '/developer',
@@ -62,7 +69,14 @@ const questionList = ({location, practice, dispatch, loading}) => {
       />
       <Row>
       <Col className="tabs" span={19}>
-        <Tabs className="custom" type="card" size="large">
+        <Tabs animated={{ inkBar: true, tabPane: true }} className="custom" type="card" size="large" onChange={(key)=>{
+          onTabChange(!tabChange)
+          console.log(tabChange)
+          dispatch({
+            type:'practice/getSubmissionList',
+            payload: practice.listDetail.generalInformation.PracticeID
+          })
+        }}>
           <TabPane tab="Problem" key="1">
             <Coding></Coding>
           </TabPane>

@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { CheckCircleTwoTone, CloseCircleTwoTone } from '@ant-design/icons';
 import styles from './style.less'
 import {
   Typography,
@@ -41,7 +42,7 @@ const Testcases =(result)=>  {return(
       result.map((res,i) => {
         let title = (result.length>1)? 'Test Case '+ (i+1):'Example Test Case';
         return (
-          <TabPane className={styles.testCase} tab={title} key={i+1} >
+          <TabPane className={styles.testCase} tab={<span>{res.expected_output==res.stdout?<CheckCircleTwoTone twoToneColor="#52c41a" />:<CloseCircleTwoTone twoToneColor="#eb2f96"/>}{title}</span>} key={i+1} >
           {res.compile_output!=''&&<><h3>Compiler Message</h3>
           {editor(u_atob(res.compile_output))}</>}
           {res.stdin!=''&&<><h3>Input</h3>

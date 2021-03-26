@@ -11,7 +11,7 @@ import { Result, Button } from 'antd';
 import Authorized from '@/utils/Authorized';
 import RightContent from '@/components/GlobalHeader/RightContent';
 import { getMatchMenu } from '@umijs/route-utils';
-import logo from '../assets/logo.png';
+import logo from '../assets/lg.png';
 
 const noMatch = (
   <Result
@@ -38,26 +38,21 @@ const menuDataRender = (menuList) =>
 
 const defaultFooterDom = (
   <DefaultFooter
-    copyright={`${new Date().getFullYear()} 蚂蚁集团体验技术部出品`}
+    copyright={`${new Date().getFullYear()} Codejoy`}
     links={[
       {
-        key: 'Ant Design Pro',
-        title: 'Ant Design Pro',
-        href: 'https://pro.ant.design',
+        key: 'Codejoy',
+        title: 'Codejoy',
+        href: 'https://github.com/1753003/DATN_He-Thong-Danh-gia-ky-nang-Lap-trinh-SV',
         blankTarget: true,
       },
       {
         key: 'github',
         title: <GithubOutlined />,
-        href: 'https://github.com/ant-design/ant-design-pro',
+        href: 'https://github.com/1753003/DATN_He-Thong-Danh-gia-ky-nang-Lap-trinh-SV',
         blankTarget: true,
       },
-      {
-        key: 'Ant Design',
-        title: 'Ant Design',
-        href: 'https://ant.design',
-        blankTarget: true,
-      },
+      
     ]}
   />
 );

@@ -33,13 +33,15 @@ const Submission = ({dispatch, practice, loading}) =>{
       type:'practice/getSubmissionList',
       payload: practice.listDetail.generalInformation.PracticeID
     })
-  },[]);
+  },[practice.tabChange]);
   useEffect(()=>{
     console.log(practice.submissions)
-    data =[]
+    data =[];
+    let i = 1
     practice.submissions?.forEach(submission => {
       var temp = submission;
-      temp.key = submission.AnsweredNumber
+      temp.key = i;
+      i+=1
       data.push(temp)
     });
   },[practice.submissions])
@@ -54,7 +56,7 @@ const Submission = ({dispatch, practice, loading}) =>{
     <>
       {!loading&&<div>{practice.currentSubmission!=null?<SubmissionDetail></SubmissionDetail>:
       <Table dataSource={data}>
-      <Column title="" dataIndex="AnsweredNumber" key="no" />
+      <Column title="" dataIndex="key" key="no" />
       <Column title="RESULT" key="result" 
       render={(text, record) => (
         <p>{record.CorrectPercent==100?record.CorrectPercent+'%':record.CorrectPercent+'%'}</p>
