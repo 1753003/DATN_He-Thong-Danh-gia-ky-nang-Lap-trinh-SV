@@ -67,6 +67,7 @@ const HeaderSearch = (props) => {
           defaultValue={defaultValue}
           aria-label={placeholder}
           placeholder={placeholder}
+          bordered={false}
           onKeyDown={(e) => {
             if (e.key === 'Enter') {
               if (restProps.onSearch) {

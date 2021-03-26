@@ -51,7 +51,6 @@ export function saveSubmission(pid, uid, jsonData) {
   const submission = {
     'SubmissionType':'Coding',
     'PracticeID':pid,
-    'DevID':uid,
     'CorrectPercent': Number((tcPassed/total).toFixed(4))*100,
     'DoingTime':'100',
     "Score":Number((tcPassed/total))*100,

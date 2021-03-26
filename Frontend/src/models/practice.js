@@ -14,6 +14,7 @@ const Model = {
     submissions: null,
     currentSubmission: null,
     currentQuestionID: null,
+    tabChange:false,
   },
   effects: {
     *saveSubmission({ payload }, { call, put,select }){
@@ -54,6 +55,12 @@ const Model = {
         payload:payload
       })
     },
+    *setOnTabChange({payload}, {put}) {
+      yield put({
+        type: 'changeTab',
+        payload:payload
+      })
+    },
   },
   reducers: {
     setListDetail(state, { payload }) {
@@ -70,6 +77,9 @@ const Model = {
     },
     changeCurrentSubmission(state,{payload}) {
       return { ...state, currentSubmission: payload };
+    },
+    changeTab(state,{payload}) {
+      return { ...state, tabChange: payload };
     }
   },
 };

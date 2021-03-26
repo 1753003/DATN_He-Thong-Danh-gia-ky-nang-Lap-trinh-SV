@@ -23,7 +23,7 @@ router.get('/:id', async function (req, res) {
 })
 router.post('/submissions', async function (req, res) {
   const data = req.body;
-  console.log(data)
+  data.DevID = req.uid
   const ret = await practiceModel.saveSubmissions(data)
   res.json(ret);
 })
