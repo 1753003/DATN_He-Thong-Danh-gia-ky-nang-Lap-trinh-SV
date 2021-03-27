@@ -167,14 +167,14 @@ export default defineConfig({
               routes: [
                 {
                   path: '/developer',
-                  redirect: '/developer/welcome',
+                  redirect: '/developer/practice',
                 },
-                {
-                  path: '/developer/welcome',
-                  name: 'welcome',
-                  icon: 'smile',
-                  component: './Welcome',
-                },
+                // {
+                //   path: '/developer/welcome',
+                //   name: 'welcome',
+                //   icon: 'smile',
+                //   component: './Welcome',
+                // },
                 {
                   name: 'Practice',
                   path: '/developer/practice',

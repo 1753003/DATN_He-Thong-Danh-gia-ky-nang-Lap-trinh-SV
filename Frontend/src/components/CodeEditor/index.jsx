@@ -125,6 +125,7 @@ class CodeEditor extends Component{
     console.log(StatusBar)
     return(<>
       <div>
+        <div className='toolbar'></div>
         <AceEditor
         
         style={{ whiteSpace: 'pre-wrap' }}
