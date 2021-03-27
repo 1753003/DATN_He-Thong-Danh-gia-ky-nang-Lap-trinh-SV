@@ -1,5 +1,6 @@
 const db = require('../utils/db');
-const reportModel = require('../models/report.model')
+const reportModel = require('../models/report.model');
+const { getPracticeQuestionList } = require('./question.model');
 module.exports = {
     async createTest(generalInformation, listQuestion) {
         await db('test').insert(generalInformation).then(async TestID => {
@@ -80,5 +81,9 @@ module.exports = {
             "listQuestion": listQuestion
         }
         return result;
-    }
+    },
+
+    async getTestList(set){
+        return await db.raw(`select * from test where TestSet = "${set}"`);
+    },
 }

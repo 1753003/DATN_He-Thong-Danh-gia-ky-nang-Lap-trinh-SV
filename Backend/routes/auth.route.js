@@ -166,10 +166,10 @@ router.post('/login', async function (req, res) {
           },
           'secretkeyy',
           {
-            expiresIn: "10s"
+            expiresIn: "1d"
           }
         );
-        
+        console.log(refreshToken)
         userModel.updateRefreshToken(user.uid, refreshToken);
         res.json({
           status: 'OK',
