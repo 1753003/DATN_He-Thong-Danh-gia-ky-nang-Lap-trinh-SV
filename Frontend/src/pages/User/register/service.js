@@ -1,13 +1,6 @@
 import request from 'umi-request';
 import axios from 'axios';
 
-export async function fakeRegister(params) {
-  return request('/api/register', {
-    method: 'POST',
-    data: params,
-  });
-}
-
 export function Register(params) {
   console.log(params)
   return new Promise( (resolve, reject) => {
@@ -22,3 +15,33 @@ export function Register(params) {
       })
   })
 }
+
+export function ConfirmEmail(params) {
+  console.log(params)
+  return new Promise( (resolve, reject) => {
+      axios.post('http://localhost:5000/api/auth/confirmEmail', params)
+      .then((response) => {
+          // handle success
+          resolve(response.data)
+      })
+      .catch((error) => {
+          // handle error
+             
+      })
+  })
+}
+
+export function ConfirmCode(code, uid) {
+    //console.log(params)
+    return new Promise( (resolve, reject) => {
+        axios.post('http://localhost:5000/api/auth/confirmCode', {code: code, uid: uid})
+        .then((response) => {
+            // handle success
+            resolve(response.data)
+        })
+        .catch((error) => {
+            // handle error
+               
+        })
+    })
+  }

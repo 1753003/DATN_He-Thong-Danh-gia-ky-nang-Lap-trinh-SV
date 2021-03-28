@@ -47,7 +47,7 @@ export default defineConfig({
                 {
                   name: 'login',
                   path: '/user/login',
-                  component: './user/login'
+                  component: './user/login',
                 },
                 {
                   name: 'register-result',
@@ -72,15 +72,21 @@ export default defineConfig({
                   component: './user/register/registerDeveloper',
                 },
                 {
+                  name: 'Forgot password',
+                  path: '/user/forgotPassword',
+                  component: './user/forgotPassword/index'
+                },
+                {
                   component: '404',
                 },
               ],
-            }
-          ]
+            },
+          ],
         },
         {
           path: '/creator',
           component: '../layouts/SecurityLayout',
+          authority: ['dev'],
           routes: [
             {
               path: '/creator',
@@ -131,6 +137,13 @@ export default defineConfig({
                   component: './Creator/Report',
                 },
                 {
+                  path: '/creator/reportDetail',
+                  name: 'Report Detail',
+                  hideInMenu: true,
+                  icon: 'PicLeftOutlined',
+                  component: './Creator/ReportDetail',
+                },
+                {
                   path: '/creator/class',
                   name: 'Class',
                   icon: 'FundOutlined',
@@ -163,15 +176,43 @@ export default defineConfig({
                   component: './Welcome',
                 },
                 {
-                  path: '/developer/test',
-                  name: 'Test',
-                  component: './developer/test/test.jsx',
+                  name: 'Practice',
+                  path: '/developer/practice',
+                  component: '../layouts/BlankLayout',
+                  routes: [
+                    {
+                      path: '/developer/practice',
+                      redirect: '/developer/practice/home',
+                    },
+                    {
+                      path: '/developer/practice',
+                      routes: [
+                        {
+                          path: '/developer/',
+                          redirect: '/developer/practice/home',
+                        },
+                        {
+                          path: '/developer/practice/home',
+                          component: './practice/home',
+                        },
+                        {
+                          path: '/developer/practice/list',
+                          component: './practice/list',
+                        },
+                        {
+                          path: '/developer/practice/questions',
+                          component: './practice/questions',
+                        },
+                      ],
+                    },
+                  ],
                 },
                 {
                   component: './404',
                 },
               ],
             },
+
             {
               component: './404',
             },

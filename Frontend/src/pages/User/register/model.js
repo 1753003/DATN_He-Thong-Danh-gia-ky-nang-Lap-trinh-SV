@@ -1,9 +1,12 @@
-import { Register } from './service';
+import { Register, ConfirmEmail, ConfirmCode } from './service';
 
 const Model = {
   namespace: 'userRegister',
   state: {
-    status: undefined,
+    status: 'start',
+    message: '',
+    codeMessage: '',
+    uid: ''
   },
   effects: {
     *submit({ payload }, { call, put }) {
@@ -16,7 +19,10 @@ const Model = {
   },
   reducers: {
     registerHandle(state, { payload }) {
-      return { ...state, status: payload.status };
+      console.log(payload);
+      if (payload.status === 'Ok')
+        return { ...state, status: payload.status, uid: payload.uid };
+      return { ...state, status: payload.status, message: payload.message };
     },
   },
 };

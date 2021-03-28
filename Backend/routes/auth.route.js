@@ -19,26 +19,54 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 router.post('/signup', async function (req, res) {
+    const userByEmail = await userModel.getByEmail(req.body.email);
     firebase.auth().createUserWithEmailAndPassword(req.body.email, req.body.password)
         .then(async (userCredential) => {
         // Signed in 
         var user = userCredential.user;
-
+        user.sendEmailVerification().then(function() {
+          // Email sent.
+        }).catch(function(error) {
+          // An error happened.
+        });
         var type = req.body.type;
         var result;
         if (type === "developer")
-          result = await userModel.createUserDeveloper(user.uid, refreshToken, req.body.email, req.body.password);
+          result = await userModel.createUserDeveloper(user.uid, req.body.email, "developer", "not active");
         else if (type === "creator") 
-          result = await userModel.createUserCreator(user.uid, refreshToken, req.body.email, req.body.password)
+          result = await userModel.createUserCreator(user.uid, req.body.email, "creator", "not active")
         else
           result = "Incorrect Type of User"
-        res.json(result);
+        res.json({
+          status: 'Ok',
+          uid: result
+        });
+
+        user.sendEmailVerification().then(function() {
+  // Email sent.
+}).catch(function(error) {
+  // An error happened.
+});
     })
-    .catch((error) => {
+    .catch(async (error) => {
         var errorCode = error.code;
         var errorMessage = error.message;
-        res.json(errorMessage);
+        console.log(errorMessage)
+        console.log(userByEmail)
+        if (errorCode === 'auth/email-already-in-use')
+        {         
+          if (userByEmail.UserStatus === 'not active')
+            res.json({
+              status: 'Ok',
+              uid: userByEmail.UserID
+            })
+        }
+        res.json({
+          status: 'Fail',
+          message: errorMessage
+        });
   });
+
 })
 
 router.post('/confirmEmail', async function (req, res) {
@@ -61,8 +89,7 @@ router.post('/confirmEmail', async function (req, res) {
   for ( var i = 0; i < 6; i++ ) {
     result += characters.charAt(Math.floor(Math.random() * charactersLength));
   }
-  userModel.updateCode(uid.UserID,result);
-  console.log(uid.UserID);
+  await userModel.updateCode(uid.UserID,result);
   var mailOptions = {
     from: 'group7.17clc@gmail.com',
     to: req.body.email,
@@ -87,52 +114,87 @@ router.post('/confirmEmail', async function (req, res) {
 })
 
 router.post('/confirmCode', async function (req, res) {
-  
+  const uid = req.body.uid;
+
+  const user = await userModel.getByUID(uid);
+
+  if (user.Code === req.body.code) {
+    await userModel.updateStatus(uid, 'active');
+    res.json({
+      codeMessage: 'OK'
+    })
+  }
+  else
+    res.json({
+      codeMessage: 'FAIL'
+    })
 })
+
 router.post('/login', async function (req, res) {  
   const email = req.body.email;
   const password = req.body.password;
-
+  
   firebase.auth().signInWithEmailAndPassword(email, password)
-    .then((userCredential) => {
+    .then(async (userCredential) => {
       // Signed in
+      
       var user = userCredential.user;
-      var accessToken = jwt.sign(
-        {
-          uid: user.uid
-        }, 
-        'secretkeyy', 
-        {
-          expiresIn: "300s"
-        });
-      var refreshToken = jwt.sign(
-        {
-          uid: user.uid
-        },
-        'secretkeyy',
-        {
-          expiresIn: "10s"
-        }
-      );
+      console.log(user);
+      const temp = await userModel.getByUID(user.uid);
+      if (!user.emailVerified)
+        res.json({
+          status: "error",
+          message: "Your email is not confirmed, please confirm"
+        })
+      else if (temp.UserStatus === 'lock') {
 
-      userModel.updateRefreshToken(user.uid, refreshToken);
-      res.json({
-        accessToken: accessToken,
-        refreshToken: refreshToken,
-        type: 'developer'
-      })
+      }
+      else if (user.emailVerified) {
+        var accessToken = jwt.sign(
+          {
+            uid: user.uid,
+            type: temp.UserType
+          }, 
+          'secretkeyy', 
+          {
+            expiresIn: "1d",
+          });
+        var refreshToken = jwt.sign(
+          {
+            uid: user.uid,
+            type: temp.UserType
+          },
+          'secretkeyy',
+          {
+            expiresIn: "1d"
+          }
+        );
+        console.log(refreshToken)
+        userModel.updateRefreshToken(user.uid, refreshToken);
+        res.json({
+          status: 'OK',
+          message: {
+            accessToken: accessToken,
+            refreshToken: refreshToken,
+            type: temp.UserType
+          }
+        })
+      }
     })
     .catch((error) => {
+      console.log(error.message);
       var errorCode = error.code;
       var errorMessage = error.message;
-      res.status(204).json(error.message);
+      res.json({
+        status: "error",
+        message: errorMessage
+      });
     });
   
   
 })
 
 router.post('/loginFacebook', async function (req, res) {  
-  console.log(req.body);
   const uid = req.body.UserID;
   const user = await userModel.getByUID(uid);
   var accessToken = jwt.sign(
@@ -166,10 +228,69 @@ router.post('/loginFacebook', async function (req, res) {
   const result = {
     accessToken: accessToken,
     refreshToken: refreshToken,
+    type: req.body.UserType
   }
 
   res.json(result);
 })
+
+router.post('/loginGoogle', async function (req, res) {  
+  const uid = req.body.UserID;
+  const user = await userModel.getByUID(uid);
+  
+  var accessToken = jwt.sign(
+    {
+      uid: uid
+    }, 
+    'secretkeyy', 
+    {
+      expiresIn: "300s"
+  });
+
+  var refreshToken = jwt.sign(
+    {
+      uid: uid
+    },
+    'secretkeyy',
+    {
+      expiresIn: "1d"
+    }
+  );
+  var result;
+  if (user == null || user == undefined)
+  {
+    const type = req.body.UserType
+    if (type === "developer")
+      await userModel.createUserDeveloper(uid, req.body.DevMail, "developer", "active");
+    else if (type === "creator") 
+      await userModel.createUserCreator(uid, refreshToken, req.body.DevMail, "GM");
+    result = {
+      status: "OK",
+      message: {
+        accessToken: accessToken,
+        refreshToken: refreshToken,
+        type: req.body.UserType
+      }
+    }
+  }
+  else if (user.UserStatus === 'lock')
+    result = {
+      status: "error",
+      message: "Your email has been locked, please contact admin for more."
+    }
+  else if (user.UserStatus === 'active')
+  result = {
+    status: "OK",
+    message: {
+      accessToken: accessToken,
+      refreshToken: refreshToken,
+      type: req.body.UserType
+    }
+  }
+
+  res.json(result);
+})
+
 
 router.post('/refreshToken', async function(req, res) {
   if (req.body.refreshToken) {
@@ -191,7 +312,7 @@ router.post('/refreshToken', async function(req, res) {
           }, 
           'secretkeyy', 
           {
-            expiresIn: ""
+            expiresIn: "300s"
           });
         res.json({accessToken: accessToken});
       } else
@@ -231,4 +352,20 @@ router.post('/refreshToken', async function(req, res) {
   }
 })
 
+router.post('/forgotPassword', async function (req, res) {
+  const email = req.body.email;
+  var auth = firebase.auth();
+  auth.sendPasswordResetEmail(email).then(function() {
+    // Email sent.
+    res.json({
+      status: 'OK'
+    })
+  }).catch(function(error) {
+    console.log(error);
+    res.json({
+      status: 'Error',
+      message: error.message
+    })
+  });
+})
 module.exports = router;
