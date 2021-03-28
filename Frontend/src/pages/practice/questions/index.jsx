@@ -69,9 +69,9 @@ const questionList = ({location, practice, dispatch, loading}) => {
       />
       <Row>
       <Col className="tabs" span={19}>
-        <Tabs animated={{ inkBar: true, tabPane: true }} className="custom" type="card" size="large" onChange={(key)=>{
+        <Tabs className="custom" type="card" size="large" onChange={(key)=>{
           onTabChange(!tabChange)
-          console.log(tabChange)
+          // console.log(tabChange)
           dispatch({
             type:'practice/getSubmissionList',
             payload: practice.listDetail.generalInformation.PracticeID
