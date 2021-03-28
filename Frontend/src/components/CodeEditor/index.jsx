@@ -1,26 +1,50 @@
 import React, { Component } from 'react'
+
 import AceEditor from 'react-ace';
-import brace from  'brace'
+import 'ace-builds/src-min-noconflict/ext-searchbox';
+import 'ace-builds/src-min-noconflict/ext-prompt';
+import 'ace-builds/src-min-noconflict/ext-statusbar';
+import 'ace-builds/src-min-noconflict/ext-language_tools';
+import 'ace-builds/src-min-noconflict/ext-settings_menu';
+
+
 import 'brace/mode/javascript'
 import 'brace/mode/c_cpp'
 import 'brace/mode/java'
 import 'brace/theme/monokai'
-import "brace/ext/language_tools"
-import StatusBar from  "brace/ext/statusbar"
-import  { Button, Checkbox, Input, notification } from 'antd'
+import 'brace/theme/tomorrow'
+import "ace-builds/src-noconflict/snippets/c_cpp"
+import "ace-builds/src-noconflict/snippets/java"
+import "ace-builds/src-noconflict/snippets/javascript"
+
+import  { Button, Checkbox, Input, notification, Switch, Select, Space } from 'antd'
 import {connect} from 'dva'
 import { u_atob, u_btoa } from '@/utils/string';
 import "../Coding/style.less"
-const { TextArea } = Input;
+import { QuestionCircleOutlined  } from '@ant-design/icons';
+
+// const IconFont = createFromIconfontCN({
+//   scriptUrl: '//at.alicdn.com/t/font_2449607_3tn2o8mjobx.js',
+// });
+const { TextArea, Search } = Input;
 
 
 class CodeEditor extends Component{
-  state ={
-    customInput: false,
-    codeVal: "",
-    customVal: "",
-    isSubmitBatch: false,
-    showCustom: false
+  constructor(props) {
+    super(props)
+    this.state ={
+      customInput: false,
+      codeVal: "",
+      customVal: "",
+      isSubmitBatch: false,
+      showCustom: false,
+      mode:"c_cpp",
+      theme:"tomorrow",
+      tabSize:2,
+      fontSize: 16,
+      
+    }
+    this.editorRef = React.createRef()
   }
   handleCheckBoxChange = () => {
     this.setState({
@@ -120,24 +144,73 @@ class CodeEditor extends Component{
     })
     
   }
-  
+  handleThemeChange = (value) => {
+    this.setState({
+      theme: value
+    })
+  }
+  handleTabSizeChange = (value) => {
+    this.setState({
+      tabSize: value
+    })
+  }
+  handleFontSizeChange = (value) => {
+    this.setState({
+      fontSize: value
+    })
+  }
+  handleSearch = (value) =>{
+    console.log(value)
+    console.log(this.editorRef.current)
+    const editor = this.editorRef.current.editor;
+    editor.find(value, {
+      backwards: false,
+      wrap: true,
+      caseSensitive: false,
+      wholeWord: false,
+      regExp: true
+    });
+  }
+
   render(){
-    console.log(StatusBar)
+    
+    // 
     return(<>
       <div>
-        <div className='toolbar'></div>
-        <AceEditor
         
-        style={{ whiteSpace: 'pre-wrap' }}
+        <Space className='toolbar'>
+        <Select defaultValue={2} style={{ width: 120 }} onChange={(value)=>this.handleTabSizeChange(value)}>
+      <Option value={2}>Tab size: 2</Option>
+      <Option value={4}>Tab size: 4</Option>
+
+    </Select>
+    <Select defaultValue="tomorrow" style={{ width: 120 }} onChange={(value)=>this.handleThemeChange(value)}>
+      <Option value="monokai">Dark</Option>
+      <Option value="tomorrow">Light</Option>
+    </Select>
+    <Select defaultValue={16} style={{ width: 120 }} onChange={(value)=>this.handleFontSizeChange(value)} >
+      <Option value={12}>12</Option>
+      <Option value={14}>14</Option>
+      <Option value={16}>16</Option>
+      <Option value={18}>18</Option>
+    </Select>
+    <Search placeholder="Quick Search" allowClear  style={{ width: 200 }} onSearch={(value)=>this.handleSearch(value)} />
+    <Button href="https://github.com/securingsincity/react-ace">Help<QuestionCircleOutlined /></Button>
+        </Space>
+        <AceEditor
+        ref ={this.editorRef}
+        tabSize= {this.state.tabSize}
+        style={{ whiteSpace: 'pre-wrap', border:'solid grey 1px' }}
         width="100%"
         height="400px"
         showPrintMargin = {false}
         showGutter
+        defaultValue='hello'
         value={this.state.codeVal}
         highlightActiveLine
-        mode="c_cpp"
-        theme="monokai"
-        fontSize={18}
+        mode={this.state.mode}
+        theme={this.state.theme}
+        fontSize={this.state.fontSize}
         editorProps={{ $blockScrolling: true }}
         setOptions={{
           enableBasicAutocompletion: true,
@@ -146,7 +219,6 @@ class CodeEditor extends Component{
         }}
         onChange={this.handleCodeEditorChange.bind(this)}
         />
-        <div>{StatusBar.StatusBar}</div>
       </div>
       <Button type="primary" onClick={this.handleRun.bind(this)}>Run</Button>
       <Button type="primary" onClick={this.handleSubmit.bind(this)}>Submit</Button>
