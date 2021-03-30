@@ -63,7 +63,7 @@ const UserLayout = (props) => {
             <div className={styles.desc}>
               <FormattedMessage
                 id="pages.layouts.userLayout.title"
-                defaultMessage="Devcheck is your choice!"
+                defaultMessage="Codejoy is your choice!"
               />
             </div>
           </div>

@@ -12,12 +12,19 @@ import {
 import {history, Link} from 'umi'
 import Coding from '@/components/Coding';
 import { connect } from 'dva'
+import { result } from 'lodash-es';
+import PageLoading from '@/components/PageLoading';
+import Submission from '@/components/Submission';
 const { TabPane } = Tabs;
-function callback(key) {
-  console.log(key);
-}
 
 const questionList = ({location, practice, dispatch, loading}) => {
+  const [tabChange, onTabChange] = useState(false)
+  useEffect(()=>{
+    dispatch({
+      type:'practice/',
+      payload: tabChange
+    })
+  },[tabChange]);
   const routes = [
     {
       path: '/developer',
@@ -36,15 +43,14 @@ const questionList = ({location, practice, dispatch, loading}) => {
       breadcrumbName: decodeURIComponent(location.query.name),
     },
   ];
+  useEffect(()=>{
+    dispatch({
+      type:'practice/getPracticeListDetail',
+      payload: {'id':1}
+    })
+  }, [])
+  
   function itemRender(route, params, routes, paths) {
-    useEffect(()=>{
-      dispatch({
-        type:'practice/getPracticeListDetail',
-        payload: {'id':1}
-      })
-      console.log(practice)
-    }, [])
-    // console.log(route.path)
     const last = routes.indexOf(route) === routes.length - 1;
     return last ? (
       <span>{route.breadcrumbName}</span>
@@ -53,8 +59,7 @@ const questionList = ({location, practice, dispatch, loading}) => {
     );
   }
 
-  console.log(practice)
-  return (
+  return (loading?<PageLoading></PageLoading>:
     <div>
       <PageHeader
         className="site-page-header"
@@ -64,14 +69,19 @@ const questionList = ({location, practice, dispatch, loading}) => {
       />
       <Row>
       <Col className="tabs" span={19}>
-        <Tabs className="custom" type="card" size="large">
+        <Tabs className="custom" type="card" size="large" onChange={(key)=>{
+          onTabChange(!tabChange)
+          // console.log(tabChange)
+          dispatch({
+            type:'practice/getSubmissionList',
+            payload: practice.listDetail.generalInformation.PracticeID
+          })
+        }}>
           <TabPane tab="Problem" key="1">
             <Coding></Coding>
           </TabPane>
           <TabPane tab="Submission" key="2">
-            <p>Content of Tab Pane 2</p>
-            <p>Content of Tab Pane 2</p>
-            <p>Content of Tab Pane 2</p>
+            <Submission></Submission>
           </TabPane>
           <TabPane tab="Discussion" key="3">
             <p>Content of Tab Pane 3</p>
@@ -92,7 +102,8 @@ const questionList = ({location, practice, dispatch, loading}) => {
   );
 }
 
-export default connect(({practice, loading})=>({
+export default connect(({practice, loading, judge})=>({
+  judge:judge.state,
+  loading: loading.effects['practice/getPracticeListDetail'],
   practice: practice,
-  loading: loading.effects['practice/getPracticeListDetail']
 }))(questionList);
