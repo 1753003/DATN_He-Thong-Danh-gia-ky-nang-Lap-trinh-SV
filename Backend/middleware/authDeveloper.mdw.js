@@ -13,6 +13,7 @@ module.exports = function (req, res, next) {
       req.uid = decoded.uid;
       console.log(decoded);
     } catch (err) {
+        console.log("ABC")
         return res.status(401).json({
           message: 'Invalid access token.'
         })

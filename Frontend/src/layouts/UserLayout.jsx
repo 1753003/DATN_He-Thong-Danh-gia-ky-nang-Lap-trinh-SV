@@ -35,11 +35,12 @@ const UserLayout = (props) => {
   if (errCode == 1)
     msg = "There are some problems with your login session, please log in again."
 
-  notification.open({
-    message: 'Login session error',
-    description: msg,
-    icon: <SmileOutlined rotate={180} style={{ color: '#108ee9' }} />,
-  });
+  if (msg !== '')
+    notification.open({
+      message: 'Login session error',
+      description: msg,
+      icon: <SmileOutlined rotate={180} style={{ color: '#108ee9' }} />,
+    });
   
   return (
     <HelmetProvider>

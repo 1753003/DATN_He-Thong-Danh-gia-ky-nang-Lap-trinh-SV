@@ -46,6 +46,8 @@ export function getPracticeListDetail(id) {
     })
     .catch((error) => {
     // handle error
+    const message = error.response.data.message;
+    tokenHandling(message);
     console.log(error)
     })
   })
@@ -65,6 +67,8 @@ export function getSubmissionList(pid, uid) {
     })
     .catch((error) => {
     // handle error
+    const message = error.response.data.message;
+    tokenHandling(message);
     console.log(error)
     })
   })
@@ -102,6 +106,8 @@ export function saveSubmission(pid, uid, jsonData) {
     axios.request(options).then((response) => {
       resolve(response.data)
     }).catch((error) => {
+      const message = error.response.data.message;
+      tokenHandling(message);
       console.error(error);
     });
   
