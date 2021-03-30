@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styles from './style.less'
 import {
   Typography,
@@ -8,23 +8,15 @@ import {
 } from 'antd'
 import {history, Link} from 'umi'
 import { connect } from 'dva'
+import PageLoading from '@/components/PageLoading'
 
-const data = [
-  {
-    title: 'C Programming Set',
-  },
-  {
-    title: 'C++ Programming Set',
-  },
-  {
-    title: 'Java Programming Set',
-  },
-  {
-    title: 'JavaScript Programming Set',
-  },
-];
-
-const practiceList = ({location}) => {
+const practiceList = ({location,dispatch,practice, loading}) => {
+  useEffect(()=>{
+    dispatch({
+      type:'practice/getPracticeSetList',
+      payload: encodeURIComponent(location.query.listName)
+    })
+  },[]);
   const routes = [
     {
       path: '/developer',
@@ -47,7 +39,7 @@ const practiceList = ({location}) => {
       <Link to={route.path}>{route.breadcrumbName}</Link>
     );
   }
-  return (
+  return (loading?<PageLoading></PageLoading>:
     <div>
       <PageHeader
         className="site-page-header"
@@ -55,11 +47,15 @@ const practiceList = ({location}) => {
         title={decodeURIComponent(location.query.listName)}
         subTitle=""
       />
-      <Link to={"/developer/practice/questions?listName="+ encodeURIComponent(decodeURIComponent(location.query.listName)) + "&name=array"}>array</Link>
+      {practice.list?.map((item,i) => {
+        return (<Link key={i} to={"/developer/practice/questions?listName="+ encodeURIComponent(decodeURIComponent(location.query.listName)) + `&id=${item.PracticeID}`}>{item.BriefDescription}</Link>)}
+      )}
+      
     </div>
   );
 }
 
-export default connect(({})=>({
-
+export default connect(({practice, loading})=>({
+  practice,
+  loading : loading.effects['practice/getPracticeSetList']
 }))(practiceList);

@@ -19,6 +19,24 @@ export function getPracticeListDetail(id) {
     })
   })
 }
+export function getPracticeSet(set) {
+  return new Promise((resolve, reject) => {
+  axios.get(`http://localhost:5000/api/practice?set=${set}`, {
+    headers: {
+      'accessToken': Cookies.get('accessToken')
+    }
+    })
+    .then((response) => {
+    // handle success
+    // console.log(response.data)
+    resolve(response.data)
+    })
+    .catch((error) => {
+    // handle error
+    console.log(error)
+    })
+  })
+}
 export function getSubmissionList(pid, uid) {
   uid ='zcwVw4Rjp7b0lRmVZQt6ZXmspql1' //chromevi123+1@gmail.com
   return new Promise((resolve, reject) => {

@@ -40,13 +40,13 @@ const questionList = ({location, practice, dispatch, loading}) => {
     },
     {
       path: '',
-      breadcrumbName: decodeURIComponent(location.query.name),
+      breadcrumbName: practice.listDetail?.generalInformation?.PracticeName,
     },
   ];
   useEffect(()=>{
     dispatch({
       type:'practice/getPracticeListDetail',
-      payload: {'id':1}
+      payload: {'id':location.query.id}
     })
   }, [])
   
@@ -58,7 +58,7 @@ const questionList = ({location, practice, dispatch, loading}) => {
       <Link to={route.path}>{route.breadcrumbName}</Link>
     );
   }
-
+  console.log(practice.listDetail)
   return (loading?<PageLoading></PageLoading>:
     <div>
       <PageHeader
@@ -78,7 +78,7 @@ const questionList = ({location, practice, dispatch, loading}) => {
           })
         }}>
           <TabPane tab="Problem" key="1">
-            <Coding></Coding>
+            {practice.listDetail?.generalInformation.QuestionID.length<2?<Coding></Coding>:null}
           </TabPane>
           <TabPane tab="Submission" key="2">
             <Submission></Submission>

@@ -1,6 +1,6 @@
 import { stringify } from 'querystring';
 import { history } from 'umi';
-import { getPracticeListDetail, getSubmissionList } from '@/services/practice'
+import { getPracticeListDetail, getSubmissionList, getPracticeSet } from '@/services/practice'
 import { saveSubmission } from '@/services/practice';
 import { setAuthority } from '@/utils/authority';
 import { getPageQuery } from '@/utils/utils';
@@ -15,11 +15,15 @@ const Model = {
     currentSubmission: null,
     currentQuestionID: null,
     tabChange:false,
+    list:null
   },
   effects: {
-    *saveSubmission({ payload }, { call, put,select }){
-      //save submission
-      
+    *getPracticeSetList({ payload }, { call, put,select }){
+      const data = yield getPracticeSet(payload)
+      yield put({
+        type:'setList',
+        payload: data
+      })
     },
     *getSubmissionList({ payload }, { call, put }) {
       let uid = 'zcwVw4Rjp7b0lRmVZQt6ZXmspql1'
@@ -65,6 +69,9 @@ const Model = {
   reducers: {
     setListDetail(state, { payload }) {
       return { ...state, listDetail: payload.listDetail };
+    },
+    setList(state, { payload }) {
+      return { ...state, list: payload };
     },
     setIsRun(state, {payload}) {
       return { ...state, isRun: payload, isSubmit: !payload };

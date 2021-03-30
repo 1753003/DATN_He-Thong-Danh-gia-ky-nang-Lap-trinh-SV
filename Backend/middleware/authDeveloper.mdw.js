@@ -10,7 +10,7 @@ module.exports = function (req, res, next) {
     try {
       const decoded = jwt.verify(accessToken, 'secretkeyy');
       req.uid = decoded.uid;
-      console.log(decoded);
+      // console.log(decoded);
     } catch (err) {
         return res.status(401).json({
           message: 'Invalid access token.'
