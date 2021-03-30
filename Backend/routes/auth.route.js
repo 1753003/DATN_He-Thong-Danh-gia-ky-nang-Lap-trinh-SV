@@ -17,7 +17,9 @@ const firebaseConfig = {
 
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
-
+router.post('/auth', async function (req, res) {
+  
+})
 router.post('/signup', async function (req, res) {
     const userByEmail = await userModel.getByEmail(req.body.email);
     firebase.auth().createUserWithEmailAndPassword(req.body.email, req.body.password)
@@ -290,7 +292,6 @@ router.post('/loginGoogle', async function (req, res) {
 
   res.json(result);
 })
-
 
 router.post('/refreshToken', async function(req, res) {
   if (req.body.refreshToken) {

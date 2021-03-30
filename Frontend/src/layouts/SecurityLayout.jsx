@@ -30,7 +30,7 @@ class SecurityLayout extends React.Component {
     const queryString = stringify({
       redirect: window.location.href,
     });
-    console.log(isLogin, loading);
+    
     if ((!isLogin && loading) || !isReady) {
       return <PageLoading />;
     }
@@ -38,13 +38,13 @@ class SecurityLayout extends React.Component {
     if (!isLogin && window.location.pathname !== '/user/login') {
       return <Redirect to={`/user/login?${queryString}`} />;
     }
+
     var type = localStorage.getItem('antd-pro-authority');
     if (type.includes("creator"))
       type = "creator"
     else if (type.includes("developer"))
       type = "developer";
-    console.log(children.props.location.pathname);
-    console.log(type)
+
     if (!children.props.location.pathname.includes(type))
       return (<Result
       status="403"
