@@ -1,65 +1,216 @@
 import React, { Component } from 'react'
+
 import AceEditor from 'react-ace';
-import brace from  'brace'
+import 'ace-builds/src-min-noconflict/ext-searchbox';
+import 'ace-builds/src-min-noconflict/ext-prompt';
+import 'ace-builds/src-min-noconflict/ext-statusbar';
+import 'ace-builds/src-min-noconflict/ext-language_tools';
+import 'ace-builds/src-min-noconflict/ext-settings_menu';
+
+
 import 'brace/mode/javascript'
+import 'brace/mode/c_cpp'
 import 'brace/mode/java'
-import 'brace/mode/javascript'
-import 'brace/mode/javascript'
 import 'brace/theme/monokai'
-import  { Button, Checkbox, Input } from 'antd'
+import 'brace/theme/tomorrow'
+import "ace-builds/src-noconflict/snippets/c_cpp"
+import "ace-builds/src-noconflict/snippets/java"
+import "ace-builds/src-noconflict/snippets/javascript"
+
+import  { Button, Checkbox, Input, notification, Switch, Select, Space } from 'antd'
 import {connect} from 'dva'
-const { TextArea } = Input;
-const defaultInput = "default input";
+import { u_atob, u_btoa } from '@/utils/string';
+import "../Coding/style.less"
+import { QuestionCircleOutlined  } from '@ant-design/icons';
+
+// const IconFont = createFromIconfontCN({
+//   scriptUrl: '//at.alicdn.com/t/font_2449607_3tn2o8mjobx.js',
+// });
+const { TextArea, Search } = Input;
+
+
 class CodeEditor extends Component{
-  state ={
-    customInput: false,
-    codeVal: "",
-    customVal: ""
+  constructor(props) {
+    super(props)
+    this.state ={
+      customInput: false,
+      codeVal: "",
+      customVal: "",
+      isSubmitBatch: false,
+      showCustom: false,
+      mode:"c_cpp",
+      theme:"tomorrow",
+      tabSize:2,
+      fontSize: 16,
+      
+    }
+    this.editorRef = React.createRef()
   }
   handleCheckBoxChange = () => {
     this.setState({
-      customInput: !this.state.customInput
+      customInput: !this.state.customInput,
+      showCustom:!this.state.showCustom
     })
   }
   handleCodeEditorChange = (val) => {
     this.setState({
       codeVal: val
     })
-    // console.log(val)
   }
   handleCustomValChange = (e) => {
     this.setState({
       customVal: e.target.value
     })
   }
-  handleRun = () => {
-    let input= "";
-    let code = "";
+  handleSendCode = (input, expected_output) => new Promise((resolve, reject) => {
+    let code = this.state.codeVal
+    let lang_id = 54 //54 C++ 71 python
     if(this.state.customInput == false)
-      input = defaultInput
+      input = input
     else if(this.state.customVal == "")
-      input = defaultInput
+      input = input
     else
       input = this.state.customVal
-    code = this.state.codeVal;
+    // code = JSON.stringify(this.state.codeVal);
+    code = code.replace(/(^")|("$)/g, '');
+    code = u_btoa(code)
+
     const data = {
-      input,
-      code
+      "source_code":code,
+      "language_id": lang_id,
+      "stdin": u_btoa(input),
+      "expected_output": u_btoa(expected_output)
     }
-    console.log(this.state.customInput, data)
+    
+    this.props.dispatch({
+      type:'judge/sendCode',
+      payload: data
+    })
+    resolve()
+  })
+  handleRun = () => {
+    if (this.state.codeVal==""){
+        notification.error({
+          message: 'Hey Listen!',
+          description:
+            'Dont leave your code blank',
+          className:"code-notification",
+          type:'error'
+        });
+        return;
+      }
+    this.handleSendCode(this.props.testCases[0].Input[0],this.props.testCases[0].Output[0])
   }
+  handleSubmit = () => {
+    if (this.state.codeVal==""){
+      notification.open({
+        message: 'Hey Listen!',
+        description:
+          'Dont leave your code blank',
+        className:"code-notification",
+        type:'error'
+      });
+      return;
+    }
+    this.setState
+    ({
+      isSubmitBatch: true
+    })
+    let batch_Submission = []
+    
+    let code = this.state.codeVal;
+    let lang_id = 54 //54 C++ 71 python
+    code = code.replace(/(^")|("$)/g, '');
+    code = u_btoa(code)
+    for (var tc of this.props.testCases){
+      // console.log(tc.Input[0])
+      var input = tc.Input[0]
+      var expected_output = tc.Output[0]
+      let data = {
+        "source_code":code,
+        "language_id": lang_id,
+        "stdin": u_btoa(input),
+        "expected_output": u_btoa(expected_output)
+      }
+        batch_Submission.push(data)
+      }
+      const batch = {
+        "submissions": batch_Submission
+      }
+
+    this.props.dispatch({
+      type:'judge/sendCodeBatch',
+      payload: batch
+    })
+    
+  }
+  handleThemeChange = (value) => {
+    this.setState({
+      theme: value
+    })
+  }
+  handleTabSizeChange = (value) => {
+    this.setState({
+      tabSize: value
+    })
+  }
+  handleFontSizeChange = (value) => {
+    this.setState({
+      fontSize: value
+    })
+  }
+  handleSearch = (value) =>{
+    console.log(value)
+    console.log(this.editorRef.current)
+    const editor = this.editorRef.current.editor;
+    editor.find(value, {
+      backwards: false,
+      wrap: true,
+      caseSensitive: false,
+      wholeWord: false,
+      regExp: true
+    });
+  }
+
   render(){
+    
+    // 
     return(<>
       <div>
-        <AceEditor
         
+        <Space className='toolbar'>
+        <Select defaultValue={2} style={{ width: 120 }} onChange={(value)=>this.handleTabSizeChange(value)}>
+      <Option value={2}>Tab size: 2</Option>
+      <Option value={4}>Tab size: 4</Option>
+
+    </Select>
+    <Select defaultValue="tomorrow" style={{ width: 120 }} onChange={(value)=>this.handleThemeChange(value)}>
+      <Option value="monokai">Dark</Option>
+      <Option value="tomorrow">Light</Option>
+    </Select>
+    <Select defaultValue={16} style={{ width: 120 }} onChange={(value)=>this.handleFontSizeChange(value)} >
+      <Option value={12}>12</Option>
+      <Option value={14}>14</Option>
+      <Option value={16}>16</Option>
+      <Option value={18}>18</Option>
+    </Select>
+    <Search placeholder="Quick Search" allowClear  style={{ width: 200 }} onSearch={(value)=>this.handleSearch(value)} />
+    <Button href="https://github.com/securingsincity/react-ace">Help<QuestionCircleOutlined /></Button>
+        </Space>
+        <AceEditor
+        ref ={this.editorRef}
+        tabSize= {this.state.tabSize}
+        style={{ whiteSpace: 'pre-wrap', border:'solid grey 1px' }}
         width="100%"
         height="400px"
         showPrintMargin = {false}
         showGutter
+        defaultValue='hello'
+        value={this.state.codeVal}
         highlightActiveLine
-        mode="javascript"
-        theme="monokai"
+        mode={this.state.mode}
+        theme={this.state.theme}
+        fontSize={this.state.fontSize}
         editorProps={{ $blockScrolling: true }}
         setOptions={{
           enableBasicAutocompletion: true,
@@ -70,23 +221,25 @@ class CodeEditor extends Component{
         />
       </div>
       <Button type="primary" onClick={this.handleRun.bind(this)}>Run</Button>
-      <Button type="primary">Submit</Button>
+      <Button type="primary" onClick={this.handleSubmit.bind(this)}>Submit</Button>
       <Checkbox 
       onChange={this.handleCheckBoxChange.bind(this)}
       >Custom Input
       </Checkbox>
-      <TextArea
+      {this.state.showCustom&&<TextArea
       allowClear
       disabled={!this.state.customInput}
       onChange={this.handleCustomValChange.bind(this)}
       placeholder="Put your custom input here."
       autoSize={{ minRows: 3, maxRows: 5 }}
-      />
+      />}
       </>
     )
   }
 }
 
-export default connect(({})=>({
-
+export default connect(({practice, judge})=>({
+  practice,
+  judge,
+  testCases: practice.listDetail?.listQuestion[0].TestCase
 }))(CodeEditor);

@@ -29,6 +29,7 @@ const UserLayout = (props) => {
     ...props,
   });
 
+
   const errCode = getPageQuery().errorCode;
   var msg = '';
 
@@ -41,6 +42,7 @@ const UserLayout = (props) => {
     icon: <SmileOutlined rotate={180} style={{ color: '#108ee9' }} />,
   });
   
+
   return (
     <HelmetProvider>
       <Helmet>
@@ -63,7 +65,7 @@ const UserLayout = (props) => {
             <div className={styles.desc}>
               <FormattedMessage
                 id="pages.layouts.userLayout.title"
-                defaultMessage="Devcheck is your choice!"
+                defaultMessage="Codejoy is your choice!"
               />
             </div>
           </div>

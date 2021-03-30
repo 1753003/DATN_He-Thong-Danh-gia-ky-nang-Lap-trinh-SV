@@ -1,56 +1,33 @@
-import React, { useState } from 'react';
-import { Card, Button, Table, Input, Modal, Form, Upload, Image, Dropdown, Menu } from 'antd';
-import { useHistory } from 'umi';
+import React, { useEffect } from 'react';
+import { Button, Table, Input, Upload, Dropdown, Menu } from 'antd';
+import { useHistory, connect } from 'umi';
 import styles from './index.less';
 import {
   MoreOutlined,
-  InboxOutlined,
-  FolderOpenOutlined,
   EditOutlined,
   DeleteOutlined,
-  UserOutlined,
+  LockOutlined,
+  UnlockOutlined,
 } from '@ant-design/icons';
 const { Search } = Input;
 const { Dragger } = Upload;
 
-const MyTests = () => {
+const MyTests = ({ testList, dispatch }) => {
   const history = useHistory();
-  const menu = (
-    <Menu>
-      <Menu.Item
-        key="open"
-        icon={<FolderOpenOutlined />}
-        onClick={() => {
-          history.push({
-            pathname: '/creator/testDetail',
-            query: {
-              id: '123',
-            },
-          });
-        }}
-      >
-        Open
-      </Menu.Item>
-      <Menu.Item key="edit" icon={<EditOutlined />}>
-        Edit
-      </Menu.Item>
-      <Menu.Item key="delete" icon={<DeleteOutlined />}>
-        Delete
-      </Menu.Item>
-    </Menu>
-  );
-  const data = [
-    {
-      TestID: '1',
-      TestName: '17CLC1 Class - Ky thuat lap trinh - 2021',
-      Permissions: 'dev',
-    },
-    {
-      TestID: '2',
-      TestName: '17CLC1 Class - Ky thuat lap trinh - 2021',
-      Permissions: 'dev',
-    },
-  ];
+
+  const menu = (item) => {
+    return (
+      <Menu>
+        <Menu.Item key="edit" icon={<EditOutlined />}>
+          Edit
+        </Menu.Item>
+        <Menu.Item key="delete" icon={<DeleteOutlined />}>
+          Delete
+        </Menu.Item>
+      </Menu>
+    );
+  };
+
   const columns = [
     {
       title: 'Test name',
@@ -62,14 +39,14 @@ const MyTests = () => {
       dataIndex: 'Permissions',
       key: 'Permissions',
       render: (permissions) => {
-        return permissions === 'dev' ? <UserOutlined /> : null;
+        return permissions === 'Private' ? <LockOutlined /> : <UnlockOutlined />;
       },
     },
     {
       title: '',
-      render: () => {
+      render: (item) => {
         return (
-          <Dropdown overlay={menu} placement="bottomRight">
+          <Dropdown overlay={() => menu(item)} placement="bottomRight">
             <MoreOutlined />
           </Dropdown>
         );
@@ -88,6 +65,22 @@ const MyTests = () => {
     });
   };
 
+  const handleTestOnClick = (testID) => {
+    history.push({
+      pathname: '/creator/testDetail',
+      query: {
+        id: testID,
+      },
+    });
+  };
+
+  useEffect(() => {
+    dispatch({ type: 'test/fetchTestList' });
+  }, []);
+
+  useEffect(() => {
+    console.log(testList);
+  }, [testList]);
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -96,7 +89,7 @@ const MyTests = () => {
           Create test
         </Button>
       </div>
-      {data.length > 0 ? (
+      {testList.length > 0 ? (
         <Search
           placeholder="input search text"
           onSearch={onSearch}
@@ -105,10 +98,22 @@ const MyTests = () => {
         />
       ) : null}
       <div className={styles.content}>
-        <Table columns={columns} dataSource={data} />
+        <Table
+          columns={columns}
+          dataSource={testList}
+          onRow={(record, rowIndex) => {
+            return {
+              onDoubleClick: (event) => {
+                handleTestOnClick(record.TestID);
+              },
+            };
+          }}
+        />
       </div>
     </div>
   );
 };
 
-export default MyTests;
+export default connect(({ test: { testList } }) => ({
+  testList,
+}))(MyTests);

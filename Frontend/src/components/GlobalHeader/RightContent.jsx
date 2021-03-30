@@ -27,6 +27,7 @@ const GlobalHeaderRight = (props) => {
         className={`${styles.action} ${styles.search}`}
         placeholder="站内搜索"
         defaultValue="umi ui"
+        bordered={false}
         options={[
           {
             label: <a href="https://umijs.org/zh/guide/umi-ui.html">umi ui</a>,
@@ -48,27 +49,27 @@ const GlobalHeaderRight = (props) => {
         //   //console.log('input', value);
         // }}
       />
-      <Tooltip title="使用文档">
+      <Tooltip title="Help">
         <a
           style={{
             color: 'inherit',
           }}
           target="_blank"
-          href="https://pro.ant.design/docs/getting-started"
+          href="https://github.com/1753003/DATN_He-Thong-Danh-gia-ky-nang-Lap-trinh-SV"
           rel="noopener noreferrer"
           className={styles.action}
         >
           <QuestionCircleOutlined />
         </a>
       </Tooltip>
-      <NoticeIconView />
+      {/* <NoticeIconView /> */}
       <Avatar menu />
       {REACT_APP_ENV && (
         <span>
           <Tag color={ENVTagColor[REACT_APP_ENV]}>{REACT_APP_ENV}</Tag>
         </span>
       )}
-      <SelectLang className={styles.action} />
+      {/* <SelectLang className={styles.action} /> */}
     </div>
   );
 };

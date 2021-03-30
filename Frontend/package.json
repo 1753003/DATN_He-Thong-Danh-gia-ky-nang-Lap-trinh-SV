@@ -54,7 +54,6 @@
     "@antv/l7": "^2.1.9",
     "@antv/l7-maps": "^2.1.9",
     "@antv/l7-react": "^2.1.9",
-    "@babel/plugin-proposal-decorators": "^7.13.5",
     "@types/lodash.debounce": "^4.0.6",
     "@types/lodash.isequal": "^4.5.5",
     "@umijs/route-utils": "^1.0.33",
@@ -79,6 +78,8 @@
     "omit.js": "^2.0.2",
     "prop-types": "^15.5.10",
     "rc-scroll-anim": "^2.7.6",
+    "rc-queue-anim": "^1.8.5",
+    "rc-texty": "^0.2.0",
     "rc-tween-one": "^2.7.3",
     "react": "^16.14.0",
     "react-ace": "^9.3.0",
@@ -86,6 +87,7 @@
     "react-dom": "^17.0.0",
     "react-fittext": "^1.0.0",
     "react-helmet-async": "^1.0.4",
+    "react-markdown": "^5.0.3",
     "react-router": "^4.3.1",
     "umi": "^3.2.14",
     "umi-request": "^1.0.8"
@@ -93,6 +95,7 @@
   "devDependencies": {
     "@ant-design/pro-cli": "^1.0.28",
     "@babel/core": "^7.13.10",
+    "@babel/plugin-proposal-decorators": "^7.13.5",
     "@types/classnames": "^2.2.7",
     "@types/express": "^4.17.0",
     "@types/history": "^4.7.2",

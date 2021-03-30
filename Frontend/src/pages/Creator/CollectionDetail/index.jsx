@@ -1,56 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './styles.less';
 import { Button, Card, List, Skeleton, Modal, Input } from 'antd';
 import { DeleteOutlined, MoreOutlined } from '@ant-design/icons';
+import { connect } from 'umi';
 
 const { Search } = Input;
 
-const CollectionDetail = () => {
+const CollectionDetail = ({ location, collection, dispatch, testList }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const handleModalCancel = () => {
     setModalVisible(false);
   };
-  const collection = {
-    CollectionName: 'KTLT tests (2021)',
-    Description: 'This is the collection containing all tests of Ky thuat lap trinh subject (2021)',
-    TestList: [
-      {
-        TestID: '1',
-        TestName: 'C++ tests',
-        TestImage: 'https://codelearn.io/Media/Default/Users/Trg_5FPhu/blog1/blog1.jpg',
-        TestSet: 9,
-        TestDone: 39,
-      },
-      {
-        TestID: '2',
-        TestName: 'C++ tests fasdjfhaskjdfhasdkf',
-        TestImage: 'https://codelearn.io/Media/Default/Users/Trg_5FPhu/blog1/blog1.jpg',
-        TestSet: 6,
-        TestDone: 100,
-      },
-      {
-        TestID: '3',
-        TestName: 'C++ tests fasdjfhaskjdfhasdkf',
-        TestImage: 'https://codelearn.io/Media/Default/Users/Trg_5FPhu/blog1/blog1.jpg',
-        TestSet: 6,
-        TestDone: 100,
-      },
-      {
-        TestID: '4',
-        TestName: 'C++ tests fasdjfhaskjdfhasdkf',
-        TestImage: 'https://codelearn.io/Media/Default/Users/Trg_5FPhu/blog1/blog1.jpg',
-        TestSet: 6,
-        TestDone: 100,
-      },
-      {
-        TestID: '5',
-        TestName: 'C++ tests fasdjfhaskjdfhasdkf',
-        TestImage: 'https://codelearn.io/Media/Default/Users/Trg_5FPhu/blog1/blog1.jpg',
-        TestSet: 6,
-        TestDone: 100,
-      },
-    ],
-  };
+
+  useEffect(() => {
+    dispatch({ type: 'collection/getCollectionByIdModel', payload: { id: location.query.id } });
+    dispatch({ type: 'test/fetchTestList' });
+  }, []);
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -87,26 +53,38 @@ const CollectionDetail = () => {
           <div className={styles.listTest}>
             <div className={styles.testCount}>2 tests</div>
             <div className={styles.testInfo}>
-              <Test list={collection.TestList} />
+              <Test list={collection.Test} collectionID={location.query.id} dispatch={dispatch} />
             </div>
           </div>
         </div>
         <div className={styles.description}>
           <Card title="Description" bordered={false}>
-            {collection.Description}
+            {collection.CollectionDescription}
           </Card>
         </div>
       </div>
       <AddTestModal
         visible={modalVisible}
         handleCancel={handleModalCancel}
-        list={collection.TestList}
+        testList={testList}
+        dispatch={dispatch}
+        collectionID={location.query.id}
+        testIDInCollection={collection.TestID}
       />
     </div>
   );
 };
 
-const Test = ({ list }) => {
+const Test = ({ list, collectionID, dispatch }) => {
+  const handleRemoveTest = (testID) => {
+    dispatch({
+      type: 'collection/removeTestToCollectionModel',
+      payload: {
+        testID,
+        collectionID,
+      },
+    });
+  };
   return (
     <List
       itemLayout="horizontal"
@@ -116,7 +94,7 @@ const Test = ({ list }) => {
         <List.Item>
           <Skeleton avatar title={false} loading={item.loading} active>
             <div className={styles.testInfoContainer}>
-              <div className={styles.questions}>{item.TestSet} questions</div>
+              <div className={styles.questions}>{item.TotalQuestion} questions</div>
               <img src={item.TestImage} className={styles.collectionImg} />
               <div className={styles.infoContainer}>
                 <h3 className={styles.title}>{item.TestName}</h3>
@@ -124,7 +102,11 @@ const Test = ({ list }) => {
                   <div className={styles.MoreOutlined}>
                     <MoreOutlined style={{ fontSize: '22px' }} />
                   </div>
-                  <Button className={styles.description} style={{ width: 'auto' }}>
+                  <Button
+                    className={styles.description}
+                    style={{ width: 'auto' }}
+                    onClick={() => handleRemoveTest(item.TestID)}
+                  >
                     <DeleteOutlined /> Delete from the collection
                   </Button>
                 </div>
@@ -137,7 +119,30 @@ const Test = ({ list }) => {
   );
 };
 
-const AddTestModal = ({ visible, handleCancel, list }) => {
+const AddTestModal = ({
+  visible,
+  handleCancel,
+  testList,
+  collectionID,
+  testIDInCollection,
+  dispatch,
+}) => {
+  const handleAddTestClick = (testID) => {
+    dispatch({
+      type: 'collection/addTestToCollectionModel',
+      payload: {
+        testID,
+        collectionID,
+      },
+    });
+  };
+
+  const checkExist = (testId) => {
+    if (testIDInCollection.includes(testId)) {
+      return true;
+    }
+    return false;
+  };
   return (
     <Modal
       title="Add test to this collection"
@@ -157,33 +162,38 @@ const AddTestModal = ({ visible, handleCancel, list }) => {
     >
       <Search placeholder="Search tests..." enterButton />
       <div className={styles.modalList}>
-        <div className={styles.testCount}>2 tests</div>
+        <div className={styles.testCount}>{testList.length} tests</div>
         <div className={styles.testInfo}>
           <List
             itemLayout="horizontal"
-            dataSource={list}
+            dataSource={testList}
             style={{ height: '380px', overflow: 'scroll' }}
-            renderItem={(item) => (
-              <List.Item>
-                <Skeleton avatar title={false} loading={item.loading} active>
-                  <div className={styles.testInfoContainer} style={{ backgroundColor: '#35577a' }}>
-                    <div className={styles.questions}>{item.TestSet} questions</div>
-                    <img src={item.TestImage} className={styles.collectionImg} />
-                    <div className={styles.infoContainer}>
-                      <h3 className={styles.title} style={{ color: 'white' }}>
-                        {item.TestName}
-                      </h3>
-                      <div className={styles.testMoreInfo} style={{ color: 'white' }}>
-                        <div className={styles.MoreOutlined}>
-                          <Button>Add</Button>
+            renderItem={(item) =>
+              !checkExist(item.TestID) && (
+                <List.Item>
+                  <Skeleton avatar title={false} loading={item.loading} active>
+                    <div
+                      className={styles.testInfoContainer}
+                      style={{ backgroundColor: '#35577a' }}
+                    >
+                      <div className={styles.questions}>{item.TotalQuestion} questions</div>
+                      <img src={item.TestImage} className={styles.collectionImg} />
+                      <div className={styles.infoContainer}>
+                        <h3 className={styles.title} style={{ color: 'white' }}>
+                          {item.TestName}
+                        </h3>
+                        <div className={styles.testMoreInfo} style={{ color: 'white' }}>
+                          <div className={styles.MoreOutlined}>
+                            <Button onClick={() => handleAddTestClick(item.TestID)}>Add</Button>
+                          </div>
+                          <div>{item.TotalDone} done</div>
                         </div>
-                        <div>{item.TestDone} done</div>
                       </div>
                     </div>
-                  </div>
-                </Skeleton>
-              </List.Item>
-            )}
+                  </Skeleton>
+                </List.Item>
+              )
+            }
           />
         </div>
       </div>
@@ -191,4 +201,7 @@ const AddTestModal = ({ visible, handleCancel, list }) => {
   );
 };
 
-export default CollectionDetail;
+export default connect(({ collection: { collectionById }, test: { testList } }) => ({
+  collection: collectionById,
+  testList,
+}))(CollectionDetail);
