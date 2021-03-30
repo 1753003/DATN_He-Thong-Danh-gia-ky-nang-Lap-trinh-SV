@@ -4,22 +4,24 @@ module.exports = function (req, res, next) {
   const link = req.protocol + '://' + req.get('host') + req.originalUrl
   const accessToken = req.headers['accesstoken'];
   const refreshToken = req.headers['refreshtoken'];
-  const aToken = req.headers['Cookie'];
-  // console.log(req.headers);
-  if (accessToken) {
+
+  if (accessToken && accessToken != undefined && accessToken != 'undefined' && 
+  (!refreshToken || refreshToken == 'undefined' || refreshToken == undefined)) { 
     try {
       const decoded = jwt.verify(accessToken, 'secretkeyy');
       req.uid = decoded.uid;
       // console.log(decoded);
     } catch (err) {
+        console.log("ABC")
         return res.status(401).json({
           message: 'Invalid access token.'
         })
     }
     next();
-  } else if (!refreshToken) {
+  } 
+  else if (!refreshToken || refreshToken == undefined || refreshToken == 'undefined') {
     return res.status(400).json({
-      message: 'Access token not found.'
+      message: 'Refresh token not found.'
     })
   }
   else {
