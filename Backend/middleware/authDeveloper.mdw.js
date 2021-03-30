@@ -4,8 +4,7 @@ module.exports = function (req, res, next) {
   const link = req.protocol + '://' + req.get('host') + req.originalUrl
   const accessToken = req.headers['accesstoken'];
   const refreshToken = req.headers['refreshtoken'];
-  console.log(accessToken)
-  console.log(refreshToken)
+
   if (accessToken && accessToken != undefined && accessToken != 'undefined' && 
   (!refreshToken || refreshToken == 'undefined' || refreshToken == undefined)) { 
     try {
