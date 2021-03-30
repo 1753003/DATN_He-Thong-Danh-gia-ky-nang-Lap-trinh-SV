@@ -1,21 +1,26 @@
 import React, { Component } from 'react'
 
 import AceEditor from 'react-ace';
-import 'ace-builds/src-min-noconflict/ext-searchbox';
+import "brace/ext/searchbox"
+// import 'ace-builds/src-min-noconflict/ext-options';
+// import 'ace-builds/src-min-noconflict/ext-keybinding_menu';
 import 'ace-builds/src-min-noconflict/ext-prompt';
 import 'ace-builds/src-min-noconflict/ext-statusbar';
-import 'ace-builds/src-min-noconflict/ext-language_tools';
-import 'ace-builds/src-min-noconflict/ext-settings_menu';
-
+// import 'ace-builds/src-min-noconflict/ext-settings_menu';
 
 import 'brace/mode/javascript'
 import 'brace/mode/c_cpp'
 import 'brace/mode/java'
 import 'brace/theme/monokai'
 import 'brace/theme/tomorrow'
-import "ace-builds/src-noconflict/snippets/c_cpp"
-import "ace-builds/src-noconflict/snippets/java"
-import "ace-builds/src-noconflict/snippets/javascript"
+import 'brace/snippets/c_cpp'
+import 'brace/snippets/java'
+import 'brace/snippets/javascript'
+import 'brace/ext/language_tools';
+// import "ace-builds/src-noconflict/snippets/c_cpp"
+// import "ace-builds/src-noconflict/snippets/java"
+// import "ace-builds/src-noconflict/snippets/javascript"
+// import 'ace-builds/src-min-noconflict/ext-language_tools';
 
 import  { Button, Checkbox, Input, notification, Switch, Select, Space } from 'antd'
 import {connect} from 'dva'
@@ -30,8 +35,8 @@ const { TextArea, Search } = Input;
 
 
 class CodeEditor extends Component{
-  constructor(props) {
-    super(props)
+  constructor(props, context) {
+    super(props, context)
     this.state ={
       customInput: false,
       codeVal: "",
@@ -160,20 +165,21 @@ class CodeEditor extends Component{
     })
   }
   handleSearch = (value) =>{
-    console.log(value)
-    console.log(this.editorRef.current)
+    // console.log(value)
+    // console.log(this.editorRef.current)
     const editor = this.editorRef.current.editor;
-    editor.find(value, {
-      backwards: false,
-      wrap: true,
-      caseSensitive: false,
-      wholeWord: false,
-      regExp: true
-    });
+    // editor.find(value, {
+    //   backwards: false,
+    //   wrap: true,
+    //   caseSensitive: false,
+    //   wholeWord: false,
+    //   regExp: true
+    // });
+    editor.execCommand("find")
   }
 
   render(){
-    
+    console.log(this.editorRef)
     // 
     return(<>
       <div>
@@ -185,7 +191,7 @@ class CodeEditor extends Component{
 
     </Select>
     <Select defaultValue="tomorrow" style={{ width: 120 }} onChange={(value)=>this.handleThemeChange(value)}>
-      <Option value="monokai">Dark</Option>
+      <Select.Option value="monokai">Dark</Select.Option>
       <Option value="tomorrow">Light</Option>
     </Select>
     <Select defaultValue={16} style={{ width: 120 }} onChange={(value)=>this.handleFontSizeChange(value)} >
@@ -194,7 +200,7 @@ class CodeEditor extends Component{
       <Option value={16}>16</Option>
       <Option value={18}>18</Option>
     </Select>
-    <Search placeholder="Quick Search" allowClear  style={{ width: 200 }} onSearch={(value)=>this.handleSearch(value)} />
+    <Button onClick={()=>this.handleSearch()}>Find</Button>
     <Button href="https://github.com/securingsincity/react-ace">Help<QuestionCircleOutlined /></Button>
         </Space>
         <AceEditor
@@ -205,13 +211,13 @@ class CodeEditor extends Component{
         height="400px"
         showPrintMargin = {false}
         showGutter
-        defaultValue='hello'
         value={this.state.codeVal}
-        highlightActiveLine
         mode={this.state.mode}
         theme={this.state.theme}
         fontSize={this.state.fontSize}
-        editorProps={{ $blockScrolling: true }}
+        editorProps={{ $blockScrolling: true,
+          $blockSelectEnabled:false
+        }}
         setOptions={{
           enableBasicAutocompletion: true,
           enableLiveAutocompletion: true,

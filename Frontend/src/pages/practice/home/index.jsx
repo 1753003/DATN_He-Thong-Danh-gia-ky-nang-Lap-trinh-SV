@@ -135,7 +135,7 @@ const practiceHome = () => {
             >
               Practice Makes Perfect
             </Texty>
-            <Texty
+            <Texty 
               className="content"
               type="bottom"
               split={getSplit}
