@@ -3,11 +3,11 @@ const router = express.Router();
 const practiceModel = require('../models/practice.model')
 const questionModel = require('../models/question.model')
 
-router.get('/', async function (req, res) {
-  const set = req.query.set;
-  const list = await practiceModel.getPracticeList(set)
-  res.json(list);
-})
+// router.get('/', async function (req, res) {
+//   const set = req.query.set;
+//   const list = await practiceModel.getPracticeList(set)
+//   res.json(list);
+// })
 
 router.get('/submissions', async function (req, res) {
   console.log('submisisons')
@@ -26,6 +26,12 @@ router.post('/submissions', async function (req, res) {
   data.DevID = req.uid
   const ret = await practiceModel.saveSubmissions(data)
   res.json(ret);
+})
+router.get('/', async function (req, res) {
+  const set = req.query.set.split(' ')[0];
+  const list = await practiceModel.getPracticeList(set)
+  // console.log(list)
+  res.json(list);
 })
 
 
