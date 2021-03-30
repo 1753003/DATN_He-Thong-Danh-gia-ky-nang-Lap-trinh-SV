@@ -193,15 +193,15 @@ export default defineConfig({
                         },
                         {
                           path: '/developer/practice/home',
-                          component: './practice/home',
+                          component: './developer/practice/home',
                         },
                         {
                           path: '/developer/practice/list',
-                          component: './practice/list',
+                          component: './developer/practice/list',
                         },
                         {
                           path: '/developer/practice/questions',
-                          component: './practice/questions',
+                          component: './developer/practice/questions',
                         },
                       ],
                     },
