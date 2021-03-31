@@ -32,9 +32,10 @@ const UserLayout = (props) => {
   const errCode = getPageQuery().errorCode;
   var msg = '';
 
-  if (errCode == 1)
+  if (errCode == 1 || errCode == 2)
     msg = "There are some problems with your login session, please log in again."
-
+  else if (errCode == 3) 
+    msg = "Maybe someone broke into your account, please log in again and change password if you can."
   if (msg !== '')
     notification.open({
       message: 'Login session error',

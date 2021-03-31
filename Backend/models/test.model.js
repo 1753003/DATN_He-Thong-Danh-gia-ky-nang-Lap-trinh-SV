@@ -27,7 +27,8 @@ module.exports = {
                             "RunningTime": element.RunningTime,
                             "MemoryUsage": element.MemoryUsage,
                             "TestCase": JSON.stringify(element.TestCase),
-                            "QuestionID": result[0]
+                            "QuestionID": result[0],
+                            "SampleCode": element.SampleCode
                         })
                     }
                     await db('test').update({
