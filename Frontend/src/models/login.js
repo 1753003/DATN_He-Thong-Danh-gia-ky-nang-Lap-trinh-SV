@@ -4,6 +4,7 @@ import { fakeAccountLogin, Login, LoginWithFacebook, LoginWithGoogle } from '@/s
 import { setAuthority } from '@/utils/authority';
 import { getPageQuery } from '@/utils/utils';
 import { message } from 'antd';
+import Cookies from 'js-cookie';
 
 const Model = {
   namespace: 'login',
@@ -25,11 +26,8 @@ const Model = {
         }); // Login successfully
         localStorage.setItem('currentUser',payload.email);
         //Save token into cookie
-        var d = new Date();
-        d.setTime(d.getTime() + (1*24*60*60*1000));
-        var expires = "expires="+ d.toUTCString();
-        document.cookie = "accessToken" + "=" + response.message.accessToken + "; " + expires;
-        document.cookie = "refreshToken" + "=" + response.message.refreshToken + "; " + expires;
+        Cookies.set('accessToken', response.message.accessToken, {expires: 7});
+        Cookies.set('refreshToken', response.message.refreshToken, {expires: 7});
         const urlParams = new URL(window.location.href);
         const params = getPageQuery();
         message.success('🎉 🎉 🎉  OKELA！');
