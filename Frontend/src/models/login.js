@@ -77,11 +77,9 @@ const Model = {
       localStorage.setItem('currentUser', payload.DevName);
       localStorage.setItem('imageURL', payload.DevImage);
       //Save token into cookie
-      var d = new Date();
-      d.setTime(d.getTime() + (1*24*60*60*1000));
-      var expires = "expires="+ d.toUTCString();
-      document.cookie = "accessToken" + "=" + response.accessToken + "; " + expires;
-      document.cookie = "refreshToken" + "=" + response.refreshToken + "; " + expires;
+      Cookies.set('accessToken', response.message.accessToken, {expires: 7});
+      Cookies.set('refreshToken', response.message.refreshToken, {expires: 7});
+      
       if (response.status === 'OK') {
         const urlParams = new URL(window.location.href);
         const params = getPageQuery();
@@ -125,6 +123,8 @@ const Model = {
         }); // Login successfully
         localStorage.setItem('currentUser',payload.DevMail);
         //Save token into cookie
+        Cookies.set('accessToken', response.message.accessToken, {expires: 7});
+        Cookies.set('refreshToken', response.message.refreshToken, {expires: 7});
         var d = new Date();
         d.setTime(d.getTime() + (1*24*60*60*1000));
         var expires = "expires="+ d.toUTCString();
