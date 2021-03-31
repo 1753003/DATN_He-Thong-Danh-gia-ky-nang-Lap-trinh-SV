@@ -6,12 +6,10 @@ module.exports = {
   },
 
   async getPracticeList(set){
-    //return await db('practice').where('PracticeSet', set);
-    return await db.raw(`select * from practice where PracticeSet = "${set}"`);
+    return await db('practice').where('PracticeSet', set);
   },
 
   async getPracticeByLevel(level){
-    //return await db('practice').where('PracticeSet', set);
-    return await db.raw(`select * from practice where DifficultLevel = "${level}"`);
+    return await db('practice').where('DifficultLevel', level);
   }
 }

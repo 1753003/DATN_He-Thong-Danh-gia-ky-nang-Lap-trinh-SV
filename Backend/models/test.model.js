@@ -84,6 +84,6 @@ module.exports = {
     },
 
     async getTestList(set){
-        return await db.raw(`select * from test where TestSet = "${set}"`);
+        return await db('test').where('TestSet', set);
     },
 }

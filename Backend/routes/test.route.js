@@ -4,13 +4,13 @@ const testModel = require('../models/test.model')
 const questionModel = require('../models/question.model')
 
 router.get('/', async function (req, res) {
-   res.json('OK');
-})
-
-router.get('/', async function (req, res) {
    const set = req.query.set;
    const list = await testModel.getTestList(set)
    res.json(list);
+})
+
+router.get('/', async function (req, res) {
+   res.json('OK');
 })
 
 router.get('/question/:id', async function (req, res) {
