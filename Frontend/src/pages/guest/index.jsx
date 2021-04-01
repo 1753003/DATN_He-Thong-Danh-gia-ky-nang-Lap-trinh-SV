@@ -1,12 +1,11 @@
 import React, { Component, useState, useRef } from 'react';
 import { Row, Col, Button, Menu, Anchor, Card } from 'antd';
 import { CaretDownOutlined } from '@ant-design/icons';
-const { SubMenu } = Menu;
-const { Meta } = Card;
 import { history } from 'umi';
 import styles from './index.less';
 import TweenOne from 'rc-tween-one';
 import { OverPack } from 'rc-scroll-anim';
+import YouTube from 'react-youtube';
 
 class Header extends React.Component {
   state = {
@@ -72,7 +71,7 @@ class Home extends React.Component {
                 <div className={styles.pageVideo}>
                   <video className={styles.videoTag} autoPlay loop muted>
                     <source
-                      src="https://firebasestorage.googleapis.com/v0/b/devcheckpro.appspot.com/o/Logo%2FCodeJOY%20(2).mp4?alt=media&token=a742ee85-ea79-4a87-807a-00f16df87ecd"
+                      src="https://streamable.com/aw47b3"
                       type="video/mp4"
                     />
                   </video>
