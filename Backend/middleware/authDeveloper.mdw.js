@@ -34,7 +34,7 @@ module.exports = function (req, res, next) {
           {
             expiresIn: "300s"
           });
-        res.json({status:'New access token', accessToken: newaccessToken});
+        res.json({message:'New access token', data: {accessToken: newaccessToken}});
       } catch (err) {
           req.refreshToken = refreshToken;
           next();

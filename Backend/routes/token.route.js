@@ -38,6 +38,7 @@ router.get("/", async function (req, res) {
           expiresIn: "10s",
         }
       );
+      await userModel.updateRefreshToken(decoded.uid, refreshToken);
       res.json({ message: "New 2 tokens", data: {accessToken: accessToken, refreshToken: refreshToken} });
     }
     else 

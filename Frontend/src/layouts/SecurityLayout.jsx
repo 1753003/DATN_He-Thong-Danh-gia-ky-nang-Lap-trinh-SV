@@ -2,7 +2,7 @@ import React from 'react';
 import { PageLoading } from '@ant-design/pro-layout';
 import { Redirect, connect } from 'umi';
 import { stringify } from 'querystring';
-import { Result } from 'antd';
+import { Result, Button } from 'antd';
 class SecurityLayout extends React.Component {
   state = {
     isReady: false,
@@ -46,11 +46,16 @@ class SecurityLayout extends React.Component {
       type = "developer";
 
     if (!children.props.location.pathname.includes(type))
-      return (<Result
-      status="403"
-      title="403"
-      subTitle="Sorry, you are not authorized to access this page."
-    />)
+      return (
+        <div>
+          <Result
+            status="403"
+            title="403"
+            subTitle="Sorry, you are not authorized to access this page."
+          />
+          <Button type="primary" href="/">Back home</Button>
+        </div>
+      )
     return children;
   }
 }
