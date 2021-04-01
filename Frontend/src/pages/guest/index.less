@@ -1,33 +1,75 @@
 body {
-    overflow-x: hidden;
+    overflow: hidden;
 }
 
 .menu {
-    background-color: black !important;
+    background-color: transparent !important;
     color: white !important;
     left: 0 !important;
     right: 0 !important;
 }
-.pageVideo {
-    height: 100vh;
-    
-    .videoTag {
-        height: 100vh;
+
+.container{
+    overflow: hidden;
+    // width: 100vw;
+    // height: 100vh;
+    .body{
+      background-color: black;
+      // width: 100vw;
+    // height: 100vh;
+      .page{
         width: 100vw;
-        //line-height: 100%;
-        padding-top: 60px;
-        padding-bottom: 40px;
-    }
-    Button {
-        border-radius: 50%;
-        position: fixed;
-        z-index: 2;
-        bottom: 0;
-        right: 0;
-        height: 40px
+    // height: 100vh;
+      }
     }
 }
-
+  
+.one{
+width: 100vw;
+height: 100vh;
+// margin: 0 auto;
+.videoTag {
+    height: 100%;
+    width: 100%;
+    // width: inherit;
+    line-height: 100%;
+    padding-top: 60px;
+    padding-bottom: 40px;
+}
+}
+.two{
+width: 100vw;
+height: 100vh;
+// background: linear-gradient(135deg, #c1ff32 1%, #ffa600 100%);
+background-color: black;
+}
+.three{
+width: 100vw;
+height: 100vh;
+background: linear-gradient(135deg, #32ff43 1%, #00ffd5 100%);
+}
+.thumbs{
+position: fixed;
+top: 50vh;
+right: 0;
+height: fit-content;
+width: fit-content;
+background: transparent;
+.thumb{
+    margin-right: 20px;
+    margin-bottom: 5px;
+    height: 10px;
+    width: 10px;
+    // background-color: white;
+    filter: blur(1px);
+    border: solid 1px;
+    border-radius: 50%;
+}
+}
+.active{
+background-color: white;
+}
+  
 .specialDesign {
     height: 100vh;
     padding-top:15vh;
@@ -70,7 +112,8 @@ body {
         perspective: 1000px;
         perspective-origin: 50% 50%;
         
-        .container {        
+        .container {
+          width: 50vw;        
             transform: scale3d(1, 1, 1) rotateX(7deg) rotateY(329deg) rotateZ(1deg);        
             .firstContainer {
                 perspective: 1000px;
@@ -107,7 +150,7 @@ body {
                         color: #15314B; 
                         margin-bottom: 5px;
                     }
-
+  
                     .promptContentMedium {
                         background-color: #15314B; 
                         width: 50%;
@@ -128,7 +171,7 @@ body {
                 };
                 .code {
                     perspective: 1000px;
-                    width: 200px;
+                    width: 30vw;
                     height: 200px;
                     background-color:#011730;     
                     box-shadow: 7px 11px 18px 2px #6F6F6F;          
@@ -276,21 +319,9 @@ body {
                 }
             }
         }  
-
-    }
-
-    .sliderButton {
-        border-radius: 50%;
-        position: fixed;
-        z-index: 2;
-        bottom: 0;
-        right: 0;
-        height: 40px
     }
 }
 
-.introduce {
+.navigationContent {
     padding-top: 50px;
-    padding-bottom: 50px;
-    height: 99vh;
 }

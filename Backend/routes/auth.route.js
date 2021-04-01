@@ -159,7 +159,7 @@ router.post('/login', async function (req, res) {
           }, 
           'secretkeyy', 
           {
-            expiresIn: "10s",
+            expiresIn: "1d",
           });
         var refreshToken = jwt.sign(
           {
@@ -168,7 +168,7 @@ router.post('/login', async function (req, res) {
           },
           'secretkeyy',
           {
-            expiresIn: "10s"
+            expiresIn: "7d"
           }
         );
         
@@ -246,7 +246,7 @@ router.post('/loginGoogle', async function (req, res) {
     }, 
     'secretkeyy', 
     {
-      expiresIn: "300s"
+      expiresIn: "1d"
   });
 
   var refreshToken = jwt.sign(
@@ -255,7 +255,7 @@ router.post('/loginGoogle', async function (req, res) {
     },
     'secretkeyy',
     {
-      expiresIn: "1d"
+      expiresIn: "7d"
     }
   );
   var result;
