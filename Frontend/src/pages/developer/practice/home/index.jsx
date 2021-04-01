@@ -75,15 +75,6 @@ const practiceHome = () => {
     return c;
   }
   
-  const onClick = () => {
-    // this.setState({
-    //   show: false,
-    // }, () => {
-    //   this.setState({
-    //     show: true
-    //   });
-    // });
-  }
   return (<>
   <div className="combined-wrapper">
         {true && (
