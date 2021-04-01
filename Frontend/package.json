@@ -77,8 +77,8 @@
     "nzh": "^1.0.3",
     "omit.js": "^2.0.2",
     "prop-types": "^15.5.10",
-    "rc-scroll-anim": "^2.7.6",
     "rc-queue-anim": "^1.8.5",
+    "rc-scroll-anim": "^2.7.6",
     "rc-texty": "^0.2.0",
     "rc-tween-one": "^2.7.3",
     "react": "^16.14.0",
@@ -89,6 +89,7 @@
     "react-helmet-async": "^1.0.4",
     "react-markdown": "^5.0.3",
     "react-router": "^4.3.1",
+    "react-youtube": "^7.13.1",
     "umi": "^3.2.14",
     "umi-request": "^1.0.8"
   },
