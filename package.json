@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "enquire-js": "^0.2.1",
+    "react-document-title": "^2.0.3"
+  }
+}
