@@ -173,7 +173,7 @@ export default defineConfig({
                   path: '/developer/welcome',
                   name: 'welcome',
                   icon: 'smile',
-                  component: './developer/practice/welcome',
+                  component: './developer/welcome',
                 },
                 {
                   name: 'Practice',

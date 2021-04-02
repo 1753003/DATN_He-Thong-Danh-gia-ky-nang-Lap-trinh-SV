@@ -1,5 +1,10 @@
-import React, { Component } from 'react'
-import { CheckCircleTwoTone, CloseCircleTwoTone } from '@ant-design/icons';
+import React, {
+  Component
+} from 'react'
+import {
+  CheckCircleTwoTone,
+  CloseCircleTwoTone
+} from '@ant-design/icons';
 import styles from './style.less'
 import {
   Typography,
@@ -13,12 +18,23 @@ import {
   Tabs,
   Alert
 } from 'antd'
-import {history, Link} from 'umi'
-import { connect } from 'dva'
+import {
+  history,
+  Link
+} from 'umi'
+import {
+  connect
+} from 'dva'
 import CodeEditor from '../CodeEditor'
-import PageLoading from '@/pages/dashboard/analysis/components/PageLoading'
-import { u_atob, u_btoa } from '@/utils/string'
+import PageLoading from '@/components/PageLoading'
+import {
+  u_atob,
+  u_btoa
+} from '@/utils/string'
 import AceEditor from 'react-ace';
+import 'brace/theme/tomorrow'
+import ReactMarkdown from 'react-markdown'
+
 const {TabPane} = Tabs;
 
 const AlertComponent =(alertMessage,alertDescription,alertType)=> (<Alert 
@@ -30,7 +46,7 @@ const AlertComponent =(alertMessage,alertDescription,alertType)=> (<Alert
 
 const editor = (value) =>{return(
   <AceEditor className={styles.editor}
-  readOnly={true} theme="github" value={value}
+  readOnly={true} theme="tomorrow" value={value}
   minLines='1'
   maxLines='8'
   highlightActiveLine = {false}
@@ -116,9 +132,9 @@ class Coding extends Component{
 
     return (
       <>
-        <div className="problem" >
+        <ReactMarkdown className="problem" >
           {this.props.description}
-        </div>
+        </ReactMarkdown>
         <Divider></Divider>
         <div className="code-editor">
           <CodeEditor></CodeEditor>
