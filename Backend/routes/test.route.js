@@ -19,4 +19,16 @@ router.get('/question/:id', async function (req, res) {
    res.json(list);
 })
 
+router.get('/:id', async function (req, res) {
+   const id = req.params.id;
+   const list = await testModel.getTestByID(id);
+   res.json(list);
+})
+
+router.post('/check/:id', async function (req, res){
+   const id = req.params.id;
+   const list = await testModel.checkTest(id, req.body.listTestAnswer);
+   res.json(list);
+})
+
 module.exports = router;
