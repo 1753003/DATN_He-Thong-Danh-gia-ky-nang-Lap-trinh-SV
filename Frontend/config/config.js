@@ -164,7 +164,17 @@ export default defineConfig({
               path: '/developer',
               component: '../layouts/BasicLayout',
               authority: ['developer'],
-              routes: [            
+              routes: [
+                {
+                  path: '/developer',
+                  redirect: '/developer/welcome',
+                },
+                {
+                  path: '/developer/welcome',
+                  name: 'welcome',
+                  icon: 'smile',
+                  component: './developer/welcome',
+                },
                 {
                   name: 'Practice',
                   path: '/developer/practice',

@@ -1,6 +1,9 @@
-import React, { Component } from 'react'
-
+import React, {
+  Component
+} from 'react'
+import styles from './style.less'
 import AceEditor from 'react-ace';
+import Animate from 'rc-animate';
 import "brace/ext/searchbox"
 // import 'ace-builds/src-min-noconflict/ext-options';
 // import 'ace-builds/src-min-noconflict/ext-keybinding_menu';
@@ -22,11 +25,29 @@ import 'brace/ext/language_tools';
 // import "ace-builds/src-noconflict/snippets/javascript"
 // import 'ace-builds/src-min-noconflict/ext-language_tools';
 
-import  { Button, Checkbox, Input, notification, Switch, Select, Space } from 'antd'
-import {connect} from 'dva'
-import { u_atob, u_btoa } from '@/utils/string';
+import {
+  Button,
+  Checkbox,
+  Input,
+  notification,
+  Switch,
+  Select,
+  Space,
+  Row
+} from 'antd'
+import {
+  connect
+} from 'dva'
+import {
+  u_atob,
+  u_btoa
+} from '@/utils/string';
 import "../Coding/style.less"
-import { QuestionCircleOutlined  } from '@ant-design/icons';
+import {
+  QuestionCircleOutlined,
+  CaretRightOutlined,
+  SearchOutlined 
+} from '@ant-design/icons';
 
 // const IconFont = createFromIconfontCN({
 //   scriptUrl: '//at.alicdn.com/t/font_2449607_3tn2o8mjobx.js',
@@ -35,10 +56,9 @@ const { TextArea, Search } = Input;
 
 
 class CodeEditor extends Component{
-  constructor(props, context) {
-    super(props, context)
+  constructor(props) {
+    super(props)
     this.state ={
-      customInput: false,
       codeVal: "",
       customVal: "",
       isSubmitBatch: false,
@@ -53,7 +73,6 @@ class CodeEditor extends Component{
   }
   handleCheckBoxChange = () => {
     this.setState({
-      customInput: !this.state.customInput,
       showCustom:!this.state.showCustom
     })
   }
@@ -181,18 +200,16 @@ class CodeEditor extends Component{
   render(){
     console.log(this.editorRef)
     // 
-    return(<>
-      <div>
+    return(<div className={styles.container} >
+        <Space className={styles.header}>
         
-        <Space className='toolbar'>
-        <Select defaultValue={2} style={{ width: 120 }} onChange={(value)=>this.handleTabSizeChange(value)}>
-      <Option value={2}>Tab size: 2</Option>
-      <Option value={4}>Tab size: 4</Option>
-
-    </Select>
     <Select defaultValue="tomorrow" style={{ width: 120 }} onChange={(value)=>this.handleThemeChange(value)}>
       <Select.Option value="monokai">Dark</Select.Option>
       <Option value="tomorrow">Light</Option>
+    </Select>
+    <Select defaultValue={2} style={{ width: 120 }} onChange={(value)=>this.handleTabSizeChange(value)}>
+      <Option value={2}>Tab size: 2</Option>
+      <Option value={4}>Tab size: 4</Option>
     </Select>
     <Select defaultValue={16} style={{ width: 120 }} onChange={(value)=>this.handleFontSizeChange(value)} >
       <Option value={12}>12</Option>
@@ -200,13 +217,13 @@ class CodeEditor extends Component{
       <Option value={16}>16</Option>
       <Option value={18}>18</Option>
     </Select>
-    <Button onClick={()=>this.handleSearch()}>Find</Button>
-    <Button href="https://github.com/securingsincity/react-ace">Help<QuestionCircleOutlined /></Button>
+    <Button icon={<SearchOutlined />} onClick={()=>this.handleSearch()}>Find</Button>
+    <Button icon={<QuestionCircleOutlined />} href="https://github.com/securingsincity/react-ace">Help</Button>
         </Space>
         <AceEditor
         ref ={this.editorRef}
         tabSize= {this.state.tabSize}
-        style={{ whiteSpace: 'pre-wrap', border:'solid grey 1px' }}
+        style={{ whiteSpace: 'pre-wrap', border:'solid #dcdcdc 1px' }}
         width="100%"
         height="400px"
         showPrintMargin = {false}
@@ -225,21 +242,37 @@ class CodeEditor extends Component{
         }}
         onChange={this.handleCodeEditorChange.bind(this)}
         />
+
+      <div className={styles.footer}>
+      <Space className={styles.footer}>
+        <Button size='large' className={styles.runBtn} type="primary" onClick={this.handleRun.bind(this)}><CaretRightOutlined style={{fontSize:'18px'}}/>Run Code</Button>
+        <Button size='large' className={styles.submitBtn} type="primary" onClick={this.handleSubmit.bind(this)}>Submit</Button>
+        <Checkbox 
+        onChange={this.handleCheckBoxChange.bind(this)}
+        >Custom Input
+        </Checkbox>
+        
+      </Space>
+        <Animate
+          component=""
+          showProp="showCustom"
+          transitionName="fade"
+          transitionAppear
+          transitionEnter
+          transitionLeave
+        >
+          {
+            this.state.showCustom ? 
+            <TextArea
+            className={styles.customInput}
+            allowClear
+            onChange={this.handleCustomValChange.bind(this)}
+            placeholder="Put your custom input here."
+            autoSize={{ minRows: 3, maxRows: 5 }}
+            /> : null}
+        </Animate>
+        </div>
       </div>
-      <Button type="primary" onClick={this.handleRun.bind(this)}>Run</Button>
-      <Button type="primary" onClick={this.handleSubmit.bind(this)}>Submit</Button>
-      <Checkbox 
-      onChange={this.handleCheckBoxChange.bind(this)}
-      >Custom Input
-      </Checkbox>
-      {this.state.showCustom&&<TextArea
-      allowClear
-      disabled={!this.state.customInput}
-      onChange={this.handleCustomValChange.bind(this)}
-      placeholder="Put your custom input here."
-      autoSize={{ minRows: 3, maxRows: 5 }}
-      />}
-      </>
     )
   }
 }
