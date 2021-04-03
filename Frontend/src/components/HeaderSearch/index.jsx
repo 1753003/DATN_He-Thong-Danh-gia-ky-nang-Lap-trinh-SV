@@ -70,8 +70,8 @@ const HeaderSearch = (props) => {
           bordered={false}
           onKeyDown={(e) => {
             if (e.key === 'Enter') {
-              if (restProps.onSearch) {
-                restProps.onSearch(value);
+              if (restProps.onPressEnter) {
+                restProps.onPressEnter(value);
               }
             }
           }}
