@@ -163,7 +163,6 @@ export default defineConfig({
             {
               path: '/developer',
               component: '../layouts/BasicLayout',
-              authority: ['developer'],
               routes: [
                 {
                   path: '/developer',
@@ -171,8 +170,6 @@ export default defineConfig({
                 },
                 {
                   path: '/developer/welcome',
-                  name: 'welcome',
-                  icon: 'smile',
                   component: './developer/welcome',
                 },
                 {
