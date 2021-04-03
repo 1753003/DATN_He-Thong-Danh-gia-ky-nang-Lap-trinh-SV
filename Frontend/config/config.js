@@ -162,7 +162,7 @@ export default defineConfig({
           routes: [
             {
               path: '/developer',
-              component: '../layouts/BlankLayout',
+              component: '../layouts/BasicLayout',
               authority: ['developer'],
               routes: [
                 {
@@ -178,7 +178,6 @@ export default defineConfig({
                 {
                   name: 'Practice',
                   path: '/developer/practice',
-                  component: '../layouts/BasicLayout',
                   routes: [
                     {
                       path: '/developer/practice',
@@ -211,6 +210,11 @@ export default defineConfig({
                   path: '/developer/test',
                   name: 'Test',
                   component: './developer/test/test.jsx',
+                },
+                {
+                  path: '/developer/search',
+                  component: './developer/search',
+                  
                 },
                 {
                   component: './404',
