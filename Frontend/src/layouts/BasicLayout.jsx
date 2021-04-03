@@ -12,7 +12,10 @@ import Authorized from '@/utils/Authorized';
 import RightContent from '@/components/GlobalHeader/RightContent';
 import { getMatchMenu } from '@umijs/route-utils';
 import logo from '../assets/banner.png';
-import './layout.less'
+import './layout.less';
+import { Inspector } from 'react-dev-inspector';
+
+const InspectorWrapper = process.env.NODE_ENV === 'development' ? Inspector : React.Fragment;
 const noMatch = (
   <Result
     status={403}
@@ -94,7 +97,11 @@ const BasicLayout = (props) => {
   );
 
   const { formatMessage } = useIntl();
-  settings.title = ''
+  settings.title = '';
+  const url = window.location.href;
+  const isWelcome = (url.includes('/developer/welcome') ? true : false)
+  console.log(url, isWelcome)
+  if (!isWelcome)
   return (
     <>
       <ProLayout
@@ -159,6 +166,8 @@ const BasicLayout = (props) => {
       />
     </>
   );
+  else
+  return <InspectorWrapper>{children}</InspectorWrapper>;
 };
 
 export default connect(({ global, settings }) => ({
