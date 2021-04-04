@@ -32,7 +32,7 @@ class SearchResult extends React.Component {
                 },
                 pageSize: 6,
               }}
-              dataSource={this.props.search.list}
+              dataSource={this.props.search.filterList}
               renderItem={(item) => (
                 <List.Item
                   onClick={() => {
@@ -81,21 +81,21 @@ class SearchResult extends React.Component {
           </Col>
           <Col className="gutter-row" span={6} style={{ margin: '30px 0px 10px 0px' }}>
             <Title level={4}>STATUS</Title>
-            <Checkbox onChange={()=>{}}>Solved</Checkbox>
+            <Checkbox onChange={()=>{this.props.dispatch({type:'search/updateFilter',payload: 'solved'})}}>Solved</Checkbox>
             <br></br>
-            <Checkbox onChange={()=>{}}>Unsolved</Checkbox>
+            <Checkbox onChange={()=>{this.props.dispatch({type:'search/updateFilter',payload: 'unsolved'})}}>Unsolved</Checkbox>
             <Divider />
             <Title level={4}>DIFICULTY</Title>
-            <Checkbox onChange={()=>{}}>Easy</Checkbox>
+            <Checkbox onChange={()=>{this.props.dispatch({type:'search/updateFilter',payload: 'easy'})}}>Easy</Checkbox>
             <br></br>
-            <Checkbox onChange={()=>{}}>Medium</Checkbox>
+            <Checkbox onChange={()=>{this.props.dispatch({type:'search/updateFilter',payload: 'medium'})}}>Medium</Checkbox>
             <br></br>
-            <Checkbox onChange={()=>{}}>Hard</Checkbox>
+            <Checkbox onChange={()=>{this.props.dispatch({type:'search/updateFilter',payload: 'hard'})}}>Hard</Checkbox>
             <Divider />
             <Title level={4}>TYPE</Title>
-            <Checkbox onChange={()=>{}}>Multiple-choice</Checkbox>
+            <Checkbox onChange={()=>{this.props.dispatch({type:'search/updateFilter',payload: 'multiple'})}}>Multiple-choice</Checkbox>
             <br></br>
-            <Checkbox onChange={()=>{}}>Coding</Checkbox>
+            <Checkbox onChange={()=>{this.props.dispatch({type:'search/updateFilter',payload: 'code'})}}>Coding</Checkbox>
             <Divider />
           </Col>
         </Row>
