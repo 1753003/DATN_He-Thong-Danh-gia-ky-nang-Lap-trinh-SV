@@ -11,5 +11,13 @@ module.exports = {
 
   async getPracticeByLevel(level){
     return await db('practice').where('DifficultLevel', level);
-  }
+  },
+
+  async getSubmissions(pid, uid){
+    return await db('submissions').where({'PracticeID':pid, 'DevID':uid})
+  },
+  
+  async saveSubmissions(data){
+    return await db('submissions').insert(data)
+  },
 }

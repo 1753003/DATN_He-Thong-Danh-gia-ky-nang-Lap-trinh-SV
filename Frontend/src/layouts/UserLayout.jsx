@@ -1,10 +1,12 @@
 import { DefaultFooter, getMenuData, getPageTitle } from '@ant-design/pro-layout';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { Link, SelectLang, useIntl, connect, FormattedMessage } from 'umi';
+import { notification } from 'antd';
 import React from 'react';
 import logo from '../assets/logo.svg';
 import styles from './UserLayout.less';
-
+import { getPageQuery } from '@/utils/utils';
+import { SmileOutlined } from '@ant-design/icons';
 const UserLayout = (props) => {
   const {
     route = {
@@ -27,7 +29,20 @@ const UserLayout = (props) => {
     ...props,
   });
 
-  console.log(props);
+  const errCode = getPageQuery().errorCode;
+  var msg = '';
+
+  if (errCode == 1 || errCode == 2)
+    msg = "There are some problems with your login session, please log in again."
+  else if (errCode == 3) 
+    msg = "Maybe someone broke into your account, please log in again and change password if you can."
+  if (msg !== '')
+    notification.open({
+      message: 'Login session error',
+      description: msg,
+      icon: <SmileOutlined rotate={180} style={{ color: '#108ee9' }} />,
+    });
+  
   return (
     <HelmetProvider>
       <Helmet>
@@ -50,7 +65,7 @@ const UserLayout = (props) => {
             <div className={styles.desc}>
               <FormattedMessage
                 id="pages.layouts.userLayout.title"
-                defaultMessage="Devcheck is your choice!"
+                defaultMessage="Codejoy is your choice!"
               />
             </div>
           </div>

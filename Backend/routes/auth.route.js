@@ -17,7 +17,9 @@ const firebaseConfig = {
 
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
-
+router.post('/auth', async function (req, res) {
+  
+})
 router.post('/signup', async function (req, res) {
     const userByEmail = await userModel.getByEmail(req.body.email);
     firebase.auth().createUserWithEmailAndPassword(req.body.email, req.body.password)
@@ -166,7 +168,7 @@ router.post('/login', async function (req, res) {
           },
           'secretkeyy',
           {
-            expiresIn: "1d"
+            expiresIn: "7d"
           }
         );
         console.log(refreshToken)
@@ -244,7 +246,7 @@ router.post('/loginGoogle', async function (req, res) {
     }, 
     'secretkeyy', 
     {
-      expiresIn: "300s"
+      expiresIn: "1d"
   });
 
   var refreshToken = jwt.sign(
@@ -253,7 +255,7 @@ router.post('/loginGoogle', async function (req, res) {
     },
     'secretkeyy',
     {
-      expiresIn: "1d"
+      expiresIn: "7d"
     }
   );
   var result;
@@ -289,67 +291,6 @@ router.post('/loginGoogle', async function (req, res) {
   }
 
   res.json(result);
-})
-
-
-router.post('/refreshToken', async function(req, res) {
-  if (req.body.refreshToken) {
-    const list = await userModel.getAll();
-    try 
-    {
-      const decoded = jwt.verify(req.body.refreshToken, 'secretkeyy');
-      var check = false;
-      list.forEach(item => {
-        if (item.UserID == decoded.uid && item.RefreshToken == req.body.refreshToken)
-        {
-          check = true;
-        }
-      })
-      if (check === true) {
-        var accessToken = jwt.sign(
-          {
-            uid: decoded.uid
-          }, 
-          'secretkeyy', 
-          {
-            expiresIn: "300s"
-          });
-        res.json({accessToken: accessToken});
-      } else
-      res.json({
-        message: "Wrong refresh token"
-      })
-    } catch (err) {
-      const decoded = jwt.verify(req.body.refreshToken, 'secretkeyy', {ignoreExpiration: true});
-      var check = false;
-      list.forEach(item => {
-        if (item.UserID == decoded.uid && item.RefreshToken == req.body.refreshToken)
-        {
-          check = true;
-        }
-      })
-      if (check) {
-        var accessToken = jwt.sign(
-          {
-            uid: decoded.uid
-          }, 
-          'secretkeyy', 
-          {
-            expiresIn: "300s"
-          });
-        var accessToken = jwt.sign(
-          {
-            uid: decoded.uid
-          }, 
-          'secretkeyy', 
-          {
-            expiresIn: "1d"
-          });
-        res.json({accessToken: accessToken, refreshToken: refreshToken});
-      }
-      res.json('Wrong refresh token')
-    }
-  }
 })
 
 router.post('/forgotPassword', async function (req, res) {

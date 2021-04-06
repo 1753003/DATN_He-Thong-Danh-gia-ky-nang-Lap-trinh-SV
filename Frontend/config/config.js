@@ -162,7 +162,7 @@ export default defineConfig({
           routes: [
             {
               path: '/developer',
-              component: '../layouts/BasicLayout',
+              component: '../layouts/BlankLayout',
               authority: ['developer'],
               routes: [
                 {
@@ -173,12 +173,12 @@ export default defineConfig({
                   path: '/developer/welcome',
                   name: 'welcome',
                   icon: 'smile',
-                  component: './Welcome',
+                  component: './developer/welcome',
                 },
                 {
                   name: 'Practice',
                   path: '/developer/practice',
-                  component: '../layouts/BlankLayout',
+                  component: '../layouts/BasicLayout',
                   routes: [
                     {
                       path: '/developer/practice',
@@ -193,19 +193,24 @@ export default defineConfig({
                         },
                         {
                           path: '/developer/practice/home',
-                          component: './practice/home',
+                          component: './developer/practice/home',
                         },
                         {
                           path: '/developer/practice/list',
-                          component: './practice/list',
+                          component: './developer/practice/list',
                         },
                         {
                           path: '/developer/practice/questions',
-                          component: './practice/questions',
+                          component: './developer/practice/questions',
                         },
                       ],
                     },
                   ],
+                },
+                {
+                  path: '/developer/test',
+                  name: 'Test',
+                  component: './developer/test/test.jsx',
                 },
                 {
                   component: './404',

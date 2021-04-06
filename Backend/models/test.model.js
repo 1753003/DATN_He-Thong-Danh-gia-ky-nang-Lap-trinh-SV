@@ -17,7 +17,7 @@ module.exports = {
                         await db('multiplechoice').insert({
                             "MCDescription": element.MCDescription,
                             "Answer": JSON.stringify(element.Answer),
-                            "CorrectAnswer": element.CorrectAnswer,
+                            "CorrectAnswer": JSON.stringify(CorrectAnswer),
                             "QuestionID": result[0],
                         })             
                     }
@@ -28,7 +28,8 @@ module.exports = {
                             "RunningTime": element.RunningTime,
                             "MemoryUsage": element.MemoryUsage,
                             "TestCase": JSON.stringify(element.TestCase),
-                            "QuestionID": result[0]
+                            "QuestionID": result[0],
+                            "SampleCode": element.SampleCode
                         })
                     }
                     await db('test').update({

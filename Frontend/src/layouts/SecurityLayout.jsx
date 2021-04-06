@@ -2,7 +2,7 @@ import React from 'react';
 import { PageLoading } from '@ant-design/pro-layout';
 import { Redirect, connect } from 'umi';
 import { stringify } from 'querystring';
-import { Result } from 'antd';
+import { Result, Button } from 'antd';
 class SecurityLayout extends React.Component {
   state = {
     isReady: false,
@@ -30,7 +30,7 @@ class SecurityLayout extends React.Component {
     const queryString = stringify({
       redirect: window.location.href,
     });
-    console.log(isLogin, loading);
+    
     if ((!isLogin && loading) || !isReady) {
       return <PageLoading />;
     }
@@ -38,19 +38,24 @@ class SecurityLayout extends React.Component {
     if (!isLogin && window.location.pathname !== '/user/login') {
       return <Redirect to={`/user/login?${queryString}`} />;
     }
+
     var type = localStorage.getItem('antd-pro-authority');
     if (type.includes("creator"))
       type = "creator"
     else if (type.includes("developer"))
       type = "developer";
-    console.log(children.props.location.pathname);
-    console.log(type)
+
     if (!children.props.location.pathname.includes(type))
-      return (<Result
-      status="403"
-      title="403"
-      subTitle="Sorry, you are not authorized to access this page."
-    />)
+      return (
+        <div>
+          <Result
+            status="403"
+            title="403"
+            subTitle="Sorry, you are not authorized to access this page."
+          />
+          <Button type="primary" href="/">Back home</Button>
+        </div>
+      )
     return children;
   }
 }
