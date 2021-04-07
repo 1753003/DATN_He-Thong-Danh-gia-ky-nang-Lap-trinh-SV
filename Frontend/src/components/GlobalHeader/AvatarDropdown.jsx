@@ -5,6 +5,18 @@ import { history, connect } from 'umi';
 import HeaderDropdown from '../HeaderDropdown';
 import styles from './index.less';
 
+function generateDarkColorHex() {
+  let color = "#";
+  for (let i = 0; i < 3; i++)
+    color += ("0" + Math.floor(Math.random() * Math.pow(16, 2) / 2).toString(16)).slice(-2);
+  return color;
+}
+function generateLightColorHex() {
+  let color = "#";
+  for (let i = 0; i < 3; i++)
+    color += ("0" + Math.floor(((1 + Math.random()) * Math.pow(16, 2)) / 2).toString(16)).slice(-2);
+  return color;
+}
 class AvatarDropdown extends React.Component {
   onMenuClick = (event) => {
     const { key } = event;
@@ -58,7 +70,7 @@ class AvatarDropdown extends React.Component {
     return currentUser && currentUser.name ? (
       <HeaderDropdown overlay={menuHeaderDropdown}>
         <span className={`${styles.action} ${styles.account}`}>
-          <Avatar size="small" className={styles.avatar} src={currentUser.avatar} alt="avatar" />
+          <Avatar style={{marginRight:'5px',fontWeight:'bold', color: `${generateDarkColorHex()}`, backgroundColor: `${generateLightColorHex()}` }} size="small" className={styles.avatar} src={currentUser.avatar} alt="avatar" >{currentUser.name[0].toUpperCase()}</Avatar>
           <span className={`${styles.name} anticon`}>{currentUser.name}</span>
         </span>
       </HeaderDropdown>

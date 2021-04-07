@@ -169,6 +169,7 @@ export default defineConfig({
                   redirect: '/developer/welcome',
                 },
                 {
+                  name: 'Welcome',
                   path: '/developer/welcome',
                   component: './developer/welcome',
                 },

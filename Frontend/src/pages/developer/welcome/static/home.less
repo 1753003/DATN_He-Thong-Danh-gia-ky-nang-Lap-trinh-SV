@@ -1,11 +1,26 @@
 @import './default.less';
 
+main{
+  margin: 0 !important;
+  background-color: white;
+  width: 100%;
+  height: auto;
+  >div{
+    width: 100%;
+    height: auto;
+  }
+}
 html,
 body {
+  -webkit-user-select: none; /* Safari */        
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+/Edge */
+  user-select: none; /* Standard */
   height: 100%;
 }
 
 body {
+
   font-family: @font-family;
   line-height: 1.5;
   color: @site-text-color;

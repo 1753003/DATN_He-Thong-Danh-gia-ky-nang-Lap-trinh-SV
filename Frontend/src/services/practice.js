@@ -62,15 +62,15 @@ export function getSubmissionList(pid, uid) {
       });
   });
 }
-export function saveSubmission(pid, uid, jsonData) {
+export function saveSubmission(pid, jsonData) {
   let tcPassed = 0;
   let total = 0;
-  console.log('afslkdfnm,xcvnksajdtoireatjtlkasdfglkasda', jsonData);
+
   for (var res of jsonData) {
     total += 1;
     res.status_id == 3 ? (tcPassed += 1) : (tcPassed = tcPassed);
   }
-  uid = 'zcwVw4Rjp7b0lRmVZQt6ZXmspql1'; //chromevi123+1@gmail.com
+//chromevi123+1@gmail.com
   const submission = {
     SubmissionType: 'Coding',
     PracticeID: pid,
@@ -86,7 +86,6 @@ export function saveSubmission(pid, uid, jsonData) {
       url: 'http://localhost:5000/api/practice/submissions',
       headers: {
         accessToken: Cookies.get('accessToken'),
-        refreshToken: Cookies.get('refreshToken'),
       },
       data: submission,
     };

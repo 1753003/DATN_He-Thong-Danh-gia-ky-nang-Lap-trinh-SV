@@ -159,7 +159,8 @@ class CodeEditor extends Component{
         batch_Submission.push(data)
       }
       const batch = {
-        "submissions": batch_Submission
+        "submissions": batch_Submission,
+        "pid": this.props.practice.listDetail.generalInformation.PracticeID
       }
 
     this.props.dispatch({
@@ -198,7 +199,6 @@ class CodeEditor extends Component{
   }
 
   render(){
-    console.log(this.editorRef)
     // 
     return(<div className={styles.container} >
         <Space className={styles.header}>
