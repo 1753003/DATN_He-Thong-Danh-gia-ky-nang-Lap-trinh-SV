@@ -100,8 +100,7 @@ const BasicLayout = (props) => {
   settings.title = '';
   const url = window.location.href;
   const isWelcome = (url.includes('/developer/welcome') ? true : false)
-  console.log(url, isWelcome)
-  if (!isWelcome)
+
   return (
     <>
       <ProLayout
@@ -166,8 +165,7 @@ const BasicLayout = (props) => {
       />
     </>
   );
-  else
-  return <InspectorWrapper>{children}</InspectorWrapper>;
+
 };
 
 export default connect(({ global, settings }) => ({

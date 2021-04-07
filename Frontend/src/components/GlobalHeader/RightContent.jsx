@@ -26,7 +26,7 @@ const GlobalHeaderRight = (props) => {
       <HeaderSearch
         className={`${styles.action} ${styles.search}`}
         placeholder="Search"
-        defaultValue="C"
+        defaultValue=""
         bordered={false}
         options={[
           {

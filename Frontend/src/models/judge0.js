@@ -49,6 +49,7 @@ const Model = {
       
     },
     *sendCodeBatch({ payload }, { call, put, select }) {
+      console.log('fasdd', payload)
       yield put({
         type: 'setResult',
         payload: null
@@ -60,26 +61,25 @@ const Model = {
       yield put({
         type: 'setDone',
       })
-      const res = yield createSubmissionBatch(payload)
-      // console.log(res)
+      const send = {
+        submissions: payload.submissions
+      }
+      const res = yield createSubmissionBatch(send)
       
       const token_batch= []
       for(var tk of res){
         token_batch.push(tk.token)
       }
       const token = token_batch.join(',')
-      // console.log(token)
+
       yield put({
         type: 'setToken',
         payload: token
       })
-      let data =null;
-      // console.log(payload, state.isDone)
-      data = yield getSubmissionBatch(token)
+      let data = yield getSubmissionBatch(token)
       data = JSON.parse(JSON.stringify(data, function (key, value) {
         return (value == null) ? "" : value
       }));
-      // console.log('res',res)
       yield put({
         type: 'setResult',
         payload: data
@@ -89,14 +89,9 @@ const Model = {
         type: 'setDone',
       })
       //savedb
-      // const state = yield select(state => state.practice)
-      // let temp = state.listDetail.listQuestion
-      // console.log(temp)
-      let uid = 'zcwVw4Rjp7b0lRmVZQt6ZXmspql1'
-      let pid = 1
       const state = yield select(state => state.judge)
-      console.log(state.result)
-      yield saveSubmission(pid,uid,state.result.submissions)
+
+      yield saveSubmission(payload.pid,state.result.submissions)
     },
     
   },
