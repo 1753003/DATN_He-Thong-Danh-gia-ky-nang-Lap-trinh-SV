@@ -1,10 +1,10 @@
 import React from 'react';
 import { Row, Col, Icon, Menu, Button, Popover } from 'antd';
-
+import {connect, history} from 'umi'
 import { enquireScreen } from 'enquire-js';
 import HeaderSearch from '@/components/HeaderSearch';
 import Avatar from '@/components/GlobalHeader/AvatarDropdown';
-const LOGO_URL = '/Frontend/src/assets/logo.svg';
+const LOGO_URL = 'https://firebasestorage.googleapis.com/v0/b/devcheckpro.appspot.com/o/Logo%2Fbanner.png?alt=media&token=ab32e21e-7770-41ee-ba60-83aa439ad5d6';
 
 class Header extends React.Component {
   state = {
@@ -24,9 +24,17 @@ class Header extends React.Component {
     const menu = (
       <Menu mode={menuMode} id="nav" key="nav">
         <Menu.Item key="search">
-          <HeaderSearch
+          <HeaderSearch className="search"
           bordered={false}
+          onPressEnter={(value) => {
+            this.props.dispatch({type:'search/getSearchList', payload: value})
+            history.push('/developer/search')
+            
+          }}
           ></HeaderSearch>
+        </Menu.Item>
+        <Menu.Item>
+          <Avatar></Avatar>
         </Menu.Item>
       </Menu>
     );
@@ -54,21 +62,10 @@ class Header extends React.Component {
           <Col xxl={4} xl={5} lg={8} md={8} sm={24} xs={24}>
             <div id="logo" to="/">
               <img src={LOGO_URL} alt="logo" />
-              <span>CODEJOY</span>
             </div>
           </Col>
           <Col xxl={20} xl={19} lg={16} md={16} sm={0} xs={0}>
             <div className="header-meta">
-              <div id="preview">
-                <a
-                  id="preview-button"
-                  target="_blank"
-                  href="http://preview.pro.ant.design"
-                  rel="noopener noreferrer"
-                >
-                  <Avatar></Avatar>
-                </a>
-              </div>
               {menuMode === 'horizontal' ? <div id="menu">{menu}</div> : null}
             </div>
           </Col>
@@ -78,4 +75,6 @@ class Header extends React.Component {
   }
 }
 
-export default Header;
+export default connect(({search})=>({
+  search
+}))(Header);
