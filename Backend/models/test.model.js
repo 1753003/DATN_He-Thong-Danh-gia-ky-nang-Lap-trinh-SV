@@ -1,5 +1,6 @@
 const db = require('../utils/db');
-const reportModel = require('../models/report.model')
+const reportModel = require('../models/report.model');
+const { getPracticeQuestionList } = require('./question.model');
 module.exports = {
     async createTest(generalInformation, listQuestion) {
         await db('test').insert(generalInformation).then(async TestID => {
@@ -81,5 +82,49 @@ module.exports = {
             "listQuestion": listQuestion
         }
         return result;
-    }
+    },
+
+    async checkTest(testID, listTestAnswer){
+        const test = (await db('test').where('TestID',testID))[0];
+        //console.log(test);
+        const listQuestionID = test.QuestionID;
+        var score = 0;
+        for (const questionID of listQuestionID){
+            const question = (await db('question').where('ID', questionID))[0];
+            if (question.QuestionType == 'MultipleChoice'){
+                const multipleQuestion = (await db('multiplechoice').where('QuestionID', question.ID))[0];
+                //console.log(multipleQuestion);
+                for (const answer of listTestAnswer){
+                    //console.log(answer);
+                    if (answer.ID == questionID){
+                        if (JSON.stringify(answer.answer)==JSON.stringify(multipleQuestion.CorrectAnswer)){
+                            score++;
+                        }
+                    }
+                }
+            }
+            else if (question.QuestionType == "Code"){
+                const codeQuestion = (await db('coding').where('QuestionID', question.ID))[0];
+                for (const answer of listTestAnswer){
+                    if (answer.ID == questionID){
+                        // console.log(answer);
+                        // console.log(codeQuestion.RunningTime);
+                        // console.log(codeQuestion.MemoryUsage);
+                        if (answer.answer[0] <= codeQuestion.RunningTime && JSON.stringify(answer.answer[1])==JSON.stringify(codeQuestion.MemoryUsage)){
+                            var tempArr = answer.answer.slice(2, answer.answer.length);
+                            console.log(codeQuestion.TestCase);
+                            if (JSON.stringify(tempArr)==JSON.stringify(codeQuestion.TestCase.Output)){ //sai chỗ này nè, pon kêu chạy vòng for để kiểm tra
+                                score++;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return score;
+    },
+
+    async getTestList(set){
+        return await db('test').where('TestSet', set);
+    },
 }

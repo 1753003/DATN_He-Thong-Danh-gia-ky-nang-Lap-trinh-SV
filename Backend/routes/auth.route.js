@@ -171,7 +171,7 @@ router.post('/login', async function (req, res) {
             expiresIn: "7d"
           }
         );
-        
+        console.log(refreshToken)
         userModel.updateRefreshToken(user.uid, refreshToken);
         res.json({
           status: 'OK',

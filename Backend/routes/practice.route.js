@@ -16,6 +16,18 @@ router.get('/submissions', async function (req, res) {
   const list = await practiceModel.getSubmissions(pid,uid)
   res.json(list);
 })
+
+router.get('/', async function (req, res){
+  const level = req.query.level;
+  const list = await practiceModel.getPracticeByLevel(level);
+  res.json(list);
+})
+
+router.get('/', async function (req, res) {
+  const list = await practiceModel.getAllPractice()
+  res.json(list);
+})
+
 router.get('/:id', async function (req, res) {
   const qid = req.params.id;
   const list = await questionModel.getPracticeQuestionListDetail(qid)
@@ -24,6 +36,7 @@ router.get('/:id', async function (req, res) {
 router.post('/submissions', async function (req, res) {
   const data = req.body;
   data.DevID = req.uid
+  console.log(data)
   const ret = await practiceModel.saveSubmissions(data)
   res.json(ret);
 })

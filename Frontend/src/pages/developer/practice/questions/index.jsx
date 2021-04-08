@@ -58,7 +58,7 @@ const questionList = ({location, practice, dispatch, loading}) => {
       <Link to={route.path}>{route.breadcrumbName}</Link>
     );
   }
-  console.log(practice.listDetail)
+  console.log('pt',practice.listDetail)
   return (loading?<PageLoading></PageLoading>:
     <div>
       <PageHeader

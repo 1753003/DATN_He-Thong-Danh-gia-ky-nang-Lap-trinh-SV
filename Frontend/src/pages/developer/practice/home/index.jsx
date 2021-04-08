@@ -75,7 +75,7 @@ const practiceHome = () => {
     return c;
   }
   
-  return (<>
+  return (<div className={styles.global}>
   <div className="combined-wrapper">
         {true && (
           <div className="combined">
@@ -159,7 +159,7 @@ const practiceHome = () => {
         </div>
       </div>
     </div>
-    </>
+    </div>
   );
 }
 

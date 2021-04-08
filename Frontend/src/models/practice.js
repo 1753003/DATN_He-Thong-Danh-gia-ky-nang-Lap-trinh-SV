@@ -15,7 +15,7 @@ const Model = {
     currentSubmission: null,
     currentQuestionID: null,
     tabChange:false,
-    list:[]
+    list:[],
   },
   effects: {
     *getPracticeSetList({ payload }, { call, put,select }){
