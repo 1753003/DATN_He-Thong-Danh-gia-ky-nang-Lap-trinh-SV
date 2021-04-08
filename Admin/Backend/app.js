@@ -23,6 +23,7 @@ app.get('/', function(req, res) {
     res.json("Running...");
 })
 
+app.use('/admin/test', require('./routes/test.route'));
 
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, function() {
