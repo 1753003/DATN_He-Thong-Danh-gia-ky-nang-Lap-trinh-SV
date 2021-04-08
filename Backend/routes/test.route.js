@@ -15,7 +15,7 @@ router.get('/', async function (req, res) {
 
 router.get('/question/:id', async function (req, res) {
    const id = req.params.id;
-   const list = await questionModel.getQuestionByTestID(id);
+   const list = await questionModel.getPracticeQuestionListDetail(id);
    res.json(list);
 })
 
