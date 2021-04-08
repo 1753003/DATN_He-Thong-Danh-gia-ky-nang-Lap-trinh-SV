@@ -4,7 +4,7 @@ import axios from 'axios';
 export function Register(params) {
   console.log(params)
   return new Promise( (resolve, reject) => {
-      axios.post('http://localhost:5000/api/auth/signup', params)
+      axios.post('https://codejoy.herokuapp.com/api/auth/signup', params)
       .then((response) => {
           // handle success
           resolve(response.data)
@@ -19,7 +19,7 @@ export function Register(params) {
 export function ConfirmEmail(params) {
   console.log(params)
   return new Promise( (resolve, reject) => {
-      axios.post('http://localhost:5000/api/auth/confirmEmail', params)
+      axios.post('https://codejoy.herokuapp.com/api/auth/confirmEmail', params)
       .then((response) => {
           // handle success
           resolve(response.data)
@@ -34,7 +34,7 @@ export function ConfirmEmail(params) {
 export function ConfirmCode(code, uid) {
     //console.log(params)
     return new Promise( (resolve, reject) => {
-        axios.post('http://localhost:5000/api/auth/confirmCode', {code: code, uid: uid})
+        axios.post('https://codejoy.herokuapp.com/api/auth/confirmCode', {code: code, uid: uid})
         .then((response) => {
             // handle success
             resolve(response.data)
