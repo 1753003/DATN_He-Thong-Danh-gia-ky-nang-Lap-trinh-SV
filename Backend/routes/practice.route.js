@@ -17,11 +17,11 @@ router.get('/submissions', async function (req, res) {
   res.json(list);
 })
 
-router.get('/', async function (req, res){
-  const level = req.query.level;
-  const list = await practiceModel.getPracticeByLevel(level);
-  res.json(list);
-})
+// router.get('/', async function (req, res){
+//   const level = req.query.level;
+//   const list = await practiceModel.getPracticeByLevel(level);
+//   res.json(list);
+// })
 
 router.get('/', async function (req, res) {
   const list = await practiceModel.getAllPractice()
