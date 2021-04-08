@@ -26,25 +26,31 @@ const GlobalHeaderRight = (props) => {
       <HeaderSearch
         className={`${styles.action} ${styles.search}`}
         placeholder="Search"
-        defaultValue=""
+        defaultValue="Web"
         bordered={false}
         options={[
           {
-            label: <a href="https://umijs.org/zh/guide/umi-ui.html">umi ui</a>,
-            value: 'umi ui',
+            label: <a onClick = {() => {
+              dispatch({type:'search/getSearchList', payload: 'C++'})
+              history.push('/developer/search?keyword=C++')
+            }}>C++</a>,
+            value: 'C++',
           },
           {
-            label: <a href="next.ant.design">Ant Design</a>,
-            value: 'Ant Design',
+            label: <a onClick = {() => {
+              dispatch({type:'search/getSearchList', payload: 'JavaScript'})
+              history.push('/developer/search?keyword=JavaScript')
+            }}>JavaScript</a>,
+            value: 'JavaScript',
           },
           {
-            label: <a href="https://protable.ant.design/">Pro Table</a>,
-            value: 'Pro Table',
+            label: <a onClick = {() => {
+              dispatch({type:'search/getSearchList', payload: 'Pointer'})
+              history.push('/developer/search?keyword=Pointer')
+            }}>Pointer</a>,
+            value: 'Pointer',
           },
-          {
-            label: <a href="https://prolayout.ant.design/">Pro Layout</a>,
-            value: 'Pro Layout',
-          },
+
         ]}
         onPressEnter={(value) => {
           dispatch({type:'search/getSearchList', payload: value})
