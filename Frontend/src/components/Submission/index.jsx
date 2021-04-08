@@ -54,8 +54,8 @@ const Submission = ({dispatch, practice, loading}) =>{
   }
   return (
     <>
-      {!loading&&<div>{practice.currentSubmission!=null?<SubmissionDetail></SubmissionDetail>:
-      <Table dataSource={data}>
+      {<div>{practice.currentSubmission!=null?<SubmissionDetail></SubmissionDetail>:
+      <Table loading={loading} dataSource={data}>
       <Column title="" dataIndex="key" key="no" />
       <Column title="RESULT" key="result" 
       render={(text, record) => (

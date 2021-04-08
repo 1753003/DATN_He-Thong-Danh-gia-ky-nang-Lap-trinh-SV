@@ -15,7 +15,7 @@ export default defineConfig({
   },
   locale: {
     // default zh-CN
-    default: 'zh-CN',
+    default: 'en-US',
     antd: true,
     // default true, when it is true, will use `navigator.language` overwrite default
     baseNavigator: true,
@@ -162,23 +162,20 @@ export default defineConfig({
           routes: [
             {
               path: '/developer',
-              component: '../layouts/BlankLayout',
-              authority: ['developer'],
+              component: '../layouts/BasicLayout',
               routes: [
                 {
                   path: '/developer',
                   redirect: '/developer/welcome',
                 },
                 {
+                  name: 'Welcome',
                   path: '/developer/welcome',
-                  name: 'welcome',
-                  icon: 'smile',
                   component: './developer/welcome',
                 },
                 {
                   name: 'Practice',
                   path: '/developer/practice',
-                  component: '../layouts/BasicLayout',
                   routes: [
                     {
                       path: '/developer/practice',
@@ -211,6 +208,11 @@ export default defineConfig({
                   path: '/developer/test',
                   name: 'Test',
                   component: './developer/test/test.jsx',
+                },
+                {
+                  path: '/developer/search',
+                  component: './developer/search',
+                  
                 },
                 {
                   component: './404',

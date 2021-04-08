@@ -5,9 +5,10 @@ import tokenHandling from './tokenHandling';
 export function getPracticeListDetail(id) {
   return new Promise((resolve, reject) => {
     axios
-      .get(`http://localhost:5000/api/practice/${id}`, {
+      .get(`/api/practice/${id}`, {
         headers: {
           accessToken: Cookies.get('accessToken'),
+          'access-control-allow-origin': '*',
         },
       })
       .then((response) => {
@@ -15,7 +16,7 @@ export function getPracticeListDetail(id) {
       })
       .catch((error) => {
         const message = error.response.data.message;
-        tokenHandling(message, `http://localhost:5000/api/practice/${id}`, 'GET', resolve);
+        tokenHandling(message, `/api/practice/${id}`, 'GET', resolve);
       });
   });
 }
@@ -23,9 +24,10 @@ export function getPracticeSet(set) {
   return new Promise((resolve, reject) => {
     var options = {
       method: 'GET',
-      url: `http://localhost:5000/api/practice?set=${set}`,
+      url: `/api/practice?set=${set}`,
       headers: {
         accessToken: Cookies.get('accessToken'),
+        'access-control-allow-origin': '*',
       },
     };
     axios
@@ -45,9 +47,10 @@ export function getSubmissionList(pid, uid) {
   uid = 'zcwVw4Rjp7b0lRmVZQt6ZXmspql1'; //chromevi123+1@gmail.com
   return new Promise((resolve, reject) => {
     axios
-      .get(`http://localhost:5000/api/practice/submissions?pid=${pid}&uid=${uid}`, {
+      .get(`/api/practice/submissions?pid=${pid}&uid=${uid}`, {
         headers: {
           accessToken: Cookies.get('accessToken'),
+          'access-control-allow-origin': '*',
         },
       })
       .then((response) => {
@@ -62,15 +65,15 @@ export function getSubmissionList(pid, uid) {
       });
   });
 }
-export function saveSubmission(pid, uid, jsonData) {
+export function saveSubmission(pid, jsonData) {
   let tcPassed = 0;
   let total = 0;
-  console.log('afslkdfnm,xcvnksajdtoireatjtlkasdfglkasda', jsonData);
+
   for (var res of jsonData) {
     total += 1;
     res.status_id == 3 ? (tcPassed += 1) : (tcPassed = tcPassed);
   }
-  uid = 'zcwVw4Rjp7b0lRmVZQt6ZXmspql1'; //chromevi123+1@gmail.com
+//chromevi123+1@gmail.com
   const submission = {
     SubmissionType: 'Coding',
     PracticeID: pid,
@@ -83,10 +86,10 @@ export function saveSubmission(pid, uid, jsonData) {
   return new Promise((resolve, reject) => {
     var options = {
       method: 'POST',
-      url: 'http://localhost:5000/api/practice/submissions',
+      url: '/api/practice/submissions',
       headers: {
         accessToken: Cookies.get('accessToken'),
-        refreshToken: Cookies.get('refreshToken'),
+        'access-control-allow-origin': '*',
       },
       data: submission,
     };

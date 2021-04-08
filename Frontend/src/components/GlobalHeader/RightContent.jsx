@@ -1,7 +1,7 @@
 import { Tooltip, Tag } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import React from 'react';
-import { connect, SelectLang } from 'umi';
+import { connect, SelectLang, history } from 'umi';
 import Avatar from './AvatarDropdown';
 import HeaderSearch from '../HeaderSearch';
 import styles from './index.less';
@@ -14,7 +14,7 @@ const ENVTagColor = {
 };
 
 const GlobalHeaderRight = (props) => {
-  const { theme, layout } = props;
+  const { theme, layout, dispatch } = props;
   let className = styles.right;
 
   if (theme === 'dark' && layout === 'top') {
@@ -25,8 +25,8 @@ const GlobalHeaderRight = (props) => {
     <div className={className}>
       <HeaderSearch
         className={`${styles.action} ${styles.search}`}
-        placeholder="站内搜索"
-        defaultValue="umi ui"
+        placeholder="Search"
+        defaultValue=""
         bordered={false}
         options={[
           {
@@ -45,9 +45,12 @@ const GlobalHeaderRight = (props) => {
             label: <a href="https://prolayout.ant.design/">Pro Layout</a>,
             value: 'Pro Layout',
           },
-        ]} // onSearch={value => {
-        //   //console.log('input', value);
-        // }}
+        ]}
+        onPressEnter={(value) => {
+          dispatch({type:'search/getSearchList', payload: value})
+          history.push('/developer/search')
+          
+        }}
       />
       <Tooltip title="Help">
         <a
@@ -74,7 +77,8 @@ const GlobalHeaderRight = (props) => {
   );
 };
 
-export default connect(({ settings }) => ({
+export default connect(({ settings, search }) => ({
   theme: settings.navTheme,
   layout: settings.layout,
+  search
 }))(GlobalHeaderRight);

@@ -5,6 +5,7 @@ import TweenOne from 'rc-tween-one';
 import BannerSVGAnim from './component/BannerSVGAnim';
 import { InputNumber, Button, Checkbox } from 'antd';
 import Children from 'rc-tween-one/lib/plugin/ChildrenPlugin';
+import {history, Link} from 'umi'
 TweenOne.plugins.push(Children);
 
 const Banner = (props) => {
@@ -14,7 +15,7 @@ const Banner = (props) => {
       Children: { 
         value: 10000, floatLength:0,
       }, 
-      duration: 5000,
+      duration: 3000,
     })
   },[]);
   return (<>
@@ -49,12 +50,15 @@ const Banner = (props) => {
       </TweenOne>
       <h4>Test sets are ready for you</h4>
         <div key="button" className="button-wrapper">
-          <a href="/developer/practice" >
-            <Button type="primary">
+          <Link to = '/developer/practice'>
+          <Button type="primary">
               Let's Practice
             </Button>
-          </a>
-          <Button href='/developer/test' style={{ margin: '0 16px' }} type="primary" ghost>
+          </Link>
+          <Button 
+          
+          style={{ margin: '0 16px', padding:'4px 10px' }}
+          type="primary" ghost>
             Do the Test
           </Button>
         </div>
