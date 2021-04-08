@@ -4,7 +4,7 @@ import Cookies from 'js-cookie';
 export function getTestList() {
   return new Promise((resolve, reject) => {
     axios
-      .get(`http://localhost:5000/api/creator/test`, {
+      .get(`https://codejoy.herokuapp.com/api/creator/test`, {
         headers: { accessToken: Cookies.get('accessToken') },
       })
       .then((response) => {
@@ -23,7 +23,7 @@ export function getTestById(id) {
   console.log(id);
   return new Promise((resolve, reject) => {
     axios
-      .get(`http://localhost:5000/api/creator/test/${id}`, {
+      .get(`https://codejoy.herokuapp.com/api/creator/test/${id}`, {
         headers: { accessToken: Cookies.get('accessToken') },
       })
       .then((response) => {
@@ -42,7 +42,7 @@ export function getTestById(id) {
 // export function createNewCollection(payload) {
 //   return new Promise((resolve, reject) => {
 //     axios
-//       .post(`http://localhost:5000/api/creator/collection`, {
+//       .post(`https://codejoy.herokuapp.com/api/creator/collection`, {
 //         headers: { accessToken: Cookies.get('accessToken') },
 //         body: payload,
 //       })

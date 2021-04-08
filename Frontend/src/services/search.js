@@ -6,7 +6,7 @@ export function search(word) {
   return new Promise((resolve, reject) => {
     var options = {
       method: 'GET',
-      url: `http://localhost:5000/api/search?keyword=${word}`,
+      url: `https://codejoy.herokuapp.com/api/search?keyword=${word}`,
       headers: {
         accessToken: Cookies.get('accessToken'),
       },

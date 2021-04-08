@@ -20,7 +20,7 @@ export default function tokenHandling(status, resolve, options) {
   }
   if (status == 'Invalid access token.') {
     axios
-      .get(`http://localhost:5000/api/token/`, { headers: { refreshToken: refreshToken } })
+      .get(`https://codejoy.herokuapp.com/api/token/`, { headers: { refreshToken: refreshToken } })
       .then((response) => {
         
         if (response.data.message == 'New access token') {
