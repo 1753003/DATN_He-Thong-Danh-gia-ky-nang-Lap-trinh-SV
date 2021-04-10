@@ -14,7 +14,7 @@ var config = {
 firebase_realtime.initializeApp(config);
 
 function writeNewNotification(uid, testID, check) {
-    firebase_realtime.database().ref('notifications/'+uid).set({
+    firebase_realtime.database().ref('notifications/'+uid).push({
         testID: testID,
         check: check
     })
@@ -77,10 +77,10 @@ router.get('/sendemail/:id', async function (req, res){
 
 router.post('/setvalid/:id', async function (req, res){
     const id = req.params.id;
+    const userID = req.body.userID;
     await testModel.setValid(id);
-
-    writeNewNotification('zcwVw4Rjp7b0lRmVZQt6ZXmspql1', id, true);
-    res.json(await testModel.getAll());
+    writeNewNotification(userID, id, true);
+    res.json(await testModel.getTestListInValid());
 })
 
 module.exports = router;
