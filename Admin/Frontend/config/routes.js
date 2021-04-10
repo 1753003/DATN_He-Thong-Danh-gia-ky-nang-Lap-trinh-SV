@@ -29,9 +29,9 @@ export default [
               },
               {
                 path: '/welcome',
-                name: 'welcome',
+                name: 'Home',
                 icon: 'smile',
-                component: './Welcome',
+                component: './Home/index',
               },
               {
                 path: '/admin',
@@ -50,10 +50,10 @@ export default [
                 ],
               },
               {
-                name: 'list.table-list',
+                name: 'Request',
                 icon: 'table',
-                path: '/list',
-                component: './TableList',
+                path: '/request',
+                component: './Request/index',
               },
               {
                 component: './404',
