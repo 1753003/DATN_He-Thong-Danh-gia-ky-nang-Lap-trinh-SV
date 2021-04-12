@@ -2,6 +2,24 @@ const express = require('express');
 const router = express.Router();
 const testModel = require('../models/test.model')
 
+var firebase_realtime = require("firebase/app");
+require("firebase/database");
+var config = {
+    apiKey: "AIzaSyC_FKi-svb2idZpvqsfPFWASeHUS60O9eU",
+    authDomain: "devcheckpro.firebaseapp.com",
+    databaseURL: "https://devcheckpro-default-rtdb.firebaseio.com",
+    storageBucket: "devcheckpro.appspot.com"
+};
+
+firebase_realtime.initializeApp(config);
+
+function writeNewNotification(uid, testID, check) {
+    firebase_realtime.database().ref('notifications/'+uid).push({
+        testID: testID,
+        check: check
+    })
+}
+
 router.get('/invalid', async function (req, res) {
    const list = await testModel.getTestListInValid()
    res.json(list);
@@ -63,8 +81,10 @@ router.get('/:id', async function (req, res){
 
 router.post('/setvalid/:id', async function (req, res){
     const id = req.params.id;
+    const userID = req.body.userID;
     await testModel.setValid(id);
-    res.json(await testModel.getAll());
+    writeNewNotification(userID, id, true);
+    res.json(await testModel.getTestListInValid());
 })
 
 module.exports = router;

@@ -1,4 +1,3 @@
-const { getAll } = require('../../../../../Web2/wnc-final/backend/models/course.model');
 const db = require('../utils/db');
 
 module.exports = {
