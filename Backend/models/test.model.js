@@ -107,12 +107,13 @@ module.exports = {
                 const codeQuestion = (await db('coding').where('QuestionID', question.ID))[0];
                 for (const answer of listTestAnswer){
                     if (answer.ID == questionID){
-                        // console.log(answer);
+                        console.log(answer);
                         // console.log(codeQuestion.RunningTime);
                         // console.log(codeQuestion.MemoryUsage);
                         if (answer.answer[0] <= codeQuestion.RunningTime && JSON.stringify(answer.answer[1])==JSON.stringify(codeQuestion.MemoryUsage)){
                             var tempArr = answer.answer.slice(2, answer.answer.length);
-                            console.log(codeQuestion.TestCase);
+                            //console.log(tempArr);
+                            //console.log(codeQuestion.TestCase);
                             if (JSON.stringify(tempArr)==JSON.stringify(codeQuestion.TestCase.Output)){ //sai chỗ này nè, pon kêu chạy vòng for để kiểm tra
                                 score++;
                             }

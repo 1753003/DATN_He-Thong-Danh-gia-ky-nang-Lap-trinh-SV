@@ -19,10 +19,17 @@ module.exports = {
         return list[0];
     },
 
+    // async getCreatorByUID(uid){
+    //     const list = await db('creator').where('UserID', uid);
+    //     return list[0];
+    // },
+
     async getTestByID (testID) {
         const test = (await db('test').where('TestID',testID))[0];
         const listQuestionID = test.QuestionID;
         const listQuestion = [];
+        const creator = (await db('creator').where('UserID', test.CreatedBy))[0];
+        console.log(creator);
         for (const item of listQuestionID) {
             const question = (await db('question').where('ID', item))[0];
             var res = {};
@@ -47,7 +54,8 @@ module.exports = {
         }
         var result = {
             "generalInformation": test,
-            "listQuestion": listQuestion
+            "listQuestion": listQuestion,
+            "creator": creator
         }
         return result;
     },
