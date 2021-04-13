@@ -13,10 +13,12 @@ var config = {
 
 firebase_realtime.initializeApp(config);
 
-function writeNewNotification(uid, testID, check) {
+function writeNewNotification(uid, notiDescription, type) {
     firebase_realtime.database().ref('notifications/'+uid).push({
-        testID: testID,
-        check: check
+        description: notiDescription,
+        datetime: Date.now(),
+        read: false,
+        type: type
     })
 }
 
@@ -87,4 +89,24 @@ router.post('/setvalid/:id', async function (req, res){
     res.json(await testModel.getTestListInValid());
 })
 
+router.post('/responseTestRequest/', async function (req, res) {
+    const testID = req.body.testID;
+    const accept = req.body.accept;
+    const userID = req.body.creatorID;
+    //const userID = "zcwVw4Rjp7b0lRmVZQt6ZXmspql1"
+    
+    const testName = (await testModel.getTestByID(testID)).generalInformation.TestName;
+    var description;
+    if (accept) {
+        description = "Your test ("+ testName+") has been accepted to public.";
+        writeNewNotification(userID, description, "Notification");
+        await testModel.setValid(testID);
+    }
+    else {
+        description = "Your test ("+ testName+") has been denied to public.";
+        writeNewNotification(userID, description, "Notification Fail");
+    }
+   
+    res.json(await testModel.getTestListInValid())
+})
 module.exports = router;

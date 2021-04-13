@@ -6,7 +6,13 @@ module.exports = {
     },
 
     async getTestListInValid(){
-        return await db('test').where('IsValid', 0);
+        const res = await db('test').where('IsValid', 0);
+        for (const item of res) {
+            const creator = (await db('userlogin').where('UserID', item.CreatedBy))[0];
+            console.log(creator);
+            item.CreatorName = creator.UserName;
+        }
+        return res;
     },
 
     async setValid(id){

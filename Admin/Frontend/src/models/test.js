@@ -1,27 +1,34 @@
-import { getRequest, acceptRequest } from '@/services/test';
+import { getRequest, acceptRequest, denyRequest } from '@/services/test';
 
 const GlobalModel = {
   namespace: 'test',
   state: {
-    request: []
+    request: [],
   },
   effects: {
-    *fetchRequest(_, { call, put  }) {
+    *fetchRequest(_, { call, put }) {
       const data = yield call(getRequest);
       yield put({
         type: 'saveRequest',
         payload: data,
       });
     },
-    *acceptRequest(payload, {call, put, select}) {
-        
-        const data = yield call(acceptRequest, payload.payload.testID, payload.payload.userID);
-        console.log(data);
-        yield put({
-            type: 'saveRequest',
-            payload: data,
-          });
-    }
+    *acceptRequest(payload, { call, put, select }) {
+      const data = yield call(acceptRequest, payload.payload.testID, payload.payload.userID);
+      console.log(data);
+      yield put({
+        type: 'saveRequest',
+        payload: data,
+      });
+    },
+    *denyRequest(payload, { call, put, select }) {
+      const data = yield call(denyRequest, payload.payload.testID, payload.payload.userID);
+      console.log(data);
+      yield put({
+        type: 'saveRequest',
+        payload: data,
+      });
+    },
   },
   reducers: {
     saveRequest(state, { payload }) {

@@ -23,10 +23,10 @@ router.get('/submissions', async function (req, res) {
 //   res.json(list);
 // })
 
-router.get('/', async function (req, res) {
+/*router.get('/', async function (req, res) {
   const list = await practiceModel.getAllPractice()
   res.json(list);
-})
+})*/
 
 router.get('/:id', async function (req, res) {
   const qid = req.params.id;

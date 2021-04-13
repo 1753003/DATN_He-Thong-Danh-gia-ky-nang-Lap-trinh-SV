@@ -22,24 +22,51 @@ export function getRequest() {
 }
 
 export function acceptRequest(testID, userID) {
-    return new Promise((resolve, reject) => {
-      var options = {
-        method: 'POST',
-        url: `http://localhost:5001/admin/test/setvalid/${testID}`,
-        data: {
-            "userID": userID
-        }
-        /*headers: {
+  return new Promise((resolve, reject) => {
+    var options = {
+      method: 'POST',
+      url: `http://localhost:5001/admin/test/responseTestRequest`,
+      data: {
+        creatorID: userID,
+        testID: testID,
+        accept: true,
+      },
+      /*headers: {
           accessToken: Cookies.get('accessToken'),
         },*/
-      };
-      axios
-        .request(options)
-        .then((response) => {
-          resolve(response.data);
-        })
-        .catch((error) => {
-          const message = error.response.data.message;
-        });
-    });
-  }
+    };
+    axios
+      .request(options)
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        const message = error.response.data.message;
+      });
+  });
+}
+
+export function denyRequest(testID, userID) {
+  return new Promise((resolve, reject) => {
+    var options = {
+      method: 'POST',
+      url: `http://localhost:5001/admin/test/responseTestRequest`,
+      data: {
+        creatorID: userID,
+        testID: testID,
+        accept: false,
+      },
+      /*headers: {
+          accessToken: Cookies.get('accessToken'),
+        },*/
+    };
+    axios
+      .request(options)
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        const message = error.response.data.message;
+      });
+  });
+}
