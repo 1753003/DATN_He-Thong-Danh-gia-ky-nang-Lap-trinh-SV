@@ -75,6 +75,10 @@ router.get('/sendemail/:id', async function (req, res){
     res.json(true);
 })
 
+router.get('/:id', async function (req, res){
+    res.json(await testModel.getTestByID(req.params.id));
+})
+
 router.post('/setvalid/:id', async function (req, res){
     const id = req.params.id;
     const userID = req.body.userID;
