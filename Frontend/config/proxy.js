@@ -8,7 +8,7 @@
 export default {
   dev: {
     '/api/': {
-      target: 'https://codejoy.herokuapp.com',
+      target: 'http://localhost:5000',
       changeOrigin: true,
       pathRewrite: {
         '^': '',

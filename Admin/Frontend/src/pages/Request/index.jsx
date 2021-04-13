@@ -15,7 +15,7 @@ class Request extends React.Component {
     },
     {
       title: 'Creator',
-      dataIndex: 'CreatedBy',
+      dataIndex: 'CreatorName',
     },
     {
       title: 'Date',
@@ -30,26 +30,35 @@ class Request extends React.Component {
       render: (item) => (
         <Space size="large">
           <Popconfirm
-            title="Are you sure to delete this task?"
+            title="Are you sure to accept this test to public?"
             onConfirm={() => {
-                this.props.dispatch({ type: 'test/acceptRequest', payload: {testID: item.TestID, userID: item.CreatedBy} });
+              this.props.dispatch({
+                type: 'test/acceptRequest',
+                payload: { testID: item.TestID, userID: item.CreatedBy },
+              });
             }}
-            onCancel={()=>{}}
+            onCancel={() => {}}
             okText="Yes"
             cancelText="No"
             placement="topLeft"
           >
-            <CheckCircleTwoTone
-              twoToneColor="#52c41a"
-              
-            />
+            <CheckCircleTwoTone twoToneColor="#52c41a" />
           </Popconfirm>
-          <CloseCircleTwoTone
-            twoToneColor="red"
-            onClick={() => {
-              message.info('This is a normal message');
+          <Popconfirm
+            title="Are you sure to deny this test to public?"
+            onConfirm={() => {
+              this.props.dispatch({
+                type: 'test/denyRequest',
+                payload: { testID: item.TestID, userID: item.CreatedBy },
+              });
             }}
-          />
+            onCancel={() => {}}
+            okText="Yes"
+            cancelText="No"
+            placement="topLeft"
+          >
+            <CloseCircleTwoTone twoToneColor="red" />
+          </Popconfirm>
         </Space>
       ),
     },
@@ -57,6 +66,7 @@ class Request extends React.Component {
 
   getDataSource() {
     var data = this.props.test.request;
+    console.log(data);
     var count = 0;
     data.map((item) => {
       item.key = count++;
