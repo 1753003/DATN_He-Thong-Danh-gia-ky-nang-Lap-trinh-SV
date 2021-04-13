@@ -11,9 +11,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "apexcharts": "^3.26.0",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "firebase": "^8.4.0",
     "knex": "^0.95.4",
     "morgan": "^1.10.0",
     "mysql2": "^2.2.5",
