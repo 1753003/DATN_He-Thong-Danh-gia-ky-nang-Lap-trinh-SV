@@ -1,4 +1,6 @@
 import { queryNotices } from '@/services/user';
+import firebase from '@/utils/firebase'
+
 
 const GlobalModel = {
   namespace: 'global',
@@ -7,23 +9,24 @@ const GlobalModel = {
     notices: [],
   },
   effects: {
-    *fetchNotices(_, { call, put, select }) {
-      const data = yield call(queryNotices);
-      yield put({
-        type: 'saveNotices',
-        payload: data,
-      });
-      const unreadCount = yield select(
-        (state) => state.global.notices.filter((item) => !item.read).length,
-      );
+    *fetchNotices({payload}, { call, put, select }){
       yield put({
         type: 'user/changeNotifyCount',
         payload: {
-          totalCount: data.length,
-          unreadCount,
+          totalCount: payload,
+          unreadCount:payload.filter((item) => !item.read).length,
         },
       });
+      yield put({
+        type: 'saveNotices',
+        payload: JSON.stringify(payload),
+      });
+      // const unreadCount = yield select(
+      //   (state) => state.global.notices.filter((item) => !item.read).length,
+      // );
+      
     },
+    
 
     *clearNotices({ payload }, { put, select }) {
       yield put({
@@ -44,11 +47,12 @@ const GlobalModel = {
     },
 
     *changeNoticeReadState({ payload }, { put, select }) {
+      firebase.database().ref(`notifications/zcwVw4Rjp7b0lRmVZQt6ZXmspql1/${payload}`).update({ read:true });
       const notices = yield select((state) =>
         state.global.notices.map((item) => {
           const notice = { ...item };
 
-          if (notice.id === payload) {
+          if (notice.key === payload) {
             notice.read = true;
           }
 
@@ -63,7 +67,6 @@ const GlobalModel = {
         type: 'user/changeNotifyCount',
         payload: {
           totalCount: notices.length,
-          unreadCount: notices.filter((item) => !item.read).length,
         },
       });
     },
@@ -83,7 +86,7 @@ const GlobalModel = {
       return {
         collapsed: false,
         ...state,
-        notices: payload,
+        notices: JSON.parse(payload),
       };
     },
 

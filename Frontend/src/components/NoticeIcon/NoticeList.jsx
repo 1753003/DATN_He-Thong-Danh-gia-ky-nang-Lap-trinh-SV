@@ -14,6 +14,7 @@ const NoticeList = ({
   clearText,
   viewMoreText,
   showViewMore = false,
+  loading
 }) => {
   if (!data || data.length === 0) {
     return (
@@ -30,7 +31,8 @@ const NoticeList = ({
   return (
     <div>
       <List
-        className={styles.list}
+      loading={loading}
+        className={`${styles.list} custom`}
         dataSource={data}
         renderItem={(item, i) => {
           const itemCls = classNames(styles.item, {
