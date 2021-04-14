@@ -16,8 +16,7 @@ const UserModel = {
     
     *fetchCurrent(_, { call, put }) {
      
-    },
-
+    }
   },
   reducers: {
     saveCurrentUser(state, action) {

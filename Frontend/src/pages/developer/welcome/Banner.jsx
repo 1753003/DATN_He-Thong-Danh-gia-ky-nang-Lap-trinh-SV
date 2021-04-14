@@ -42,13 +42,13 @@ const Banner = (props) => {
         <p key="content">
           What are you going to do ?
         </p>
-        <TweenOne
+        <TweenOne className='number'
         animation={animation}
         style={{ fontSize: 56, marginBottom: 12 }}
       >
         0
       </TweenOne>
-      <h4>Test sets are ready for you</h4>
+      <h4 className='numtitle'>Test sets are ready for you</h4>
         <div key="button" className="button-wrapper">
           <Link to = '/developer/practice'>
           <Button type="primary">

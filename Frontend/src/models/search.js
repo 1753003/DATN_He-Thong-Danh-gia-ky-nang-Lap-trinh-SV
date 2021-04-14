@@ -38,13 +38,14 @@ const Model = {
       else if (payload == 'hard') filter.hard = !filter.hard;
       else if (payload == 'code') filter.code = !filter.code;
       else if (payload == 'multiple') filter.multiple = !filter.multiple;
-
+    
       newList = yield select((state) =>
         state.search.list.filter((item) => {
           return item.isSolve == filter.solved || item.isSolve != filter.unsolved;
         }),
       );
-      console.log(newList)
+      console.log(newList);
+      console.log(filter);
       if (filter.easy && filter.medium && filter.hard)
         newList = newList.filter((item) => {
             return (
@@ -94,21 +95,21 @@ const Model = {
           },
         );
       
-      if ((filter.code && filter.multiple) || !(filter.code && filter.multiple))
+      if ((filter.code && filter.multiple) || (!filter.code && !filter.multiple)) 
         newList = newList.filter((item) => {
           return (item.Type == 'Code' || item.Type == 'MultipleChoice');
         },
-      );
+      )
       else if (filter.code && !filter.multiple)
         newList = newList.filter((item) => {
-          return (item.Type == 'Code' || item.Type != 'MultipleChoice');
+          return (item.Type == 'Code');
         },
-      );
-      else if (!filter.code && filter.multiple)
+      )
+      else if (!filter.code && filter.multiple) 
         newList = newList.filter((item) => {
-          return (item.Type != 'Code' || item.Type == 'MultipleChoice');
-        },
-      );
+          return (item.Type == 'MultipleChoice');
+        }
+      )
       yield put({
         type: 'setFilterList',
         payload: newList,
