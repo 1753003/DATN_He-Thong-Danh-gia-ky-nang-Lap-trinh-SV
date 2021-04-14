@@ -1,48 +1,80 @@
 import React, { Component } from 'react';
 import { connect } from 'umi';
-import { Tag, message } from 'antd';
+import { Tag, message, Spin } from 'antd';
 import groupBy from 'lodash/groupBy';
 import moment from 'moment';
 import NoticeIcon from '../NoticeIcon';
 import styles from './index.less';
-
+import './style.less'
+import firebase from '@/utils/firebase'
 class GlobalHeaderRight extends Component {
-  componentDidMount() {
-    const { dispatch } = this.props;
-
-    if (dispatch) {
-      dispatch({
-        type: 'global/fetchNotices',
-      });
+  constructor (props){
+    super(props)
+    this.state = {
+      loading: true,
+      loadingMore: false,
+      limit: 5
     }
+    const { dispatch } = props;
+    this.setState({
+      loading: true,
+    },
+    this.fb(dispatch)
+    )
+    
+  }
+  fb = (dispatch) =>{
+    const notiRef = firebase.database().ref(`notifications/zcwVw4Rjp7b0lRmVZQt6ZXmspql1`).orderByChild('datetime').limitToFirst(this.state.limit)
+    let temp = [];
+    notiRef.on('value', (snapshot)=>{
+      temp = []
+      snapshot.forEach((childSnapshot) => {
+        let tmp = {}
+        tmp.key = childSnapshot.key;
+        tmp.read = childSnapshot.val().read;
+        tmp.title = childSnapshot.val().description;
+        tmp.datetime = childSnapshot.val().datetime;
+        tmp.type = childSnapshot.val().type
+        // ...
+        temp.push(tmp)
+      });
+      
+      if (dispatch) {
+        this.setState({
+          loading: false,
+          loadingMore: false
+        })
+        dispatch({
+          type: 'global/fetchNotices',
+          payload: temp
+        });
+      }
+    })
   }
 
-  changeReadState = (clickedItem) => {
-    const { id } = clickedItem;
-    const { dispatch } = this.props;
 
+  changeReadState = (clickedItem) => {
+    const { key } = clickedItem;
+    const { dispatch } = this.props;
     if (dispatch) {
       dispatch({
         type: 'global/changeNoticeReadState',
-        payload: id,
-      });
-    }
-  };
-
-  handleNoticeClear = (title, key) => {
-    const { dispatch } = this.props;
-    message.success(`${'清空了'} ${title}`);
-
-    if (dispatch) {
-      dispatch({
-        type: 'global/clearNotices',
         payload: key,
       });
     }
   };
 
+  handleNoticeClear = () => {
+    const notiRef = firebase.database().ref(`notifications/zcwVw4Rjp7b0lRmVZQt6ZXmspql1`);
+    notiRef.once('value', (snapshot)=>{
+      snapshot.forEach(function(child) {
+        child.ref.update({read: false});
+    });
+  });
+}
+
   getNoticeData = () => {
-    const { notices = [] } = this.props;
+    const { notices } = this.props;
 
     if (!notices || notices.length === 0 || !Array.isArray(notices)) {
       return {};
@@ -52,20 +84,21 @@ class GlobalHeaderRight extends Component {
       const newNotice = { ...notice };
 
       if (newNotice.datetime) {
-        newNotice.datetime = moment(notice.datetime).fromNow();
+        newNotice.datetime = moment(notice.datetime).locale('en').fromNow();
       }
 
       if (newNotice.id) {
         newNotice.key = newNotice.id;
       }
 
-      if (newNotice.extra && newNotice.status) {
+      if ( newNotice.type) {
         const color = {
+          Notification:'green',
           todo: '',
           processing: 'blue',
           urgent: 'red',
           doing: 'gold',
-        }[newNotice.status];
+        }[newNotice.type];
         newNotice.extra = (
           <Tag
             color={color}
@@ -73,7 +106,7 @@ class GlobalHeaderRight extends Component {
               marginRight: 0,
             }}
           >
-            {newNotice.extra}
+            {newNotice.type}
           </Tag>
         );
       }
@@ -98,35 +131,52 @@ class GlobalHeaderRight extends Component {
     });
     return unreadMsg;
   };
+  handleViewMore = () =>{
+    const { notices } = this.props;
+    if(notices.length < this.state.limit)
+      {
+        message.info("You have load all message")
+        return
+      }
+    this.setState({limit: this.state.limit + 5,
+    loadingMore: !this.state.loadingMore},
+    ()=>this.fb(this.props.dispatch)
+    )
 
+    
+  }
   render() {
     const { currentUser, fetchingNotices, onNoticeVisibleChange } = this.props;
     const noticeData = this.getNoticeData();
+
     const unreadMsg = this.getUnreadData(noticeData);
     return (
-      <NoticeIcon
-        className={styles.action}
+      <Spin size='small' spinning={this.state.loading} delay={300}>
+          <NoticeIcon
+        className={`${styles.action} custom`}
         count={currentUser && currentUser.unreadCount}
         onItemClick={(item) => {
           this.changeReadState(item);
         }}
-        loading={fetchingNotices}
-        clearText="清空"
-        viewMoreText="查看更多"
+        loading={this.state.loading}
+        clearText="Read All"
+        viewMoreText="More"
         onClear={this.handleNoticeClear}
         onPopupVisibleChange={onNoticeVisibleChange}
-        onViewMore={() => message.info('Click on view more')}
+        onViewMore={this.handleViewMore}
         clearClose
       >
         <NoticeIcon.Tab
+        className="custom"
           tabKey="notification"
-          count={unreadMsg.notification}
-          list={noticeData.notification}
-          title="通知"
-          emptyText="你已查看所有通知"
+          count={unreadMsg.Notification}
+          list={noticeData.Notification}
+          title="Notifications"
+          emptyText="You don't have any notifications."
           showViewMore
+          loading = {this.state.loadingMore}
         />
-        <NoticeIcon.Tab
+        {/* <NoticeIcon.Tab
           tabKey="message"
           count={unreadMsg.message}
           list={noticeData.message}
@@ -141,9 +191,11 @@ class GlobalHeaderRight extends Component {
           count={unreadMsg.event}
           list={noticeData.event}
           showViewMore
-        />
+        /> */}
       </NoticeIcon>
-    );
+    
+        </Spin>
+      );
   }
 }
 

@@ -36,7 +36,28 @@ a {
     text-decoration-skip: ink;
   }
 }
-
+.number{
+  @media only screen and (max-width: @screen-md){
+    display: none;
+    }
+    @media only screen and (max-width: @screen-sm){
+      display: block;
+      }
+      @media only screen and (max-height: 660px){
+        display: none;
+        }
+}
+.numtitle{
+  @media only screen and (max-width: @screen-md){
+    display: none;
+    }
+    @media only screen and (max-width: @screen-sm){
+      display: block;
+      }
+      @media only screen and (max-height: 660px){
+        display: none;
+        }
+}
 .home-wrapper {
   width: 100%;
   color: #697b8c;
@@ -60,7 +81,7 @@ svg g {
 .banner-wrapper {
   height: 70vh;
   @media only screen and (max-width: @screen-md){
-    height: 50%;
+    height: 60vh;
     }
     @media only screen and (max-width: @screen-sm){
       height: 100%;
@@ -72,7 +93,7 @@ svg g {
   position: relative;
   .banner-title-wrapper {
     width: 40%;
-    max-width: 480px;
+    max-width: 420px;
     height: 50%;
     position: absolute;
     top: 0;
@@ -96,6 +117,11 @@ svg g {
       line-height: 40px;
       align-items: center;
       display: flex;
+      @media only screen and (max-height: 660px){
+        button{
+          margin-bottom: 10px;
+        }
+        }
       }
     }
     .title-line {
