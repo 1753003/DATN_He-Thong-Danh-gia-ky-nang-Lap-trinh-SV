@@ -1,9 +1,10 @@
 import { queryCurrent, query as queryUsers } from '@/services/user';
-
+import firebase from '@/utils/firebase'
 const UserModel = {
   namespace: 'user',
   state: {
-    currentUser: {},
+    currentUser: {
+    },
   },
   effects: {
     *fetch(_, { call, put }) {
@@ -15,7 +16,18 @@ const UserModel = {
     },
     
     *fetchCurrent(_, { call, put }) {
-     
+      const userRef = firebase.database().ref(`users/zcwVw4Rjp7b0lRmVZQt6ZXmspql1`)
+      const currentUser = yield call(()=>{
+        return new Promise((resolve, reject)=>{
+          userRef.on('value', (snapshot)=>{
+            resolve(snapshot.val())
+          })
+        })
+      })
+      yield put({
+        type:'saveCurrentUser',
+        payload: currentUser
+      })
     }
   },
   reducers: {
@@ -34,7 +46,6 @@ const UserModel = {
         currentUser: {
           ...state.currentUser,
           notifyCount: action.payload.totalCount,
-          unreadCount: action.payload.unreadCount,
         },
       };
     },

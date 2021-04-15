@@ -14,8 +14,8 @@ import { getMatchMenu } from '@umijs/route-utils';
 import logo from '../assets/banner.png';
 import './layout.less';
 import { Inspector } from 'react-dev-inspector';
+import firebase from '@/utils/firebase'
 
-const InspectorWrapper = process.env.NODE_ENV === 'development' ? Inspector : React.Fragment;
 const noMatch = (
   <Result
     status={403}
@@ -71,12 +71,18 @@ const BasicLayout = (props) => {
   } = props;
   const menuDataRef = useRef([]);
   useEffect(() => {
-    if (dispatch) {
-      dispatch({
-        type: 'user/fetchCurrent',
-      });
-    }
+    getCurrentUserFirebase();
   }, []);
+  const getCurrentUserFirebase = () =>{
+    const userRef = firebase.database().ref(`users/zcwVw4Rjp7b0lRmVZQt6ZXmspql1`)
+    userRef.on('value', (snapshot)=>{
+      if (dispatch) {
+        dispatch({
+          type: 'user/fetchCurrent',
+        });
+      }
+    })
+  }
   /** Init variables */
 
   const handleMenuCollapse = (payload) => {
