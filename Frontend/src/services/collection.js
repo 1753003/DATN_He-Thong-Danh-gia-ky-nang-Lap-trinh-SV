@@ -69,7 +69,7 @@ export function createNewCollection({ CollectionName, CollectionDescription, Cov
   return new Promise((resolve, reject) => {
     axios
       .post(
-        'https://codejoy.herokuapp.com/api/creator/collection',
+        '/api/creator/collection',
         {
           CollectionName,
           CollectionDescription,
@@ -96,7 +96,7 @@ export function removeTestFromCollection({ testID, collectionID }) {
   console.log(testID, collectionID);
   return new Promise((resolve, reject) => {
     axios
-      .delete('https://codejoy.herokuapp.com/api/creator/collection/removeTest', {
+      .delete('/api/creator/collection/removeTest', {
         headers: { accessToken: Cookies.get('accessToken') },
         data: {
           testID,
@@ -119,7 +119,7 @@ export function deleteCollection({ CollectionID }) {
   console.log(CollectionID);
   return new Promise((resolve, reject) => {
     axios
-      .delete(`https://codejoy.herokuapp.com/api/creator/collection/${CollectionID}`, {
+      .delete(`/api/creator/collection/${CollectionID}`, {
         headers: { accessToken: Cookies.get('accessToken') },
       })
       .then((response) => {

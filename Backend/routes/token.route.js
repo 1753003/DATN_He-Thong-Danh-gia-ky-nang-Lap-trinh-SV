@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 var jwt = require("jsonwebtoken");
+var jwtEncode = require('express-jwt')
 
 const userModel = require("../models/user.model");
 router.get("/", async function (req, res) {

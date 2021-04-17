@@ -4,7 +4,7 @@ import Cookies from 'js-cookie';
 export function getTestList() {
   return new Promise((resolve, reject) => {
     axios
-      .get(`https://codejoy.herokuapp.com/api/creator/test`, {
+      .get(`/api/creator/test`, {
         headers: { accessToken: Cookies.get('accessToken') },
       })
       .then((response) => {
@@ -23,7 +23,7 @@ export function getTestById(id) {
   console.log(id);
   return new Promise((resolve, reject) => {
     axios
-      .get(`https://codejoy.herokuapp.com/api/creator/test/${id}`, {
+      .get(`/api/creator/test/${id}`, {
         headers: { accessToken: Cookies.get('accessToken') },
       })
       .then((response) => {

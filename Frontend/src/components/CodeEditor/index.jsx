@@ -7,8 +7,8 @@ import Animate from 'rc-animate';
 import "brace/ext/searchbox"
 // import 'ace-builds/src-min-noconflict/ext-options';
 // import 'ace-builds/src-min-noconflict/ext-keybinding_menu';
-import 'ace-builds/src-min-noconflict/ext-prompt';
-import 'ace-builds/src-min-noconflict/ext-statusbar';
+// import 'ace-builds/src-min-noconflict/ext-prompt';
+// import 'ace-builds/src-min-noconflict/ext-statusbar';
 // import 'ace-builds/src-min-noconflict/ext-settings_menu';
 
 import 'brace/mode/javascript'

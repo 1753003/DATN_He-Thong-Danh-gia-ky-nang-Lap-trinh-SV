@@ -1,8 +1,10 @@
 {
   "name": "ant-design-pro",
   "version": "4.5.0",
+  
   "private": true,
-  "proxy":"https://codejoy.herokuapp.com",
+  
+  "proxy":"http://localhost:5000",
   "description": "An out-of-box UI solution for enterprise applications",
   "scripts": {
     "analyze": "cross-env ANALYZE=1 umi build",
