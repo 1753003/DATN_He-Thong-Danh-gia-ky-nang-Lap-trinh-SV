@@ -20,6 +20,10 @@ function writeNewNotification(uid, notiDescription, type) {
         read: false,
         type: type
     })
+    // get unreadcount first then increment it
+    /// do it later
+    let unreadCount = 12
+    firebase_realtime.database().ref('users/'+uid).update({unreadCount: unreadCount})
 }
 
 router.get('/invalid', async function (req, res) {

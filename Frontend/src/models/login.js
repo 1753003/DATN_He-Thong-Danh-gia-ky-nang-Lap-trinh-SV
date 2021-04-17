@@ -26,8 +26,8 @@ const Model = {
         }); // Login successfully
         localStorage.setItem('currentUser',payload.email);
         //Save token into cookie
-        Cookies.set('accessToken', response.message.accessToken, {expires: 7});
-        Cookies.set('refreshToken', response.message.refreshToken, {expires: 7});
+        // Cookies.set('accessToken', response.message.accessToken, {expires: 7});
+        // Cookies.set('refreshToken', response.message.refreshToken, {expires: 7});
         const urlParams = new URL(window.location.href);
         const params = getPageQuery();
         message.success('🎉 🎉 🎉  OKELA！');

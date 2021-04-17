@@ -8,7 +8,8 @@
 export default {
   deva: {
     '/api/': {
-      target: 'http://localhost:5000',
+      // target: 'https://codejoy.herokuapp.com',
+      target:'http://localhost:5000',
       changeOrigin: true,
       pathRewrite: {
         '^': '',

@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import './style.less'
 import {
-  Typography,
-  Card,
-  List,
   PageHeader,
   Tabs,
   Row,
