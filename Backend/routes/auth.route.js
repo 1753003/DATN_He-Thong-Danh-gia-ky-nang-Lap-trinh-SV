@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 var jwt = require('jsonwebtoken');
+
 var firebase = require("firebase/app");
 const userModel = require('../models/user.model');
 require("firebase/auth");
@@ -173,6 +174,8 @@ router.post('/login', async function (req, res) {
         );
         console.log(refreshToken)
         userModel.updateRefreshToken(user.uid, refreshToken);
+        res.cookie('accessToken', accessToken, { httpOnly: true });
+        res.cookie('refreshToken', refreshToken, { httpOnly: true });
         res.json({
           status: 'OK',
           message: {

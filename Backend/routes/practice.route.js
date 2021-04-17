@@ -43,7 +43,6 @@ router.post('/submissions', async function (req, res) {
 router.get('/', async function (req, res) {
   const set = req.query.set.split(' ')[0];
   const list = await practiceModel.getPracticeList(set)
-  // console.log(list)
   res.json(list);
 })
 
