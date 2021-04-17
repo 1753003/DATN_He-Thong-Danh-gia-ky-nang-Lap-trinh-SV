@@ -1,7 +1,7 @@
 const express = require('express');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
-const csrf = require('csurf')
+
 var cors = require('cors')
 
 const app = express();
@@ -11,15 +11,11 @@ app.use(morgan('dev'));
 
 app.use(cors({ credentials: true}));
 app.use(cookieParser()); 
-
-const csrfProtection = csrf({ cookie: true });
-app.use(csrfProtection)
-app.use(function (req, res, next){
-    res.cookie('XSRF-TOKEN', req.csrfToken());
-    // res.locals._csrf = req.csrfToken();
-    next();
-});
+// const csrfProtection = csrf({
+//     cookie: true
+//   });
 const auth = require('./middleware/authDeveloper.mdw');
+
 app.get('/', function(req, res) {
     res.json("Running...");
 })

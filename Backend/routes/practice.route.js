@@ -36,7 +36,6 @@ router.get('/:id', async function (req, res) {
 router.post('/submissions', async function (req, res) {
   const data = req.body;
   data.DevID = req.uid
-  delete data['_csrf']
   console.log(data)
   const ret = await practiceModel.saveSubmissions(data)
   res.json(ret);
