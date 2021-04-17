@@ -1,10 +1,18 @@
 const jwt = require('jsonwebtoken');
 
 module.exports = function (req, res, next) {
-  console.log('rfToken',req.headers.cookie)
-
-  const accessToken = req.headers.cookie.split(';')[0].split('=')[1];
-  const refreshToken = req.headers.cookie.split(';')[1].split('=')[1];
+  const cookies = req.headers.cookie.split(';');
+  console.log(cookies)
+  let accessToken = null;
+  let refreshToken = null;
+  cookies.forEach(cookie => {
+    var temp = cookie.split('=')
+    console.log(temp)
+    if(temp[0] == 'accessToken')
+      accessToken = temp[1]
+    if(temp[0] == 'refreshToken')
+      refreshToken = temp[1]
+  });
   // console.log('rfToken',accessToken, refreshToken)
   if (accessToken && accessToken != undefined && accessToken != 'undefined' && 
   (!refreshToken || refreshToken == 'undefined' || refreshToken == undefined)) { 

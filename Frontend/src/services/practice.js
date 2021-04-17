@@ -52,7 +52,6 @@ export function getSubmissionList(pid, uid) {
       .get(`/api/practice/submissions?pid=${pid}&uid=${uid}`, {
         withCredentials: true,
         headers: {
-          accessToken: Cookies.get('accessToken'),
           'access-control-allow-origin': '*',
         },
       })
@@ -85,14 +84,17 @@ export function saveSubmission(pid, jsonData) {
     Score: Number(tcPassed / total) * 100,
     Answer: JSON.stringify(jsonData),
     AnsweredNumber: 1,
+    _csrf: Cookies.get('XSRF-TOKEN')
   };
   return new Promise((resolve, reject) => {
+    console.log(Cookies.get('XSRF-TOKEN'),
+    Cookies.get('accessToken'))
     var options = {
       withCredentials: true,
       method: 'POST',
       url: '/api/practice/submissions',
       headers: {
-        accessToken: Cookies.get('accessToken'),
+        'X-CSRF-Token': Cookies.get('_csrf'),  
         'access-control-allow-origin': '*',
       },
       data: submission,
