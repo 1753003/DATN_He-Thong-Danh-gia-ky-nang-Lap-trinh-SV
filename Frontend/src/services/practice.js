@@ -9,7 +9,7 @@ export function getPracticeListDetail(id) {
         withCredentials: true,
         headers: {
           accessToken: Cookies.get('accessToken'),
-          'access-control-allow-origin': '*',
+          'access-control-allow-origin': 'https://devcheckpro.firebaseapp.com/',
         },
       })
       .then((response) => {
@@ -17,7 +17,7 @@ export function getPracticeListDetail(id) {
       })
       .catch((error) => {
         const message = error.response.data.message;
-        tokenHandling(message, `/api/practice/${id}`, 'GET', resolve);
+        tokenHandling(message, resolve, options);
       });
   });
 }
