@@ -4,10 +4,14 @@ module.exports = {
   async getPracticeQuestionList(ID){
     return (await db('practice').where('PracticeID', ID))[0];
   },
+  async getSolvedStatus(list){
+    return (await db('submissions').where('PracticeID', ID));
+  },
   async getPracticeQuestionListDetail(ID){
     const list = await this.getPracticeQuestionList(ID);
     const listDetail = [];
     for (const id of list.QuestionID) {
+      console.log(id);
       const question = (await db('question').where('ID', id))[0];
       var res = {};
         res.ID = question.ID;
@@ -41,7 +45,7 @@ module.exports = {
   async getQuestionMultiChoice(ID){
     return await db('multiplechoice').where('QuestionID', ID);
   },
-  async getQuestionByTestID(ID){
-    return await db('question').where('TestID',  ID);
-  },
+  // async getQuestionByTestID(ID){
+  //   return await db('question').where('TestID',  ID);
+  // },
 }

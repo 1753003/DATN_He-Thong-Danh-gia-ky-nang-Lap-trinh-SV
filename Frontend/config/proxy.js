@@ -6,9 +6,19 @@
  * https://pro.ant.design/docs/deploy
  */
 export default {
+  deva: {
+    '/api/': {
+      // target: 'https://codejoy.herokuapp.com',
+      target:'http://localhost:5000',
+      changeOrigin: true,
+      pathRewrite: {
+        '^': '',
+      },
+    },
+  },
   dev: {
     '/api/': {
-      target: 'https://preview.pro.ant.design',
+      target: 'https://codejoy.herokuapp.com',
       changeOrigin: true,
       pathRewrite: {
         '^': '',

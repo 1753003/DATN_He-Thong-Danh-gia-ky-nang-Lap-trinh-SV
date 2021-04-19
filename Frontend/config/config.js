@@ -15,7 +15,7 @@ export default defineConfig({
   },
   locale: {
     // default zh-CN
-    default: 'zh-CN',
+    default: 'en-US',
     antd: true,
     // default true, when it is true, will use `navigator.language` overwrite default
     baseNavigator: true,
@@ -163,22 +163,19 @@ export default defineConfig({
             {
               path: '/developer',
               component: '../layouts/BasicLayout',
-              authority: ['developer'],
               routes: [
                 {
                   path: '/developer',
                   redirect: '/developer/welcome',
                 },
                 {
+                  name: 'Welcome',
                   path: '/developer/welcome',
-                  name: 'welcome',
-                  icon: 'smile',
-                  component: './Welcome',
+                  component: './developer/welcome',
                 },
                 {
                   name: 'Practice',
                   path: '/developer/practice',
-                  component: '../layouts/BlankLayout',
                   routes: [
                     {
                       path: '/developer/practice',
@@ -193,19 +190,29 @@ export default defineConfig({
                         },
                         {
                           path: '/developer/practice/home',
-                          component: './practice/home',
+                          component: './developer/practice/home',
                         },
                         {
                           path: '/developer/practice/list',
-                          component: './practice/list',
+                          component: './developer/practice/list',
                         },
                         {
                           path: '/developer/practice/questions',
-                          component: './practice/questions',
+                          component: './developer/practice/questions',
                         },
                       ],
                     },
                   ],
+                },
+                {
+                  path: '/developer/test',
+                  name: 'Test',
+                  component: './developer/test/test.jsx',
+                },
+                {
+                  path: '/developer/search',
+                  component: './developer/search',
+                  
                 },
                 {
                   component: './404',

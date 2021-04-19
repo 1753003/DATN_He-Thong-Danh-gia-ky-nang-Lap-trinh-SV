@@ -1,7 +1,40 @@
 
-.testCase p{
-  background-color: #e0e0e0;
-  padding: 10px;
-  margin: auto;
-  margin-bottom: 10px;
+.editor {
+  // height: auto !important;
+  // height: fit-content !important;
+  width: 100% !important;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 4; /* number of lines to show */
+  -webkit-box-orient: vertical;
+  background-color: #f0f0f0;
+}
+.editor .ace-content{
+  display:block;
+}
+
+.code-notification{
+background-color: rgb(235, 123, 123);
+color: #ffffff;
+}
+.ant-notification-notice-message{
+  color: #ffffff;
+  font-weight: bold;
+}
+.ant-notification-close-icon{
+  color: #ffffff;
+}
+.ant-notification-notice-icon-error svg{
+  color: #ffffff;
+  // background-color: #ffffff;
+}
+.ant-tabs-tab-active{
+  font-weight: 800;
+}
+.ant-tabs-tab-btn{
+  font-weight: 400;
+}
+
+.icon-font{
+  font-size: 24px;
 }

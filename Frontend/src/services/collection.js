@@ -4,7 +4,7 @@ import Cookies from 'js-cookie';
 export function getCollectionList() {
   return new Promise((resolve, reject) => {
     axios
-      .get(`http://localhost:5000/api/creator/collection`, {
+      .get(`https://codejoy.herokuapp.com/api/creator/collection`, {
         headers: { accessToken: Cookies.get('accessToken') },
       })
       .then((response) => {
@@ -22,7 +22,7 @@ export function getCollectionList() {
 export function getCollectionById(id) {
   return new Promise((resolve, reject) => {
     axios
-      .get(`http://localhost:5000/api/creator/collection/${id}`, {
+      .get(`https://codejoy.herokuapp.com/api/creator/collection/${id}`, {
         headers: { accessToken: Cookies.get('accessToken') },
       })
       .then((response) => {
@@ -42,7 +42,7 @@ export function addTestToCollection({ testID, collectionID }) {
   return new Promise((resolve, reject) => {
     axios
       .post(
-        'http://localhost:5000/api/creator/collection/addTest',
+        'https://codejoy.herokuapp.com/api/creator/collection/addTest',
         {
           testID,
           collectionID: parseInt(collectionID),
@@ -69,7 +69,7 @@ export function createNewCollection({ CollectionName, CollectionDescription, Cov
   return new Promise((resolve, reject) => {
     axios
       .post(
-        'http://localhost:5000/api/creator/collection',
+        '/api/creator/collection',
         {
           CollectionName,
           CollectionDescription,
@@ -96,7 +96,7 @@ export function removeTestFromCollection({ testID, collectionID }) {
   console.log(testID, collectionID);
   return new Promise((resolve, reject) => {
     axios
-      .delete('http://localhost:5000/api/creator/collection/removeTest', {
+      .delete('/api/creator/collection/removeTest', {
         headers: { accessToken: Cookies.get('accessToken') },
         data: {
           testID,
@@ -119,7 +119,7 @@ export function deleteCollection({ CollectionID }) {
   console.log(CollectionID);
   return new Promise((resolve, reject) => {
     axios
-      .delete(`http://localhost:5000/api/creator/collection/${CollectionID}`, {
+      .delete(`/api/creator/collection/${CollectionID}`, {
         headers: { accessToken: Cookies.get('accessToken') },
       })
       .then((response) => {

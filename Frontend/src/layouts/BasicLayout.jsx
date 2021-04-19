@@ -11,7 +11,10 @@ import { Result, Button } from 'antd';
 import Authorized from '@/utils/Authorized';
 import RightContent from '@/components/GlobalHeader/RightContent';
 import { getMatchMenu } from '@umijs/route-utils';
-import logo from '../assets/logo.png';
+import logo from '../assets/banner.png';
+import './layout.less';
+import { Inspector } from 'react-dev-inspector';
+import firebase from '@/utils/firebase'
 
 const noMatch = (
   <Result
@@ -38,26 +41,21 @@ const menuDataRender = (menuList) =>
 
 const defaultFooterDom = (
   <DefaultFooter
-    copyright={`${new Date().getFullYear()} 蚂蚁集团体验技术部出品`}
+    copyright={`${new Date().getFullYear()} Codejoy`}
     links={[
       {
-        key: 'Ant Design Pro',
-        title: 'Ant Design Pro',
-        href: 'https://pro.ant.design',
+        key: 'Codejoy',
+        title: 'Codejoy',
+        href: 'https://github.com/1753003/DATN_He-Thong-Danh-gia-ky-nang-Lap-trinh-SV',
         blankTarget: true,
       },
       {
         key: 'github',
         title: <GithubOutlined />,
-        href: 'https://github.com/ant-design/ant-design-pro',
+        href: 'https://github.com/1753003/DATN_He-Thong-Danh-gia-ky-nang-Lap-trinh-SV',
         blankTarget: true,
       },
-      {
-        key: 'Ant Design',
-        title: 'Ant Design',
-        href: 'https://ant.design',
-        blankTarget: true,
-      },
+      
     ]}
   />
 );
@@ -73,12 +71,18 @@ const BasicLayout = (props) => {
   } = props;
   const menuDataRef = useRef([]);
   useEffect(() => {
-    if (dispatch) {
-      dispatch({
-        type: 'user/fetchCurrent',
-      });
-    }
+    getCurrentUserFirebase();
   }, []);
+  const getCurrentUserFirebase = () =>{
+    const userRef = firebase.database().ref(`users/zcwVw4Rjp7b0lRmVZQt6ZXmspql1`)
+    userRef.on('value', (snapshot)=>{
+      if (dispatch) {
+        dispatch({
+          type: 'user/fetchCurrent',
+        });
+      }
+    })
+  }
   /** Init variables */
 
   const handleMenuCollapse = (payload) => {
@@ -99,6 +103,10 @@ const BasicLayout = (props) => {
   );
 
   const { formatMessage } = useIntl();
+  settings.title = '';
+  const url = window.location.href;
+  const isWelcome = (url.includes('/developer/welcome') ? true : false)
+
   return (
     <>
       <ProLayout
@@ -130,9 +138,7 @@ const BasicLayout = (props) => {
         ]}
         itemRender={(route, params, routes, paths) => {
           const first = routes.indexOf(route) === 0;
-          return first ? (
-            <Link to={paths.join('/')}>{route.breadcrumbName}</Link>
-          ) : (
+          return (
             <span>{route.breadcrumbName}</span>
           );
         }}
@@ -165,6 +171,7 @@ const BasicLayout = (props) => {
       />
     </>
   );
+
 };
 
 export default connect(({ global, settings }) => ({

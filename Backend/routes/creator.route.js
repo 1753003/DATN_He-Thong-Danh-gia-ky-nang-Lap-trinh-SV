@@ -14,9 +14,16 @@ router.get('/', async function (req, res) {
 */
 
 router.post('/test', async function (req, res) {
+   var result           = '';
+   var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+   var charactersLength = characters.length;
+   for ( var i = 0; i < 6; i++ ) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+   }
+
    var generalInformation = req.body.generalInformation;
    generalInformation.CreatedBy = req.uid;
-  
+   generalInformation.Code = result;
    await testModel.createTest(generalInformation, req.body.listQuestion);
    res.json("OK");
   
