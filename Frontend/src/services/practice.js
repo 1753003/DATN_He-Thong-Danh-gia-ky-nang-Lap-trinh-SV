@@ -29,7 +29,7 @@ export function getPracticeSet(set) {
       url: `/api/practice?set=${set}`,
       headers: {
         accessToken: Cookies.get('accessToken'),
-        'access-control-allow-origin': '*',
+        'access-control-allow-origin': 'https://devcheckpro.firebaseapp.com',
       },
     };
     axios
