@@ -114,7 +114,7 @@ module.exports = {
                             var tempArr = answer.answer.slice(2, answer.answer.length);
                             //console.log(tempArr);
                             //console.log(codeQuestion.TestCase);
-                            if (JSON.stringify(tempArr)==JSON.stringify(codeQuestion.TestCase.Output)){ //sai chỗ này nè, pon kêu chạy vòng for để kiểm tra
+                            if (JSON.stringify(tempArr)==JSON.stringify(codeQuestion.TestCase.Output)){ //để lấy output thì chạy for để lấy testcase[0].output
                                 score++;
                             }
                         }

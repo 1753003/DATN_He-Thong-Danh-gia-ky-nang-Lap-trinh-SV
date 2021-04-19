@@ -1,5 +1,5 @@
 import { PlusOutlined, HomeOutlined, ContactsOutlined, ClusterOutlined } from '@ant-design/icons';
-import { Avatar, Card, Col, Divider, Input, Row, Tag } from 'antd';
+import { Avatar, Card, Col, Divider, Input, Row, Tag, Form, Radio } from 'antd';
 import React, { Component, useState, useRef } from 'react';
 import { GridContent } from '@ant-design/pro-layout';
 import { Link, connect } from 'umi';
@@ -13,7 +13,7 @@ const operationTabList = [
     key: 'articles',
     tab: (
       <span>
-        文章{' '}
+        Test History{' '}
         <span
           style={{
             fontSize: 14,
@@ -28,7 +28,7 @@ const operationTabList = [
     key: 'applications',
     tab: (
       <span>
-        应用{' '}
+        Practice History{' '}
         <span
           style={{
             fontSize: 14,
@@ -95,11 +95,13 @@ const TagList = ({ tags }) => {
 
   return (
     <div className={styles.tags}>
-      <div className={styles.tagsTitle}>标签</div>
-      {(tags || []).concat(newTags).map((item) => (
+      <div className={styles.tagsTitle}>Education</div>
+      {/* {(tags || []).concat(newTags).map((item) => (
         <Tag key={item.key}>{item.label}</Tag>
-      ))}
-      {inputVisible && (
+      ))} */
+      <Tag>Ho Chi Minh University Of Science</Tag>
+      }
+      {/* {inputVisible && (
         <Input
           ref={ref}
           type="text"
@@ -112,8 +114,8 @@ const TagList = ({ tags }) => {
           onBlur={handleInputConfirm}
           onPressEnter={handleInputConfirm}
         />
-      )}
-      {!inputVisible && (
+      )} */}
+      {/* {!inputVisible && (
         <Tag
           onClick={showInput}
           style={{
@@ -122,7 +124,7 @@ const TagList = ({ tags }) => {
         >
           <PlusOutlined />
         </Tag>
-      )}
+      )} */}
     </div>
   );
 };
@@ -192,7 +194,7 @@ class Center extends Component {
             marginRight: 8,
           }}
         />
-        {currentUser.title}
+        Student
       </p>
       <p>
         <ClusterOutlined
@@ -200,7 +202,7 @@ class Center extends Component {
             marginRight: 8,
           }}
         />
-        {currentUser.group}
+        Pon Dev Team
       </p>
       <p>
         <HomeOutlined
@@ -208,28 +210,12 @@ class Center extends Component {
             marginRight: 8,
           }}
         />
-        {
-          (
-            currentUser.geographic || {
-              province: {
-                label: '',
-              },
-            }
-          ).province.label
-        }
-        {
-          (
-            currentUser.geographic || {
-              city: {
-                label: '',
-              },
-            }
-          ).city.label
-        }
+        Viet Nam
       </p>
     </div>
   );
 
+  
   render() {
     const { tabKey } = this.state;
     const { currentUser = {}, currentUserLoading } = this.props;
@@ -249,8 +235,8 @@ class Center extends Component {
                 <div>
                   <div className={styles.avatarHolder}>
                     <img alt="" src={currentUser.avatar} />
-                    <div className={styles.name}>{currentUser.name}</div>
-                    <div>{currentUser.signature}</div>
+                    <div className={styles.name}>Pon Pham Khanh</div>
+                    <div>pupipinpon@gmail.com</div>
                   </div>
                   {this.renderUserInfo(currentUser)}
                   <Divider dashed />
@@ -262,7 +248,7 @@ class Center extends Component {
                     dashed
                   />
                   <div className={styles.team}>
-                    <div className={styles.teamTitle}>团队</div>
+                    <div className={styles.teamTitle}>HCMUS</div>
                     <Row gutter={36}>
                       {currentUser.notice &&
                         currentUser.notice.map((item) => (
@@ -275,6 +261,7 @@ class Center extends Component {
                         ))}
                     </Row>
                   </div>
+                 
                 </div>
               )}
             </Card>

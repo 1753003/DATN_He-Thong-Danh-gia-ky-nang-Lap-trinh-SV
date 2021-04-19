@@ -8,7 +8,9 @@ import styles from './index.less';
 const Projects = (props) => {
   const { list } = props;
   return (
-    <List
+    <div>
+     
+      <List
       className={styles.coverCardList}
       rowKey="id"
       grid={{
@@ -43,6 +45,7 @@ const Projects = (props) => {
         </List.Item>
       )}
     />
+    </div>
   );
 };
 
