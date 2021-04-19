@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'dva';
 import { getPageQuery } from '@/utils/utils';
+import { history } from 'umi';
 import {
     Typography,
     Card,
@@ -17,13 +18,14 @@ class SearchResult extends React.Component {
     super(props);
   }
   render() {
-    console.log(this.props.search.list)
+    console.log(this.props.search)
     return (
       <div>
         <h1>Search result</h1>
         <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
           <Col className="gutter-row" span={18}>
-            <List
+            <List 
+              loading={this.props.loading}
               style={{ margin: '30px 0px 10px 10px' }}
               itemLayout="horizontal"
               pagination={{
@@ -36,11 +38,19 @@ class SearchResult extends React.Component {
               renderItem={(item) => (
                 <List.Item
                   onClick={() => {
+                    console.log(item.ID)
+                    item.IsPractice ?
                     history.push(
                       '/developer/practice/questions?listName=' +
-                        encodeURIComponent(decodeURIComponent(location.query.listName)) +
-                        `&id=${item.PracticeID}`,
-                    );
+                        encodeURIComponent(decodeURIComponent(item._Set)) +
+                        '&id='+ item.ID,
+                    )
+                    :
+                    history.push(
+                      '/developer/test/questions?listName=' +
+                        encodeURIComponent(decodeURIComponent(item._Set)) +
+                        `&id=${item.ID}`,
+                    )
                   }}
                   style={{
                     backgroundColor: 'white',

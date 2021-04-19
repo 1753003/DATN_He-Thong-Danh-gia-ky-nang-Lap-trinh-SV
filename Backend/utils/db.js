@@ -1,11 +1,11 @@
 const knex = require('knex')({
     client: 'mysql2',
     connection: {
-      host: 'devcheckkhtn.mysql.database.azure.com',
+      host: 'grp6m5lz95d9exiz.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
       port: 3306,
-      user: 'ponpon@devcheckkhtn',
-      password: '7Rxcj9m$DaMnMT$',
-      database: 'devcheck'
+      user: 'vqdunee9clgyzm0d',
+      password: 'akczj8geq7g49675',
+      database: 'rrnlpcoccdmp00e6'
     }
   });
   

@@ -6,9 +6,10 @@ export function getPracticeListDetail(id) {
   return new Promise((resolve, reject) => {
     axios
       .get(`/api/practice/${id}`, {
+        withCredentials: true,
         headers: {
           accessToken: Cookies.get('accessToken'),
-          'access-control-allow-origin': '*',
+          'access-control-allow-origin': 'https://devcheckpro.firebaseapp.com/',
         },
       })
       .then((response) => {
@@ -16,7 +17,7 @@ export function getPracticeListDetail(id) {
       })
       .catch((error) => {
         const message = error.response.data.message;
-        tokenHandling(message, `/api/practice/${id}`, 'GET', resolve);
+        tokenHandling(message, resolve, options);
       });
   });
 }
@@ -24,10 +25,11 @@ export function getPracticeSet(set) {
   return new Promise((resolve, reject) => {
     var options = {
       method: 'GET',
+      withCredentials: true,
       url: `/api/practice?set=${set}`,
       headers: {
         accessToken: Cookies.get('accessToken'),
-        'access-control-allow-origin': '*',
+        'access-control-allow-origin': 'https://devcheckpro.firebaseapp.com',
       },
     };
     axios
@@ -48,6 +50,7 @@ export function getSubmissionList(pid, uid) {
   return new Promise((resolve, reject) => {
     axios
       .get(`/api/practice/submissions?pid=${pid}&uid=${uid}`, {
+        withCredentials: true,
         headers: {
           accessToken: Cookies.get('accessToken'),
           'access-control-allow-origin': '*',
@@ -85,6 +88,7 @@ export function saveSubmission(pid, jsonData) {
   };
   return new Promise((resolve, reject) => {
     var options = {
+      withCredentials: true,
       method: 'POST',
       url: '/api/practice/submissions',
       headers: {
