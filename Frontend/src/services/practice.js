@@ -9,7 +9,7 @@ export function getPracticeListDetail(id) {
       .get(`https://codejoy.herokuapp.com/api/practice/${id}`, {
         withCredentials: true,
         headers: {
-          'access-control-allow-origin': 'https://devcheckpro.firebaseapp.com/',
+          'access-control-allow-origin': 'https://devcheckpro.web.app/',
           'accessToken': Cookies.get('accessToken')
         },
       })
@@ -53,7 +53,7 @@ export function getSubmissionList(pid, uid) {
       .get(`https://codejoy.herokuapp.com/api/practice/submissions?pid=${pid}&uid=${uid}`, {
         withCredentials: true,
         headers: {
-          'access-control-allow-origin': 'https://devcheckpro.firebaseapp.com',
+          'access-control-allow-origin': 'https://devcheckpro.web.app',
           'accessToken': Cookies.get('accessToken') 
         },
       })
@@ -93,7 +93,7 @@ export function saveSubmission(pid, jsonData) {
       method: 'POST',
       url: 'https://codejoy.herokuapp.com/api/practice/submissions',
       headers: {
-        'access-control-allow-origin': 'https://devcheckpro.firebaseapp.com',
+        'access-control-allow-origin': 'https://devcheckpro.web.app',
         'accessToken': Cookies.get('accessToken') 
       },
       data: submission,
