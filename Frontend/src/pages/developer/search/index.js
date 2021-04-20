@@ -12,6 +12,7 @@ import {
     Button,
     Tag
   } from 'antd';
+import "./style.less"
 const { Title, Text } = Typography;
 class SearchResult extends React.Component {
   constructor(props) {
@@ -24,7 +25,7 @@ class SearchResult extends React.Component {
         <h1>Search result</h1>
         <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
           <Col className="gutter-row" span={18}>
-            <List 
+            <List className="custom"
               loading={this.props.loading}
               style={{ margin: '30px 0px 10px 10px' }}
               itemLayout="horizontal"
