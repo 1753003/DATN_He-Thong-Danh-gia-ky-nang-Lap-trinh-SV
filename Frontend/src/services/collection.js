@@ -1,30 +1,43 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import tokenHandling from './tokenHandling';
 
 export function getCollectionList() {
   return new Promise((resolve, reject) => {
+    var options = {
+      method: 'GET',
+      url: `https://codejoy.herokuapp.com/api/creator/collection`,
+      headers: {
+        accessToken: Cookies.get('accessToken'),
+        'access-control-allow-origin': 'https://devcheckpro.web.app/',
+      },
+    };
     axios
-      .get(`https://codejoy.herokuapp.com/api/creator/collection`, {
-        headers: { accessToken: Cookies.get('accessToken') },
-      })
+      .request(options)
       .then((response) => {
         // handle success
         resolve(response.data);
       })
       .catch((error) => {
         // handle error
-        reject();
-        console.log(error);
+        const message = error.response.data.message;
+        tokenHandling(message, resolve, options);
       });
   });
 }
 
 export function getCollectionById(id) {
   return new Promise((resolve, reject) => {
+    var options = {
+      method: 'GET',
+      url: `https://codejoy.herokuapp.com/api/creator/collection/${id}`,
+      headers: {
+        accessToken: Cookies.get('accessToken'),
+        'access-control-allow-origin': 'https://devcheckpro.web.app/',
+      },
+    };
     axios
-      .get(`https://codejoy.herokuapp.com/api/creator/collection/${id}`, {
-        headers: { accessToken: Cookies.get('accessToken') },
-      })
+      .request(options)
       .then((response) => {
         // handle success
         // console.log(response.data)
@@ -32,25 +45,28 @@ export function getCollectionById(id) {
       })
       .catch((error) => {
         // handle error
-        reject();
-        console.log(error);
+        const message = error.response.data.message;
+        tokenHandling(message, resolve, options);
       });
   });
 }
 
 export function addTestToCollection({ testID, collectionID }) {
   return new Promise((resolve, reject) => {
+    var options = {
+      method: 'POST',
+      url: `https://codejoy.herokuapp.com/api/creator/collection/addTest`,
+      headers: {
+        accessToken: Cookies.get('accessToken'),
+        'access-control-allow-origin': 'https://devcheckpro.web.app/',
+      },
+      data: {
+        testID,
+        collectionID: parseInt(collectionID),
+      }
+    };
     axios
-      .post(
-        'https://codejoy.herokuapp.com/api/creator/collection/addTest',
-        {
-          testID,
-          collectionID: parseInt(collectionID),
-        },
-        {
-          headers: { accessToken: Cookies.get('accessToken') },
-        },
-      )
+      .request(options)
       .then((response) => {
         // handle success
         // console.log(response.data)
@@ -58,27 +74,30 @@ export function addTestToCollection({ testID, collectionID }) {
       })
       .catch((error) => {
         // handle error
-        reject();
-        console.log(error);
+        const message = error.response.data.message;
+        tokenHandling(message, resolve, options);
       });
   });
 }
 
 export function createNewCollection({ CollectionName, CollectionDescription, CoverImage }) {
-  console.log(CollectionName, CollectionDescription, CoverImage);
+  
   return new Promise((resolve, reject) => {
-    axios
-      .post(
-        '/api/creator/collection',
-        {
-          CollectionName,
+    var options = {
+      method: 'POST',
+      url: `https://codejoy.herokuapp.com/api/creator/collection`,
+      headers: {
+        accessToken: Cookies.get('accessToken'),
+        'access-control-allow-origin': 'https://devcheckpro.web.app/',
+      },
+      data: {
+        CollectionName,
           CollectionDescription,
           CoverImage,
-        },
-        {
-          headers: { accessToken: Cookies.get('accessToken') },
-        },
-      )
+      }
+    };
+    axios
+      .request(options)
       .then((response) => {
         // handle success
         // console.log(response.data)
@@ -86,8 +105,8 @@ export function createNewCollection({ CollectionName, CollectionDescription, Cov
       })
       .catch((error) => {
         // handle error
-        reject();
-        console.log(error);
+        const message = error.response.data.message;
+        tokenHandling(message, resolve, options);
       });
   });
 }
@@ -95,22 +114,28 @@ export function createNewCollection({ CollectionName, CollectionDescription, Cov
 export function removeTestFromCollection({ testID, collectionID }) {
   console.log(testID, collectionID);
   return new Promise((resolve, reject) => {
+    var options = {
+      method: 'DELETE',
+      url: `https://codejoy.herokuapp.com/api/creator/collection/removeTest`,
+      headers: {
+        accessToken: Cookies.get('accessToken'),
+        'access-control-allow-origin': 'https://devcheckpro.web.app/',
+      },
+      data: {
+        testID,
+        collectionID: parseInt(collectionID),
+      },
+    };
     axios
-      .delete('/api/creator/collection/removeTest', {
-        headers: { accessToken: Cookies.get('accessToken') },
-        data: {
-          testID,
-          collectionID: parseInt(collectionID),
-        },
-      })
+      .request(options)
       .then((response) => {
         // handle success
         resolve(response.data);
       })
       .catch((error) => {
         // handle error
-        reject();
-        console.log(error);
+        const message = error.response.data.message;
+        tokenHandling(message, resolve, options);
       });
   });
 }
@@ -118,18 +143,24 @@ export function removeTestFromCollection({ testID, collectionID }) {
 export function deleteCollection({ CollectionID }) {
   console.log(CollectionID);
   return new Promise((resolve, reject) => {
+    var options = {
+      method: 'DELETE',
+      url: `/api/creator/collection/${CollectionID}`,
+      headers: {
+        accessToken: Cookies.get('accessToken'),
+        'access-control-allow-origin': 'https://devcheckpro.web.app/',
+      },
+    };
     axios
-      .delete(`/api/creator/collection/${CollectionID}`, {
-        headers: { accessToken: Cookies.get('accessToken') },
-      })
+      .request(options)
       .then((response) => {
         // handle success
         resolve(response.data);
       })
       .catch((error) => {
         // handle error
-        reject();
-        console.log(error);
+        const message = error.response.data.message;
+        tokenHandling(message, resolve, options);
       });
   });
 }

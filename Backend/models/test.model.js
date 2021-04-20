@@ -17,19 +17,19 @@ module.exports = {
                         await db('multiplechoice').insert({
                             "MCDescription": element.MCDescription,
                             "Answer": JSON.stringify(element.Answer),
-                            "CorrectAnswer": JSON.stringify(CorrectAnswer),
+                            "CorrectAnswer": JSON.stringify(element.CorrectAnswer),
                             "QuestionID": result[0],
                         })             
                     }
                     else if (element.QuestionType === 'Code') {
                         await db('coding').insert({
                             "CodeDescription": element.CodeDescription,
-                            "Language_allowed": JSON.stringify(element.Language_allowed),
+                            "Language_allowed": generalInformation.LanguageAllowed,
                             "RunningTime": element.RunningTime,
                             "MemoryUsage": element.MemoryUsage,
                             "TestCase": JSON.stringify(element.TestCase),
                             "QuestionID": result[0],
-                            "SampleCode": element.SampleCode
+                            "CodeSample": element.CodeSample
                         })
                     }
                     await db('test').update({

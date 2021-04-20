@@ -3,18 +3,24 @@ import Cookies from 'js-cookie';
 
 export function getTestList() {
   return new Promise((resolve, reject) => {
+    var options = {
+      method: 'GET',
+      url: `https://codejoy.herokuapp.com/api/creator/test`,
+      headers: {
+        accessToken: Cookies.get('accessToken'),
+        'access-control-allow-origin': 'https://devcheckpro.web.app/',
+      },
+    };
     axios
-      .get(`/api/creator/test`, {
-        headers: { accessToken: Cookies.get('accessToken') },
-      })
+      .request(options)
       .then((response) => {
         // handle success
         resolve(response.data);
       })
       .catch((error) => {
         // handle error
-        reject();
-        console.log(error);
+        const message = error.response.data.message;
+        tokenHandling(message, resolve, options);
       });
   });
 }
@@ -22,10 +28,16 @@ export function getTestList() {
 export function getTestById(id) {
   console.log(id);
   return new Promise((resolve, reject) => {
+    var options = {
+      method: 'GET',
+      url: `https://codejoy.herokuapp.com/api/creator/test/${id}`,
+      headers: {
+        accessToken: Cookies.get('accessToken'),
+        'access-control-allow-origin': 'https://devcheckpro.web.app/',
+      },
+    };
     axios
-      .get(`/api/creator/test/${id}`, {
-        headers: { accessToken: Cookies.get('accessToken') },
-      })
+      .request(options)
       .then((response) => {
         // handle success
         // console.log(response.data)
@@ -33,8 +45,8 @@ export function getTestById(id) {
       })
       .catch((error) => {
         // handle error
-        reject();
-        console.log(error);
+        const message = error.response.data.message;
+        tokenHandling(message, resolve, options);
       });
   });
 }
