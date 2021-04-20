@@ -2,14 +2,17 @@ const express = require('express');
 const router = express.Router();
 const testModel = require('../models/test.model')
 
-var firebase_realtime = require("firebase/app");
-require("firebase/database");
+var firebase_realtime = require('firebase');
+// require("firebase/database");
 var config = {
     apiKey: "AIzaSyC_FKi-svb2idZpvqsfPFWASeHUS60O9eU",
     authDomain: "devcheckpro.firebaseapp.com",
-    databaseURL: "https://devcheckpro-default-rtdb.firebaseio.com",
-    storageBucket: "devcheckpro.appspot.com"
-};
+    projectId: "devcheckpro",
+    storageBucket: "devcheckpro.appspot.com",
+    messagingSenderId: "594608048066",
+    appId: "1:594608048066:web:fe4fadd828cdc36181f85b",
+    measurementId: "G-44GFLD429W"
+  };
 
 firebase_realtime.initializeApp(config);
 

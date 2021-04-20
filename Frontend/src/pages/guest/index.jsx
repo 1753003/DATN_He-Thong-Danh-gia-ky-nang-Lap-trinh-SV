@@ -293,20 +293,30 @@ const Content = () => {
             <div className={styles.three}>
               <Row className = {styles.navigationContent}>
                 <Col span={12} className = {styles.navigationContentDeveloper}>
-                  Are you student?
-                  <Button onClick = {() => {history.push('/developer/practice')}}
-                          type="primary"
-                  >
-                    Join now
-                  </Button>
+                  <div className = {styles.wallpaper}>
+                    <img src="https://firebasestorage.googleapis.com/v0/b/devcheckpro.appspot.com/o/GuestPage%2Fdev-login.png?alt=media&token=282a2155-07e1-457e-abb1-bb424f80766a" alt="" width="80%" height="80%"/>
+                  </div>
+                  <Row className = {styles.text}>
+                    <div className = {styles.cardTitle}>Are you student?</div>
+                    <Button onClick = {() => {history.push('/developer/practice')}}
+                            type="primary"
+                    >
+                      Join now
+                    </Button>
+                  </Row>
                 </Col>
                 <Col span={12} className = {styles.navigationContentDeveloper}>
-                  Are you teacher?
-                  <Button onClick = {() => {history.push('/creator')}}
-                          type="primary"
-                  >
-                    Join now
-                  </Button>
+                  <div className = {styles.wallpaper}>
+                    <img src="https://firebasestorage.googleapis.com/v0/b/devcheckpro.appspot.com/o/GuestPage%2Fcreator-login.jpg?alt=media&token=b47214d7-09be-4796-a4f7-cc641e67313b" alt="" width="80%" height="80%"/>
+                  </div>
+                  <Row className = {styles.text}>
+                  <div className = {styles.cardTitle}>Are you teacher?</div>
+                    <Button onClick = {() => {history.push('/creator')}}
+                            type="primary"
+                    >
+                      Join now
+                    </Button>
+                  </Row>
                 </Col>
               </Row>
             </div>

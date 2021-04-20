@@ -1,13 +1,13 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 const titles = [
-  'Alipay',
-  'Angular',
-  'Ant Design',
-  'Ant Design Pro',
-  'Bootstrap',
-  'React',
-  'Vue',
-  'Webpack',
+  'Test 1',
+  'Test 2',
+  'Test 3',
+  'Test 4',
+  'Test 5',
+  'Test 6',
+  'Test 7',
+  'Test 8',
 ];
 const avatars = [
   'https://gw.alipayobjects.com/zos/rmsportal/WdGqmHpayyMjiEhcKoVE.png', // Alipay

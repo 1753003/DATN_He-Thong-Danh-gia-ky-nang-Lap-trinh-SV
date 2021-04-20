@@ -1,5 +1,5 @@
 import { StarTwoTone, LikeOutlined, MessageFilled } from '@ant-design/icons';
-import { List, Tag } from 'antd';
+import { List, Tag, Radio, Row } from 'antd';
 import React from 'react';
 import { connect } from 'umi';
 import ArticleListContent from '../ArticleListContent';
@@ -13,9 +13,22 @@ const Articles = (props) => {
       {icon} {text}
     </span>
   );
+  function onPermissionChange (e)  {
 
+  }
   return (
-    <List
+    <div>
+      <Row>
+        <Radio.Group className = {styles.rdGroup} onChange={onPermissionChange} defaultValue="a">
+          <Radio.Button value="a">Passed</Radio.Button>
+          <Radio.Button value="b">Failed</Radio.Button>
+        </Radio.Group>
+        <Radio.Group className = {styles.rdGroup} onChange={onPermissionChange} defaultValue="b">
+          <Radio.Button value="a">Public</Radio.Button>
+          <Radio.Button value="b">Private</Radio.Button>
+        </Radio.Group>
+      </Row>
+      <List
       size="large"
       className={styles.articleList}
       rowKey="id"
@@ -24,11 +37,11 @@ const Articles = (props) => {
       renderItem={(item) => (
         <List.Item
           key={item.id}
-          actions={[
-            <IconText key="star" icon={<StarTwoTone />} text={item.star} />,
-            <IconText key="like" icon={<LikeOutlined />} text={item.like} />,
-            <IconText key="message" icon={<MessageFilled />} text={item.message} />,
-          ]}
+          // actions={[
+          //   <IconText key="star" icon={<StarTwoTone />} text={item.star} />,
+          //   <IconText key="like" icon={<LikeOutlined />} text={item.like} />,
+          //   <IconText key="message" icon={<MessageFilled />} text={item.message} />,
+          // ]}
         >
           <List.Item.Meta
             title={
@@ -38,9 +51,8 @@ const Articles = (props) => {
             }
             description={
               <span>
-                <Tag>Ant Design</Tag>
-                <Tag>设计语言</Tag>
-                <Tag>蚂蚁金服</Tag>
+                <Tag>Medium</Tag>
+                <Tag>Javascript</Tag>
               </span>
             }
           />
@@ -48,6 +60,7 @@ const Articles = (props) => {
         </List.Item>
       )}
     />
+    </div>
   );
 };
 

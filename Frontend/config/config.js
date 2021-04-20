@@ -215,6 +215,10 @@ export default defineConfig({
                   
                 },
                 {
+                  path: '/developer/profile',
+                  component: './account/center'
+                },
+                {
                   component: './404',
                 },
               ],

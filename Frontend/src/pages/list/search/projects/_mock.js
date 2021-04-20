@@ -1,12 +1,12 @@
 const titles = [
-  'Alipay',
-  'Angular',
-  'Ant Design',
-  'Ant Design Pro',
-  'Bootstrap',
-  'React',
-  'Vue',
-  'Webpack',
+  'Test 1',
+  'Test 2',
+  'Test 3',
+  'Test 4',
+  'Test 5',
+  'Test 6',
+  'Test 7',
+  'Test 8',
 ];
 const avatars = [
   'https://gw.alipayobjects.com/zos/rmsportal/WdGqmHpayyMjiEhcKoVE.png', // Alipay
@@ -65,9 +65,9 @@ function fakeList(count) {
         '在中台产品的研发过程中，会出现不同的设计规范和实现方式，但其中往往存在很多类似的页面和组件，这些类似的组件会被抽离成一套标准规范。',
       activeUser: Math.ceil(Math.random() * 100000) + 100000,
       newUser: Math.ceil(Math.random() * 1000) + 1000,
-      star: Math.ceil(Math.random() * 100) + 100,
-      like: Math.ceil(Math.random() * 100) + 100,
-      message: Math.ceil(Math.random() * 10) + 10,
+      // star: Math.ceil(Math.random() * 100) + 100,
+      // like: Math.ceil(Math.random() * 100) + 100,
+      // message: Math.ceil(Math.random() * 10) + 10,
       content:
         '段落示意：蚂蚁金服设计平台 ant.design，用最小的工作量，无缝接入蚂蚁金服生态，提供跨越设计与开发的体验解决方案。蚂蚁金服设计平台 ant.design，用最小的工作量，无缝接入蚂蚁金服生态，提供跨越设计与开发的体验解决方案。',
       members: [
