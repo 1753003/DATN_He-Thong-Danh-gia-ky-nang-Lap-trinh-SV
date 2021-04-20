@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styles from './index.less';
 import moment from 'moment';
+import AceEditor from 'react-ace';
 import {
   Button,
   Drawer,
@@ -27,6 +28,8 @@ import {
 import { connect } from 'umi';
 import ReactMarkdown from 'react-markdown';
 import _ from 'lodash';
+
+import CodeEditor from '@/components/CodeEditor';
 
 const { Option } = Select;
 const CreateTest = ({ dispatch }) => {
@@ -72,13 +75,15 @@ const CreateTest = ({ dispatch }) => {
     payload.generalInformation.StartTime = information.StartTime.locale('en').format(
       'yy-MM-DD hh:mm:ss',
     );
+    payload.generalInformation.LanguageAllowed = JSON.stringify(
+      payload.generalInformation.LanguageAllowed,
+    );
     console.log(payload);
 
     dispatch({
       type: 'test/createTest',
       payload,
     });
-    
   };
 
   return (
@@ -98,11 +103,12 @@ const CreateTest = ({ dispatch }) => {
       </div>
       <div className={styles.bodyContainer}>
         <div className={styles.left}>
-          {quiz?.map((item) => {
+          {quiz?.map((item, index) => {
             return (
               <Button
                 className={styles.quizContainer}
                 onClick={() => handleChangeQuiz(item)}
+                key={index}
                 type={item.ID === selectedQuiz.ID ? 'primary' : 'default'}
               >
                 {item.ID} - {item.QuestionType}
@@ -230,7 +236,11 @@ const RenderMiddle = ({ option, selectedQuiz, setQuiz, quiz }) => {
   };
 
   const onChangeCodeDescription = (e) => {
-    setCode(e.target.value);
+    const newQuiz = [...quiz];
+    newQuiz.forEach((item) => {
+      if (item.ID === selectedQuiz.ID) item.CodeDescription = e.target.value;
+    });
+    setQuiz(newQuiz);
   };
   switch (selectedQuiz.QuestionType) {
     case 'quiz':
@@ -250,7 +260,7 @@ const RenderMiddle = ({ option, selectedQuiz, setQuiz, quiz }) => {
           />
           {selectedQuiz.Answer?.map((item, index) => {
             return (
-              <div className={styles.choices}>
+              <div className={styles.choices} key={index}>
                 <div>Answer {index}</div>
                 <Input
                   style={{ height: '40px', width: '70%' }}
@@ -322,7 +332,10 @@ const RenderMiddle = ({ option, selectedQuiz, setQuiz, quiz }) => {
             <ReactMarkdown>{code}</ReactMarkdown>
           </Card>
           <h3>Code Description</h3>
-          <Input.TextArea onChange={onChangeCodeDescription} />
+          <Input.TextArea
+            onChange={onChangeCodeDescription}
+            value={selectedQuiz?.CodeDescription}
+          />
           <h3>Test Case</h3>
           {selectedQuiz.TestCase?.map((item, index) => {
             return (
@@ -424,9 +437,40 @@ const RenderMiddle = ({ option, selectedQuiz, setQuiz, quiz }) => {
                   const newQuiz = [...quiz];
                   newQuiz.forEach((quiz) => {
                     if (quiz.ID === selectedQuiz.ID) {
-                      if (quiz.ID === selectedQuiz.ID) {
-                        quiz.MemoryUsage = value;
-                      }
+                      quiz.MemoryUsage = value;
+                    }
+                  });
+                  setQuiz(newQuiz);
+                }}
+              />
+            </div>
+            <div>
+              <h3>CodeSample</h3>
+              <AceEditor
+                // ref ={this.editorRef}
+                // tabSize= {this.state.tabSize}
+                style={{ whiteSpace: 'pre-wrap', border: 'solid #dcdcdc 1px' }}
+                width="100%"
+                height="400px"
+                showPrintMargin={false}
+                showGutter
+                value={selectedQuiz.CodeSample}
+                mode={'c_cpp'}
+                theme={'tomorrow'}
+                fontSize={16}
+                editorProps={{ $blockScrolling: true, $blockSelectEnabled: false }}
+                setOptions={{
+                  enableBasicAutocompletion: true,
+                  enableLiveAutocompletion: true,
+                  enableSnippets: true,
+                }}
+                onChange={(value) => {
+                  console.log(value);
+                  const newQuiz = [...quiz];
+                  newQuiz.forEach((quiz) => {
+                    if (quiz.ID === selectedQuiz.ID) {
+                      console.log(value);
+                      quiz.CodeSample = value;
                     }
                   });
                   setQuiz(newQuiz);
