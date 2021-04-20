@@ -3,6 +3,7 @@ import Cookies from 'js-cookie';
 import tokenHandling from './tokenHandling';
 
 export function getPracticeListDetail(id) {
+  console.log(Cookies.get('accessToken'));
   return new Promise((resolve, reject) => {
     axios
       .get(`https://codejoy.herokuapp.com/api/practice/${id}`, {
@@ -29,6 +30,7 @@ export function getPracticeSet(set) {
       url: `https://codejoy.herokuapp.com/api/practice?set=${set}`,
       headers: {
         'access-control-allow-origin': 'https://devcheckpro.web.app',
+        'accessToken': Cookies.get('accessToken') 
       },
     };
     axios

@@ -36,8 +36,8 @@ module.exports = function (req, res, next) {
           {
             expiresIn: "300s"
           });
-          res.cookie('accessToken', newaccessToken, { httpOnly: true });
-        // res.cookie('refreshToken', refreshToken, { httpOnly: true });
+          res.cookie('accessToken', newaccessToken);
+        // res.cookie('refreshToken', refreshToken);
         res.json({message:'New access token', data: {accessToken: newaccessToken}});
         next()
       } catch (err) {
