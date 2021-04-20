@@ -51,22 +51,28 @@ export function getTestById(id) {
   });
 }
 
-// export function createNewCollection(payload) {
-//   return new Promise((resolve, reject) => {
-//     axios
-//       .post(`https://codejoy.herokuapp.com/api/creator/collection`, {
-//         headers: { accessToken: Cookies.get('accessToken') },
-//         body: payload,
-//       })
-//       .then((response) => {
-//         // handle success
-//         // console.log(response.data)
-//         resolve(response.data);
-//       })
-//       .catch((error) => {
-//         // handle error
-//         reject();
-//         console.log(error);
-//       });
-//   });
-// }
+export function createNewTest({ generalInformation, listQuestion }) {
+  return new Promise((resolve, reject) => {
+    axios
+      .post(
+        'http://localhost:5000/api/creator/test',
+        {
+          generalInformation,
+          listQuestion,
+        },
+        {
+          headers: { accessToken: Cookies.get('accessToken') },
+        },
+      )
+      .then((response) => {
+        // handle success
+        console.log(response.data);
+        resolve(response.data);
+      })
+      .catch((error) => {
+        // handle error
+        console.log(error);
+        reject();
+      });
+  });
+}

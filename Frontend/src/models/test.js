@@ -1,5 +1,5 @@
 // import { queryCurrent, query as queryUsers } from '@/services/user';
-import { getTestList, getTestById } from '@/services/test';
+import { getTestList, getTestById, createNewTest } from '@/services/test';
 
 const TestModal = {
   namespace: 'test',
@@ -23,6 +23,9 @@ const TestModal = {
         type: 'saveTestById',
         payload: response,
       });
+    },
+    *createTest({ payload }, { call }) {
+      const response = yield call(createNewTest, payload);
     },
   },
   reducers: {
