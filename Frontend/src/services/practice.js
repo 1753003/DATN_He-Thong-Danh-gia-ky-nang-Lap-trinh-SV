@@ -5,10 +5,9 @@ import tokenHandling from './tokenHandling';
 export function getPracticeListDetail(id) {
   return new Promise((resolve, reject) => {
     axios
-      .get(`/api/practice/${id}`, {
+      .get(`https://codejoy.herokuapp.com/api/practice/${id}`, {
         withCredentials: true,
         headers: {
-          accessToken: Cookies.get('accessToken'),
           'access-control-allow-origin': 'https://devcheckpro.firebaseapp.com/',
         },
       })
@@ -26,10 +25,9 @@ export function getPracticeSet(set) {
     var options = {
       method: 'GET',
       withCredentials: true,
-      url: `/api/practice?set=${set}`,
+      url: `https://codejoy.herokuapp.com/api/practice?set=${set}`,
       headers: {
-        accessToken: Cookies.get('accessToken'),
-        'access-control-allow-origin': 'https://devcheckpro.firebaseapp.com',
+        'access-control-allow-origin': 'https://devcheckpro.web.app',
       },
     };
     axios
@@ -49,11 +47,10 @@ export function getSubmissionList(pid, uid) {
   uid = 'zcwVw4Rjp7b0lRmVZQt6ZXmspql1'; //chromevi123+1@gmail.com
   return new Promise((resolve, reject) => {
     axios
-      .get(`/api/practice/submissions?pid=${pid}&uid=${uid}`, {
+      .get(`https://codejoy.herokuapp.com/api/practice/submissions?pid=${pid}&uid=${uid}`, {
         withCredentials: true,
         headers: {
-          accessToken: Cookies.get('accessToken'),
-          'access-control-allow-origin': '*',
+          'access-control-allow-origin': 'https://devcheckpro.firebaseapp.com',
         },
       })
       .then((response) => {
@@ -90,10 +87,9 @@ export function saveSubmission(pid, jsonData) {
     var options = {
       withCredentials: true,
       method: 'POST',
-      url: '/api/practice/submissions',
+      url: 'https://codejoy.herokuapp.com/api/practice/submissions',
       headers: {
-        accessToken: Cookies.get('accessToken'),
-        'access-control-allow-origin': '*',
+        'access-control-allow-origin': 'https://devcheckpro.firebaseapp.com',
       },
       data: submission,
     };

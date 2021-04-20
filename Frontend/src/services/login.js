@@ -3,7 +3,7 @@ import axios from 'axios';
 
 export function Login(params) {
   return new Promise( (resolve, reject) => {
-      axios.post('/api/auth/login', params)
+      axios.post('https://codejoy.herokuapp.com/api/auth/login', params)
       .then((response) => {
           // handle success
           console.log(response.data)

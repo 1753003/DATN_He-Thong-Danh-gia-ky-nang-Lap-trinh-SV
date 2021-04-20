@@ -6,9 +6,10 @@ export function search(word) {
   return new Promise((resolve, reject) => {
     var options = {
       method: 'GET',
-      url: `/api/search?keyword=${word}`,
+      url: `http://codejoy.herokuapp.com//api/search?keyword=${word}`,
       headers: {
         accessToken: Cookies.get('accessToken'),
+        'access-control-allow-origin': 'https://devcheckpro.firebaseapp.com/',
       },
     };
     axios
