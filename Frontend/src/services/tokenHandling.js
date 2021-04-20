@@ -1,5 +1,6 @@
 import Cookies from 'js-cookie';
 import axios from 'axios';
+import Constant from '@/utils/contants';
 
 export default function tokenHandling(status, resolve, options) {
   const accessToken = Cookies.get('accessToken');
@@ -20,28 +21,25 @@ export default function tokenHandling(status, resolve, options) {
   }
   if (status == 'Invalid access token.') {
     axios
-      .get(`/api/token/`, { headers: { refreshToken: refreshToken } })
+      .get(`${Constant.API}/api/token/`, { headers: { refreshToken: refreshToken } })
       .then((response) => {
-        
         if (response.data.message == 'New access token') {
           const newAccessToken = response.data.data.accessToken;
           Cookies.remove('accessToken');
           Cookies.set('accessToken', newAccessToken, { expires: 1 });
 
           options.headers.accessToken = newAccessToken;
-          
+
           axios
-          .request(options)
-          .then((response) => {
-            resolve(response.data);
-          })
-          .catch((error) => {
-            const message = error.response.data.message;
-            tokenHandling(message, resolve, options);
-          });
-        } 
-        else if (response.data.message == 'New 2 tokens') {
-        
+            .request(options)
+            .then((response) => {
+              resolve(response.data);
+            })
+            .catch((error) => {
+              const message = error.response.data.message;
+              tokenHandling(message, resolve, options);
+            });
+        } else if (response.data.message == 'New 2 tokens') {
           const newAccessToken = response.data.data.accessToken;
           const newRefreshToken = response.data.data.refreshToken;
 
@@ -50,18 +48,18 @@ export default function tokenHandling(status, resolve, options) {
 
           Cookies.set('accessToken', newAccessToken, { expires: 7 });
           Cookies.set('refreshToken', newRefreshToken, { expires: 7 });
-         
+
           options.headers.accessToken = newAccessToken;
-          
+
           axios
-          .request(options)
-          .then((response) => {
-            resolve(response.data);
-          })
-          .catch((error) => {
-            const message = error.response.data.message;
-            tokenHandling(message, resolve, option);
-          });
+            .request(options)
+            .then((response) => {
+              resolve(response.data);
+            })
+            .catch((error) => {
+              const message = error.response.data.message;
+              tokenHandling(message, resolve, option);
+            });
         } else if (response.data.message == 'Wrong refresh token') {
           localStorage.removeItem('currentUser');
           localStorage.removeItem('antd-pro-authority');
@@ -70,8 +68,6 @@ export default function tokenHandling(status, resolve, options) {
           window.location.href = '/user/login?errorCode=3';
         }
       })
-      .catch((error) => {
-        
-      });
+      .catch((error) => {});
   }
 }
