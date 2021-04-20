@@ -54,6 +54,7 @@ export function getSubmissionList(pid, uid) {
         withCredentials: true,
         headers: {
           'access-control-allow-origin': 'https://devcheckpro.firebaseapp.com',
+          'accessToken': Cookies.get('accessToken') 
         },
       })
       .then((response) => {
@@ -93,6 +94,7 @@ export function saveSubmission(pid, jsonData) {
       url: 'https://codejoy.herokuapp.com/api/practice/submissions',
       headers: {
         'access-control-allow-origin': 'https://devcheckpro.firebaseapp.com',
+        'accessToken': Cookies.get('accessToken') 
       },
       data: submission,
     };
