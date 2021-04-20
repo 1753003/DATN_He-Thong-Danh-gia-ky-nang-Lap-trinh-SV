@@ -39,7 +39,7 @@ module.exports = function (req, res, next) {
           });
           res.cookie('accessToken', newaccessToken, { httpOnly: true });
         // res.cookie('refreshToken', refreshToken, { httpOnly: true });
-        // res.json({message:'New access token', data: {accessToken: newaccessToken}});
+        res.json({message:'New access token', data: {accessToken: newaccessToken}});
         next()
       } catch (err) {
           req.refreshToken = refreshToken;
