@@ -1,7 +1,8 @@
 const jwt = require('jsonwebtoken');
 
 module.exports = function (req, res, next) {
-  const accessToken = req.headers.accessToken
+  console.log(req.headers)
+  const accessToken = req.headers.accesstoken
   const refreshToken = req.headers.refreshToken
   console.log(accessToken);
   console.log('rf ',refreshToken);
