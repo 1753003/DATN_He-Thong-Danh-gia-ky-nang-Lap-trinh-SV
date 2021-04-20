@@ -174,8 +174,8 @@ router.post('/login', async function (req, res) {
         );
         console.log(refreshToken)
         userModel.updateRefreshToken(user.uid, refreshToken);
-        res.cookie('accessToken', accessToken, { httpOnly: true });
-        res.cookie('refreshToken', refreshToken, { httpOnly: true });
+        res.cookie('accessToken', accessToken, { httpOnly: true, secure: true, sameSite:"none" });
+        res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: true, sameSite:"none" });
         res.json({
           status: 'OK',
           message: {
