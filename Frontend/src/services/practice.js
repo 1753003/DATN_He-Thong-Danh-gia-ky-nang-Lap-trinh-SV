@@ -9,6 +9,7 @@ export function getPracticeListDetail(id) {
         withCredentials: true,
         headers: {
           'access-control-allow-origin': 'https://devcheckpro.firebaseapp.com/',
+          'accessToken': Cookies.get('accessToken')
         },
       })
       .then((response) => {
