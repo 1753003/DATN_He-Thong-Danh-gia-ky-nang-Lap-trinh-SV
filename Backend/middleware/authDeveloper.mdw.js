@@ -2,10 +2,18 @@ const jwt = require('jsonwebtoken');
 
 module.exports = function (req, res, next) {
   console.log(req.headers)
+<<<<<<< HEAD
+=======
+
+>>>>>>> 9cdb264dd3f6901b8355dfdaca2859daa6b7f90b
   const accessToken = req.headers.accesstoken
   const refreshToken = req.headers.refreshToken
   console.log(accessToken);
   console.log('rf ',refreshToken);
+<<<<<<< HEAD
+=======
+
+>>>>>>> 9cdb264dd3f6901b8355dfdaca2859daa6b7f90b
   // console.log('rfToken',accessToken, refreshToken)
   if (accessToken && accessToken != undefined && accessToken != 'undefined' && 
   (!refreshToken || refreshToken == 'undefined' || refreshToken == undefined)) { 
