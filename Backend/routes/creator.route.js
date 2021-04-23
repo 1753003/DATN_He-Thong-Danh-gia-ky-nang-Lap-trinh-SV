@@ -23,7 +23,7 @@ router.post('/test', async function (req, res) {
 
    var generalInformation = req.body.generalInformation;
    generalInformation.CreatedBy = req.uid;
-   generalInformation.Code = result;
+   generalInformation.TestCode = result;
    await testModel.createTest(generalInformation, req.body.listQuestion);
    res.json("OK");
   
@@ -58,6 +58,7 @@ router.post('/collection', async function (req, res) {
    const uid = req.uid;
    var newCollection = req.body;
    newCollection.CreatedBy = uid;
+   newCollection.TestID = [];
    await collectionModel.createCollection(newCollection);
    res.json('OK');
 })

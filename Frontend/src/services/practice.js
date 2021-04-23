@@ -1,15 +1,17 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import tokenHandling from './tokenHandling';
+import Constant from '@/utils/contants';
 
 export function getPracticeListDetail(id) {
+  console.log(Cookies.get('accessToken'));
   return new Promise((resolve, reject) => {
     axios
-      .get(`/api/practice/${id}`, {
+      .get(`${Constant.API}/api/practice/${id}`, {
         withCredentials: true,
         headers: {
+          'access-control-allow-origin': 'https://devcheckpro.web.app/',
           accessToken: Cookies.get('accessToken'),
-          'access-control-allow-origin': 'https://devcheckpro.firebaseapp.com/',
         },
       })
       .then((response) => {
@@ -26,34 +28,34 @@ export function getPracticeSet(set) {
     var options = {
       method: 'GET',
       withCredentials: true,
-      url: `/api/practice?set=${set}`,
+      url: `${Constant.API}/api/practice?set=${set}`,
       headers: {
+        'access-control-allow-origin': Constant.CORS,
         accessToken: Cookies.get('accessToken'),
-        'access-control-allow-origin': 'https://devcheckpro.firebaseapp.com',
       },
     };
     axios
-    .request(options)
-    .then((response) => {
-    // handle success
-    // console.log(response.data)
-    resolve(response.data)
-    })
-    .catch((error) => {
-      const message = error.response.data.message;
-      tokenHandling(message, resolve, options);
-    })
-  })
+      .request(options)
+      .then((response) => {
+        // handle success
+        // console.log(response.data)
+        resolve(response.data);
+      })
+      .catch((error) => {
+        const message = error.response.data.message;
+        tokenHandling(message, resolve, options);
+      });
+  });
 }
 export function getSubmissionList(pid, uid) {
   uid = 'zcwVw4Rjp7b0lRmVZQt6ZXmspql1'; //chromevi123+1@gmail.com
   return new Promise((resolve, reject) => {
     axios
-      .get(`/api/practice/submissions?pid=${pid}&uid=${uid}`, {
+      .get(`${Constant.API}/api/practice/submissions?pid=${pid}&uid=${uid}`, {
         withCredentials: true,
         headers: {
+          'access-control-allow-origin': Constant.CORS,
           accessToken: Cookies.get('accessToken'),
-          'access-control-allow-origin': '*',
         },
       })
       .then((response) => {
@@ -76,7 +78,7 @@ export function saveSubmission(pid, jsonData) {
     total += 1;
     res.status_id == 3 ? (tcPassed += 1) : (tcPassed = tcPassed);
   }
-//chromevi123+1@gmail.com
+  //chromevi123+1@gmail.com
   const submission = {
     SubmissionType: 'Coding',
     PracticeID: pid,
@@ -90,10 +92,10 @@ export function saveSubmission(pid, jsonData) {
     var options = {
       withCredentials: true,
       method: 'POST',
-      url: '/api/practice/submissions',
+      url: `${Constant.API}/api/practice/submissions`,
       headers: {
+        'access-control-allow-origin': Constant.CORS,
         accessToken: Cookies.get('accessToken'),
-        'access-control-allow-origin': '*',
       },
       data: submission,
     };

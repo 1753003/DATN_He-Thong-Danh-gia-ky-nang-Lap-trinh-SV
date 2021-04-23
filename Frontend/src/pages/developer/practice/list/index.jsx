@@ -11,6 +11,7 @@ import {
 import {history, Link} from 'umi'
 import { connect } from 'dva'
 import PageLoading from '@/components/PageLoading'
+import "./style.less";
 const { Title, Text } = Typography;
 const practiceList = ({location,dispatch,practice, loading}) => {
   useEffect(()=>{
@@ -56,6 +57,7 @@ const practiceList = ({location,dispatch,practice, loading}) => {
       <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
         <Col className="gutter-row" span={18}>
           <List
+            className="custom"
             style={{margin: '30px 0px 10px 10px'}}
             itemLayout="horizontal"
             pagination={{
