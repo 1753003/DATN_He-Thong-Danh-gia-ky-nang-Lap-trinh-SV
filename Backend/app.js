@@ -25,7 +25,7 @@ app.use('/api/token', auth, require('./routes/token.route'))
 app.use('/api/creator', auth, require('./routes/creator.route'))
 app.use('/api/practice', auth, require('./routes/practice.route'))
 app.use('/api/test', auth, require('./routes/test.route'))
-
+app.use('/api/submissions', auth, require('./routes/submissions.route'))
 app.use('/api/search', auth, require('./routes/search.route'))
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, function() {

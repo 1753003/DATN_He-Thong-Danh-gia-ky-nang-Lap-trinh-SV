@@ -157,7 +157,7 @@ class Center extends Component {
       type: 'accountAndcenter/fetchCurrent',
     });
     dispatch({
-      type: 'accountAndcenter/fetch',
+      type: 'accountAndcenter/fetchHistory',
     });
   }
 

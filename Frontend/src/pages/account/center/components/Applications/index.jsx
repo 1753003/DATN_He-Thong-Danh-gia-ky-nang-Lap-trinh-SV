@@ -1,127 +1,69 @@
-import {
-  DownloadOutlined,
-  EditOutlined,
-  EllipsisOutlined,
-  ShareAltOutlined,
-} from '@ant-design/icons';
-import { Avatar, Card, Dropdown, List, Menu, Tooltip } from 'antd';
+import { StarTwoTone, LikeOutlined, MessageFilled } from '@ant-design/icons';
+import { List, Tag, Radio, Row } from 'antd';
 import React from 'react';
 import { connect } from 'umi';
-import numeral from 'numeral';
-import stylesApplications from './index.less';
+import ArticleListContent from '../ArticleListContent';
+import styles from './index.less';
 
-export function formatWan(val) {
-  const v = val * 1;
-  if (!v || Number.isNaN(v)) return '';
-  let result = val;
-
-  if (val > 10000) {
-    result = (
-      <span>
-        {Math.floor(val / 10000)}
-        <span
-          style={{
-            position: 'relative',
-            top: -2,
-            fontSize: 14,
-            fontStyle: 'normal',
-            marginLeft: 2,
-          }}
-        >
-          万
-        </span>
-      </span>
-    );
-  }
-
-  return result;
-}
-
-const Applications = (props) => {
+const Articles = (props) => {
   const { list } = props;
-  const itemMenu = (
-    <Menu>
-      <Menu.Item>
-        <a target="_blank" rel="noopener noreferrer" href="https://www.alipay.com/">
-          1st menu item
-        </a>
-      </Menu.Item>
-      <Menu.Item>
-        <a target="_blank" rel="noopener noreferrer" href="https://www.taobao.com/">
-          2nd menu item
-        </a>
-      </Menu.Item>
-      <Menu.Item>
-        <a target="_blank" rel="noopener noreferrer" href="https://www.tmall.com/">
-          3d menu item
-        </a>
-      </Menu.Item>
-    </Menu>
-  );
 
-  const CardInfo = ({ activeUser, newUser }) => (
-    <div className={stylesApplications.cardInfo}>
-      <div>
-        <p>活跃用户</p>
-        <p>{activeUser}</p>
-      </div>
-      <div>
-        <p>新增用户</p>
-        <p>{newUser}</p>
-      </div>
-    </div>
+  const IconText = ({ icon, text }) => (
+    <span>
+      {icon} {text}
+    </span>
   );
+  function onPermissionChange (e)  {
 
+  }
   return (
-    <List
+    <div>
+      {/* <Row>
+        <Radio.Group className = {styles.rdGroup} onChange={onPermissionChange} defaultValue="a">
+          <Radio.Button value="a">Passed</Radio.Button>
+          <Radio.Button value="b">Failed</Radio.Button>
+        </Radio.Group>
+        <Radio.Group className = {styles.rdGroup} onChange={onPermissionChange} defaultValue="b">
+          <Radio.Button value="a">Public</Radio.Button>
+          <Radio.Button value="b">Private</Radio.Button>
+        </Radio.Group>
+      </Row> */}
+      <List
+      size="large"
+      className={styles.articleList}
       rowKey="id"
-      className={stylesApplications.filterCardList}
-      grid={{
-        gutter: 16,
-        xs: 1,
-        sm: 2,
-        md: 3,
-        lg: 3,
-        xl: 4,
-        xxl: 4,
-      }}
+      itemLayout="vertical"
       dataSource={list}
       renderItem={(item) => (
-        <List.Item key={item.id}>
-          <Card
-            hoverable
-            bodyStyle={{
-              paddingBottom: 20,
-            }}
-            actions={[
-              <Tooltip key="download" title="下载">
-                <DownloadOutlined />
-              </Tooltip>,
-              <Tooltip title="编辑" key="edit">
-                <EditOutlined />
-              </Tooltip>,
-              <Tooltip title="分享" key="share">
-                <ShareAltOutlined />
-              </Tooltip>,
-              <Dropdown overlay={itemMenu} key="ellipsis">
-                <EllipsisOutlined />
-              </Dropdown>,
-            ]}
-          >
-            <Card.Meta avatar={<Avatar size="small" src={item.avatar} />} title={item.title} />
-            <div className={stylesApplications.cardItemContent}>
-              <CardInfo
-                activeUser={formatWan(item.activeUser)}
-                newUser={numeral(item.newUser).format('0,0')}
-              />
-            </div>
-          </Card>
+        <List.Item
+          key={item.id}
+          // actions={[
+          //   <IconText key="star" icon={<StarTwoTone />} text={item.star} />,
+          //   <IconText key="like" icon={<LikeOutlined />} text={item.like} />,
+          //   <IconText key="message" icon={<MessageFilled />} text={item.message} />,
+          // ]}
+        >
+          <List.Item.Meta
+            title={
+              <a className={styles.listItemMetaTitle} href={item.href}>
+                {item.title}
+              </a>
+            }
+            description={
+              <span>
+                <Tag>Medium</Tag>
+                <Tag>Javascript</Tag>
+              </span>
+            }
+          />
+          <ArticleListContent data={item} />
         </List.Item>
       )}
     />
+    </div>
   );
 };
 
 export default connect(({ accountAndcenter }) => ({
   list: accountAndcenter.list,
-}))(Applications);
+}))(Articles);
