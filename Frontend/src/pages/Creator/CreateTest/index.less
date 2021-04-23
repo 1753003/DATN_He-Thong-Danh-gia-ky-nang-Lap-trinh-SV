@@ -1,13 +1,21 @@
 @import '~antd/es/style/themes/default.less';
 
 .container {
+  padding: 20px;
   padding-bottom: 20px;
   background-color: white;
   .header {
+    display: flex;
+    justify-content: space-between;
     width: 100%;
     margin-bottom: 1px;
-    padding: 20px;
+    padding-bottom: 20px;
     background-color: white;
+    .submitBtn {
+      color: white;
+      background-color: #a0d911;
+      border: none;
+    }
   }
   .bodyContainer {
     display: flex;
@@ -52,4 +60,12 @@
 
 .codeContainer {
   padding: 0px 20px;
+  .TC {
+    width: 100%;
+    .TCConatiner {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+  }
 }

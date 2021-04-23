@@ -2,9 +2,10 @@ const jwt = require('jsonwebtoken');
 
 module.exports = function (req, res, next) {
   console.log(req.headers)
-
-  const accessToken = req.headers.accesstoken;
-  const refreshToken = req.headers.refreshtoken;
+  const accessToken = req.headers.accesstoken
+  const refreshToken = req.headers.refreshToken
+  console.log(accessToken);
+  console.log('rf ',refreshToken);
   // console.log('rfToken',accessToken, refreshToken)
   if (accessToken && accessToken != undefined && accessToken != 'undefined' && 
   (!refreshToken || refreshToken == 'undefined' || refreshToken == undefined)) { 
@@ -37,9 +38,9 @@ module.exports = function (req, res, next) {
           {
             expiresIn: "300s"
           });
-          res.cookie('accessToken', newaccessToken, { httpOnly: true });
-        // res.cookie('refreshToken', refreshToken, { httpOnly: true });
-        // res.json({message:'New access token', data: {accessToken: newaccessToken}});
+          res.cookie('accessToken', newaccessToken);
+        // res.cookie('refreshToken', refreshToken);
+        res.json({message:'New access token', data: {accessToken: newaccessToken}});
         next()
       } catch (err) {
           req.refreshToken = refreshToken;

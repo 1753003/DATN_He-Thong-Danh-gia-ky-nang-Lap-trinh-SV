@@ -9,7 +9,7 @@ app.use(express.json());
 
 app.use(morgan('dev'));
 
-app.use(cors({ credentials: true}));
+app.use(cors({ credentials: true, origin: 'https://devcheckpro.web.app'}));
 app.use(cookieParser()); 
 // const csrfProtection = csrf({
 //     cookie: true
