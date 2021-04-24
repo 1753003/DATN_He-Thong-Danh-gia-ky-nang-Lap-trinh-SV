@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const testModel = require('../models/test.model')
+const userModel = require('../models/user.model')
 
 var firebase_realtime = require('firebase');
 // require("firebase/database");
@@ -16,17 +17,36 @@ var config = {
 
 firebase_realtime.initializeApp(config);
 
-function writeNewNotification(uid, notiDescription, type) {
-    firebase_realtime.database().ref('notifications/'+uid).push({
-        description: notiDescription,
-        datetime: Date.now(),
-        read: false,
-        type: type
+async function writeNewNotification(id, notiDescription, type) {
+   
+    let unreadCount, totalNotiCount;
+    var ref = firebase_realtime.database().ref('users/' + id);
+    ref.get()
+    .then((snapshot) => {
+        if (snapshot.exists())
+        {
+            console.log(snapshot.val());
+            unreadCount = snapshot.val().unreadCount + 1;
+            totalNotiCount = snapshot.val().totalNotiCount + 1;
+        }
+        else {
+            unreadCount = 1;
+            totalNotiCount = 1;
+        }
+    }) 
+    .then(() => {
+        firebase_realtime.database().ref('users/'+id).update({unreadCount: unreadCount, totalNotiCount: totalNotiCount});
+        firebase_realtime.database().ref('users/'+id+'/notifications').push({
+            description: notiDescription,
+            datetime: Date.now(),
+            read: false,
+            type: type
+        })
     })
-    // get unreadcount first then increment it
-    /// do it later
-    let unreadCount = 12
-    firebase_realtime.database().ref('users/'+uid).update({unreadCount: unreadCount})
+    //
+    //ref.on('value', (snapshot) => {
+    //    console.log(snapshot.val());
+    //})
 }
 
 router.get('/invalid', async function (req, res) {
@@ -101,7 +121,7 @@ router.post('/responseTestRequest/', async function (req, res) {
     const accept = req.body.accept;
     const userID = req.body.creatorID;
     //const userID = "zcwVw4Rjp7b0lRmVZQt6ZXmspql1"
-    
+    const email = userModel.getEmailByUid(userID);
     const testName = (await testModel.getTestByID(testID)).generalInformation.TestName;
     var description;
     if (accept) {

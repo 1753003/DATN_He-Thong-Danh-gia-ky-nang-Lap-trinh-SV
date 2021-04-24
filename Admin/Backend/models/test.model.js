@@ -9,7 +9,6 @@ module.exports = {
         const res = await db('test').where('IsValid', 0);
         for (const item of res) {
             const creator = (await db('userlogin').where('UserID', item.CreatedBy))[0];
-            console.log(creator);
             item.CreatorName = creator.UserName;
         }
         return res;
@@ -34,7 +33,6 @@ module.exports = {
         const listQuestionID = test.QuestionID;
         const listQuestion = [];
         const creator = (await db('creator').where('UserID', test.CreatedBy))[0];
-        console.log(creator);
         for (const item of listQuestionID) {
             const question = (await db('question').where('ID', item))[0];
             var res = {};
