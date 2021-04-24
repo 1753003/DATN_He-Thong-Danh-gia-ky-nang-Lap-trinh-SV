@@ -1,11 +1,11 @@
+import Constant from '@/utils/contants';
 import request from '@/utils/request';
 export async function query() {
-  return request('/api/users');
+  return request(`${Constant.API}/api/users`);
 }
 export async function queryCurrent() {
-  return request('/api/currentUser');
+  return request(`${Constant.API}/api/currentUser`);
 }
 export async function queryNotices() {
-  
   return null;
 }
