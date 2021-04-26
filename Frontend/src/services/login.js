@@ -1,50 +1,50 @@
 import request from '@/utils/request';
 import axios from 'axios';
+import Constant from '@/utils/contants';
 
 export function Login(params) {
-  return new Promise( (resolve, reject) => {
-      axios.post('https://codejoy.herokuapp.com/api/auth/login', params)
+  return new Promise((resolve, reject) => {
+    axios
+      .post(`${Constant.API}/api/auth/login`, params)
       .then((response) => {
-          // handle success
-          console.log(response.data)
-          resolve(response.data)
+        // handle success
+        console.log(response.data);
+        resolve(response.data);
       })
       .catch((error) => {
-          // handle error
-          console.log(error)
-         
-      })
-  })
+        // handle error
+        console.log(error);
+      });
+  });
 }
 
 export function LoginWithFacebook(params) {
-  console.log(params)
-  return new Promise( (resolve, reject) => {
-      axios.post('/api/auth/loginFacebook', params)
+  return new Promise((resolve, reject) => {
+    axios
+      .post(`${Constant.API}/api/auth/loginFacebook`, params)
       .then((response) => {
-          // handle success
-          resolve(response.data)
+        // handle success
+        resolve(response.data);
       })
       .catch((error) => {
-          // handle error
-         
-      })
-  })
+        // handle error
+      });
+  });
 }
 
 export function LoginWithGoogle(params) {
-  console.log(params)
-  return new Promise( (resolve, reject) => {
-      axios.post('/api/auth/loginGoogle', params)
+  console.log(params);
+  return new Promise((resolve, reject) => {
+    axios
+      .post('/api/auth/loginGoogle', params)
       .then((response) => {
-          // handle success
-          resolve(response.data)
+        // handle success
+        resolve(response.data);
       })
       .catch((error) => {
-          // handle error
-         
-      })
-  })
+        // handle error
+      });
+  });
 }
 export async function fakeAccountLogin(params) {
   return request('/api/login/account', {

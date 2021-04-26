@@ -32,7 +32,6 @@ class AvatarDropdown extends React.Component {
 
       return;
     }
-    
     history.push(`/developer/profile`);
   };
 

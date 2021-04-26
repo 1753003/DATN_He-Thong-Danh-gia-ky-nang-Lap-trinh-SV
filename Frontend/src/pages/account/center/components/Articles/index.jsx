@@ -16,6 +16,8 @@ const Articles = (props) => {
   function onPermissionChange (e)  {
 
   }
+
+  console.log(list);
   return (
     <div>
       <Row>

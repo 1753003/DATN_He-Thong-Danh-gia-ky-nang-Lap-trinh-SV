@@ -1,3 +1,4 @@
+import Constant from '@/utils/contants';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import tokenHandling from './tokenHandling';
@@ -6,10 +7,10 @@ export function getTestList() {
   return new Promise((resolve, reject) => {
     var options = {
       method: 'GET',
-      url: `https://codejoy.herokuapp.com/api/creator/test`,
+      url: `${Constant.API}/api/creator/test`,
       headers: {
         accessToken: Cookies.get('accessToken'),
-        'access-control-allow-origin': 'https://devcheckpro.web.app/',
+        'access-control-allow-origin': Constant.CORS,
       },
     };
     axios
@@ -31,10 +32,10 @@ export function getTestById(id) {
   return new Promise((resolve, reject) => {
     var options = {
       method: 'GET',
-      url: `https://codejoy.herokuapp.com/api/creator/test/${id}`,
+      url: `${Constant.API}/api/creator/test/${id}`,
       headers: {
         accessToken: Cookies.get('accessToken'),
-        'access-control-allow-origin': 'https://devcheckpro.web.app/',
+        'access-control-allow-origin': Constant.CORS,
       },
     };
     axios
@@ -56,13 +57,14 @@ export function createNewTest({ generalInformation, listQuestion }) {
   return new Promise((resolve, reject) => {
     axios
       .post(
-        'http://localhost:5000/api/creator/test',
+        `${Constant.API}/api/creator/test`,
         {
           generalInformation,
           listQuestion,
         },
         {
           headers: { accessToken: Cookies.get('accessToken') },
+          'access-control-allow-origin': Constant.CORS,
         },
       )
       .then((response) => {
