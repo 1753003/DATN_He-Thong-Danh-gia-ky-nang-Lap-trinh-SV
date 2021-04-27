@@ -3,10 +3,11 @@ import styles from './index.less';
 import { Typography } from 'antd';
 import Collection from '@/components/CreatorComponents/Collection';
 import Test from '@/components/CreatorComponents/Test';
+import '../../../components/GlobalHeader/style.less';
 
 const Home = () => {
   return (
-    <div className={styles.container}>
+    <div className={`${styles.container} custom`}>
       <div className={styles.quickReportContainer}>
         <h3 className={styles.title}>QuickLy Report</h3>
       </div>
