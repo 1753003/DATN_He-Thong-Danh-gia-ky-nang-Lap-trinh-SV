@@ -2,6 +2,7 @@ import React from 'react';
 import styles from './styles.less';
 import { Table, Input } from 'antd';
 import { useHistory } from 'umi';
+import '../../../components/GlobalHeader/style.less';
 
 const { Search } = Input;
 const Report = () => {
@@ -33,7 +34,7 @@ const Report = () => {
   ];
 
   return (
-    <div className={styles.container}>
+    <div className={`${styles.container} custom`}>
       <Search
         placeholder="input search text"
         enterButton

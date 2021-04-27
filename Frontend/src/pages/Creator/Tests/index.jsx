@@ -6,6 +6,7 @@ import { UserOutlined, BookOutlined, StarOutlined } from '@ant-design/icons';
 import Collection from './Contents/Collection';
 import MyTests from './Contents/MyTests';
 import Favorite from './Contents/Favorite';
+import '../../../components/GlobalHeader/style.less';
 
 const Tests = ({ location }) => {
   const history = useHistory();
@@ -45,7 +46,7 @@ const Tests = ({ location }) => {
   };
 
   return (
-    <div className={styles.container}>
+    <div className={`${styles.container} custom`}>
       <div className={styles.left}>
         <Menu
           onClick={handleClick}
