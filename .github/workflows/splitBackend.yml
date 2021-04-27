@@ -1,22 +1,22 @@
-name: Create Frontend Branch
+name: Create Backend Branch
 on:
   push:	
     branches:	
       - dev_dinh
     paths:
-      - 'Frontend'
+      - 'Backend'
   workflow_dispatch:
 jobs:
   deploy:
-    name: Deploy Frontend
-    runs-on: ubuntu-latest    
+    name: Deploy Backend
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@main
 
-    - name: Deploy Frontend
+    - name: Deploy Backend
       uses: s0/git-publish-subdir-action@develop
       env:
         REPO: self
-        BRANCH: frontend
-        FOLDER: Frontend
+        BRANCH: backend
+        FOLDER: Backend
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
