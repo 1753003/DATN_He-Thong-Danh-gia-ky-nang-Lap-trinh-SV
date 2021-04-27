@@ -1,37 +1,28 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styles from './styles.less';
 import { Table, Input } from 'antd';
-import { useHistory } from 'umi';
+import { useHistory, connect } from 'umi';
 import '../../../components/GlobalHeader/style.less';
 
 const { Search } = Input;
-const Report = () => {
+const Report = ({ reportList, dispatch, loading }) => {
   const history = useHistory();
   const columns = [
     {
       title: 'Name',
-      dataIndex: 'Name',
-      key: 'Name',
+      dataIndex: 'ReportName',
+      key: 'ReportName',
     },
     {
-      title: 'Date',
-      dataIndex: 'Date',
-      key: 'Date',
+      title: 'Percent Pass',
+      dataIndex: 'PercentPass',
+      key: 'PercentPass',
     },
   ];
 
-  const dataSource = [
-    {
-      key: 0,
-      Name: 'Test C (Basic) - KTPM class - 2021 ',
-      Date: 'Feb 21st 2021 - 11:52 AM',
-    },
-    {
-      key: 1,
-      Name: 'Test C (Advanced) - KTPM class - 2021 ',
-      Date: 'Feb 21st 2021 - 11:52 AM',
-    },
-  ];
+  useEffect(() => {
+    dispatch({ type: 'report/fetchReportList' });
+  }, []);
 
   return (
     <div className={`${styles.container} custom`}>
@@ -41,7 +32,8 @@ const Report = () => {
         style={{ marginBottom: 20, width: '30%' }}
       />
       <Table
-        dataSource={dataSource}
+        loading={loading}
+        dataSource={reportList}
         columns={columns}
         onRow={(record, rowIndex) => {
           return {
@@ -50,7 +42,7 @@ const Report = () => {
               history.push({
                 pathname: '/creator/reportDetail',
                 query: {
-                  id: record.key,
+                  id: record.ID,
                 },
               });
             }, // click row
@@ -61,4 +53,7 @@ const Report = () => {
   );
 };
 
-export default Report;
+export default connect(({ report: { reportList }, loading }) => ({
+  reportList,
+  loading: loading.effects['report/fetchReportList'],
+}))(Report);

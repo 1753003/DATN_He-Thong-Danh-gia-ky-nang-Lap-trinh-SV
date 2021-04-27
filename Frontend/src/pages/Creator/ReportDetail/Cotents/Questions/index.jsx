@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from './index.less';
 import { Table } from 'antd';
+import '../../../../../components/GlobalHeader/style.less';
 
 const Questions = () => {
   const columns = [
@@ -55,7 +56,7 @@ const Questions = () => {
   ];
 
   return (
-    <div className={styles.container}>
+    <div className={`${styles.container} custom`}>
       <Table dataSource={dataSource} columns={columns} />
     </div>
   );

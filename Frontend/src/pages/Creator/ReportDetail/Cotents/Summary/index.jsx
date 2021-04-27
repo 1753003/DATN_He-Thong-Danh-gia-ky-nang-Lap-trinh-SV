@@ -10,7 +10,7 @@ import {
   QuestionCircleOutlined,
 } from '@ant-design/icons';
 
-const Summary = () => {
+const Summary = ({ summaryReport }) => {
   const report = {
     PercentPass: 70,
     PercentSuccess: 50,
@@ -46,7 +46,7 @@ const Summary = () => {
               type="circle"
               // trailColor={'#f5222d'}
               strokeColor={'#a0d911'}
-              percent={report.PercentSuccess}
+              percent={summaryReport?.PercentSuccess}
               width={140}
               format={(percent) => {
                 return (
@@ -63,7 +63,7 @@ const Summary = () => {
               type="circle"
               trailColor={'#f5222d'}
               strokeColor={'#a0d911'}
-              percent={report.PercentPass}
+              percent={summaryReport?.PercentPass}
               width={140}
               format={(percent) => {
                 return (
@@ -86,7 +86,7 @@ const Summary = () => {
 
               <div className={styles.information}>
                 <UserOutlined style={{ color: '#63b1f6', fontSize: '20px' }} />
-                <div>{report.Users}</div>
+                <div>{summaryReport?.numOfUser}</div>
               </div>
             </div>
             <div className={styles.detailInfo}>
@@ -94,14 +94,14 @@ const Summary = () => {
 
               <div className={styles.information}>
                 <QuestionOutlined style={{ color: '#63b1f6', fontSize: '20px' }} />
-                <div>{report.Questions}</div>
+                <div>{summaryReport?.numOfQuestion}</div>
               </div>
             </div>
             <div className={styles.detailInfo}>
               <div style={{ fontSize: 17 }}>Time</div>
               <div className={styles.information}>
                 <FieldTimeOutlined style={{ color: '#63b1f6', fontSize: '20px' }} />
-                <div>{report.Time}</div>
+                <div>{summaryReport?.time}</div>
               </div>
             </div>
           </div>
@@ -127,13 +127,13 @@ const Summary = () => {
           // bordered={false}
           style={{ width: '70vw', marginRight: '20px' }}
         >
-          {report.DifficultQuestion.map((item) => {
+          {summaryReport?.DifficultQuestion?.map((item) => {
             return (
               <div style={{ borderBottom: '1px solid #edecec', padding: '15px 0px' }}>{item}</div>
             );
           })}
 
-          {report.DifficultQuestion.length === 0 ? (
+          {summaryReport?.DifficultQuestion?.length === 0 ? (
             <p style={{ textAlign: 'center' }}>No one found any questions too challenging.</p>
           ) : null}
         </Card>
@@ -153,7 +153,7 @@ const Summary = () => {
           bordered={false}
           style={{ width: '30vw' }}
         >
-          {report.DidNotFinish.map((item) => {
+          {summaryReport?.listNotFinish?.map((item) => {
             return (
               <div
                 style={{
@@ -163,13 +163,13 @@ const Summary = () => {
                   justifyContent: 'space-between',
                 }}
               >
-                <div>{item.name}</div>
-                <div>{item.questions}</div>
+                <div>{item.userName}</div>
+                <div>{item.number}</div>
               </div>
             );
           })}
 
-          {report.DifficultQuestion.length === 0 ? (
+          {summaryReport?.listNotFinish?.length === 0 ? (
             <p style={{ textAlign: 'center' }}>No one found any questions too challenging.</p>
           ) : null}
         </Card>
