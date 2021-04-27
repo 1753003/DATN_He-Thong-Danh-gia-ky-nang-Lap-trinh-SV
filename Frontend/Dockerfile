@@ -4,8 +4,6 @@ WORKDIR /usr/src/app/
 USER root
 COPY package*.json ./
 RUN ["yarn"]
-RUN ["yarn","install"]
-# RUN npm ci --only=production
 RUN ["yarn", "build"]
 
 COPY . .
