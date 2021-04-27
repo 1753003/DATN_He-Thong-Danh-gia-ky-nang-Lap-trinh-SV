@@ -1,4 +1,4 @@
-name: Create Backend Branch
+name: Create Frontend Branch
 on:
   push:	
     branches:	
@@ -11,7 +11,7 @@ jobs:
     name: Deploy Frontend
     runs-on: ubuntu-latest    
     steps:
-    - uses: actions/checkout@main
+    - uses: actions/checkout@dev_dinh
 
     - name: Deploy Frontend
       uses: s0/git-publish-subdir-action@develop
