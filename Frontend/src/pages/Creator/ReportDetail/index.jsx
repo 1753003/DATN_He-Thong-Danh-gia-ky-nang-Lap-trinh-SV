@@ -1,14 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './index.less';
 import Summary from './Cotents/Summary';
 import Users from './Cotents/Users';
 import Questions from './Cotents/Questions';
 import Feedback from './Cotents/Feedback';
+import { connect } from 'umi';
 import { Menu } from 'antd';
+import PageLoading from '@/pages/dashboard/analysis/components/PageLoading';
 
-const ReportDetail = () => {
+const ReportDetail = ({ summaryReport, location, dispatch, loading, summaryUser }) => {
+  useEffect(() => {
+    if (location.query?.id) {
+      const payload = {
+        id: location.query.id,
+      };
+      dispatch({ type: 'report/getSummaryReportById', payload });
+      dispatch({ type: 'report/getSummaryUserById', payload });
+    }
+  }, [location]);
   const [menuKey, setMenuKey] = useState('summary');
-  return (
+  return loading ? (
+    <PageLoading />
+  ) : (
     <div className={styles.container}>
       <div className={styles.header}>
         <div className={styles.headerLeft}>
@@ -29,25 +42,29 @@ const ReportDetail = () => {
         </div>
       </div>
       <div className={styles.body}>
-        <RenderBody menuKey={menuKey} />
+        <RenderBody menuKey={menuKey} summaryReport={summaryReport} summaryUser={summaryUser} />
       </div>
     </div>
   );
 };
 
-const RenderBody = ({ menuKey }) => {
+const RenderBody = ({ menuKey, summaryReport, summaryUser }) => {
   switch (menuKey) {
     case 'summary':
-      return <Summary />;
+      return <Summary summaryReport={summaryReport} />;
     case 'users':
-      return <Users />;
+      return <Users summaryUser={summaryUser} />;
     case 'questions':
-      return <Questions />;
+      return <Questions summaryReport={summaryReport} />;
     case 'feedback':
-      return <Feedback />;
+      return <Feedback summaryReport={summaryReport} />;
     default:
-      return <Summary />;
+      return <Summary summaryReport={summaryReport} />;
   }
 };
 
-export default ReportDetail;
+export default connect(({ report: { summaryReport, summaryUser }, loading }) => ({
+  summaryReport,
+  summaryUser,
+  loading: loading.effects['report/getSummaryReportById'],
+}))(ReportDetail);
