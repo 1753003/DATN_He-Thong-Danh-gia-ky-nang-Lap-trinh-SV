@@ -11,7 +11,7 @@ jobs:
     name: Deploy Frontend
     runs-on: ubuntu-latest    
     steps:
-    - uses: actions/checkout@dev_dinh
+    - uses: actions/checkout@main
 
     - name: Deploy Frontend
       uses: s0/git-publish-subdir-action@develop
