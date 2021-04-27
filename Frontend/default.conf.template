@@ -12,6 +12,7 @@ server {
     root /usr/share/nginx/html;
     
     location / {
+        include  /etc/nginx/mime.types;
          # Used in conjunction with browserHistory
         try_files $uri $uri/ /index.html;
 
