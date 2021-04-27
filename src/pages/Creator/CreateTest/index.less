@@ -1,0 +1,71 @@
+@import '~antd/es/style/themes/default.less';
+
+.container {
+  padding: 20px;
+  padding-bottom: 20px;
+  background-color: white;
+  .header {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 1px;
+    padding-bottom: 20px;
+    background-color: white;
+    .submitBtn {
+      color: white;
+      background-color: #a0d911;
+      border: none;
+    }
+  }
+  .bodyContainer {
+    display: flex;
+    .left {
+      display: flex;
+      flex-direction: column;
+      width: 20%;
+      background-color: white;
+
+      .quizContainer {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 70px;
+      }
+    }
+    .mid {
+      width: 60%;
+    }
+    .right {
+      width: 20%;
+      padding-right: 20px;
+      background-color: white;
+      .option {
+        padding-bottom: 20px;
+        .optionTitle {
+          margin-bottom: 10px;
+        }
+      }
+    }
+  }
+}
+.quizInfoContainer {
+  padding: 0px 20px;
+  .choices {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+  }
+}
+
+.codeContainer {
+  padding: 0px 20px;
+  .TC {
+    width: 100%;
+    .TCConatiner {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+  }
+}
