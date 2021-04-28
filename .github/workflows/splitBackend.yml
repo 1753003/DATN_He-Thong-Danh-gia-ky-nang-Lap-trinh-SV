@@ -4,7 +4,7 @@ on:
     branches:	
       - dev_dinh
     paths:
-      - 'Backend'
+      - Backend/**
   workflow_dispatch:
 jobs:
   deploy:

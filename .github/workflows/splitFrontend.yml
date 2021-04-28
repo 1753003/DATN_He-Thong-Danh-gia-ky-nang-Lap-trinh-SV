@@ -4,7 +4,7 @@ on:
     branches:	
       - dev_dinh
     paths:
-      - 'Frontend'
+      - Frontend/**
   workflow_dispatch:
 jobs:
   deploy:
