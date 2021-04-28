@@ -1,5 +1,5 @@
 name: Create Frontend Branch
-on:
+'on':
   push:	
     branches:	
       - main
