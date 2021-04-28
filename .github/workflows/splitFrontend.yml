@@ -4,15 +4,13 @@ name: Create Frontend Branch
     branches:	
       - main
     paths:
-      - 'Frontend'
+      - Frontend/**
 jobs:
   deploy:
     name: Deploy Frontend
     runs-on: ubuntu-latest    
     steps:
     - uses: actions/checkout@main
-      with:
-        token: ${{secrets.PAT}}
     - name: Deploy Frontend
       uses: s0/git-publish-subdir-action@develop
       env:
