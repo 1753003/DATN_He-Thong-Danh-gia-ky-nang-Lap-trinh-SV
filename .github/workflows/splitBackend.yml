@@ -12,8 +12,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@main
-      with:
-        token: ${{secrets.PAT}}
     - name: Deploy Backend
       uses: s0/git-publish-subdir-action@develop
       env:
