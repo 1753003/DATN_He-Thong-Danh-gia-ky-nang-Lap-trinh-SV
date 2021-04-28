@@ -5,7 +5,6 @@ name: Create Backend Branch
       - main
     paths:
       - 'Backend'
-  workflow_dispatch:
 jobs:
   deploy:
     name: Deploy Backend
