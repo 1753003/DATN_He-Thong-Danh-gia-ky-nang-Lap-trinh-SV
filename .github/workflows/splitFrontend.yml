@@ -2,7 +2,7 @@ name: Create Frontend Branch
 on:
   push:	
     branches:	
-      - dev_dinh
+      - main
     paths:
       - 'Frontend'
   workflow_dispatch:
