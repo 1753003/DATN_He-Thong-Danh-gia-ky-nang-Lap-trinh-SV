@@ -20,6 +20,8 @@ class GlobalHeaderRight extends Component {
   componentDidMount(){
     const { dispatch } = this.props;
     this.fb(dispatch)
+    if (firebase.auth().currentUser !== null) 
+        console.log("user id: " + firebase.auth().currentUser.uid);
   }
   fb = (dispatch) =>{
     const notiRef = firebase.database().ref(`notifications/zcwVw4Rjp7b0lRmVZQt6ZXmspql1`).orderByChild('datetime').limitToFirst(this.state.limit)
