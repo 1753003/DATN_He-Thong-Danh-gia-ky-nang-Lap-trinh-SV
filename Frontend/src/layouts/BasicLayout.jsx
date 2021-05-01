@@ -13,9 +13,7 @@ import RightContent from '@/components/GlobalHeader/RightContent';
 import { getMatchMenu } from '@umijs/route-utils';
 import logo from '../assets/banner.png';
 import './layout.less';
-import { Inspector } from 'react-dev-inspector';
 import firebase from '@/utils/firebase'
-
 const noMatch = (
   <Result
     status={403}
@@ -74,6 +72,11 @@ const BasicLayout = (props) => {
     getCurrentUserFirebase();
   }, []);
   const getCurrentUserFirebase = () =>{
+    // if (dispatch) {
+    //   dispatch({
+    //     type: 'user/fetchCurrent',
+    //   });
+    // }
     const userRef = firebase.database().ref(`users/zcwVw4Rjp7b0lRmVZQt6ZXmspql1`)
     userRef.on('value', (snapshot)=>{
       if (dispatch) {

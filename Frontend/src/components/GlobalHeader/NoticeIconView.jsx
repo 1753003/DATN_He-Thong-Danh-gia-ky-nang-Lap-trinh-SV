@@ -20,6 +20,7 @@ class GlobalHeaderRight extends Component {
   componentDidMount(){
     const { dispatch } = this.props;
     this.fb(dispatch)
+    console.log(firebase.auth().currentUser)
     if (firebase.auth().currentUser !== null) 
         console.log("user id: " + firebase.auth().currentUser.uid);
   }
