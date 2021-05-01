@@ -12,9 +12,11 @@ import { connect } from 'dva'
 import { result } from 'lodash-es';
 import PageLoading from '@/components/PageLoading';
 import Submission from '@/components/Submission';
+import DisscustionTab from '@/components/Discussions/DiscusstionTab';
 const { TabPane } = Tabs;
 
 const questionList = ({location, practice, dispatch, loading}) => {
+
   const [tabChange, onTabChange] = useState(false)
   useEffect(()=>{
     dispatch({
@@ -24,18 +26,22 @@ const questionList = ({location, practice, dispatch, loading}) => {
   },[tabChange]);
   const routes = [
     {
+      key:'Developer',
       path: '/developer',
       breadcrumbName: 'Developer',
     },
     {
+      key:'Practice',
       path: '/developer/practice',
       breadcrumbName: 'Practice',
     },
     {
+      key:decodeURIComponent(location.query.listName),
       path: `/developer/practice/list?listName=${encodeURIComponent(decodeURIComponent(location.query.listName))}`,
       breadcrumbName: decodeURIComponent(location.query.listName),
     },
     {
+      key:practice.listDetail?.generalInformation?.PracticeName,
       path: '',
       breadcrumbName: practice.listDetail?.generalInformation?.PracticeName,
     },
@@ -50,12 +56,12 @@ const questionList = ({location, practice, dispatch, loading}) => {
   function itemRender(route, params, routes, paths) {
     const last = routes.indexOf(route) === routes.length - 1;
     return last ? (
-      <span>{route.breadcrumbName}</span>
+      <span key = {route.breadcrumbName}>{route.breadcrumbName}</span>
     ) : (
-      <Link to={route.path}>{route.breadcrumbName}</Link>
+      <Link key={route.breadcrumbName} to={route.path}>{route.breadcrumbName}</Link>
     );
   }
-  console.log('pt',practice.listDetail)
+  // console.log('pt',practice.listDetail)
   return (loading?<PageLoading></PageLoading>:
     <div>
       <PageHeader
@@ -81,9 +87,7 @@ const questionList = ({location, practice, dispatch, loading}) => {
             <Submission></Submission>
           </TabPane>
           <TabPane tab="Discussion" key="3">
-            <p>Content of Tab Pane 3</p>
-            <p>Content of Tab Pane 3</p>
-            <p>Content of Tab Pane 3</p>
+            <DisscustionTab></DisscustionTab>
           </TabPane>
         </Tabs>
       </Col>
