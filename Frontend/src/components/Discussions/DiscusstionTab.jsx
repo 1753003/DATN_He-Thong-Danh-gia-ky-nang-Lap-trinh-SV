@@ -26,8 +26,7 @@ const DiscussionTab = ({ discussion, dispatch}) =>{
     let params = (new URL(document.location)).searchParams;
     let id = params.get("id");
     
-    const commentRef =  firebase.firestore().collection('discussions').doc(`practice-${id}`).collection('comments')
-    commentRef.onSnapshot((querySnapshot) => {
+    const commentRef =  firebase.firestore().collection('discussions').doc(`practice-${id}`).collection('comments').orderBy("vote","desc").orderBy("time","desc").onSnapshot((querySnapshot) => {
       let comments = []
       let subComments = []
       console.log("flag")
@@ -57,7 +56,9 @@ const DiscussionTab = ({ discussion, dispatch}) =>{
         });
       }
     )
-    }
+    // commentRef()
+    // console.log(commentRef)
+  }
   },[discussion.rootComments]);
 
   return(<div>

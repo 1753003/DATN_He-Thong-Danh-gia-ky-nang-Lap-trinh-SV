@@ -97,7 +97,10 @@ const CommentList = ({data, loading, dispatch}) =>{
     itemLayout="vertical"
     size="large"
     pagination={{
-      pageSize: 8,
+      pageSize: 3,
+      onChange: page => {
+        console.log(page);
+      },
     }}
     dataSource={data}
     renderItem={item => (

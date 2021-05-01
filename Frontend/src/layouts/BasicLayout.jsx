@@ -78,6 +78,7 @@ const BasicLayout = (props) => {
     //   });
     // }
     const userRef = firebase.database().ref(`users/zcwVw4Rjp7b0lRmVZQt6ZXmspql1`)
+    userRef.off()
     userRef.on('value', (snapshot)=>{
       if (dispatch) {
         dispatch({

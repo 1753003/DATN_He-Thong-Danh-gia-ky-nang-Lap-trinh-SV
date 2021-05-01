@@ -14,12 +14,9 @@ const ReactComment = ({ data, id, reactArray, handleClick}) =>{
     setInit(true)
   },[]);
   useEffect(()=>{
-    const timer = setTimeout(() => {
       if(init){
         handleClick(id, local.react, local.vote)
       }
-    }, 10);
-    return () => clearTimeout(timer);
     
   },[local]);
   const handleUpvoted = () =>{
