@@ -20,7 +20,7 @@ const Practice = (props) => {
   console.log(list);
   return (
     <div>
-      <Row>
+      {/* <Row>
         <Radio.Group className = {styles.rdGroup} onChange={onPermissionChange} defaultValue="a">
           <Radio.Button value="a">Passed</Radio.Button>
           <Radio.Button value="b">Failed</Radio.Button>
@@ -29,7 +29,7 @@ const Practice = (props) => {
           <Radio.Button value="a">Public</Radio.Button>
           <Radio.Button value="b">Private</Radio.Button>
         </Radio.Group>
-      </Row>
+      </Row> */}
       <List
       size="large"
       className={styles.articleList}
@@ -54,6 +54,7 @@ const Practice = (props) => {
             description={
               <span>
                 <Tag>{item.DifficultLevel}</Tag>
+                <Tag>{item.PracticeSet}</Tag>
               </span>
             }
           />

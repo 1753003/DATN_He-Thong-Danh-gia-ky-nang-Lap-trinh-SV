@@ -20,16 +20,16 @@ const Test = (props) => {
   console.log(list);
   return (
     <div styles={{display: 'block'}}>
-      {/* <Row>
-        <Radio.Group className = {styles.rdGroup} onChange={onPermissionChange} defaultValue="a">
+      <Row>
+        <Radio.Group className = {styles.rdGroup} onChange={onPermissionChange}>
           <Radio.Button value="a">Passed</Radio.Button>
           <Radio.Button value="b">Failed</Radio.Button>
         </Radio.Group>
-        <Radio.Group className = {styles.rdGroup} onChange={onPermissionChange} defaultValue="b">
+        <Radio.Group className = {styles.rdGroup} onChange={onPermissionChange}>
           <Radio.Button value="a">Public</Radio.Button>
           <Radio.Button value="b">Private</Radio.Button>
         </Radio.Group>
-      </Row> */}
+      </Row>
       <List
       size="large"
       className={styles.articleList}
@@ -54,6 +54,7 @@ const Test = (props) => {
             description={
               <span>
                 <Tag>{item.DifficultLevel}</Tag>
+                <Tag>{item.TestSet}</Tag>
               </span>
             } 
           />
