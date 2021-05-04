@@ -83,7 +83,7 @@ class Coding extends Component{
     let alertType = "error";
     let finalResult = [];
     // console.log(this.props.practice)
-    // console.log(this.props.judge)
+    console.log(this.props.judge)
     
     if(this.props.judge.result)
     if (this.props.practice.isRun ){//if isRun
