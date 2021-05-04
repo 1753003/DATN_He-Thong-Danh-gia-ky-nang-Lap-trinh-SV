@@ -5,118 +5,26 @@ import { CheckCircleTwoTone, CloseCircleTwoTone } from '@ant-design/icons';
 import { connect } from 'umi';
 import { PageLoading } from '@ant-design/pro-layout';
 
-const TestDetail = ({ test, dispatch, location }) => {
+const TestDetail = ({ test, dispatch, location, loading }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const handleModalCancel = () => {
     setModalVisible(false);
   };
 
-  // const test = {
-  //   TestName: 'JAVA - MIDTERM EXAM - 2021 (17CLC)',
-  //   TestFavorite: 0,
-  //   TestDone: 9,
-  //   Permissions: {
-  //     type: 'Private',
-  //     groups: [
-  //       {
-  //         key: '17CLC1',
-  //         GroupName: '17CLC1',
-  //         GroupMembers: 43,
-  //       },
-  //       {
-  //         key: '17CLC2',
-  //         GroupName: '17CLC2',
-  //         GroupMembers: 43,
-  //       },
-  //       {
-  //         key: '17CLC3',
-  //         GroupName: '17CLC3',
-  //         GroupMembers: 43,
-  //       },
-  //       {
-  //         key: '17CLC4',
-  //         GroupName: '17CLC4',
-  //         GroupMembers: 43,
-  //       },
-  //     ],
-  //     individuals: [
-  //       '1753057@student.hcmus.edu.vn',
-  //       '1753064@student.hcmus.edu.vn',
-  //       '1753047@student.hcmus.edu.vn',
-  //       '1753058@student.hcmus.edu.vn',
-  //     ],
-  //   },
-  //   TestTime: 90,
-  //   DoAgain: true,
-  //   TestSet: [
-  //     {
-  //       ID: '1',
-  //       QuestionType: 'Quiz',
-  //       Score: 5,
-  //       Question: 'What is a correct syntax to output "Hello World" in Java?',
-  //     },
-  //     {
-  //       ID: '2',
-  //       QuestionType: 'Quiz',
-  //       Score: 5,
-  //       Question: 'How do you create a variable with the numeric value 5?',
-  //       choices: [
-  //         {
-  //           choice: 'int x = 5 ;',
-  //           answer: true,
-  //         },
-  //         {
-  //           choice: 'float x = 5.0 ;',
-  //           answer: false,
-  //         },
-  //         {
-  //           choice: 'x = 5 ;',
-  //           answer: false,
-  //         },
-  //         {
-  //           choice: 'num x =  5 ;',
-  //           answer: false,
-  //         },
-  //       ],
-  //     },
-  //     {
-  //       ID: '3',
-  //       QuestionType: 'Code',
-  //       Score: 5,
-  //       Question:
-  //         'Write a simple Java program which will print Fibonacci series, e.g. 1 1 2 3 5 8 13 ... . up to a given number. We ...  ',
-  //     },
-  //     ,
-  //     {
-  //       ID: '4',
-  //       QuestionType: 'Code',
-  //       Score: 5,
-  //       Question:
-  //         'In an instance method or a constructor, "this" is a reference to the current object.',
-  //     },
-  //     {
-  //       ID: '5',
-  //       QuestionType: 'Code',
-  //       Score: 5,
-  //       Question:
-  //         'This is generally asked as follow-up or alternative of the previous program. This time you need to check if given ...',
-  //     },
-  //   ],
-  //   MaxScore: 20,
-  // };
-
   useEffect(() => {
     console.log(location.query.id);
+    console.log(loading);
     dispatch({ type: 'test/getTestByIdModel', payload: { id: location.query.id } });
+    console.log(loading);
   }, []);
 
   useEffect(() => {
     console.log(test);
   }, [test]);
-  return test.generalInformation ? (
+  return test?.generalInformation ? (
     <div className={styles.container}>
       <div className={styles.left}>
-        <img src={test.generalInformation.img} />
+        <img src={test.generalInformation?.img} />
         <div className={styles.testName}>{test.generalInformation?.TestName}</div>
         <div className={styles.editContainer}>
           <Button type="primary">Edit</Button>
@@ -162,10 +70,10 @@ const Question = ({ list }) => {
           {item.ID}-{item.QuestionType}
         </div>
         <div className={styles.question}>{item.Question}</div>
+        <div style={{ fontSize: '18px' }}>{item.Description}</div>
         <div className={styles.mark}>{item.Score} mark</div>
         {item.QuestionType === 'Code' ? (
           <div>
-            <div>{item.Description}</div>
             <div>
               <b>Language Allowed: </b>
               {item.Language_allowed}
@@ -178,24 +86,20 @@ const Question = ({ list }) => {
               <b>Running Time: </b>
               {item.RunningTime}
             </div>
+            <div>
+              <b>CodeSample: </b>
+              {item?.CodeSample}
+            </div>
             {item?.TestCase?.map((tc, index) => {
               return (
                 <div className={styles.multipleChoiceContainer}>
                   <div className={styles.answer}>
                     <div>Input: </div>
-                    <div>
-                      {tc.Input.map((item) => (
-                        <div>{item}</div>
-                      ))}
-                    </div>
+                    <div>{tc.Input}</div>
                   </div>
                   <div className={styles.answer}>
                     <div>Output: </div>
-                    <div>
-                      {tc.Output.map((item) => (
-                        <div>{item}</div>
-                      ))}
-                    </div>
+                    <div>{tc.Output}</div>
                   </div>
                 </div>
               );
@@ -217,25 +121,12 @@ const Question = ({ list }) => {
             );
           })
         )}
-        {/* {item?.Answer?.map((choice, index) => {
-          return (
-            <div className={styles.multipleChoiceContainer}>
-              <div className={styles.answer}>{choice}</div>
-              <div className={styles.answer}>
-                {checkCorrect(item.CorrectAnswer, index) ? (
-                  <CheckCircleTwoTone twoToneColor="#52c41a" style={{ fontSize: '32px' }} />
-                ) : (
-                  <CloseCircleTwoTone twoToneColor="red" style={{ fontSize: '32px' }} />
-                )}
-              </div>
-            </div>
-          );
-        })} */}
       </div>
     );
   });
 };
 
-export default connect(({ test: { testById } }) => ({
+export default connect(({ test: { testById }, loading }) => ({
   test: testById,
+  loading: loading.effects['test/getTestByIdModel'],
 }))(TestDetail);
