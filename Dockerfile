@@ -5,8 +5,8 @@ USER root
 COPY package*.json ./
 RUN ["yarn"]
 COPY ./ ./
-RUN npm run build
 RUN ["ls"]
+RUN yarnn build
 RUN ["ls", "dist"]
 
 FROM nginx
