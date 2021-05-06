@@ -6,7 +6,7 @@ COPY package*.json ./
 RUN ["yarn"]
 COPY ./ ./
 RUN ["ls"]
-RUN yarnn build
+RUN yarn build
 RUN ["ls", "dist"]
 
 FROM nginx
