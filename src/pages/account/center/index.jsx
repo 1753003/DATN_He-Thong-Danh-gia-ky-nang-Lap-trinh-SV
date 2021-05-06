@@ -4,13 +4,28 @@ import React, { Component, useState, useRef } from 'react';
 import { GridContent } from '@ant-design/pro-layout';
 import { Link, connect } from 'umi';
 import Projects from './components/Projects';
-import Practice from './components/Practice';
-import Test from './components/Test';
+import Articles from './components/Articles';
+import Applications from './components/Applications';
 import styles from './Center.less';
 
 const operationTabList = [
   {
-    key: 'practice',
+    key: 'articles',
+    tab: (
+      <span>
+        Test History{' '}
+        <span
+          style={{
+            fontSize: 14,
+          }}
+        >
+          (8)
+        </span>
+      </span>
+    ),
+  },
+  {
+    key: 'applications',
     tab: (
       <span>
         Practice History{' '}
@@ -25,10 +40,10 @@ const operationTabList = [
     ),
   },
   {
-    key: 'test',
+    key: 'projects',
     tab: (
       <span>
-        Test History{' '}
+        项目{' '}
         <span
           style={{
             fontSize: 14,
@@ -39,21 +54,6 @@ const operationTabList = [
       </span>
     ),
   },
-  // {
-  //   key: 'projects',
-  //   tab: (
-  //     <span>
-  //       项目{' '}
-  //       <span
-  //         style={{
-  //           fontSize: 14,
-  //         }}
-  //       >
-  //         (8)
-  //       </span>
-  //     </span>
-  //   ),
-  // },
 ];
 
 const TagList = ({ tags }) => {
@@ -146,7 +146,7 @@ class Center extends Component {
   //   return null;
   // }
   state = {
-    tabKey: 'practice',
+    tabKey: 'articles',
   };
 
   input = undefined;
@@ -175,12 +175,12 @@ class Center extends Component {
       return <Projects />;
     }
 
-    if (tabKey === 'test') {
-      return <Test />;
+    if (tabKey === 'applications') {
+      return <Applications />;
     }
 
-    if (tabKey === 'practice') {
-      return <Practice />;
+    if (tabKey === 'articles') {
+      return <Articles />;
     }
 
     return null;

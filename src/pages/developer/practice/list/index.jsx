@@ -19,6 +19,7 @@ const practiceList = ({location,dispatch,practice, loading}) => {
       type:'practice/getPracticeSetList',
       payload: encodeURIComponent(location.query.listName)
     })
+    console.log(practice.list)
   },[]);
   const routes = [
     {
@@ -45,7 +46,6 @@ const practiceList = ({location,dispatch,practice, loading}) => {
   function onChange(e) {
     console.log(`checked = ${e.target.checked}`);
   }
-  console.log(practice.list)
   return (loading?<PageLoading></PageLoading>:
     <div>
       <PageHeader

@@ -17,10 +17,10 @@ export function getHistory() {
     var options = {
       method: 'GET',
       withCredentials: true,
-      url: `http://localhost:5000/api/submissions`,
+      url: `localhost:5000/api/submissions`,
       headers: {
         accessToken: Cookies.get('accessToken'),
-        'access-control-allow-origin': 'http://localhost:8001',
+        'access-control-allow-origin': 'localhost:8001',
       },
     };
     axios
