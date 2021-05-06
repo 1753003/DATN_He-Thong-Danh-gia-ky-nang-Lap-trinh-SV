@@ -4,10 +4,10 @@ WORKDIR /usr/src/app/
 USER root
 COPY package*.json ./
 RUN ["yarn"]
+COPY . .
 RUN ["yarn", "build"]
 RUN ["ls"]
 RUN ["ls", "dist"]
-COPY . .
 
 FROM nginx
 
