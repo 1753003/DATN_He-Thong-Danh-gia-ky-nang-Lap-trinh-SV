@@ -2,9 +2,7 @@ const db = require('../utils/db');
 
 module.exports = {
     async getPracticeSubmissions(id){
-        return (await db.raw(`select s.*, p.PracticeName, p.DifficultLevel, p.Score as MaxScore, p.PracticeSet
-        from submissions s inner join practice p on s.PracticeID = p.PracticeID
-        where s.DevID = "${id}";`))[0];
+        return await db('submissions').where({DevID: id, TestID : null});
     },
 
     async getTestSubmissions(id){

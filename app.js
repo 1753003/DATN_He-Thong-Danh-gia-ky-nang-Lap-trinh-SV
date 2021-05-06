@@ -8,9 +8,8 @@ const app = express();
 app.use(express.json());
 
 app.use(morgan('dev'));
-
-//app.use(cors({ credentials: true, origin: 'https://devcheckpro.web.app'}));
-app.use(cors({ credentials: true, origin: 'http://localhost:8001'}));
+const WEB = process.env.WEB || 'http://localhost:8000';
+app.use(cors({ credentials: true, origin: WEB}));
 app.use(cookieParser()); 
 // const csrfProtection = csrf({
 //     cookie: true
