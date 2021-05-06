@@ -4,8 +4,8 @@ WORKDIR /usr/src/app/
 USER root
 COPY package*.json ./
 RUN ["yarn"]
-COPY . .
-RUN ["yarn", "build"]
+COPY ./ ./
+RUN npm run build
 RUN ["ls"]
 RUN ["ls", "dist"]
 
