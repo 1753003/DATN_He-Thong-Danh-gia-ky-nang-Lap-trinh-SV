@@ -55,7 +55,7 @@ const UserModel = {
           unreadCount: unread,
           react: react
         }
-        console.log(currentUser)
+        // console.log(currentUser)
         yield put({
           type:'saveCurrentUser',
           payload: currentUser
