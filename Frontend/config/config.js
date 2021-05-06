@@ -42,7 +42,7 @@ export default defineConfig({
               routes: [
                 {
                   path: '/user',
-                  redirect: '/User/login',
+                  redirect: '/user/login',
                 },
                 {
                   name: 'login',
@@ -64,7 +64,7 @@ export default defineConfig({
                 {
                   name: 'Register Creator',
                   path: '/user/register/creator',
-                  component: '.User/register/registerCreator',
+                  component: './User/register/registerCreator',
                 },
                 {
                   name: 'Register Developer',
