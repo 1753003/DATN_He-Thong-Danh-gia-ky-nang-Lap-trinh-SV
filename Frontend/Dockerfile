@@ -5,7 +5,7 @@ USER root
 COPY package*.json ./
 # RUN ["yarn"]
 COPY ./ ./
-RUN ls src
+RUN ls src/pages
 RUN ls src/pages/user/forgotPassword/
 RUN yarn build
 RUN ["ls", "dist"]
