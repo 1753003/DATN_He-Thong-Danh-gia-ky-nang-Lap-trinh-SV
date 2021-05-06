@@ -199,9 +199,35 @@ export default defineConfig({
                   ],
                 },
                 {
-                  path: '/developer/test',
                   name: 'Test',
-                  component: './developer/test/test.jsx',
+                  path: '/developer/test',
+                  routes: [
+                    {
+                      path: '/developer/test',
+                      redirect: '/developer/test/home',
+                    },
+                    {
+                      path: '/developer/test',
+                      routes: [
+                        {
+                          path: '/developer/',
+                          redirect: '/developer/test/home',
+                        },
+                        {
+                          path: '/developer/test/home',
+                          component: './developer/test/home',
+                        },
+                        {
+                          path: '/developer/test/list',
+                          component: './developer/test/list',
+                        },
+                        {
+                          path: '/developer/test/questions',
+                          component: './developer/test/questions',
+                        },
+                      ],
+                    },
+                  ],
                 },
                 {
                   path: '/developer/search',
