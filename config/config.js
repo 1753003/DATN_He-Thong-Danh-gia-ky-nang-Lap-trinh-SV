@@ -42,39 +42,39 @@ export default defineConfig({
               routes: [
                 {
                   path: '/user',
-                  redirect: '/user/login',
+                  redirect: '/User/login',
                 },
                 {
                   name: 'login',
                   path: '/user/login',
-                  component: './user/login',
+                  component: './User/login',
                 },
                 {
                   name: 'register-result',
                   icon: 'smile',
                   path: '/user/register-result',
-                  component: './user/register-result',
+                  component: './User/register-result',
                 },
                 {
                   name: 'register',
                   icon: 'smile',
                   path: '/user/register',
-                  component: './user/register/registerHome',
+                  component: './User/register/registerHome',
                 },
                 {
                   name: 'Register Creator',
                   path: '/user/register/creator',
-                  component: './user/register/registerCreator',
+                  component: '.User/register/registerCreator',
                 },
                 {
                   name: 'Register Developer',
                   path: '/user/register/developer',
-                  component: './user/register/registerDeveloper',
+                  component: './User/register/registerDeveloper',
                 },
                 {
                   name: 'Forgot password',
                   path: '/user/forgotPassword',
-                  component: './user/forgotPassword/index',
+                  component: './User/forgotPassword/index',
                 },
                 {
                   component: '404',
