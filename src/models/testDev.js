@@ -1,34 +1,25 @@
 // import { queryCurrent, query as queryUsers } from '@/services/user';
 
+import { getTestListBySet } from "@/services/testDev";
+
 const TestModel = {
   namespace: 'testDev',
   state: {
-  
+    setList: [],
   },
   effects: {
-    *fetchTestList(_, { call, put }) {
-      const response = yield call(getTestList);
+    *fetchTestListBySet({payload}, { call, put }) {
+      const response = yield getTestListBySet(payload.split(' ')[0]);
       yield put({
         type: 'saveTestList',
         payload: response,
       });
     },
-    *getTestByIdModel({ payload }, { call, put }) {
-      console.log(payload);
-      const response = yield call(getTestById, payload.id);
-      console.log(response);
-      yield put({
-        type: 'saveTestById',
-        payload: response,
-      });
-    },
-    *createTest({ payload }, { call }) {
-      const response = yield call(createNewTest, payload);
-    },
+    
   },
   reducers: {
     saveTestList(state, { payload }) {
-      return { ...state, testList: [...payload] };
+      return { ...state, setList: [...payload] };
     },
     saveTestById(state, { payload }) {
       return { ...state, testById: payload };
