@@ -8,12 +8,13 @@ import {
   Divider,
   Checkbox
 } from 'antd'
-import {history, Link} from 'umi'
+import {history, Link, useHistory} from 'umi'
 import { connect } from 'dva'
 import PageLoading from '@/components/PageLoading'
 import "./style.less";
 const { Title, Text } = Typography;
 const TestSetList = ({location,dispatch,testDev, loading}) => {
+  // let history = useHistory()
   useEffect(()=>{
     dispatch({
       type:'testDev/fetchTestListBySet',
@@ -70,7 +71,13 @@ const TestSetList = ({location,dispatch,testDev, loading}) => {
             dataSource={testDev.setList}
             renderItem={item => (
             <List.Item onClick={()=>{
-              history.push("/developer/test/questions?listName="+ encodeURIComponent(decodeURIComponent(location.query.listName)) )
+              history.push({
+                pathname: '/developer/test/questions',
+                search: `?tid=${item.TestID}`,
+                state: item,
+              }
+                
+              )
             }}
             style={{backgroundColor: 'white', margin: '10px 5px 10px 20px', padding:'5px 20px 5px 10px', borderRadius:'5px'}}>             
               <List.Item.Meta
