@@ -27,7 +27,7 @@ router.get("/", async function (req, res) {
         },
         "secretkeyy",
         {
-          expiresIn: "10s",
+          expiresIn: "1d",
         }
       );
       var refreshToken = jwt.sign(
@@ -36,7 +36,7 @@ router.get("/", async function (req, res) {
         },
         "secretkeyy",
         {
-          expiresIn: "10s",
+          expiresIn: "1d",
         }
       );
       await userModel.updateRefreshToken(decoded.uid, refreshToken);

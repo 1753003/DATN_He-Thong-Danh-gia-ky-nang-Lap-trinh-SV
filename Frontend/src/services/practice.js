@@ -10,7 +10,7 @@ export function getPracticeListDetail(id) {
       .get(`${Constant.API}/api/practice/${id}`, {
         withCredentials: true,
         headers: {
-          'access-control-allow-origin': 'https://devcheckpro.web.app/',
+          'access-control-allow-origin': Constant.CORS,
           accessToken: Cookies.get('accessToken'),
         },
       })
@@ -24,6 +24,7 @@ export function getPracticeListDetail(id) {
   });
 }
 export function getPracticeSet(set) {
+  console.log(Constant)
   return new Promise((resolve, reject) => {
     var options = {
       method: 'GET',
