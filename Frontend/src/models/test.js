@@ -1,7 +1,7 @@
 // import { queryCurrent, query as queryUsers } from '@/services/user';
 import { getTestList, getTestById, createNewTest } from '@/services/test';
 
-const TestModal = {
+const TestModel = {
   namespace: 'test',
   state: {
     testList: [],
@@ -104,4 +104,4 @@ const TestModal = {
     }
   },
 };
-export default TestModal;
+export default TestModel;
