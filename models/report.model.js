@@ -44,7 +44,6 @@ module.exports = {
         summary.listNotFinish = listNotFinish;
         return summary;
     },
-
     async getUser(reportID) {
         const testID = (await db('report').where('ID', reportID))[0].TestID;
     
@@ -74,7 +73,7 @@ module.exports = {
             }
             listQuestion.push(res);
         }
-        console.log(listQuestion);
+        //console.log(listQuestion);
         //console.log(listQuestion)
         var result = [];
         for (const item of submission) {
@@ -84,7 +83,7 @@ module.exports = {
                 var questionUser = {};
                 questionUser.Question = e.Description;
                 questionUser.Type = e.QuestionType;
-                console.log(e.ID)
+                console.log(e)
                 if (questionUser.Type == 'Code') {
                     const answer = (await db('answercoding').where({
                         QuestionID: e.ID,
@@ -101,7 +100,10 @@ module.exports = {
                         SubmissionID: item.SubmissionID                  
                     }))[0]; 
                     if (answer != undefined) {
-                        questionUser.Answered = e.Answer[answer.Choice];
+                        questionUser.Answered = [];
+                        for (let choice of answer.Choice) 
+                            questionUser.Answered.push(e.Answer[choice]);
+                      
                         questionUser.RunningTime = "--"
                     }
                 }
@@ -130,6 +132,60 @@ module.exports = {
             if (i != result.length - 1)
                 if (result[i].Score > result[i+1].Score)
                     rank += 1;
+        }
+        return result;
+    },
+    async getQuestion(testID) {
+        console.log("TestID: ", testID)
+        const list = await db('question').where('TestID', testID);
+        let result = [];
+        const submission = (await db('submissions').where('TestID',testID));
+        
+        for (item of list) {
+            let NumberUserAnswer = [];
+            let ListUser = [];
+            if (item.QuestionType == 'MultipleChoice') {
+                const question = (await db('multiplechoice').where('QuestionID', item.ID))[0];
+                item.Question = question.MCDescription;
+                item.Answer = question.Answer;
+                item.CorrectAnswer = question.CorrectAnswer;
+                
+                for (let i = 0; i < item.Answer.length; i++)
+                    NumberUserAnswer[i] = 0;
+                
+                for (const e of submission) {   
+                    let Answered = [];           
+                    const answer = (await db('answermultiplechoice').where({
+                        QuestionID: item.ID,
+                        SubmissionID: e.SubmissionID                  
+                    }))[0]; 
+                    for (a of answer.Choice) {
+                        NumberUserAnswer[a]++;
+                        Answered.push(item.Answer[a]);
+                    }
+                               
+                    ListUser.push({
+                        User: e.DevID,
+                        Answered: Answered
+                    })
+                }
+            }
+            else {
+                const question = (await db('coding').where('QuestionID', item.ID))[0];
+                item.Question = question.CodeDescription;
+                
+
+            }
+            result.push({
+                ID: item.ID,
+                Question: item.Question,
+                Type: item.QuestionType,
+                Correct: item.NumberPeopleRight,
+                Answer: item.Answer,
+                CorrectAnswer: item.CorrectAnswer,
+                NumberUserAnswer: NumberUserAnswer,
+                ListUser: ListUser  
+            })
         }
         return result;
     }
