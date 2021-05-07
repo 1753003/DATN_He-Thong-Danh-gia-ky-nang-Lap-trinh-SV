@@ -16,7 +16,7 @@ export default defineConfig({
   locale: {
     // default zh-CN
     default: 'en-US',
-    antd: true,
+    // antd: true,
     // default true, when it is true, will use `navigator.language` overwrite default
     baseNavigator: true,
   },
@@ -204,26 +204,23 @@ export default defineConfig({
                   routes: [
                     {
                       path: '/developer/test',
-                      redirect: '/developer/test/home',
-                    },
-                    {
-                      path: '/developer/test',
                       routes: [
-                        {
-                          path: '/developer/',
-                          redirect: '/developer/test/home',
-                        },
+                        
                         {
                           path: '/developer/test/home',
                           component: './developer/test/home',
+                        },
+                        {
+                          path: '/developer/test/questions',
+                          component: './developer/test/questions',
                         },
                         {
                           path: '/developer/test/list',
                           component: './developer/test/list',
                         },
                         {
-                          path: '/developer/test/questions',
-                          component: './developer/test/questions',
+                          path: '/developer/test',
+                          redirect: '/developer/test/home',
                         },
                       ],
                     },

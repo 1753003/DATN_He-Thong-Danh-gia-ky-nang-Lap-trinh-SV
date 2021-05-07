@@ -45,15 +45,15 @@ const testHome = () => {
 
 
   return (<div className={styles.global}>
-  <div className="combined-wrapper">
-      <div className="input-wrapper">
+  <QueueAnim className="combined-wrapper">
+      <div key="input-wrapper" className="input-wrapper">
         <Input onPressEnter={handleSubmit} onChange={(e)=>handleChange(e)} className="input" size="large" placeholder="ENTER YOUR PIN CODE">
         </Input>
         <Button onClick = {handleSubmit} block size="large" className="button">
           JOIN
         </Button>
       </div>
-  </div>
+  </QueueAnim>
     <div>
     <Typography.Title className={styles.topic}><Texty>{'Topics'}</Texty></Typography.Title>
       <div className={styles.body}>
