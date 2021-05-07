@@ -3,7 +3,7 @@ import styles from './index.less';
 import { Row, Col, Breadcrumb, Button, List, Checkbox } from 'antd';
 import { connect } from 'dva';
 import moment from 'moment';
-
+import Coding from '@/components/Coding';
 const CheckboxGroup = Checkbox.Group;
 
 class TestDetail extends React.Component {
@@ -92,7 +92,7 @@ class TestDetail extends React.Component {
   }
 
   onChangeAnswer = (checkedValues) => {
-    this.setState({answer: checkedValues})
+    this.setState({ answer: checkedValues });
   };
 
   next() {
@@ -100,9 +100,9 @@ class TestDetail extends React.Component {
       type: 'test/updateAnswer',
       payload: {
         id: this.getQuestion()?.ID,
-        data: this.state.answer
-      }
-    })
+        data: this.state.answer,
+      },
+    });
     this.props.dispatch({
       type: 'test/changeQuestion',
       payload: 'next',
@@ -113,9 +113,9 @@ class TestDetail extends React.Component {
       type: 'test/updateAnswer',
       payload: {
         id: this.getQuestion()?.ID,
-        data: this.state.answer
-      }
-    })
+        data: this.state.answer,
+      },
+    });
     this.props.dispatch({
       type: 'test/changeQuestion',
       payload: 'back',
@@ -167,17 +167,26 @@ class TestDetail extends React.Component {
           <h2>{this.getData()?.generalInformation?.TestName}</h2>
           <Row className={styles.container}>
             <Col span={18}>
-              <div className={styles.answer}>
-                <p>{this.getQuestion()?.Description}</p>
-                <CheckboxGroup
-                  options={this.getQuestion()?.Answer}
-                  onChange={this.onChangeAnswer}
-                ></CheckboxGroup>
-              </div>
+              <p>{this.getQuestion()?.Description}</p>
+              <p>Score: {this.getQuestion()?.Score}</p>
+              {this.getQuestion()?.QuestionType === 'Code' ? (
+                <>
+                  <Coding></Coding>
+                </>
+              ) : (
+                <>
+                  <div className={styles.answer}>
+                    <CheckboxGroup
+                      options={this.getQuestion()?.Answer}
+                      onChange={this.onChangeAnswer}
+                    ></CheckboxGroup>
+                  </div>
+                </>
+              )}
               <Row>
                 <Button
                   type="primary"
-                  disabled = {this.props.question === 0 ? true : false}
+                  disabled={this.props.question === 0 ? true : false}
                   onClick={() => {
                     this.back();
                   }}
@@ -192,7 +201,6 @@ class TestDetail extends React.Component {
                 >
                   Next
                 </Button>
-               
               </Row>
             </Col>
             <Col span={6}></Col>
