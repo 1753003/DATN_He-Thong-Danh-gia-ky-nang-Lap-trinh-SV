@@ -1,5 +1,9 @@
-import { getPracticeListDetail, getSubmissionList, getPracticeSet} from '@/services/practice'
-import firebase from '@/utils/firebase'
+import { stringify } from 'querystring';
+import { history } from 'umi';
+import { getPracticeListDetail, getSubmissionList, getPracticeSet } from '@/services/practice'
+import { saveSubmission } from '@/services/practice';
+import { setAuthority } from '@/utils/authority';
+import { getPageQuery } from '@/utils/utils';
 
 const Model = {
   namespace: 'practice',
@@ -63,7 +67,6 @@ const Model = {
     },
   },
   reducers: {
-
     setListDetail(state, { payload }) {
       return { ...state, listDetail: payload.listDetail };
     },
@@ -84,7 +87,7 @@ const Model = {
     },
     changeTab(state,{payload}) {
       return { ...state, tabChange: payload };
-    },
+    }
   },
 };
 export default Model;

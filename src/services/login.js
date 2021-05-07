@@ -36,7 +36,7 @@ export function LoginWithGoogle(params) {
   console.log(params);
   return new Promise((resolve, reject) => {
     axios
-      .post('/api/auth/loginGoogle', params)
+      .post(`${Constant.API}/api/auth/loginGoogle`, params)
       .then((response) => {
         // handle success
         resolve(response.data);
