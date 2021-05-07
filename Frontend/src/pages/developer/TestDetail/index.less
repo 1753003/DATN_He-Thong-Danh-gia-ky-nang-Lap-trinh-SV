@@ -1,49 +1,49 @@
 @import '~antd/es/style/themes/default.less';
 
-.container {
-  .header {
-    width: 100%;
-    margin-bottom: 1px;
-    padding: 20px;
-    background-color: white;
-  }
-  .bodyContainer {
-    display: flex;
-    .left {
-      width: 20%;
-      background-color: white;
-      .quizContainer {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 70px;
-        color: white;
-        background-color: #011831;
-        border-bottom: 1px solid white;
-      }
-    }
-    .mid {
-      width: 60%;
-    }
-    .right {
-      width: 20%;
-      padding: 20px;
-      background-color: white;
-      .option {
-        padding-bottom: 20px;
-        .optionTitle {
-          margin-bottom: 10px;
-        }
-      }
-    }
-  }
+
+
+.countdownWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
 }
-.quizInfoContainer {
-  padding: 20px;
-  .choices {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 20px;
+
+.countdownItem {
+  color: #111;
+  font-size: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  line-height: 30px;
+  margin: 10px;
+  padding-top: 10px;
+  position: relative;
+  width: 100px;
+  height: 100px;
+}
+
+.countdownItem span {
+  color: #333;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.countdownSvg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100px;
+  height: 100px;
+}
+
+.container {
+  .answer {
+    height: 30vh;
+    overflow:scroll;
+    padding: 10px;
+    background: white!important;
   }
 }
