@@ -74,7 +74,7 @@ export default defineConfig({
                 {
                   name: 'Forgot password',
                   path: '/user/forgotPassword',
-                  component: './user/forgotPassword/index'
+                  component: './user/forgotPassword/index',
                 },
                 {
                   component: '404',
@@ -142,12 +142,6 @@ export default defineConfig({
                   hideInMenu: true,
                   icon: 'PicLeftOutlined',
                   component: './Creator/ReportDetail',
-                },
-                {
-                  path: '/creator/class',
-                  name: 'Class',
-                  icon: 'FundOutlined',
-                  component: './Creator/Class',
                 },
                 {
                   component: './404',
@@ -221,11 +215,10 @@ export default defineConfig({
                 {
                   path: '/developer/search',
                   component: './developer/search',
-                  
                 },
                 {
                   path: '/developer/profile',
-                  component: './account/center'
+                  component: './account/center',
                 },
                 {
                   component: './404',

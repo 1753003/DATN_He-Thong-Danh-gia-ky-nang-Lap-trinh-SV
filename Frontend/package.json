@@ -1,8 +1,8 @@
 {
-  "name": "Codejoy",
+  "name": "codejoy",
   "version": "4.5.0",
   "private": true,
-  "description": "An out-of-box UI solution for enterprise applications",
+  "description": "Codejoy",
   "scripts": {
     "analyze": "cross-env ANALYZE=1 umi build",
     "build": "umi build",
