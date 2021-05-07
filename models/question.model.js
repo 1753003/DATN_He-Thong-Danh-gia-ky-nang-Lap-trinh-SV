@@ -45,7 +45,4 @@ module.exports = {
   async getQuestionMultiChoice(ID){
     return await db('multiplechoice').where('QuestionID', ID);
   },
-  // async getQuestionByTestID(ID){
-  //   return await db('question').where('TestID',  ID);
-  // },
 }
