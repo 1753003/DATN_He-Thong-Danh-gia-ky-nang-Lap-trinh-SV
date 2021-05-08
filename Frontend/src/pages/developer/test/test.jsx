@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './index.less';
 import { List, Button, Checkbox, Typography, Row, Col, Divider , Card} from 'antd';
-
+import '../../../components/GlobalHeader/style.less';
 
 const { Title, Text } = Typography;
 
@@ -116,7 +116,7 @@ class SetTest extends React.Component {
     return (
       <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
         <Col className="gutter-row" span={18}>
-          <List
+          <List className = 'custom'
             style={{margin: '30px 0px 10px 10px'}}
             itemLayout="horizontal"
             pagination={{
