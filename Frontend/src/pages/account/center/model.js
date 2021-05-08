@@ -1,10 +1,11 @@
-import { queryCurrent, queryFakeList, getHistory } from './service';
+import { queryCurrent, queryFakeList, getHistory, getInfo } from './service';
 
 const Model = {
   namespace: 'accountAndcenter',
   state: {
     currentUser: {},
     list: [],
+    info: {},
   },
   effects: {
     *fetchCurrent(_, { call, put }) {
@@ -26,11 +27,25 @@ const Model = {
 
     *fetchHistory(_, { call, put}) {
       const res = yield call(getHistory);
-      console.log(res);
+      //console.log(res);
       yield put({
         type: 'queryList',
         payload: res
       })
+    },
+
+    *fetchInfo(_, { call, put}) {
+      const res = yield call(getInfo);
+      console.log(res);
+      yield put({
+        type: 'queryInfo',
+        payload: res
+      })
+    },
+
+    *updateFilter({ payload }, { put, select }) {
+      var newList = [];
+
     }
   },
   reducers: {
@@ -41,6 +56,10 @@ const Model = {
     queryList(state, action) {
       return { ...state, list: action.payload };
     },
+
+    queryInfo(state, action) {
+      return { ...state, info: action.payload };
+    }
   },
 };
 export default Model;
