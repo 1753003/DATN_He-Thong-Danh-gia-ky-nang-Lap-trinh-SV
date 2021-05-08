@@ -3,7 +3,7 @@ import styles from './index.less';
 import { Row, Col, Breadcrumb, Button, List, Checkbox } from 'antd';
 import { connect } from 'dva';
 import moment from 'moment';
-import Coding from '@/components/Coding';
+import Coding from '@/components/Coding quiz';
 const CheckboxGroup = Checkbox.Group;
 
 class TestDetail extends React.Component {
@@ -36,6 +36,18 @@ class TestDetail extends React.Component {
       return undefined;
     }
   };
+
+  getCodeAnswer = () => {
+    const {answer, question} = this.props.test;
+    try {
+      if (answer[question].data === [] || answer[question] === undefined)
+        return ""
+      return answer[question].data;
+    }
+    catch (e) {
+      return ""
+    }
+  }
 
   polarToCartesian = (centerX, centerY, radius, angleInDegrees) => {
     var angleInRadians = ((angleInDegrees - 90) * Math.PI) / 180.0;
@@ -130,6 +142,7 @@ class TestDetail extends React.Component {
     if (!seconds) {
       return null;
     }
+
     return (
       <div>
         <div>
@@ -171,7 +184,10 @@ class TestDetail extends React.Component {
               <p>Score: {this.getQuestion()?.Score}</p>
               {this.getQuestion()?.QuestionType === 'Code' ? (
                 <>
-                  <Coding></Coding>
+                  <Coding description={this.getQuestion()?.Description}
+                          testCases={this.getQuestion()?.TestCase}
+                          getCode={(value) => {this.setState({answer: value})}}
+                          codeDefault = {this.getCodeAnswer()}></Coding>
                 </>
               ) : (
                 <>
