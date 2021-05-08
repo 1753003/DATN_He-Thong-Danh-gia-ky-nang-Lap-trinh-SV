@@ -3,7 +3,6 @@ import { PageLoading } from '@ant-design/pro-layout';
 import { Redirect, connect } from 'umi';
 import { stringify } from 'querystring';
 import { Result, Button } from 'antd';
-
 class SecurityLayout extends React.Component {
   state = {
     isReady: false,
@@ -13,13 +12,13 @@ class SecurityLayout extends React.Component {
     this.setState({
       isReady: true,
     });
-    // const { dispatch } = this.props;
+    const { dispatch } = this.props;
 
-    //   if (dispatch) {
-    //   dispatch({
-    //     type: 'user/fetchCurrent',
-    //   });
-    // }
+    if (dispatch) {
+      dispatch({
+        type: 'user/fetchCurrent',
+      });
+    }
   }
  
   render() {

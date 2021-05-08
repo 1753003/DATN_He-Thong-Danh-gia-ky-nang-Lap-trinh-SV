@@ -10,7 +10,7 @@ export function getPracticeListDetail(id) {
       .get(`${Constant.API}/api/practice/${id}`, {
         withCredentials: true,
         headers: {
-          'access-control-allow-origin': 'https://devcheckpro.web.app/',
+          'access-control-allow-origin': Constant.CORS,
           accessToken: Cookies.get('accessToken'),
         },
       })
@@ -24,6 +24,7 @@ export function getPracticeListDetail(id) {
   });
 }
 export function getPracticeSet(set) {
+  console.log(Constant)
   return new Promise((resolve, reject) => {
     var options = {
       method: 'GET',
@@ -110,27 +111,4 @@ export function saveSubmission(pid, jsonData) {
         tokenHandling(message, resolve, options);
       });
   });
-}
-
-export function getDiscussion(pid){
-  const data = [{
-    author: "a",
-    avatarSrc: "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
-    time: 123123123,
-    content: `This is to display the 
-    \`\$\$\c = \\pm\\sqrt{a^2 + b^2}\$\$\`
-     in one line
-    
-    \`\`\`KaTeX
-    c = \\pm\\sqrt{a^2 + b^2}
-    \`\`\`
-    `
-  },
-  {
-    author: "a",
-    avatarSrc: "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
-    time:4324121,
-    content: "Here's an idea for how you could go from that flat structure to a list of nested comments. Once you're done with that implementation, all you'd need would be a recursive React component.Z"
-  }]
-  return data;
 }

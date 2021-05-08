@@ -4,11 +4,9 @@ WORKDIR /usr/src/app/
 USER root
 COPY package*.json ./
 RUN ["yarn"]
-COPY ./ ./
-# RUN ls src/pages
-# RUN ls src/pages/user/forgotPassword/
-RUN yarn build
-# RUN ["ls", "dist"]
+RUN ["yarn", "build"]
+
+COPY . .
 
 FROM nginx
 
