@@ -8,18 +8,18 @@ import {
   Divider,
   Checkbox
 } from 'antd'
-import {history, Link} from 'umi'
+import {history, Link, useHistory} from 'umi'
 import { connect } from 'dva'
 import PageLoading from '@/components/PageLoading'
 import "./style.less";
 const { Title, Text } = Typography;
-const practiceList = ({location,dispatch,practice, loading}) => {
+const TestSetList = ({location,dispatch,testDev, loading}) => {
+  // let history = useHistory()
   useEffect(()=>{
     dispatch({
-      type:'practice/getPracticeSetList',
-      payload: encodeURIComponent(location.query.listName)
+      type:'testDev/fetchTestListBySet',
+      payload: decodeURIComponent(location.query.listName)
     })
-    console.log(practice.list)
   },[]);
   const routes = [
     {
@@ -27,8 +27,8 @@ const practiceList = ({location,dispatch,practice, loading}) => {
       breadcrumbName: 'Developer',
     },
     {
-      path: '/developer/practice',
-      breadcrumbName: 'Practice',
+      path: '/developer/test',
+      breadcrumbName: 'Test',
     },
     {
       path: '',
@@ -46,7 +46,8 @@ const practiceList = ({location,dispatch,practice, loading}) => {
   function onChange(e) {
     console.log(`checked = ${e.target.checked}`);
   }
-  return (loading?<PageLoading></PageLoading>:
+
+  return (
     <div>
       <PageHeader
         className="site-page-header"
@@ -56,7 +57,8 @@ const practiceList = ({location,dispatch,practice, loading}) => {
       />
       <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
         <Col className="gutter-row" span={18}>
-          <List
+        <List
+        loading = {loading}
             className="custom"
             style={{margin: '30px 0px 10px 10px'}}
             itemLayout="horizontal"
@@ -66,15 +68,21 @@ const practiceList = ({location,dispatch,practice, loading}) => {
               },
               pageSize: 6,
             }}
-            dataSource={practice.list}
+            dataSource={testDev.setList}
             renderItem={item => (
             <List.Item onClick={()=>{
-              history.push("/developer/practice/questions?listName="+ encodeURIComponent(decodeURIComponent(location.query.listName)) + `&id=${item.PracticeID}`)
+              history.push({
+                pathname: '/developer/test/questions',
+                search: `?tid=${item.TestID}`,
+                state: item,
+              }
+                
+              )
             }}
             style={{backgroundColor: 'white', margin: '10px 5px 10px 20px', padding:'5px 20px 5px 10px', borderRadius:'5px'}}>             
               <List.Item.Meta
-                title={item.PracticeName}
-                description={<div> {item.DifficultLevel +','+ item.PracticeType +','+ item.Score} <br></br>  {item.BriefDescription}</div>}
+                title={item.TestName}
+                // description={<div> {item.DifficultLevel +','+ item.PracticeType +','+ item.Score} <br></br>  {item.BriefDescription}</div>}
               />
               {/* {item.status == 'Solved' && <Button size='large' style={{width:'100px'}}>Solved</Button>}
               {item.status != 'Solved' && <Button size='large' style={{width:'100px'}} type="primary">  Start  </Button>} */}
@@ -106,7 +114,7 @@ const practiceList = ({location,dispatch,practice, loading}) => {
   );
 }
 
-export default connect(({practice, loading})=>({
-  practice,
-  loading : loading.effects['practice/getPracticeSetList']
-}))(practiceList);
+export default connect(({testDev, loading})=>({
+  testDev,
+  loading: loading.effects['testDev/fetchTestListBySet']
+}))(TestSetList);

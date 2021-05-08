@@ -1,7 +1,6 @@
 import Constant from '@/utils/contants';
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import tokenHandling from './tokenHandling';
 
 export function getTestList() {
   return new Promise((resolve, reject) => {

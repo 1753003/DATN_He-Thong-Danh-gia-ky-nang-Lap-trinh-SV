@@ -16,7 +16,7 @@ export default defineConfig({
   locale: {
     // default zh-CN
     default: 'en-US',
-    antd: true,
+    // antd: true,
     // default true, when it is true, will use `navigator.language` overwrite default
     baseNavigator: true,
   },
@@ -47,34 +47,34 @@ export default defineConfig({
                 {
                   name: 'login',
                   path: '/user/login',
-                  component: './user/login',
+                  component: './User/login',
                 },
                 {
                   name: 'register-result',
                   icon: 'smile',
                   path: '/user/register-result',
-                  component: './user/register-result',
+                  component: './User/register-result',
                 },
                 {
                   name: 'register',
                   icon: 'smile',
                   path: '/user/register',
-                  component: './user/register/registerHome',
+                  component: './User/register/registerHome',
                 },
                 {
                   name: 'Register Creator',
                   path: '/user/register/creator',
-                  component: './user/register/registerCreator',
+                  component: './User/register/registerCreator',
                 },
                 {
                   name: 'Register Developer',
                   path: '/user/register/developer',
-                  component: './user/register/registerDeveloper',
+                  component: './User/register/registerDeveloper',
                 },
                 {
                   name: 'Forgot password',
                   path: '/user/forgotPassword',
-                  component: './user/forgotPassword/index',
+                  component: './User/forgotPassword/index',
                 },
                 {
                   component: '404',
@@ -200,17 +200,31 @@ export default defineConfig({
                 },
                 {
                   name: 'Test',
-                  path: '/developer/test',              
+                  path: '/developer/test',
                   routes: [
                     {
-                    path: '/developer/test',
-                    component: './developer/test/test'
+                      path: '/developer/test',
+                      routes: [
+                        
+                        {
+                          path: '/developer/test/home',
+                          component: './developer/test/home',
+                        },
+                        {
+                          path: '/developer/test/questions',
+                          component: './developer/test/questions',
+                        },
+                        {
+                          path: '/developer/test/list',
+                          component: './developer/test/list',
+                        },
+                        {
+                          path: '/developer/test',
+                          redirect: '/developer/test/home',
+                        },
+                      ],
                     },
-                    {
-                      path: '/developer/test/question',
-                      component: './developer/TestDetail/test'
-                    }
-                  ]
+                  ],
                 },
                 {
                   path: '/developer/search',

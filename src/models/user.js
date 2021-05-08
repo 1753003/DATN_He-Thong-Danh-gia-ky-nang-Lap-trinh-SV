@@ -4,6 +4,7 @@ const UserModel = {
   namespace: 'user',
   state: {
     currentUser: {
+      react: {}
     },
   },
   effects: {
@@ -16,28 +17,63 @@ const UserModel = {
     },
     
     *fetchCurrent(_, { call, put }) {
-      const userRef = firebase.database().ref(`users/zcwVw4Rjp7b0lRmVZQt6ZXmspql1`)
-      const currentUser = yield call(()=>{
-        return new Promise((resolve, reject)=>{
-          userRef.on('value', (snapshot)=>{
+      const totalNotiCount = firebase.database().ref(`users/zcwVw4Rjp7b0lRmVZQt6ZXmspql1/totalNotiCount`)
+      const unReadCount = firebase.database().ref(`users/zcwVw4Rjp7b0lRmVZQt6ZXmspql1/unreadCount`)
+      const reactRef = firebase.database().ref(`users/zcwVw4Rjp7b0lRmVZQt6ZXmspql1/react`)
+      const notiCount = yield call(()=>{ return new Promise((resolve, reject)=>{
+          totalNotiCount.on('value', (snapshot)=>{
             resolve(snapshot.val())
           })
         })
       })
-      yield put({
-        type:'saveCurrentUser',
-        payload: currentUser
+      const unread = yield call(()=>{ return new Promise((resolve, reject)=>{
+          unReadCount.on('value', (snapshot)=>{
+            resolve(snapshot.val())
+          })
+        })
       })
+      const react = yield call(()=>{ return new Promise((resolve, reject)=>{
+          reactRef.on('value', (snapshot)=>{
+            resolve(snapshot.val())
+          })
+        })
+      })
+      //   const getData = yield call(()=>{
+      //     return new Promise((resolve, reject)=>{
+      //     Promise.all([notiCount, react, unread]).then(values => {
+      //       // console.log(values);
+      //       resolve(values)
+      //     }).catch(reason => {
+      //       console.log(reason)
+      //     });
+          
+      //   }) 
+      // })
+
+        const currentUser = {
+          totalNotiCount: notiCount,
+          unreadCount: unread,
+          react: react
+        }
+        // console.log(currentUser)
+        yield put({
+          type:'saveCurrentUser',
+          payload: currentUser
+        })
     }
   },
   reducers: {
     saveCurrentUser(state, action) {
-      return { ...state, currentUser: action.payload || {} };
+      return { ...state, currentUser: action.payload || {react:{}} };
     },
-
+    editCurrentUserReact(state,{payload}) {
+      return { ...state, currentUser: {react:{...state.currentUser.react, payload}} };
+    },
     changeNotifyCount(
       state = {
-        currentUser: {},
+        currentUser: {
+          react:{}
+        },
       },
       action,
     ) {
