@@ -21,6 +21,7 @@ class TestDetail extends React.Component {
     const time = moment().add('60', 'minutes');
 
     this.state = { then: time, answer: [] };
+    this.handleUnload = this.handleUnload.bind(this);
   }
 
   getData = () => {
@@ -48,6 +49,14 @@ class TestDetail extends React.Component {
       return ""
     }
   }
+  
+  handleUnload(e) {
+    var message = "\o/";
+
+    (e || window.event).returnValue = message; //Gecko + IE
+    return message;
+  }
+  
 
   polarToCartesian = (centerX, centerY, radius, angleInDegrees) => {
     var angleInRadians = ((angleInDegrees - 90) * Math.PI) / 180.0;
@@ -83,8 +92,11 @@ class TestDetail extends React.Component {
       />
     </svg>
   );
-
+  componentWillUnmount() {
+    window.removeEventListener('beforeunload', this.handleUnload);
+  }
   componentDidMount() {
+    window.addEventListener('beforeunload', this.handleUnload);
     this.interval = setInterval(() => {
       const then = this.state.then;
       const now = moment();
