@@ -5,13 +5,13 @@ name: Create Backend Branch
       - main
     paths:
       - Backend/**
+  workflow_dispatch:
 jobs:
   deploy:
     name: Deploy Backend
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@main
-
     - name: Deploy Backend
       uses: s0/git-publish-subdir-action@develop
       env:

@@ -30,5 +30,10 @@ router.post('/check/:id', async function (req, res){
    const list = await testModel.checkTest(id, req.body.listTestAnswer);
    res.json(list);
 })
+router.get('/set/:name', async (req, res)=>{
+   const set = req.params.name;
+   const list = await testModel.getTestBySet(set)
+   res.json(list)
+})
 
 module.exports = router;
