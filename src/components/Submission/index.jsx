@@ -33,7 +33,7 @@ const Submission = ({dispatch, practice, loading}) =>{
       type:'practice/getSubmissionList',
       payload: practice.listDetail.generalInformation.PracticeID
     })
-  },[practice.tabChange]);
+  },[]);
   useEffect(()=>{
     console.log(practice.submissions)
     data =[];
