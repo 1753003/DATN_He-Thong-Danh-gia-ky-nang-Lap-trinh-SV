@@ -4,9 +4,9 @@ WORKDIR /usr/src/app
 
 COPY package*.json ./
 
+ENV WEB="https://codejoy-fe.herokuapp.com/"
 RUN npm ci --only=production
 
 COPY . .
 
-ENV WEB="https://codejoy-fe.herokuapp.com/"
 CMD [ "npm", "start" ]
