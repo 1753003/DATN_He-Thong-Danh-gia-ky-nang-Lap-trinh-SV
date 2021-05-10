@@ -2,10 +2,10 @@ import { StarTwoTone, LikeOutlined, MessageFilled } from '@ant-design/icons';
 import { List, Tag, Radio, Row } from 'antd';
 import React from 'react';
 import { connect } from 'umi';
-import PracticeListContent from '../PracticeListContent';
+import ArticleListContent from '../ArticleListContent';
 import styles from './index.less';
 
-const Practice = (props) => {
+const Articles = (props) => {
   const { list } = props;
 
   const IconText = ({ icon, text }) => (
@@ -16,8 +16,6 @@ const Practice = (props) => {
   function onPermissionChange (e)  {
 
   }
-
-  console.log(list);
   return (
     <div>
       {/* <Row>
@@ -35,10 +33,10 @@ const Practice = (props) => {
       className={styles.articleList}
       rowKey="id"
       itemLayout="vertical"
-      dataSource={list.practice}
+      dataSource={list}
       renderItem={(item) => (
         <List.Item
-          key={item.PracticeID}
+          key={item.id}
           // actions={[
           //   <IconText key="star" icon={<StarTwoTone />} text={item.star} />,
           //   <IconText key="like" icon={<LikeOutlined />} text={item.like} />,
@@ -47,18 +45,18 @@ const Practice = (props) => {
         >
           <List.Item.Meta
             title={
-              <a className={styles.listItemMetaTitle}>
-                {item.PracticeName}
+              <a className={styles.listItemMetaTitle} href={item.href}>
+                {item.title}
               </a>
             }
             description={
               <span>
-                <Tag>{item.DifficultLevel}</Tag>
-                <Tag>{item.PracticeSet}</Tag>
+                <Tag>Medium</Tag>
+                <Tag>Javascript</Tag>
               </span>
             }
           />
-          <PracticeListContent data={item} />
+          <ArticleListContent data={item} />
         </List.Item>
       )}
     />
@@ -68,4 +66,4 @@ const Practice = (props) => {
 
 export default connect(({ accountAndcenter }) => ({
   list: accountAndcenter.list,
-}))(Practice);
+}))(Articles);
