@@ -5,17 +5,14 @@ import Constant from '@/utils/contants';
 
 export function getTestListBySet(set) {
   return new Promise((resolve, reject) => {
-      var options = {
-        method: 'GET',
+    axios
+      .get(`${Constant.API}/api/test/set/${set}`, {
         withCredentials: true,
-        url: `${Constant.API}/api/test/set/${set}`,
         headers: {
-          'access-control-allow-origin': Constant.CORS,
+          'access-control-allow-origin': 'https://devcheckpro.web.app/',
           accessToken: Cookies.get('accessToken'),
         },
-      };
-      axios
-        .request(options)
+      })
       .then((response) => {
         console.log(response.data)
         resolve(response.data);
