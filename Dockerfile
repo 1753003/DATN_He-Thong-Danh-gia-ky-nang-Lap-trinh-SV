@@ -8,4 +8,5 @@ RUN npm ci --only=production
 
 COPY . .
 
+ENV WEB="https://codejoy-fe.herokuapp.com/"
 CMD [ "npm", "start" ]
