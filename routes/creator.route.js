@@ -119,9 +119,4 @@ router.get('/report/user/:id', async function (req, res) {
    res.json(users);
 })
 
-router.get('/report/question/:id', async function (req, res) {
-   const questions = await reportModel.getQuestion (req.params.id);
-   res.json(questions);
-})
-
 module.exports = router;
