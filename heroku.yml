@@ -1,3 +1,6 @@
 build:
   docker:
     api: Dockerfile
+setup:
+  config:
+    WEB: https://codejoy-fe.herokuapp.com/
