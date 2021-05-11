@@ -9,5 +9,42 @@ module.exports = {
 
     async getTestSubmissions(id){
         return await db('submissions').join('test', 'submissions.TestID', '=', 'test.TestID').where({DevID: id, PracticeID : null});
+    },
+
+    async postTestSubmission(uid, submission) {
+        await db('submissions').insert({
+            SubmissionType: 'MultipleChoice',
+            TestID: submission.TestID,
+            PracticeID: null,
+            DevID: uid,
+            AnsweredNumber: submission.AnsweredNumber,
+            CorrectPercent: submission.CorrectPercent,
+            DoingTime: submission.DoingTime,
+            Score: submission.Score,
+        }).then(async SubmissionID => {
+            const ID = SubmissionID[0];
+            for (item of submission.ListAnswer) {
+                if (item.Type === 'MultipleChoice') {
+                    await db('answermultiplechoice').insert({
+                        SubmissionID: ID,
+                        QuestionID: item.QuestionID,
+                        Choice: JSON.stringify(item.Choice)
+                    })
+                }
+                else if (item.Type === 'Code') {
+                    await db('answercoding').insert({
+                        SubmissionID: ID,
+                        QuestionID: item.QuestionID,
+                        TestCasePassed: JSON.stringify(item.TestCasePassed),
+                        DescriptionCode: item.DescriptionCode,
+                        UsedLanguage: item.UsedLanguage,
+                        RunningTime: item.RunningTime,
+                        MemoryUsage: item.MemoryUsage,
+                        OutputTestcase: JSON.stringify(item.OutputTestcase),
+
+                    })
+                }
+            }
+        })
     }
 }

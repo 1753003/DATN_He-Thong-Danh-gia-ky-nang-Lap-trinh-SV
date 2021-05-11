@@ -15,7 +15,7 @@ import {
 } from 'antd';
 import { history, Link } from 'umi';
 import { connect } from 'dva';
-import CodeEditor from '../CodeEditor';
+import CodeEditor from '../CodeEditorQuiz';
 import PageLoading from '@/components/PageLoading';
 import { u_atob, u_btoa } from '@/utils/string';
 import AceEditor from 'react-ace';
@@ -89,7 +89,7 @@ const Testcases = (result) => {
             )}
             {res.stdout != '' && (
               <>
-                <h3>Your Ourput</h3>
+                <h3>Your Output</h3>
                 {editor(u_atob(res.stdout))}
               </>
             )}
