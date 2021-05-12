@@ -39,7 +39,7 @@ class CodeEditor extends Component {
     super(props);
     console.log(this.props)
     this.state = {
-      codeVal: '',
+      codeVal: this.props.codeDefault === [] ? "" : this.props.codeDefault,
       customVal: '',
       isSubmitBatch: false,
       showCustom: false,
@@ -59,6 +59,7 @@ class CodeEditor extends Component {
     this.setState({
       codeVal: val,
     });
+    this.getCode();
   };
   handleCustomValChange = (e) => {
     this.setState({
@@ -170,6 +171,11 @@ class CodeEditor extends Component {
     // });
     editor.execCommand('find');
   };
+
+  getCode = () => {
+    this.props.getCode(this.state.codeVal);
+  };
+
 
   render() {
     return (

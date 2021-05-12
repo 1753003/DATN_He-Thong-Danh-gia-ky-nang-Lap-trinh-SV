@@ -79,3 +79,29 @@ export function createNewTest({ generalInformation, listQuestion }) {
       });
   });
 }
+
+export function postSubmission(data) {
+  console.log(id);
+  return new Promise((resolve, reject) => {
+    var options = {
+      method: 'GET',
+      url: `${Constant.API}/api/creator/test/${id}`,
+      headers: {
+        accessToken: Cookies.get('accessToken'),
+        'access-control-allow-origin': Constant.CORS,
+      },
+    };
+    axios
+      .request(options)
+      .then((response) => {
+        // handle success
+        // console.log(response.data)
+        resolve(response.data);
+      })
+      .catch((error) => {
+        // handle error
+        const message = error.response.data.message;
+        tokenHandling(message, resolve, options);
+      });
+  });
+}

@@ -1,5 +1,6 @@
 import { resolvePlugin } from '@babel/core';
 import axios from 'axios';
+import { connect } from 'dva';
 import Cookies from 'js-cookie'
 const headers = {
   'x-rapidapi-key':'e05f2e82fbmsh521814293fd8497p1c37eejsn41455443ccca',
@@ -7,6 +8,7 @@ const headers = {
   'x-rapidapi-host':'judge0-ce.p.rapidapi.com'
   }
 export function createSubmission(data) {
+ 
   return new Promise( (resolve, reject) => {
     var options = {
       method: 'POST',
@@ -24,6 +26,7 @@ export function createSubmission(data) {
   })
 }
 export function createSubmissionBatch(data) {
+  console.log(data)
   return new Promise( (resolve, reject) => {
     var options = {
       method: 'POST',
