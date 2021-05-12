@@ -1,6 +1,7 @@
 import Constant from '@/utils/contants';
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import tokenHandling from './tokenHandling';
 
 export function getTestList() {
   return new Promise((resolve, reject) => {
@@ -75,6 +76,32 @@ export function createNewTest({ generalInformation, listQuestion }) {
         // handle error
         console.log(error);
         reject();
+      });
+  });
+}
+
+export function postSubmission(data) {
+  console.log(id);
+  return new Promise((resolve, reject) => {
+    var options = {
+      method: 'GET',
+      url: `${Constant.API}/api/creator/test/${id}`,
+      headers: {
+        accessToken: Cookies.get('accessToken'),
+        'access-control-allow-origin': Constant.CORS,
+      },
+    };
+    axios
+      .request(options)
+      .then((response) => {
+        // handle success
+        // console.log(response.data)
+        resolve(response.data);
+      })
+      .catch((error) => {
+        // handle error
+        const message = error.response.data.message;
+        tokenHandling(message, resolve, options);
       });
   });
 }

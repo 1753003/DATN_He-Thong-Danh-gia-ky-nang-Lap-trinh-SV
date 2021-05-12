@@ -17,10 +17,35 @@ export function getHistory() {
     var options = {
       method: 'GET',
       withCredentials: true,
-      url: `localhost:5000/api/submissions`,
+      url: `http://localhost:5000/api/submissions`,
       headers: {
         accessToken: Cookies.get('accessToken'),
-        'access-control-allow-origin': 'localhost:8001',
+        'access-control-allow-origin': 'http://localhost:8001',
+      },
+    };
+    axios
+    .request(options)
+    .then((response) => {
+    // handle success
+    // console.log(response.data)
+    resolve(response.data)
+    })
+    .catch((error) => {
+      const message = error.response.data.message;
+      tokenHandling(message, resolve, options);
+    })
+  })
+}
+
+export function getInfo() {
+  return new Promise((resolve, reject) => {
+    var options = {
+      method: 'GET',
+      withCredentials: true,
+      url: `http://localhost:5000/api/developer`,
+      headers: {
+        accessToken: Cookies.get('accessToken'),
+        'access-control-allow-origin': 'http://localhost:8001',
       },
     };
     axios

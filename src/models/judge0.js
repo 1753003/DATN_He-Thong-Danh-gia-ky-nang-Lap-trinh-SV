@@ -49,7 +49,6 @@ const Model = {
       
     },
     *sendCodeBatch({ payload }, { call, put, select }) {
-      console.log('fasdd', payload)
       yield put({
         type: 'setResult',
         payload: null

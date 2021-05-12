@@ -1,31 +1,16 @@
-import { PlusOutlined, HomeOutlined, ContactsOutlined, ClusterOutlined } from '@ant-design/icons';
+import { PlusOutlined, HomeOutlined, ContactsOutlined, PhoneOutlined } from '@ant-design/icons';
 import { Avatar, Card, Col, Divider, Input, Row, Tag, Form, Radio } from 'antd';
 import React, { Component, useState, useRef } from 'react';
 import { GridContent } from '@ant-design/pro-layout';
 import { Link, connect } from 'umi';
 import Projects from './components/Projects';
-import Articles from './components/Articles';
-import Applications from './components/Applications';
+import Practice from './components/Practice';
+import Test from './components/Test';
 import styles from './Center.less';
 
 const operationTabList = [
   {
-    key: 'articles',
-    tab: (
-      <span>
-        Test History{' '}
-        <span
-          style={{
-            fontSize: 14,
-          }}
-        >
-          (8)
-        </span>
-      </span>
-    ),
-  },
-  {
-    key: 'applications',
+    key: 'practice',
     tab: (
       <span>
         Practice History{' '}
@@ -40,10 +25,10 @@ const operationTabList = [
     ),
   },
   {
-    key: 'projects',
+    key: 'test',
     tab: (
       <span>
-        项目{' '}
+        Test History{' '}
         <span
           style={{
             fontSize: 14,
@@ -54,6 +39,21 @@ const operationTabList = [
       </span>
     ),
   },
+  // {
+  //   key: 'projects',
+  //   tab: (
+  //     <span>
+  //       项目{' '}
+  //       <span
+  //         style={{
+  //           fontSize: 14,
+  //         }}
+  //       >
+  //         (8)
+  //       </span>
+  //     </span>
+  //   ),
+  // },
 ];
 
 const TagList = ({ tags }) => {
@@ -146,12 +146,17 @@ class Center extends Component {
   //   return null;
   // }
   state = {
-    tabKey: 'articles',
+    tabKey: 'practice',
   };
 
   input = undefined;
 
   componentDidMount() {
+    
+  }
+  
+  constructor(props) {
+    super(props);
     const { dispatch } = this.props;
     dispatch({
       type: 'accountAndcenter/fetchCurrent',
@@ -159,8 +164,11 @@ class Center extends Component {
     dispatch({
       type: 'accountAndcenter/fetchHistory',
     });
+    dispatch({
+      type: 'accountAndcenter/fetchInfo',
+    });
+    console.log(this.props)
   }
-
   onTabChange = (key) => {
     // If you need to sync state to url
     // const { match } = this.props;
@@ -175,12 +183,12 @@ class Center extends Component {
       return <Projects />;
     }
 
-    if (tabKey === 'applications') {
-      return <Applications />;
+    if (tabKey === 'test') {
+      return <Test />;
     }
 
-    if (tabKey === 'articles') {
-      return <Articles />;
+    if (tabKey === 'practice') {
+      return <Practice />;
     }
 
     return null;
@@ -197,12 +205,12 @@ class Center extends Component {
         Student
       </p>
       <p>
-        <ClusterOutlined
+        <PhoneOutlined
           style={{
             marginRight: 8,
           }}
         />
-        Pon Dev Team
+        {this.props.info.PhoneNumber}
       </p>
       <p>
         <HomeOutlined
@@ -210,7 +218,7 @@ class Center extends Component {
             marginRight: 8,
           }}
         />
-        Viet Nam
+        {this.props.info.Address}
       </p>
     </div>
   );
@@ -218,8 +226,9 @@ class Center extends Component {
   
   render() {
     const { tabKey } = this.state;
-    const { currentUser = {}, currentUserLoading } = this.props;
+    const { currentUser = {}, currentUserLoading, info } = this.props;
     const dataLoading = currentUserLoading || !(currentUser && Object.keys(currentUser).length);
+    console.log('info: ', info);
     return (
       <GridContent>
         <Row gutter={24}>
@@ -235,8 +244,8 @@ class Center extends Component {
                 <div>
                   <div className={styles.avatarHolder}>
                     <img alt="" src={currentUser.avatar} />
-                    <div className={styles.name}>Pon Pham Khanh</div>
-                    <div>pupipinpon@gmail.com</div>
+                    <div className={styles.name}>{info.DevName}</div>
+                    <div>{info.DevMail}</div>
                   </div>
                   {this.renderUserInfo(currentUser)}
                   <Divider dashed />
@@ -248,7 +257,8 @@ class Center extends Component {
                     dashed
                   />
                   <div className={styles.team}>
-                    <div className={styles.teamTitle}>HCMUS</div>
+                    <div className={styles.teamTitle}>About</div>
+                    <p> {info.About} </p>
                     <Row gutter={36}>
                       {currentUser.notice &&
                         currentUser.notice.map((item) => (
@@ -286,4 +296,5 @@ class Center extends Component {
 export default connect(({ loading, accountAndcenter }) => ({
   currentUser: accountAndcenter.currentUser,
   currentUserLoading: loading.effects['accountAndcenter/fetchCurrent'],
+  info: accountAndcenter.info,
 }))(Center);

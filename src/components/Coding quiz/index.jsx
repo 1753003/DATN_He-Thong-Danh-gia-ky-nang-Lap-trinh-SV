@@ -15,7 +15,7 @@ import {
 } from 'antd';
 import { history, Link } from 'umi';
 import { connect } from 'dva';
-import CodeEditor from '../CodeEditor';
+import CodeEditor from '../CodeEditorQuiz';
 import PageLoading from '@/components/PageLoading';
 import { u_atob, u_btoa } from '@/utils/string';
 import AceEditor from 'react-ace';
@@ -89,7 +89,7 @@ const Testcases = (result) => {
             )}
             {res.stdout != '' && (
               <>
-                <h3>Your Ourput</h3>
+                <h3>Your Output</h3>
                 {editor(u_atob(res.stdout))}
               </>
             )}
@@ -112,8 +112,6 @@ class Coding extends Component {
     let alertType = 'error';
     let finalResult = [];
     // console.log(this.props.practice)
-    console.log(this.props.judge);
-
     if (this.props.judge.result)
       if (this.props.practice.isRun) {
         //if isRun
@@ -164,13 +162,15 @@ class Coding extends Component {
       }
 
     //if isSubmit
-
+    
     return (
       <>
         <ReactMarkdown className="problem">{this.props.description}</ReactMarkdown>
         <Divider></Divider>
         <div className="code-editor">
-          <CodeEditor></CodeEditor>
+          <CodeEditor testCases = {this.props.testCases}
+              getCode={(value) => this.props.getCode(value)}
+              codeDefault={this.props.codeDefault}></CodeEditor>
           {this.props.loading ? (
             <PageLoading></PageLoading>
           ) : (
@@ -188,10 +188,9 @@ class Coding extends Component {
   }
 }
 
-export default connect(({ practice, judge, loading }) => ({
+export default connect(({ test, practice, judge, loading }) => ({
   judge,
   practice,
+  test,
   loading: loading.effects['judge/sendCode'] || loading.effects['judge/sendCodeBatch'],
-  description: practice.listDetail?.listQuestion[0]?.Description,
-  testCases: practice.listDetail?.listQuestion[0].TestCase,
 }))(Coding);

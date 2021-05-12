@@ -5,7 +5,7 @@ import { history } from 'umi';
 import styles from './index.less';
 import TweenOne from 'rc-tween-one';
 import { OverPack } from 'rc-scroll-anim';
-import YouTube from 'react-youtube';
+import Cookies from 'js-cookie';
 import AnchorLink from 'react-anchor-link-smooth-scroll';
 class Header extends React.Component {
   state = {
@@ -18,7 +18,10 @@ class Header extends React.Component {
     else if (e.key === 'signout') {
       localStorage.removeItem('currentUser');
       localStorage.removeItem('imageURL');
+      Cookies.remove('accessToken');
+      Cookies.remove('refreshToken');
       history.push('/user/login');
+      
     }
   };
 
@@ -135,154 +138,7 @@ const Content = () => {
                 <Col span={12}>
                   <div className={styles.perspectiveWrapper}>
                     <div className={styles.container}>
-                      <Row className={styles.firstContainer}>
-                        <Col span={2}></Col>
-                        <Col span={10} className={styles.prompt}>
-                          <div className={styles.promptHeader}>Prompt</div>
-                          <div className={styles.promptContent}>Solve this problem</div>
-                          <OverPack style={{ overflow: 'hidden' }}>
-                            <TweenOne
-                              animation={{
-                                x: 0,
-                                duration: 500,
-                                repeat: 0,
-                              }}
-                              className={styles.promptContentLong}
-                              style={{ transform: 'translateX(-80px)' }}
-                            >
-                              a
-                            </TweenOne>
-                            <TweenOne
-                              animation={{
-                                x: 0,
-                                duration: 600,
-                                repeat: 0,
-                              }}
-                              className={styles.promptContentShort}
-                              style={{ transform: 'translateX(-80px)' }}
-                            >
-                              a
-                            </TweenOne>
-                            <TweenOne
-                              animation={{
-                                x: 0,
-                                duration: 700,
-                                repeat: 0,
-                              }}
-                              className={styles.promptContentShort}
-                              style={{ transform: 'translateX(-80px)' }}
-                            >
-                              a
-                            </TweenOne>
-                            <TweenOne
-                              animation={{
-                                x: 0,
-                                duration: 800,
-                                repeat: 0,
-                              }}
-                              className={styles.promptContentMedium}
-                              style={{ transform: 'translateX(-80px)' }}
-                            >
-                              a
-                            </TweenOne>
-                            <TweenOne
-                              animation={{
-                                x: 0,
-                                duration: 900,
-                                repeat: 0,
-                              }}
-                              className={styles.promptContentLong}
-                              style={{ transform: 'translateX(-80px)' }}
-                            >
-                              a
-                            </TweenOne>
-                          </OverPack>
-                        </Col>
-                        <Col span={10} className={styles.code}>
-                          <div className={styles.codeHeader}>
-                            <p>Code</p>
-                            <Button>Run</Button>
-                          </div>
-                          <OverPack style={{ overflow: 'hidden' }}>
-                            <TweenOne
-                              animation={{
-                                x: 0,
-                                duration: 500,
-                                repeat: 0,
-                              }}
-                              className={styles.longlineCode}
-                              style={{ transform: 'translateX(-80px)' }}
-                            >
-                              <div className={styles.element1}>a</div>
-                              <div className={styles.element2}>a</div>
-                              <div className={styles.element3}>a</div>
-                              <div className={styles.element4}>a</div>
-                            </TweenOne>
-                            <TweenOne
-                              animation={{
-                                x: 0,
-                                duration: 600,
-                                repeat: 0,
-                              }}
-                              className={styles.longlineCode}
-                              style={{ transform: 'translateX(-80px)' }}
-                            >
-                              <div className={styles.element1}>a</div>
-                              <div className={styles.element2}>a</div>
-                              <div className={styles.element3}>a</div>
-                              <div className={styles.element4}>a</div>
-                            </TweenOne>
-                            <TweenOne
-                              animation={{
-                                x: 0,
-                                duration: 700,
-                                repeat: 0,
-                              }}
-                              className={styles.mediumlineCode}
-                              style={{ transform: 'translateX(-80px)' }}
-                            >
-                              <div className={styles.element1}>a</div>
-                              <div className={styles.element2}>a</div>
-                              <div className={styles.element3}>a</div>
-                            </TweenOne>
-                            <TweenOne
-                              animation={{
-                                x: 0,
-                                duration: 800,
-                                repeat: 0,
-                              }}
-                              className={styles.mediumlineCode}
-                              style={{ transform: 'translateX(-80px)' }}
-                            >
-                              <div className={styles.element1}>a</div>
-                              <div className={styles.element2}>a</div>
-                              <div className={styles.element3}>a</div>
-                            </TweenOne>
-                            <TweenOne
-                              animation={{
-                                x: 0,
-                                duration: 900,
-                                repeat: 0,
-                              }}
-                              className={styles.shortlineCode}
-                              style={{ transform: 'translateX(-80px)' }}
-                            >
-                              <div className={styles.element1}>a</div>
-                              <div className={styles.element2}>a</div>
-                              <div className={styles.element3}>a</div>
-                            </TweenOne>
-                          </OverPack>
-                        </Col>
-                      </Row>
-                      <Row className={styles.secondContainer}>
-                        <Col span={2}></Col>
-                        <Col span={10} className={styles.testcase}>
-                          <div className={styles.testcaseHeader}>Testcases</div>
-                        </Col>
-                        <Col span={10} className={styles.output}>
-                          <div className={styles.outputHeader}>Output</div>
-                        </Col>
-                      </Row>
+                      <img src="https://firebasestorage.googleapis.com/v0/b/devcheckpro.appspot.com/o/GuestPage%2Fezgif.com-gif-maker.gif?alt=media&token=1bff5b70-4bd8-4cb4-a3c1-721947a3b9d7" alt=""/> 
                     </div>
                   </div>
                 </Col>

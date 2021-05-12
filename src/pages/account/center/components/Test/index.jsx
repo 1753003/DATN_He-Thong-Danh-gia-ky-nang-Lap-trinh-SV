@@ -2,10 +2,10 @@ import { StarTwoTone, LikeOutlined, MessageFilled } from '@ant-design/icons';
 import { List, Tag, Radio, Row } from 'antd';
 import React from 'react';
 import { connect } from 'umi';
-import ArticleListContent from '../ArticleListContent';
+import TestListContent from '../TestListContent';
 import styles from './index.less';
-
-const Articles = (props) => {
+import '../../../../../components/GlobalHeader/style.less'
+const Test = (props) => {
   const { list } = props;
 
   const IconText = ({ icon, text }) => (
@@ -19,46 +19,47 @@ const Articles = (props) => {
 
   console.log(list);
   return (
-    <div>
+    <div styles={{display: 'block'}}>
       <Row>
-        <Radio.Group className = {styles.rdGroup} onChange={onPermissionChange} defaultValue="a">
+        <Radio.Group className = {styles.rdGroup} onChange={onPermissionChange}>
           <Radio.Button value="a">Passed</Radio.Button>
           <Radio.Button value="b">Failed</Radio.Button>
         </Radio.Group>
-        <Radio.Group className = {styles.rdGroup} onChange={onPermissionChange} defaultValue="b">
+        <Radio.Group className = {styles.rdGroup} onChange={onPermissionChange}>
           <Radio.Button value="a">Public</Radio.Button>
           <Radio.Button value="b">Private</Radio.Button>
         </Radio.Group>
       </Row>
-      <List
+      <List 
       size="large"
-      className={styles.articleList}
+      className={`${styles.articleList} custom`}
       rowKey="id"
       itemLayout="vertical"
-      dataSource={list}
+      dataSource={list.test}
+      
       renderItem={(item) => (
         <List.Item
-          key={item.id}
+          key={item.TestID}
           // actions={[
           //   <IconText key="star" icon={<StarTwoTone />} text={item.star} />,
           //   <IconText key="like" icon={<LikeOutlined />} text={item.like} />,
-          //   <IconText key="message" icon={<MessageFilled />} text={item.message} />,
+          //   <IconText key="message" i con={<MessageFilled />} text={item.message} />,
           // ]}
         >
           <List.Item.Meta
             title={
-              <a className={styles.listItemMetaTitle} href={item.href}>
-                {item.title}
+              <a className={styles.listItemMetaTitle}>
+                {item.TestName}
               </a>
             }
             description={
               <span>
-                <Tag>Medium</Tag>
-                <Tag>Javascript</Tag>
+                <Tag>{item.DifficultLevel}</Tag>
+                <Tag>{item.TestSet}</Tag>
               </span>
-            }
+            } 
           />
-          <ArticleListContent data={item} />
+          <TestListContent data={item} />
         </List.Item>
       )}
     />
@@ -68,4 +69,5 @@ const Articles = (props) => {
 
 export default connect(({ accountAndcenter }) => ({
   list: accountAndcenter.list,
-}))(Articles);
+  info: accountAndcenter.info,
+}))(Test);
