@@ -61,8 +61,10 @@ module.exports = {
             res.ID = question.ID;
             res.QuestionType = question.QuestionType;
             res.Score = question.Score;
+
             if (question.QuestionType == 'MultipleChoice') {
                 const multipleQuestion = (await db('multiplechoice').where('QuestionID', question.ID))[0];
+                console.log(multipleQuestion)
                 res.Description = multipleQuestion.MCDescription;
                 res.Answer = multipleQuestion.Answer;
                 res.CorrectAnswer = multipleQuestion.CorrectAnswer;

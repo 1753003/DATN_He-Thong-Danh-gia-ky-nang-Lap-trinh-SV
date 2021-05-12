@@ -1,22 +1,24 @@
 import React from 'react';
 import styles from './index.less';
-import { Row, Col, Breadcrumb, Button, List, Checkbox } from 'antd';
+import { Row, Col, Breadcrumb, Button, List, Checkbox, Spin } from 'antd';
 import { connect } from 'dva';
 import moment from 'moment';
 import Coding from '@/components/Coding quiz';
+import Quiz from './components/quiz'
+import { min, result } from 'lodash-es';
 const CheckboxGroup = Checkbox.Group;
 
 class TestDetail extends React.Component {
   state = {
-    hours: undefined,
-    minutes: undefined,
-    seconds: undefined,
+    hours: '00',
+    minutes: '00',
+    seconds: '00',
     then: '',
   };
 
   constructor(props) {
     super(props);
-    this.props.dispatch({ type: 'test/getTestByID', payload: { id: 19 } });
+    this.props.dispatch({ type: 'test/getTestByID', payload: { id: 25 } });
 
     const time = moment().add('60', 'minutes');
 
@@ -26,6 +28,7 @@ class TestDetail extends React.Component {
 
   getData = () => {
     const { testById } = this.props.test;
+
     return testById;
   };
 
@@ -55,56 +58,24 @@ class TestDetail extends React.Component {
     return message;
   }
 
-  polarToCartesian = (centerX, centerY, radius, angleInDegrees) => {
-    var angleInRadians = ((angleInDegrees - 90) * Math.PI) / 180.0;
-
-    return {
-      x: centerX + radius * Math.cos(angleInRadians),
-      y: centerY + radius * Math.sin(angleInRadians),
-    };
-  };
-
-  describeArc = (x, y, radius, startAngle, endAngle) => {
-    var start = this.polarToCartesian(x, y, radius, endAngle);
-    var end = this.polarToCartesian(x, y, radius, startAngle);
-    var largeArcFlag = endAngle - startAngle <= 180 ? '0' : '1';
-    var d = ['M', start.x, start.y, 'A', radius, radius, 0, largeArcFlag, 0, end.x, end.y].join(
-      ' ',
-    );
-
-    return d;
-  };
-
-  mapNumber = (number, in_min, in_max, out_min, out_max) => {
-    return ((number - in_min) * (out_max - out_min)) / (in_max - in_min) + out_min;
-  };
-
-  SVGCircle = ({ radius }) => (
-    <svg className={styles.countdownSvg}>
-      <path
-        fill="none"
-        stroke="#333"
-        stroke-width="4"
-        d={this.describeArc(50, 50, 48, 0, radius)}
-      />
-    </svg>
-  );
-
   componentWillUnmount() {
     window.removeEventListener('beforeunload', this.handleUnload);
   }
 
   componentDidMount() {
     window.addEventListener('beforeunload', this.handleUnload);
-    this.interval = setInterval(() => {
-      const then = this.state.then;
-      const now = moment();
-      const countdown = moment(then.diff(now)).utc();
 
-      const hours = countdown.format('HH');
-      const minutes = countdown.format('mm');
-      const seconds = countdown.format('ss');
-      this.setState({ hours, minutes, seconds });
+    this.interval = setInterval(() => {
+      const then = this.props.test.time;
+      if (then != '') {
+        const now = moment();
+        const countdown = moment(then.diff(now)).utc();
+
+        const hours = countdown.format('HH');
+        const minutes = countdown.format('mm');
+        const seconds = countdown.format('ss');
+        this.setState({ hours, minutes, seconds });
+      }
     }, 1000);
   }
 
@@ -130,25 +101,29 @@ class TestDetail extends React.Component {
       payload: this.props.test.question + 1,
     });
   }
+
   back() {
     this.props.dispatch({
       type: 'test/changeQuestion',
       payload: this.props.test.question - 1,
     });
   }
+
   submit() {
     this.props.dispatch({
       type: 'test/submitTest',
-      payload: 'abc'
-    })
+      payload: 'abc',
+    });
   }
+
   returnQuizQuestion = () => {
     return (
-      <CheckboxGroup
+      <Quiz 
+        key = {this.getQuestion()?.ID}
         options={this.getQuestion()?.Answer}
-        onChange={this.onChangeAnswer}
         value={this.props.test.answer[this.props.test.question]?.data}
-      ></CheckboxGroup>
+        onChangeAnswer={(value) => {this.onChangeAnswer(value)}}
+      ></Quiz>
     );
   };
 
@@ -156,8 +131,9 @@ class TestDetail extends React.Component {
     this.props.dispatch({
       type: 'test/changeQuestion',
       payload: question,
-    }); 
+    });
   };
+
   returnGridQuestion = () => {
     const num = this.props.test.answer.length;
     let type = [];
@@ -166,81 +142,24 @@ class TestDetail extends React.Component {
         type[i] = 'secondary';
       else type[i] = 'primary';
     }
-
-    for (let i = 0; i < num / 4 + 1; i++) {
-      if (i != num / 4 || num % 4 == 0)
-        return (
-          <Row>
-            <Col span={6}>
-              <Button type={type[i * 4]} onClick={() => {this.navigateQuestionHandle(i * 4)}}>
-                {i * 4 + 1}
-              </Button>
-            </Col>
-            <Col span={6}>
-              <Button type={type[i * 4 + 1]} onClick={() => {this.navigateQuestionHandle(i * 4 + 1)}}>
-                {i * 4 + 2}
-              </Button>
-            </Col>
-            <Col span={6}>
-              <Button type={type[i * 4 + 2]} onClick={() => {this.navigateQuestionHandle(i * 4 + 2)}}>
-                {i * 4 + 3}
-              </Button>
-            </Col>
-            <Col span={6}>
-              <Button type={type[i * 4 + 3]} onClick={() => {this.navigateQuestionHandle(i * 4 + 3)}}>
-                {i * 4 + 4}
-              </Button>
-            </Col>
-          </Row>
-        );
-      else {
-        if (num % 4 === 1)
-          return (
-            <Row>
-              <Col span={6}>
-                <Button type={type[num - 1]} onClick={() => {this.navigateQuestionHandle(num - 1)}}>
-                  {num}
-                </Button>
-              </Col>
-            </Row>
-          );
-        else if (num % 4 === 2)
-          return (
-            <Row>
-              <Col span={6}>
-                <Button type={type[num - 2]} onClick={() => {this.navigateQuestionHandle(num - 2)}}>
-                  {num - 1}
-                </Button>
-              </Col>
-              <Col span={6}>
-                <Button type={type[num - 1]} onClick={() => {this.navigateQuestionHandle(num - 1)}}>
-                  {num}
-                </Button>
-              </Col>
-            </Row>
-          );
-        else if (num % 4 === 3)
-          return (
-            <Row>
-              <Col span={6}>
-                <Button type={type[num - 3]} onClick={() => {this.navigateQuestionHandle(num - 3)}}>
-                  {num - 2}
-                </Button>
-              </Col>
-              <Col span={6}>
-                <Button type={type[num - 2]} onClick={() => {this.navigateQuestionHandle(num - 2)}}>
-                  {num - 1}
-                </Button>
-              </Col>
-              <Col span={6}>
-                <Button type={type[num - 1]} onClick={() => {this.navigateQuestionHandle(num - 1)}}>
-                  {num}
-                </Button>
-              </Col>
-            </Row>
-          );
-      }
+    let res = [];
+    for (let i = 0; i < num; i++) {
+      var temp = '';
+      if (parseInt((i + 1) / 10) == 0) {
+        temp = '0'.concat((i + 1).toString());
+      } else temp = i + 1;
+      res.push(
+        <Button
+          type={type[i]}
+          onClick={() => {
+            this.navigateQuestionHandle(i);
+          }}
+        >
+          {temp}
+        </Button>,
+      );
     }
+    return res;
   };
 
   returnNavigateQuestion = () => {
@@ -261,6 +180,7 @@ class TestDetail extends React.Component {
             onClick={() => {
               this.next();
             }}
+            className={styles.nextBtn}
           >
             Next
           </Button>
@@ -283,6 +203,7 @@ class TestDetail extends React.Component {
             onClick={() => {
               this.next();
             }}
+            className={styles.nextBtn}
           >
             Next
           </Button>
@@ -304,24 +225,41 @@ class TestDetail extends React.Component {
             onClick={() => {
               this.next();
             }}
+            className={styles.nextBtn}
           >
             Next
           </Button>
         </Row>
       );
   };
+
+  returnCodeQuestion = () => (
+    <Coding
+      key = {this.getQuestion()?.ID}
+      description={this.getQuestion()?.Description}
+      testCases={this.getQuestion()?.TestCase}
+      getCode={(value) => {
+        this.props.dispatch({
+          type: 'test/updateAnswer',
+          payload: {
+            id: this.getQuestion()?.ID,
+            data: value,
+          },
+        });
+      }}
+      codeDefault={this.getCodeAnswer()}
+    ></Coding>
+  );
+
   render() {
     const { hours, minutes, seconds } = this.state;
-    const hoursRadius = this.mapNumber(hours, 24, 0, 0, 360);
-    const minutesRadius = this.mapNumber(minutes, 60, 0, 0, 360);
-    const secondsRadius = this.mapNumber(seconds, 60, 0, 0, 360);
 
     if (!seconds) {
-      return null;
+      return <Spin tip="Waiting seconds to load this test ..."></Spin>;
     }
 
     return (
-      <div>
+      <div className={styles.body}>
         <div>
           <Breadcrumb>
             <Breadcrumb.Item>
@@ -334,57 +272,81 @@ class TestDetail extends React.Component {
           <div className={styles.countdownWrapper}>
             {hours && (
               <div className={styles.countdownItem}>
-                {this.SVGCircle(hoursRadius)}
                 {hours}
                 <span>hours</span>
               </div>
             )}
             {minutes && (
               <div className={styles.countdownItem}>
-                {this.SVGCircle(minutesRadius)}
                 {minutes}
                 <span>minutes</span>
               </div>
             )}
             {seconds && (
               <div className={styles.countdownItem}>
-                {this.SVGCircle(secondsRadius)}
                 {seconds}
                 <span>seconds</span>
               </div>
             )}
           </div>
-          <h2>{this.getData()?.generalInformation?.TestName}</h2>
+          <Row>
+            <Col span={1}></Col>
+            <h2>{this.getData()?.generalInformation?.TestName}</h2>
+          </Row>
           <Row className={styles.container}>
-            <Col span={18}>
-              <p>{this.getQuestion()?.Description}</p>
-              <p>Score: {this.getQuestion()?.Score}</p>
-              {this.getQuestion()?.QuestionType === 'Code' ? (
-                <>
-                  <Coding
-                    description={this.getQuestion()?.Description}
-                    testCases={this.getQuestion()?.TestCase}
-                    getCode={(value) => {
-                      this.props.dispatch({
-                        type: 'test/updateAnswer',
-                        payload: {
-                          id: this.getQuestion()?.ID,
-                          data: value,
-                        },
-                      });
-                    }}
-                    codeDefault={this.getCodeAnswer()}
-                  ></Coding>
-                </>
+            <Col span={1}></Col>
+            <Col span={15} className={styles.answer}>
+              {this.getData().generalInformation == undefined ? (
+                <div className={styles.spin}>
+                  <Spin tip="Waiting seconds to load a test ..." />
+                </div>
               ) : (
                 <>
-                  <div className={styles.answer}>{this.returnQuizQuestion()}</div>
+                  <p>
+                    <b>
+                      <i>Question {this.props.test.question + 1}</i>
+                    </b>
+                  </p>
+                  <p>
+                    <b>Score:</b> {this.getQuestion()?.Score}
+                  </p>
+                  {this.getQuestion()?.QuestionType === 'Code' ? (
+                    <>
+                      {this.returnCodeQuestion()}
+                    </>
+                  ) : (
+                    <>
+                      <p>{this.getQuestion()?.Description}</p>
+                      {this.returnQuizQuestion()}
+                    </>
+                  )}
                 </>
               )}
-              {this.returnNavigateQuestion()}
+              <div className={styles.navigation}>{this.returnNavigateQuestion()}</div>
             </Col>
-            <Col span={6}>{this.returnGridQuestion()}
-            <Button type="primary" onClick={()=>{this.submit()}}>Submit</Button>
+            <Col span={1}></Col>
+            <Col span={6}>
+              <List
+                header={
+                  <p>
+                    <b>List Question</b>
+                  </p>
+                }
+                footer={
+                  <Button
+                    type="primary"
+                    onClick={() => {
+                      this.submit();
+                    }}
+                  >
+                    Submit
+                  </Button>
+                }
+                bordered
+                dataSource={this.returnGridQuestion()}
+                grid={{ column: 4 }}
+                renderItem={(item) => <List.Item>{item}</List.Item>}
+              />
             </Col>
           </Row>
         </div>
