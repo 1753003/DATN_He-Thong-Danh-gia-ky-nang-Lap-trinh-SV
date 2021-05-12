@@ -176,6 +176,7 @@ class CodeEditor extends Component {
     this.props.getCode(this.state.codeVal);
   };
 
+
   render() {
     return (
       <div className={styles.container}>

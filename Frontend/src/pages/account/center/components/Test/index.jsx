@@ -4,7 +4,7 @@ import React from 'react';
 import { connect } from 'umi';
 import TestListContent from '../TestListContent';
 import styles from './index.less';
-
+import '../../../../../components/GlobalHeader/style.less'
 const Test = (props) => {
   const { list } = props;
 
@@ -30,12 +30,13 @@ const Test = (props) => {
           <Radio.Button value="b">Private</Radio.Button>
         </Radio.Group>
       </Row>
-      <List
+      <List 
       size="large"
-      className={styles.articleList}
+      className={`${styles.articleList} custom`}
       rowKey="id"
       itemLayout="vertical"
       dataSource={list.test}
+      
       renderItem={(item) => (
         <List.Item
           key={item.TestID}
@@ -68,4 +69,5 @@ const Test = (props) => {
 
 export default connect(({ accountAndcenter }) => ({
   list: accountAndcenter.list,
+  info: accountAndcenter.info,
 }))(Test);
