@@ -13,4 +13,11 @@ router.get('/', async function(req, res){
     });
 })
 
+router.post('/test', async function(req,res) {
+    const submission = req.body;
+    await submisisonsModel.postTestSubmission(req.uid, submission);
+    res.json(
+        'OK'
+    )
+})
 module.exports = router;
