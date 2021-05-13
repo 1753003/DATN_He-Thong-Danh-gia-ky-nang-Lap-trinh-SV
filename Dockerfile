@@ -4,7 +4,7 @@ WORKDIR /usr/src/app
 
 COPY package*.json ./
 
-ENV WEB="https://codejoy-fe.herokuapp.com/"
+ENV WEB="https://codejoy-fe.herokuapp.com"
 RUN npm install
 
 COPY . .
