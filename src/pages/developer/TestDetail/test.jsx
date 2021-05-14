@@ -1,19 +1,21 @@
 import React from 'react';
 import styles from './index.less';
-import { Row, Col, Breadcrumb, Button, List, Checkbox, Spin } from 'antd';
+import { Row, Col, Button, List, Checkbox, Spin, PageHeader, Result, Popconfirm } from 'antd';
 import { connect } from 'dva';
 import moment from 'moment';
 import Coding from '@/components/Coding quiz';
-import Quiz from './components/quiz'
+import Quiz from './components/quiz';
+import { history, Link, withRouter } from 'umi';
 import { min, result } from 'lodash-es';
 const CheckboxGroup = Checkbox.Group;
 
 class TestDetail extends React.Component {
   state = {
-    hours: '00',
-    minutes: '00',
-    seconds: '00',
+    hours: undefined,
+    minutes: undefined,
+    seconds: undefined,
     then: '',
+    check: false,
   };
 
   constructor(props) {
@@ -24,6 +26,31 @@ class TestDetail extends React.Component {
 
     this.state = { then: time, answer: [] };
     this.handleUnload = this.handleUnload.bind(this);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('beforeunload', this.handleUnload);
+  }
+
+  componentDidMount() {
+    window.addEventListener('beforeunload', this.handleUnload);
+
+    this.interval = setInterval(() => {
+      const then = this.props.test.time;
+      const { hours, minutes, seconds, check } = this.state;
+      if (then != '' && !check) {
+        const now = moment();
+        const countdown = moment(then.diff(now)).utc();
+
+        const hours = countdown.format('HH');
+        const minutes = countdown.format('mm');
+        const seconds = countdown.format('ss');
+
+        this.setState({ hours, minutes, seconds });
+
+        if (hours == '00' && minutes == '00' && seconds == '00') this.setState({ check: true });
+      }
+    }, 1000);
   }
 
   getData = () => {
@@ -52,31 +79,11 @@ class TestDetail extends React.Component {
   };
 
   handleUnload(e) {
-    var message = 'o/';
+    var message =
+      'Your test will be submit and you will not have a second chance, are you sure to leave?';
 
     (e || window.event).returnValue = message; //Gecko + IE
     return message;
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('beforeunload', this.handleUnload);
-  }
-
-  componentDidMount() {
-    window.addEventListener('beforeunload', this.handleUnload);
-
-    this.interval = setInterval(() => {
-      const then = this.props.test.time;
-      if (then != '') {
-        const now = moment();
-        const countdown = moment(then.diff(now)).utc();
-
-        const hours = countdown.format('HH');
-        const minutes = countdown.format('mm');
-        const seconds = countdown.format('ss');
-        this.setState({ hours, minutes, seconds });
-      }
-    }, 1000);
   }
 
   componentWillUnmount() {
@@ -118,11 +125,13 @@ class TestDetail extends React.Component {
 
   returnQuizQuestion = () => {
     return (
-      <Quiz 
-        key = {this.getQuestion()?.ID}
+      <Quiz
+        key={this.getQuestion()?.ID}
         options={this.getQuestion()?.Answer}
         value={this.props.test.answer[this.props.test.question]?.data}
-        onChangeAnswer={(value) => {this.onChangeAnswer(value)}}
+        onChangeAnswer={(value) => {
+          this.onChangeAnswer(value);
+        }}
       ></Quiz>
     );
   };
@@ -235,7 +244,7 @@ class TestDetail extends React.Component {
 
   returnCodeQuestion = () => (
     <Coding
-      key = {this.getQuestion()?.ID}
+      key={this.getQuestion()?.ID}
       description={this.getQuestion()?.Description}
       testCases={this.getQuestion()?.TestCase}
       getCode={(value) => {
@@ -251,24 +260,46 @@ class TestDetail extends React.Component {
     ></Coding>
   );
 
+  reset = () => {
+    this.props.dispatch({
+      type: 'test/resetModel',
+    });
+  };
   render() {
-    const { hours, minutes, seconds } = this.state;
+    const { hours, minutes, seconds, check } = this.state;
 
     if (!seconds) {
       return <Spin tip="Waiting seconds to load this test ..."></Spin>;
     }
 
+    if (check) {
+      return (
+        <Result
+          title="This test was time out, your submission has been recorded."
+          extra={
+            <Button
+              type="primary"
+              key="console"
+              onClick={() => {
+                this.reset();
+              }}
+            >
+              Back home
+            </Button>
+          }
+        />
+      );
+    }
+
     return (
       <div className={styles.body}>
         <div>
-          <Breadcrumb>
-            <Breadcrumb.Item>
-              <a href="developer/test">Home</a>
-            </Breadcrumb.Item>
-            <Breadcrumb.Item>
-              <a href="">Test</a>
-            </Breadcrumb.Item>
-          </Breadcrumb>
+          <PageHeader
+            className="site-page-header"
+            title={this.getData()?.generalInformation.TestName}
+            subTitle={this.getData()?.generalInformation.BriefDescription}
+            onBack={() => history.goBack()}
+          />
           <div className={styles.countdownWrapper}>
             {hours && (
               <div className={styles.countdownItem}>
@@ -311,9 +342,7 @@ class TestDetail extends React.Component {
                     <b>Score:</b> {this.getQuestion()?.Score}
                   </p>
                   {this.getQuestion()?.QuestionType === 'Code' ? (
-                    <>
-                      {this.returnCodeQuestion()}
-                    </>
+                    <>{this.returnCodeQuestion()}</>
                   ) : (
                     <>
                       <p>{this.getQuestion()?.Description}</p>
@@ -333,14 +362,18 @@ class TestDetail extends React.Component {
                   </p>
                 }
                 footer={
-                  <Button
-                    type="primary"
-                    onClick={() => {
-                      this.submit();
-                    }}
+                  <Popconfirm
+                    title="Are you sure to submit this test"
+                    onConfirm={()=>{this.submit()}}
+                    okText="Yes"
+                    cancelText="No"
                   >
-                    Submit
-                  </Button>
+                    <Button
+                      type="primary"
+                    >
+                      Submit
+                    </Button>
+                  </Popconfirm>
                 }
                 bordered
                 dataSource={this.returnGridQuestion()}

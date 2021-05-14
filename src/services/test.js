@@ -81,15 +81,15 @@ export function createNewTest({ generalInformation, listQuestion }) {
 }
 
 export function postSubmission(data) {
-  console.log(id);
   return new Promise((resolve, reject) => {
     var options = {
-      method: 'GET',
-      url: `${Constant.API}/api/creator/test/${id}`,
+      method: 'POST',
+      url: `${Constant.API}/api/submissions/test`,
       headers: {
         accessToken: Cookies.get('accessToken'),
         'access-control-allow-origin': Constant.CORS,
       },
+      data
     };
     axios
       .request(options)
