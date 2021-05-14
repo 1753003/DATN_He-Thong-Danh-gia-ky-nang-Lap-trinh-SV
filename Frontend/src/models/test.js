@@ -1,6 +1,6 @@
 // import { queryCurrent, query as queryUsers } from '@/services/user';
-import { getTestList, getTestById, createNewTest } from '@/services/test';
-import moment from 'moment'
+import { getTestList, getTestById, createNewTest, postSubmission } from '@/services/test';
+import moment from 'moment';
 import {
   createSubmission,
   createSubmissionBatch,
@@ -15,7 +15,8 @@ const TestModel = {
     testById: {},
     question: 0,
     answer: [],
-    time: ""
+    time: '',
+    start: '',
   },
   effects: {
     *fetchTestList(_, { call, put }) {
@@ -35,7 +36,7 @@ const TestModel = {
     },
     *getTestByID({ payload }, { put, call, select }) {
       const response = yield call(getTestById, payload.id);
-      console.log(response)
+      console.log(response);
       yield put({
         type: 'saveTestById',
         payload: response,
@@ -60,10 +61,19 @@ const TestModel = {
       });
 
       let timeArr = response.generalInformation.TestTime.split(':');
-      let time = moment().add(parseInt(timeArr[0] * 60) + parseInt(timeArr[1]) + parseFloat(timeArr[2] / 60), 'minutes')
+      let time = moment().add(
+        parseInt(timeArr[0] * 60) + parseInt(timeArr[1]) + parseFloat(timeArr[2] / 60),
+        'minutes',
+      );
+      let now = moment();
       yield put({
         type: 'resetTime',
-        payload: time
+        payload: time,
+      });
+
+      yield put({
+        type: 'saveStartTime',
+        payload: now,
       });
     },
     *createTest({ payload }, { call }) {
@@ -104,9 +114,11 @@ const TestModel = {
     },
     *submitTest({ payload }, { put, call, select }) {
       let data = {};
+      const now = moment();
       yield select((state) => {
         data.test = state.test.testById;
         data.answer = state.test.answer;
+        data.start = state.test.start;
       });
       let count = 0;
       console.log(data.test.listQuestion);
@@ -122,8 +134,7 @@ const TestModel = {
           code = code.replace(/(^")|("$)/g, '');
           code = u_btoa(code);
 
-          if (data.answer[count].data !== '') 
-            numAnswer++;
+          if (data.answer[count].data !== '') numAnswer++;
           for (var tc of e.TestCase) {
             // console.log(tc.Input[0])
             var input = tc.Input[0];
@@ -201,14 +212,13 @@ const TestModel = {
 
           if (Choice.length !== 0) {
             numAnswer++;
-            console.log(Choice)
+            console.log(Choice);
           }
           listAnswer[count] = {
             Type: 'MultipleChoice',
             QuestionID: data.answer[count].id,
             Choice: Choice,
           };
-         
 
           if (
             e.CorrectAnswer.length === listAnswer[count].Choice.length &&
@@ -221,21 +231,38 @@ const TestModel = {
         count++;
       }
 
+      const countdown = moment(now.diff(data.start)).utc();
+      const hours = countdown.format('HH');
+      const minutes = countdown.format('mm');
+      const seconds = countdown.format('ss');
+      const time = hours + ':' + minutes + ':' + seconds;
+
       console.log({
-        "TestID": data.test.generalInformation.TestID,
-        "AnsweredNumber": numAnswer,
-        "CorrectPercent": numCorrect / data.test.listQuestion.length,
-        "DoingTime": 0,
-        "Score": score,
-        "ListAnswer": listAnswer
+        TestID: data.test.generalInformation.TestID,
+        AnsweredNumber: numAnswer,
+        CorrectPercent: numCorrect / data.test.listQuestion.length,
+        DoingTime: time,
+        Score: score,
+        ListAnswer: listAnswer,
       });
+
+      yield call(postSubmission, {
+        TestID: data.test.generalInformation.TestID,
+        AnsweredNumber: numAnswer,
+        CorrectPercent: numCorrect / data.test.listQuestion.length,
+        DoingTime: time,
+        Score: score,
+        ListAnswer: listAnswer,
+      });
+
+      
     },
     *resetModel(_, { put }) {
       yield put({
         type: 'resetReducer',
-        payload: {}
-      })
-    }
+        payload: {},
+      });
+    },
   },
   reducers: {
     saveTestList(state, { payload }) {
@@ -254,18 +281,22 @@ const TestModel = {
       return { ...state, anwser: payload };
     },
     resetTime(state, { payload }) {
-      console.log(payload)
-      return { ...state, time: payload}
+      console.log(payload);
+      return { ...state, time: payload };
+    },
+    saveStartTime(state, { payload }) {
+      return { ...state, start: payload };
     },
     resetReducer(state, { payload }) {
       return {
         ...state,
-        time: "",
+        time: '',
         testById: {},
         question: 0,
         answer: [],
-      }
-    }
+        start: '',
+      };
+    },
   },
 };
 export default TestModel;
