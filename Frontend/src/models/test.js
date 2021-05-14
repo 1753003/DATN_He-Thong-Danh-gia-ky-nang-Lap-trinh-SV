@@ -112,6 +112,8 @@ const TestModel = {
       console.log(data.test.listQuestion);
       let listAnswer = [];
       let score = 0;
+      let numCorrect = 0;
+      let numAnswer = 0;
       for (let e of data.test.listQuestion) {
         if (e.QuestionType === 'Code') {
           let batch_Submission = [];
@@ -119,6 +121,9 @@ const TestModel = {
           let lang_id = 54; //54 C++ 71 python
           code = code.replace(/(^")|("$)/g, '');
           code = u_btoa(code);
+
+          if (data.answer[count].data !== '') 
+            numAnswer++;
           for (var tc of e.TestCase) {
             // console.log(tc.Input[0])
             var input = tc.Input[0];
@@ -169,8 +174,8 @@ const TestModel = {
             MemoryUsage += parseInt(item.memory);
           });
 
-          RunningTime /= 3;
-          MemoryUsage /= 3;
+          RunningTime /= result.submissions.length;
+          MemoryUsage /= result.submissions.length;
 
           listAnswer[count] = {
             Type: 'Code',
@@ -182,7 +187,10 @@ const TestModel = {
             TestCasePassed,
           };
 
-          if (TestCasePassed.length === OutputTestcase.length) score += e.Score;
+          if (TestCasePassed.length === OutputTestcase.length) {
+            score += e.Score;
+            numCorrect++;
+          }
         } else if (e.QuestionType === 'MultipleChoice') {
           let Choice = [];
           for (let item of data.answer[count].data) {
@@ -190,24 +198,44 @@ const TestModel = {
               Choice.push(data.test.listQuestion[count].Answer.indexOf(item));
             }
           }
+
+          if (Choice.length !== 0) {
+            numAnswer++;
+            console.log(Choice)
+          }
           listAnswer[count] = {
             Type: 'MultipleChoice',
             QuestionID: data.answer[count].id,
             Choice: Choice,
           };
-          console.log(e.CorrectAnswer, listAnswer[count].Choice);
+         
 
           if (
             e.CorrectAnswer.length === listAnswer[count].Choice.length &&
             e.CorrectAnswer.every((val, index) => val === listAnswer[count].Choice[index])
-          )
+          ) {
             score += e.Score;
+            numCorrect++;
+          }
         }
         count++;
       }
 
-      console.log(listAnswer, score);
+      console.log({
+        "TestID": data.test.generalInformation.TestID,
+        "AnsweredNumber": numAnswer,
+        "CorrectPercent": numCorrect / data.test.listQuestion.length,
+        "DoingTime": 0,
+        "Score": score,
+        "ListAnswer": listAnswer
+      });
     },
+    *resetModel(_, { put }) {
+      yield put({
+        type: 'resetReducer',
+        payload: {}
+      })
+    }
   },
   reducers: {
     saveTestList(state, { payload }) {
@@ -228,6 +256,15 @@ const TestModel = {
     resetTime(state, { payload }) {
       console.log(payload)
       return { ...state, time: payload}
+    },
+    resetReducer(state, { payload }) {
+      return {
+        ...state,
+        time: "",
+        testById: {},
+        question: 0,
+        answer: [],
+      }
     }
   },
 };
