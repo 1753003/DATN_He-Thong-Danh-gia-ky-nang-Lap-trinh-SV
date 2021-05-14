@@ -212,7 +212,7 @@ export default defineConfig({
                         },
                         {
                           path: '/developer/test/questions',
-                          component: './developer/test/questions',
+                          component: './developer/TestDetail/test',
                         },
                         {
                           path: '/developer/test/list',

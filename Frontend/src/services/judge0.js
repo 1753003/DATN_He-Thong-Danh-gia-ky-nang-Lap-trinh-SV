@@ -3,8 +3,8 @@ import axios from 'axios';
 import { connect } from 'dva';
 import Cookies from 'js-cookie'
 const headers = {
-  'x-rapidapi-key':'e05f2e82fbmsh521814293fd8497p1c37eejsn41455443ccca',
-  // 'x-rapidapi-key':'6a9ce86be5msh47bcde19f6e53cdp175931jsn629e34418bd3',
+  //'x-rapidapi-key':'e05f2e82fbmsh521814293fd8497p1c37eejsn41455443ccca',
+  'x-rapidapi-key':'6a9ce86be5msh47bcde19f6e53cdp175931jsn629e34418bd3',
   'x-rapidapi-host':'judge0-ce.p.rapidapi.com'
   }
 export function createSubmission(data) {
