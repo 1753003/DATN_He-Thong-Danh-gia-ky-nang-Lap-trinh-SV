@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './index.less';
-import { Row, Col, Button, List, Checkbox, Spin, PageHeader, Result, Popconfirm } from 'antd';
+import { Row, Col, Button, List, Checkbox, Spin, PageHeader, Result, Popconfirm, message } from 'antd';
 import { connect } from 'dva';
 import moment from 'moment';
 import Coding from '@/components/Coding quiz';
@@ -20,37 +20,74 @@ class TestDetail extends React.Component {
 
   constructor(props) {
     super(props);
-    this.props.dispatch({ type: 'test/getTestByID', payload: { id: 25 } });
-
-    const time = moment().add('60', 'minutes');
-
-    this.state = { then: time, answer: [] };
+    const id = parseInt((location.search.split("="))[1])
+    this.props.dispatch({ type: 'test/getTestByID', payload: { id } });
+    this.state = {  answer: [] };
     this.handleUnload = this.handleUnload.bind(this);
+    this.handleBack = this.handleBack.bind(this);
   }
 
   componentWillUnmount() {
+    if (this.interval) {
+      clearInterval(this.interval);
+    }
     window.removeEventListener('beforeunload', this.handleUnload);
+    window.removeEventListener('popstate', this.handleBack);
   }
 
   componentDidMount() {
     window.addEventListener('beforeunload', this.handleUnload);
 
+    window.addEventListener('popstate', this.handleBack);
+
     this.interval = setInterval(() => {
       const then = this.props.test.time;
+      const max = this.props.test.timeINT;
       const { hours, minutes, seconds, check } = this.state;
       if (then != '' && !check) {
         const now = moment();
         const countdown = moment(then.diff(now)).utc();
 
-        const hours = countdown.format('HH');
-        const minutes = countdown.format('mm');
-        const seconds = countdown.format('ss');
-
+        let hours = countdown.format('HH');
+        let minutes = countdown.format('mm');
+        let seconds = countdown.format('ss');
+        console.log(hours, minutes, seconds)
+        console.log(max)
+        let check2 = false;
+        if (parseInt(hours) > parseInt(max[0]))
+          check2 = true;
+        else if (parseInt(minutes) > parseInt(max[1]) && parseInt(hours) == parseInt(max[0]))
+          check2= true;
+        else if ((parseInt(seconds) > parseInt(max[2])) && (parseInt(minutes) == parseInt(max[1])))
+          check2 = true;
+        if (check2)
+        {
+          hours = "00";
+          minutes = "00";
+          seconds = "00"
+        }
         this.setState({ hours, minutes, seconds });
 
         if (hours == '00' && minutes == '00' && seconds == '00') this.setState({ check: true });
       }
     }, 1000);
+  }
+  
+  handleUnload(e) {
+    var message =
+      'Your test will be submit and you will not have a second chance, are you sure to leave?';
+
+    (e || window.event).returnValue = message; //Gecko + IE
+    return message;
+  }
+
+  handleBack(e) {
+    console.log(e)
+    var message =
+      'Your test will be submit and you will not have a second chance, are you sure to leave?';
+
+    (e || window.event).returnValue = message; //Gecko + IE
+    return message;
   }
 
   getData = () => {
@@ -78,19 +115,7 @@ class TestDetail extends React.Component {
     }
   };
 
-  handleUnload(e) {
-    var message =
-      'Your test will be submit and you will not have a second chance, are you sure to leave?';
-
-    (e || window.event).returnValue = message; //Gecko + IE
-    return message;
-  }
-
-  componentWillUnmount() {
-    if (this.interval) {
-      clearInterval(this.interval);
-    }
-  }
+  
 
   onChangeAnswer = (checkedValues) => {
     this.props.dispatch({
@@ -267,11 +292,29 @@ class TestDetail extends React.Component {
   };
   render() {
     const { hours, minutes, seconds, check } = this.state;
-
+    
     if (!seconds) {
       return <Spin tip="Waiting seconds to load this test ..."></Spin>;
     }
 
+    if (this.props.test.isDid) {
+      return (
+        <Result
+          title="Done"
+          extra={
+            <Button
+              type="primary"
+              key="console"
+              onClick={() => {
+                this.reset();
+              }}
+            >
+              Back home
+            </Button>
+          }
+        />
+      );
+    }
     if (check) {
       return (
         <Result

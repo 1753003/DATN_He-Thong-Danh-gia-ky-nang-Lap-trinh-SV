@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const submisisonsModel = require('../models/submissions.model')
+const submisisionsModel = require('../models/submissions.model')
 
 router.get('/', async function(req, res){
     console.log(req.uid);
-    const listTest = await submisisonsModel.getTestSubmissions(req.uid);
-    const listPractice = await submisisonsModel.getPracticeSubmissions(req.uid);
+    const listTest = await submisisionsModel.getTestSubmissions(req.uid);
+    const listPractice = await submisisionsModel.getPracticeSubmissions(req.uid);
     
     res.json({
         test: listTest,
@@ -15,9 +15,14 @@ router.get('/', async function(req, res){
 
 router.post('/test', async function(req,res) {
     const submission = req.body;
-    await submisisonsModel.postTestSubmission(req.uid, submission);
+    await submisisionsModel.postTestSubmission(req.uid, submission);
     res.json(
         'OK'
     )
+})
+
+router.get('/check/:id', async function(req, res) {
+    const response = await submisisionsModel.checkExist(req.uid, req.params.id);
+    res.json(response)
 })
 module.exports = router;

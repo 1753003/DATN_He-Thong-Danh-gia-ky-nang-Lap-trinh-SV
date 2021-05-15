@@ -105,3 +105,28 @@ export function postSubmission(data) {
       });
   });
 }
+
+export function checkSubmission(testID) {
+  return new Promise((resolve, reject) => {
+    var options = {
+      method: 'GET',
+      url: `${Constant.API}/api/submissions/check/${testID}`,
+      headers: {
+        accessToken: Cookies.get('accessToken'),
+        'access-control-allow-origin': Constant.CORS,
+      }
+    };
+    axios
+      .request(options)
+      .then((response) => {
+        // handle success
+        // console.log(response.data)
+        resolve(response.data);
+      })
+      .catch((error) => {
+        // handle error
+        const message = error.response.data.message;
+        tokenHandling(message, resolve, options);
+      });
+  });
+}
