@@ -1,33 +1,35 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import styles from './index.less';
-import { Button, Modal } from 'antd';
+import { Button } from 'antd';
 import { CheckCircleTwoTone, CloseCircleTwoTone } from '@ant-design/icons';
-import { connect } from 'umi';
+import { connect, useHistory } from 'umi';
 import { PageLoading } from '@ant-design/pro-layout';
 
 const TestDetail = ({ test, dispatch, location, loading }) => {
-  const [modalVisible, setModalVisible] = useState(false);
-  const handleModalCancel = () => {
-    setModalVisible(false);
-  };
+  const history = useHistory();
 
   useEffect(() => {
-    console.log(location.query.id);
-    console.log(loading);
     dispatch({ type: 'test/getTestByIdModel', payload: { id: location.query.id } });
-    console.log(loading);
   }, []);
 
-  useEffect(() => {
-    console.log(test);
-  }, [test]);
+  const handleEditClick = () => {
+    history.push({
+      pathname: '/creator/createTest',
+      query: {
+        id: location.query.id,
+      },
+    });
+  };
+
   return test?.generalInformation ? (
     <div className={styles.container}>
       <div className={styles.left}>
         <img src={test.generalInformation?.img} />
         <div className={styles.testName}>{test.generalInformation?.TestName}</div>
         <div className={styles.editContainer}>
-          <Button type="primary">Edit</Button>
+          <Button type="primary" onClick={handleEditClick}>
+            Edit
+          </Button>
         </div>
         <div className={styles.otherInfo}>
           <p className={styles.bold}>{test.generalInformation?.Permissions} Test</p>
