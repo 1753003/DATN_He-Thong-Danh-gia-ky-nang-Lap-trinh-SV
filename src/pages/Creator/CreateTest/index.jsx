@@ -83,43 +83,47 @@ const CreateTest = ({ dispatch, location, loading }) => {
   };
 
   const handleSubmitTest = () => {
-    if (action === 'EDIT') {
-      console.log('Wait for API');
-    }
-    if (action === 'CREATE') {
-      if (quiz.length > 0 && information.TestName) {
-        const refactorQuestions = [];
-        quiz.forEach((element) => {
-          const newQuiz = { ...element };
+    if (quiz.length > 0 && information.TestName) {
+      const refactorQuestions = [];
+      quiz.forEach((element) => {
+        const newQuiz = { ...element };
+        if (action === 'CREATE') {
           delete newQuiz.ID;
-          delete newQuiz.key;
-          if (newQuiz.QuestionType === 'quiz') {
-            newQuiz.QuestionType = 'MultipleChoice';
-          }
-          if (newQuiz.QuestionType === 'code') {
-            newQuiz.QuestionType = 'Code';
-          }
-          refactorQuestions.push(newQuiz);
-        });
+        }
+        delete newQuiz.key;
+        if (newQuiz.QuestionType === 'quiz') {
+          newQuiz.QuestionType = 'MultipleChoice';
+        }
+        if (newQuiz.QuestionType === 'code') {
+          newQuiz.QuestionType = 'Code';
+        }
+        refactorQuestions.push(newQuiz);
+      });
 
-        const payload = {
-          generalInformation: { ...information },
-          listQuestion: [...refactorQuestions],
-        };
+      const payload = {
+        generalInformation: { ...information },
+        listQuestion: [...refactorQuestions],
+      };
 
-        payload.generalInformation.EndTime = information.EndTime.locale('en').format(
-          'yy-MM-DD hh:mm:ss',
-        );
-        payload.generalInformation.StartTime = information.StartTime.locale('en').format(
-          'yy-MM-DD hh:mm:ss',
-        );
-        payload.generalInformation.LanguageAllowed = JSON.stringify(
-          payload.generalInformation.LanguageAllowed,
-        );
-        console.log(payload);
+      payload.generalInformation.EndTime = information.EndTime.locale('en').format(
+        'yy-MM-DD hh:mm:ss',
+      );
+      payload.generalInformation.StartTime = information.StartTime.locale('en').format(
+        'yy-MM-DD hh:mm:ss',
+      );
+      payload.generalInformation.LanguageAllowed = JSON.stringify(
+        payload.generalInformation.LanguageAllowed,
+      );
+      console.log(payload);
 
+      if (action === 'CREATE') {
         dispatch({
           type: 'test/createTest',
+          payload,
+        });
+      } else {
+        dispatch({
+          type: 'test/updateTest',
           payload,
         });
       }
