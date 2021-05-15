@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styles from './index.less';
 import moment from 'moment';
 import AceEditor from 'react-ace';
+import { PageLoading } from '@ant-design/pro-layout';
 import {
   Button,
   Drawer,
@@ -29,16 +30,49 @@ import { connect } from 'umi';
 import ReactMarkdown from 'react-markdown';
 import _ from 'lodash';
 
-import CodeEditor from '@/components/CodeEditor';
-
 const { Option } = Select;
-const CreateTest = ({ dispatch }) => {
+const CreateTest = ({ dispatch, location, loading }) => {
   const [option, setOption] = useState('quiz');
   const [quiz, setQuiz] = useState([]);
   const [information, setInformation] = useState({});
   const [selectedQuiz, setSelectedQuiz] = useState({});
   const [visibleDrawer, setVisibleDrawer] = useState(false);
+  const [action, setAction] = useState('CREATE');
   const [form] = Form.useForm();
+
+  const updateEditInformation = (response) => {
+    const { generalInformation, listQuestion } = response;
+    generalInformation.LanguageAllowed = JSON.parse(generalInformation.LanguageAllowed);
+    generalInformation.StartTime = moment(generalInformation.StartTime);
+    generalInformation.EndTime = moment(generalInformation.EndTime);
+    setInformation(generalInformation);
+    listQuestion.forEach((item, index) => {
+      item.key = index;
+      if (item.QuestionType === 'MultipleChoice') {
+        item.QuestionType = 'quiz';
+        item.MCDescription = item.Description;
+        delete item.Description;
+      }
+      if (item.QuestionType === 'Code') {
+        item.QuestionType = 'code';
+        item.CodeDescription = item.Description;
+        delete item.Description;
+      }
+    });
+    setQuiz(listQuestion);
+
+    form.setFieldsValue(generalInformation);
+  };
+
+  useEffect(() => {
+    if (location.query.id) {
+      setAction('EDIT');
+      dispatch({
+        type: 'test/getTestByIdModel',
+        payload: { id: location.query.id, callback: updateEditInformation },
+      });
+    }
+  }, []);
 
   const handleChangeQuiz = (item) => {
     setSelectedQuiz(item);
@@ -49,44 +83,52 @@ const CreateTest = ({ dispatch }) => {
   };
 
   const handleSubmitTest = () => {
-    // if (quiz.length > 0 && information.TestName) {
-    const refactorQuestions = [];
-    quiz.forEach((element) => {
-      const newQuiz = { ...element };
-      delete newQuiz.ID;
-      delete newQuiz.key;
-      if (newQuiz.QuestionType === 'quiz') {
-        newQuiz.QuestionType = 'MultipleChoice';
+    if (action === 'EDIT') {
+      console.log('Wait for API');
+    }
+    if (action === 'CREATE') {
+      if (quiz.length > 0 && information.TestName) {
+        const refactorQuestions = [];
+        quiz.forEach((element) => {
+          const newQuiz = { ...element };
+          delete newQuiz.ID;
+          delete newQuiz.key;
+          if (newQuiz.QuestionType === 'quiz') {
+            newQuiz.QuestionType = 'MultipleChoice';
+          }
+          if (newQuiz.QuestionType === 'code') {
+            newQuiz.QuestionType = 'Code';
+          }
+          refactorQuestions.push(newQuiz);
+        });
+
+        const payload = {
+          generalInformation: { ...information },
+          listQuestion: [...refactorQuestions],
+        };
+
+        payload.generalInformation.EndTime = information.EndTime.locale('en').format(
+          'yy-MM-DD hh:mm:ss',
+        );
+        payload.generalInformation.StartTime = information.StartTime.locale('en').format(
+          'yy-MM-DD hh:mm:ss',
+        );
+        payload.generalInformation.LanguageAllowed = JSON.stringify(
+          payload.generalInformation.LanguageAllowed,
+        );
+        console.log(payload);
+
+        dispatch({
+          type: 'test/createTest',
+          payload,
+        });
       }
-      if (newQuiz.QuestionType === 'code') {
-        newQuiz.QuestionType = 'Code';
-      }
-      refactorQuestions.push(newQuiz);
-    });
-
-    const payload = {
-      generalInformation: { ...information },
-      listQuestion: [...refactorQuestions],
-    };
-
-    payload.generalInformation.EndTime = information.EndTime.locale('en').format(
-      'yy-MM-DD hh:mm:ss',
-    );
-    payload.generalInformation.StartTime = information.StartTime.locale('en').format(
-      'yy-MM-DD hh:mm:ss',
-    );
-    payload.generalInformation.LanguageAllowed = JSON.stringify(
-      payload.generalInformation.LanguageAllowed,
-    );
-    console.log(payload);
-
-    dispatch({
-      type: 'test/createTest',
-      payload,
-    });
+    }
   };
 
-  return (
+  return loading ? (
+    <PageLoading />
+  ) : (
     <div className={styles.container}>
       <div className={styles.header}>
         <Button
@@ -98,7 +140,7 @@ const CreateTest = ({ dispatch }) => {
           Test Infomation <PlusOutlined />
         </Button>
         <Button onClick={handleSubmitTest} className={styles.submitBtn}>
-          Submit
+          {action === 'CREATE' ? 'CREATE' : 'UDPATE'}
         </Button>
       </div>
       <div className={styles.bodyContainer}>
@@ -215,7 +257,6 @@ const CreateTest = ({ dispatch }) => {
 };
 
 const RenderMiddle = ({ option, selectedQuiz, setQuiz, quiz }) => {
-  const [code, setCode] = useState('');
   const onChangeAnswer = (index, selectedQuizID) => {
     if (checkCorrectAnswer(index, selectedQuizID)) {
       const newArray = _.remove(quiz[selectedQuizID].CorrectAnswer, function (n) {
@@ -329,7 +370,7 @@ const RenderMiddle = ({ option, selectedQuiz, setQuiz, quiz }) => {
       return (
         <div className={styles.codeContainer}>
           <Card title="Preview" style={{ marginBottom: '20px' }}>
-            <ReactMarkdown>{code}</ReactMarkdown>
+            <ReactMarkdown>{selectedQuiz?.CodeDescription}</ReactMarkdown>
           </Card>
           <h3>Code Description</h3>
           <Input.TextArea
@@ -456,7 +497,6 @@ const RenderMiddle = ({ option, selectedQuiz, setQuiz, quiz }) => {
                 showGutter
                 value={selectedQuiz.CodeSample}
                 mode={'c_cpp'}
-                theme={'tomorrow'}
                 fontSize={16}
                 editorProps={{ $blockScrolling: true, $blockSelectEnabled: false }}
                 setOptions={{
@@ -689,6 +729,7 @@ const DrawerForm = ({ visible, onClose, form, setInformation }) => {
   );
 };
 
-export default connect(({ test: { testList } }) => ({
+export default connect(({ test: { testList }, loading }) => ({
   testList,
+  loading: loading.effects['test/getTestByIdModel'],
 }))(CreateTest);

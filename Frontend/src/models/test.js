@@ -28,6 +28,9 @@ const TestModel = {
     },
     *getTestByIdModel({ payload }, { call, put }) {
       const response = yield call(getTestById, payload.id);
+      if (payload.callback) {
+        payload.callback(response);
+      }
 
       yield put({
         type: 'saveTestById',
@@ -254,8 +257,6 @@ const TestModel = {
         Score: score,
         ListAnswer: listAnswer,
       });
-
-      
     },
     *resetModel(_, { put }) {
       yield put({
