@@ -60,6 +60,7 @@ const CreateTest = ({ dispatch, location, loading }) => {
       }
     });
     setQuiz(listQuestion);
+    setSelectedQuiz(listQuestion[0]);
 
     form.setFieldsValue(generalInformation);
   };
@@ -182,7 +183,13 @@ const CreateTest = ({ dispatch, location, loading }) => {
           </Button>
         </div>
         <div className={styles.mid}>
-          <RenderMiddle option={option} selectedQuiz={selectedQuiz} setQuiz={setQuiz} quiz={quiz} />
+          <RenderMiddle
+            option={option}
+            selectedQuiz={selectedQuiz}
+            setQuiz={setQuiz}
+            quiz={quiz}
+            action={action}
+          />
         </div>
         {selectedQuiz.ID && (
           <div className={styles.right}>
@@ -260,7 +267,7 @@ const CreateTest = ({ dispatch, location, loading }) => {
   );
 };
 
-const RenderMiddle = ({ option, selectedQuiz, setQuiz, quiz }) => {
+const RenderMiddle = ({ option, selectedQuiz, setQuiz, quiz, action }) => {
   const onChangeAnswer = (index, selectedQuizID) => {
     if (checkCorrectAnswer(index, selectedQuizID)) {
       const newArray = _.remove(quiz[selectedQuizID].CorrectAnswer, function (n) {
@@ -525,13 +532,15 @@ const RenderMiddle = ({ option, selectedQuiz, setQuiz, quiz }) => {
         </div>
       );
     default:
-      return (
+      return action === 'CREATE' ? (
         <Alert
           message="Note"
           description="Please add more quiz to show Quiz Infomation"
           type="info"
           style={{ margin: '0px 20px' }}
         />
+      ) : (
+        <div />
       );
   }
 };
