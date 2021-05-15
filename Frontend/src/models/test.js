@@ -1,5 +1,11 @@
 // import { queryCurrent, query as queryUsers } from '@/services/user';
-import { getTestList, getTestById, createNewTest, postSubmission } from '@/services/test';
+import {
+  getTestList,
+  getTestById,
+  createNewTest,
+  postSubmission,
+  updateEditedTest,
+} from '@/services/test';
 import moment from 'moment';
 import {
   createSubmission,
@@ -80,7 +86,18 @@ const TestModel = {
       });
     },
     *createTest({ payload }, { call }) {
-      const response = yield call(createNewTest, payload);
+      try {
+        yield call(createNewTest, payload);
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    *updateTest({ payload }, { call }) {
+      try {
+        yield call(updateEditedTest, payload);
+      } catch (e) {
+        console.log(e);
+      }
     },
     *changeQuestion({ payload }, { put, select }) {
       var current = 0;
