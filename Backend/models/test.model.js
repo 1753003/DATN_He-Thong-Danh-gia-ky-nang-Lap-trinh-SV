@@ -1,6 +1,7 @@
 const db = require("../utils/db");
 const reportModel = require("../models/report.model");
 const { getPracticeQuestionList } = require("./question.model");
+const e = require("express");
 module.exports = {
   async createTest(generalInformation, listQuestion) {
     await db("test")
@@ -162,18 +163,39 @@ module.exports = {
     
     await db("test").where("TestID", testID).update(test.generalInformation);
     for (let question of test.listQuestion) {
-      if (question.ID == null) {
-        db("question").insert({
+      if (question.ID == undefined) {
+        await db("question").insert({
           QuestionType: question.QuestionType,
           Score: question.Score,
           TestID: testID
+        }).then(async id => {
+          if (question.QuestionType == 'MultipleChoice') {
+            await db("multiplechoice").insert({
+              MCDescription: question.MCDescription,
+              Answer: question.Answer,
+              CorrectAnswer: question.CorrectAnswer,
+              QuestionID: id
+            })
+          }
+          else if (question.QuestionType == 'Coding') {
+            await db("coding").insert({
+              CodeDescription: question.CodeDescription,
+              Language_allowed: question.Language_allowed,
+              RunningTime: question.RunningTime,
+              MemoryUsage: question.MemoryUsage,
+              TestCase: question.TestCase,
+              QuestionID: id,
+              CodeSample: question.CodeSample
+            })
+          }
         })
+        
       } else {
-        db("question")
+        await db("question")
           .where("ID", question.ID)
           .update({ Score: question.Score });
         if (question.QuestionType == "MultipleChoice") {
-          db("multiplechoice")
+          await db("multiplechoice")
             .where("QuestionID", question.ID)
             .update({
               MCDescription: question.MCDescription,
@@ -181,14 +203,15 @@ module.exports = {
               CorrectAnswer: JSON.stringify(question.CorrectAnswer),
             });
         } else if (question.QuestionType == "Code") {
-          db("coding")
+          await db("coding")
             .where("QuestionID", question.ID)
             .update({
               CodeDescription: question.CodeDescription,
-              LanguageAllowed: JSON.stringify(question.LanguageAllowed),
+              Language_allowed: JSON.stringify(question.Language_allowed),
               RunningTime: question.RunningTime,
               MemoryUsage: question.MemoryUsage,
               TestCase: JSON.stringify(question.TestCase),
+              CodeSample: question.CodeSample
             });
         }
       }
