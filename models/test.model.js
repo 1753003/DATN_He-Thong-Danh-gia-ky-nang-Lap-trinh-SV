@@ -153,4 +153,7 @@ module.exports = {
   async getTestBySet(set) {
     return await db("test").where("LanguageAllowed", "like", `%${set}"%`).where('Permissions', "public")
   },
+  async updateTest(test, testID) {
+    await db("test").where("TestID", testID).update(test);
+  }
 };
