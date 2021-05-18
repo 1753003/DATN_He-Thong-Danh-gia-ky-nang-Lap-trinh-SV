@@ -162,7 +162,7 @@ module.exports = {
     
     await db("test").where("TestID", testID).update(test.generalInformation);
     for (let question of test.listQuestion) {
-      if (quesion.ID == null) {
+      if (question.ID == null) {
         db("question").insert({
           QuestionType: question.QuestionType,
           Score: question.Score,

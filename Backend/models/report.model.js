@@ -173,9 +173,17 @@ module.exports = {
             }
             else {
                 const question = (await db('coding').where('QuestionID', item.ID))[0];
-                item.Question = question.CodeDescription;
-                
-
+                item.Question = {
+                    Question: question.CodeDescription,
+                    CodeSample: question.CodeSample
+                }
+                item.Answer = {
+                    TestCase: item.TestCase,
+                    MemoryUsage: item.MemoryUsage,
+                    RunningTime: item.RunningTime
+                }
+                const answer = await db('answercoding').where('QuestionID', item.ID);
+               // for (item of )
             }
             result.push({
                 ID: item.ID,
