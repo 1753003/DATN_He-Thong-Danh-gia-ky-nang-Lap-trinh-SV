@@ -50,6 +50,11 @@ router.get('/test/:id', async function (req, res) {
    const test = await testModel.getTestByID(testID);
    res.json(test);
 })
+
+router.patch('/test/:id', async function (req, res) {
+   await testModel.updateTest(req.body, req.params.id);
+   res.json("OK")
+})
 /*
 * Collection routes
 * =================================================================================================
