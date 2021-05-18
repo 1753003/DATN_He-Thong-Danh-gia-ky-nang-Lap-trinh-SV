@@ -1,10 +1,11 @@
 import request from 'umi-request';
 import axios from 'axios';
+import Constant from '@/utils/contants';
 
 export function Register(params) {
   console.log(params)
   return new Promise( (resolve, reject) => {
-      axios.post('https://codejoy.herokuapp.com/api/auth/signup', params)
+      axios.post(`${Constant.API}/api/auth/signup`, params)
       .then((response) => {
           // handle success
           resolve(response.data)
