@@ -5,7 +5,7 @@ import {
   createNewTest,
   postSubmission,
   checkSubmission,
-  updateEditedTest
+  updateEditedTest,
 } from '@/services/test';
 import { checkSession } from '@/services/session';
 
@@ -56,66 +56,65 @@ const TestModel = {
         Timed: moment(),
       });
       const response = yield call(getTestById, payload.id);
-      console.log(response.generalInformation.Again, checkSubmit)
+      console.log(response.generalInformation.Again, checkSubmit);
       if (response.generalInformation.Again === 0 && checkSubmit) {
         yield put({
           type: 'saveIsDid',
           payload: true,
         });
-      } 
-        yield put({
-          type: 'saveTestById',
-          payload: response,
-        });
-        const answerList = [];
-        yield select((state) => {
-          state.test.testById.listQuestion.forEach((e) => {
-            var temp = [];
-            console.log(e.QuestionType);
-            if (e.QuestionType === 'MultipleChoice') temp = [];
-            else temp = '';
-            answerList.push({
-              id: e.ID,
-              data: temp,
-            });
+      }
+      yield put({
+        type: 'saveTestById',
+        payload: response,
+      });
+      const answerList = [];
+      yield select((state) => {
+        state.test.testById.listQuestion.forEach((e) => {
+          var temp = [];
+          console.log(e.QuestionType);
+          if (e.QuestionType === 'MultipleChoice') temp = [];
+          else temp = '';
+          answerList.push({
+            id: e.ID,
+            data: temp,
           });
         });
+      });
 
-        yield put({
-          type: 'resetAnswerReducer',
-          payload: answerList,
-        });
+      yield put({
+        type: 'resetAnswerReducer',
+        payload: answerList,
+      });
 
-        let timeArr = response.generalInformation.TestTime.split(':');
-        let time;
+      let timeArr = response.generalInformation.TestTime.split(':');
+      let time;
 
-        if (check.check) {
-          let temp = moment(check.timed);
-          time = temp.add(
-            parseInt(timeArr[0] * 60) + parseInt(timeArr[1]) + parseFloat(timeArr[2] / 60),
-            'minutes',
-          );
-        } else
-          time = moment().add(
-            parseInt(timeArr[0] * 60) + parseInt(timeArr[1]) + parseFloat(timeArr[2] / 60),
-            'minutes',
-          );
-        let now = moment();
-        yield put({
-          type: 'resetTime',
-          payload: time,
-        });
+      if (check.check) {
+        let temp = moment(check.timed);
+        time = temp.add(
+          parseInt(timeArr[0] * 60) + parseInt(timeArr[1]) + parseFloat(timeArr[2] / 60),
+          'minutes',
+        );
+      } else
+        time = moment().add(
+          parseInt(timeArr[0] * 60) + parseInt(timeArr[1]) + parseFloat(timeArr[2] / 60),
+          'minutes',
+        );
+      let now = moment();
+      yield put({
+        type: 'resetTime',
+        payload: time,
+      });
 
-        yield put({
-          type: 'saveStartTime',
-          payload: now,
-        });
+      yield put({
+        type: 'saveStartTime',
+        payload: now,
+      });
 
-        yield put({
-          type: 'saveTimeINT',
-          payload: timeArr,
-        });
-      
+      yield put({
+        type: 'saveTimeINT',
+        payload: timeArr,
+      });
     },
     *createTest({ payload }, { call }) {
       try {
@@ -126,6 +125,7 @@ const TestModel = {
     },
     *updateTest({ payload }, { call }) {
       try {
+        console.log('hádfjkasjdfajskdf');
         yield call(updateEditedTest, payload);
       } catch (e) {
         console.log(e);
@@ -352,7 +352,7 @@ const TestModel = {
         answer: [],
         start: '',
         timeINT: '',
-        isDid: false
+        isDid: false,
       };
     },
   },
