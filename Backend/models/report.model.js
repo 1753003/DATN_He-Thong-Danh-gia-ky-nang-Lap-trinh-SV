@@ -187,6 +187,7 @@ module.exports = {
             Answered: Answered,
           });
         }
+        item.NumberUserAnswer= NumberUserAnswer;
       } else {
         const question = (await db("coding").where("QuestionID", item.ID))[0];
         item.Question = {
@@ -195,11 +196,15 @@ module.exports = {
         };
 
         item.Answer = {
-          TestCase: item.TestCase,
-          MemoryUsage: item.MemoryUsage,
-          RunningTime: item.RunningTime,
+          TestCase: question.TestCase,
+          MemoryUsage: question.MemoryUsage,
+          RunningTime: question.RunningTime,
         };
-
+        
+        let tcPassNumber = [];
+        for (let tc of question.TestCase) {
+            tcPassNumber.push(0)
+        }
         for (const e of submission) {
           const answer = (
             await db("answercoding").where({
@@ -209,7 +214,12 @@ module.exports = {
           )[0];
 
           const user = (await db('userlogin').where('UserID', e.DevID))[0].UserName;
+          
+          for (let tc of answer.TestCasePassed) {
+              tcPassNumber[tc]++
+          }
 
+          
           ListUser.push({
             TestCasePassed: answer.TestCasePassed,
             DescriptionCode: answer.DescriptionCode,
@@ -218,7 +228,7 @@ module.exports = {
             User: user,
           });
         }
-
+        item.NumberUserAnswer = tcPassNumber;
       }
       result.push({
         ID: item.ID,
@@ -227,7 +237,7 @@ module.exports = {
         Correct: item.NumberPeopleRight,
         Answer: item.Answer,
         CorrectAnswer: item.CorrectAnswer,
-        NumberUserAnswer: NumberUserAnswer,
+        NumberUserAnswer: item.NumberUserAnswer,
         ListUser: ListUser,
       });
     }
