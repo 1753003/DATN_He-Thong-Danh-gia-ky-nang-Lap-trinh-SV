@@ -80,6 +80,35 @@ export function createNewTest({ generalInformation, listQuestion }) {
   });
 }
 
+export function updateEditedTest({ generalInformation, listQuestion }) {
+  return new Promise((resolve, reject) => {
+    console.log('callapi');
+    resolve();
+    // axios
+    //   .post(
+    //     `${Constant.API}/api/creator/test`,
+    //     {
+    //       generalInformation,
+    //       listQuestion,
+    //     },
+    //     {
+    //       headers: { accessToken: Cookies.get('accessToken') },
+    //       'access-control-allow-origin': Constant.CORS,
+    //     },
+    //   )
+    //   .then((response) => {
+    //     // handle success
+    //     console.log(response.data);
+    //     resolve(response.data);
+    //   })
+    //   .catch((error) => {
+    //     // handle error
+    //     console.log(error);
+    //     reject();
+    //   });
+  });
+}
+
 export function postSubmission(data) {
   return new Promise((resolve, reject) => {
     var options = {
@@ -89,7 +118,7 @@ export function postSubmission(data) {
         accessToken: Cookies.get('accessToken'),
         'access-control-allow-origin': Constant.CORS,
       },
-      data
+      data,
     };
     axios
       .request(options)

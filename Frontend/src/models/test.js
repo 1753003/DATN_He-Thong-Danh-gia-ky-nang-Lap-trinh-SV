@@ -5,8 +5,10 @@ import {
   createNewTest,
   postSubmission,
   checkSubmission,
+  updateEditedTest,
 } from '@/services/test';
 import { checkSession } from '@/services/session';
+
 import moment from 'moment';
 import {
   createSubmission,
@@ -37,6 +39,9 @@ const TestModel = {
     },
     *getTestByIdModel({ payload }, { call, put }) {
       const response = yield call(getTestById, payload.id);
+      if (payload.callback) {
+        payload.callback(response);
+      }
 
       yield put({
         type: 'saveTestById',
@@ -113,7 +118,18 @@ const TestModel = {
       
     },
     *createTest({ payload }, { call }) {
-      const response = yield call(createNewTest, payload);
+      try {
+        yield call(createNewTest, payload);
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    *updateTest({ payload }, { call }) {
+      try {
+        yield call(updateEditedTest, payload);
+      } catch (e) {
+        console.log(e);
+      }
     },
     *changeQuestion({ payload }, { put, select }) {
       var current = 0;
