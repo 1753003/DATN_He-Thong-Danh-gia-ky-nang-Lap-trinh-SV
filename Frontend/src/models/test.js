@@ -5,7 +5,7 @@ import {
   createNewTest,
   postSubmission,
   checkSubmission,
-  updateEditedTest,
+  updateEditedTest
 } from '@/services/test';
 import { checkSession } from '@/services/session';
 
