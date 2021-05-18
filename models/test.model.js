@@ -151,9 +151,47 @@ module.exports = {
     return await db("test").where("TestSet", set);
   },
   async getTestBySet(set) {
-    return await db("test").where("LanguageAllowed", "like", `%${set}"%`).where('Permissions', "public")
+    return await db("test")
+      .where("LanguageAllowed", "like", `%${set}"%`)
+      .where("Permissions", "public");
   },
   async updateTest(test, testID) {
-    await db("test").where("TestID", testID).update(test);
-  }
+    test.generalInformation.QuestionID = JSON.stringify(
+      test.generalInformation.QuestionID
+    );
+    
+    await db("test").where("TestID", testID).update(test.generalInformation);
+    for (let question of test.listQuestion) {
+      if (quesion.ID == null) {
+        db("question").insert({
+          QuestionType: question.QuestionType,
+          Score: question.Score,
+          TestID: testID
+        })
+      } else {
+        db("question")
+          .where("ID", question.ID)
+          .update({ Score: question.Score });
+        if (question.QuestionType == "MultipleChoice") {
+          db("multiplechoice")
+            .where("QuestionID", question.ID)
+            .update({
+              MCDescription: question.MCDescription,
+              Answer: JSON.stringify(question.Answer),
+              CorrectAnswer: JSON.stringify(question.CorrectAnswer),
+            });
+        } else if (question.QuestionType == "Code") {
+          db("coding")
+            .where("QuestionID", question.ID)
+            .update({
+              CodeDescription: question.CodeDescription,
+              LanguageAllowed: JSON.stringify(question.LanguageAllowed),
+              RunningTime: question.RunningTime,
+              MemoryUsage: question.MemoryUsage,
+              TestCase: JSON.stringify(question.TestCase),
+            });
+        }
+      }
+    }
+  },
 };

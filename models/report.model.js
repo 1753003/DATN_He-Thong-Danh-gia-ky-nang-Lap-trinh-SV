@@ -154,7 +154,8 @@ module.exports = {
                     NumberUserAnswer[i] = 0;
                 
                 for (const e of submission) {   
-                    let Answered = [];           
+                    let Answered = [];      
+                    console.log(item.ID, e.SubmissionID)     
                     const answer = (await db('answermultiplechoice').where({
                         QuestionID: item.ID,
                         SubmissionID: e.SubmissionID                  
