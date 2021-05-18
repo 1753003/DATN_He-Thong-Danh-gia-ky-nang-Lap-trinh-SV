@@ -12,7 +12,7 @@ import {
 const { Search } = Input;
 const { Dragger } = Upload;
 
-const MyTests = ({ testList, dispatch }) => {
+const MyTests = ({ testList, dispatch, loading }) => {
   const history = useHistory();
 
   const menu = (item) => {
@@ -75,12 +75,11 @@ const MyTests = ({ testList, dispatch }) => {
   };
 
   useEffect(() => {
+    // if (testList.length === 0) {
     dispatch({ type: 'test/fetchTestList' });
+    // }
   }, []);
 
-  useEffect(() => {
-    console.log(testList);
-  }, [testList]);
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -101,6 +100,7 @@ const MyTests = ({ testList, dispatch }) => {
         <Table
           columns={columns}
           dataSource={testList}
+          loading={loading}
           onRow={(record, rowIndex) => {
             return {
               onDoubleClick: (event) => {
@@ -114,6 +114,7 @@ const MyTests = ({ testList, dispatch }) => {
   );
 };
 
-export default connect(({ test: { testList } }) => ({
+export default connect(({ test: { testList }, loading }) => ({
   testList,
+  loading: loading.effects['test/fetchTestList'],
 }))(MyTests);

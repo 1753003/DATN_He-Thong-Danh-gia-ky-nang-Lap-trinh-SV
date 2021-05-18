@@ -1,15 +1,32 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './index.less';
 import { Button } from 'antd';
 import { CheckCircleTwoTone, CloseCircleTwoTone } from '@ant-design/icons';
 import { connect, useHistory } from 'umi';
 import { PageLoading } from '@ant-design/pro-layout';
 
-const TestDetail = ({ test, dispatch, location, loading }) => {
+const TestDetail = ({ dispatch, location }) => {
   const history = useHistory();
+  const [test, setTest] = useState({
+    generalInformation: {},
+    listQuestion: [],
+  });
+  const [loading, setLoading] = useState(false);
+
+  const setTestInformation = (testObject) => {
+    console.log(testObject);
+    setTest(testObject);
+    setLoading(false);
+  };
 
   useEffect(() => {
-    dispatch({ type: 'test/getTestByIdModel', payload: { id: location.query.id } });
+    if (location.query.id) {
+      setLoading(true);
+      dispatch({
+        type: 'test/getTestByIdModel',
+        payload: { id: location.query.id, callback: setTestInformation },
+      });
+    }
   }, []);
 
   const handleEditClick = () => {
@@ -21,7 +38,7 @@ const TestDetail = ({ test, dispatch, location, loading }) => {
     });
   };
 
-  return test?.generalInformation ? (
+  return !loading ? (
     <div className={styles.container}>
       <div className={styles.left}>
         <img src={test.generalInformation?.img} />
@@ -128,7 +145,6 @@ const Question = ({ list }) => {
   });
 };
 
-export default connect(({ test: { testById }, loading }) => ({
+export default connect(({ test: { testById } }) => ({
   test: testById,
-  loading: loading.effects['test/getTestByIdModel'],
 }))(TestDetail);

@@ -17,6 +17,8 @@ import {
   Card,
   DatePicker,
   ConfigProvider,
+  message,
+  TimePicker,
 } from 'antd';
 import {
   PlusOutlined,
@@ -31,20 +33,26 @@ import ReactMarkdown from 'react-markdown';
 import _ from 'lodash';
 
 const { Option } = Select;
-const CreateTest = ({ dispatch, location, loading }) => {
+const CreateTest = ({ dispatch, location }) => {
   const [option, setOption] = useState('quiz');
   const [quiz, setQuiz] = useState([]);
   const [information, setInformation] = useState({});
   const [selectedQuiz, setSelectedQuiz] = useState({});
   const [visibleDrawer, setVisibleDrawer] = useState(false);
   const [action, setAction] = useState('CREATE');
+  const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
 
   const updateEditInformation = (response) => {
     const { generalInformation, listQuestion } = response;
     generalInformation.LanguageAllowed = JSON.parse(generalInformation.LanguageAllowed);
-    generalInformation.StartTime = moment(generalInformation.StartTime);
-    generalInformation.EndTime = moment(generalInformation.EndTime);
+    if (generalInformation.StartTime) {
+      generalInformation.StartTime = moment(generalInformation.StartTime);
+    }
+    if (generalInformation.EndTime) {
+      generalInformation.EndTime = moment(generalInformation.EndTime);
+    }
+    generalInformation.TestTime = moment(generalInformation.TestTime, 'hh:mm:ss');
     setInformation(generalInformation);
     listQuestion.forEach((item, index) => {
       item.key = index;
@@ -63,17 +71,19 @@ const CreateTest = ({ dispatch, location, loading }) => {
     setSelectedQuiz(listQuestion[0]);
 
     form.setFieldsValue(generalInformation);
+    setLoading(false);
   };
 
   useEffect(() => {
     if (location.query.id) {
-      setAction('EDIT');
+      setLoading(true);
+      setAction('UPDATE');
       dispatch({
         type: 'test/getTestByIdModel',
         payload: { id: location.query.id, callback: updateEditInformation },
       });
     }
-  }, []);
+  }, [location.query.id]);
 
   const handleChangeQuiz = (item) => {
     setSelectedQuiz(item);
@@ -81,6 +91,23 @@ const CreateTest = ({ dispatch, location, loading }) => {
 
   const onClose = () => {
     setVisibleDrawer(false);
+  };
+
+  const createSuccess = () => {
+    message.success('Create test successfully !!!');
+    history.back();
+  };
+
+  const createFail = () => {
+    message.error('Fail to create test !!!');
+  };
+
+  const updateSuccess = () => {
+    message.success('Update test successfully !!!');
+  };
+
+  const updateFail = () => {
+    message.error('Fail to update test !!!');
   };
 
   const handleSubmitTest = () => {
@@ -106,23 +133,37 @@ const CreateTest = ({ dispatch, location, loading }) => {
         listQuestion: [...refactorQuestions],
       };
 
-      payload.generalInformation.EndTime = information.EndTime.locale('en').format(
-        'yy-MM-DD hh:mm:ss',
-      );
-      payload.generalInformation.StartTime = information.StartTime.locale('en').format(
-        'yy-MM-DD hh:mm:ss',
-      );
+      payload.generalInformation.TestTime = information.TestTime.locale('en').format('hh:mm:ss');
+
+      if (information.EndTime || information.StartTime) {
+        payload.generalInformation.EndTime = information.EndTime.locale('en').format(
+          'yy-MM-DD hh:mm:ss',
+        );
+        payload.generalInformation.StartTime = information.StartTime.locale('en').format(
+          'yy-MM-DD hh:mm:ss',
+        );
+      }
+
       payload.generalInformation.LanguageAllowed = JSON.stringify(
         payload.generalInformation.LanguageAllowed,
       );
-      console.log(payload);
-
       if (action === 'CREATE') {
+        payload.onSuccess = createSuccess;
+        payload.onFailure = createFail;
         dispatch({
           type: 'test/createTest',
           payload,
         });
       } else {
+        payload.onSuccess = updateSuccess;
+        payload.onFailure = updateFail;
+        payload.id = location.query.id;
+        delete payload.generalInformation.TestID;
+        payload.listQuestion.forEach((question) => {
+          if (typeof question.ID === 'string' && question.ID.startsWith('_')) {
+            question.ID = undefined;
+          }
+        });
         dispatch({
           type: 'test/updateTest',
           payload,
@@ -130,6 +171,8 @@ const CreateTest = ({ dispatch, location, loading }) => {
       }
     }
   };
+
+  const commuteID = () => {};
 
   return loading ? (
     <PageLoading />
@@ -145,7 +188,7 @@ const CreateTest = ({ dispatch, location, loading }) => {
           Test Infomation <PlusOutlined />
         </Button>
         <Button onClick={handleSubmitTest} className={styles.submitBtn}>
-          {action === 'CREATE' ? 'CREATE' : 'UDPATE'}
+          {action === 'CREATE' ? 'CREATE' : 'UPDATE'}
         </Button>
       </div>
       <div className={styles.bodyContainer}>
@@ -158,22 +201,26 @@ const CreateTest = ({ dispatch, location, loading }) => {
                 key={index}
                 type={item.ID === selectedQuiz.ID ? 'primary' : 'default'}
               >
-                {item.ID} - {item.QuestionType}
+                {index + 1} - {item.QuestionType}
               </Button>
             );
           })}
           <Button
             onClick={() => {
               const newQuiz = [...quiz];
-              newQuiz.push({
+              const payload = {
                 key: newQuiz.length,
-                ID: (newQuiz.length + 1).toString(),
                 QuestionType: 'quiz',
+                ID: (newQuiz.length + 1).toString(),
                 MCDescription: '',
                 Answer: [],
                 CorrectAnswer: [],
                 Score: 0,
-              });
+              };
+              if (action === 'UPDATE') {
+                payload.ID = '_' + Math.random().toString(36).substr(2, 9);
+              }
+              newQuiz.push(payload);
               setQuiz(newQuiz);
             }}
             type="primary"
@@ -283,6 +330,15 @@ const RenderMiddle = ({ option, selectedQuiz, setQuiz, quiz, action }) => {
     }
   };
 
+  const handleMCDescriptionChange = (event) => {
+    console.log(event.target.value);
+    const newQuiz = [...quiz];
+    newQuiz.forEach((item) => {
+      if (item.ID === selectedQuiz.ID) item.MCDescription = event.target.value;
+    });
+    setQuiz(newQuiz);
+  };
+
   const checkCorrectAnswer = (id, selectedQuizID) => {
     return quiz[selectedQuizID].CorrectAnswer?.includes(id);
   };
@@ -302,18 +358,12 @@ const RenderMiddle = ({ option, selectedQuiz, setQuiz, quiz, action }) => {
             placeholder="Typing your question here ..."
             autoSize={{ minRows: 6, maxRows: 6 }}
             value={selectedQuiz.MCDescription}
-            onChange={(value) => {
-              const newQuiz = [...quiz];
-              newQuiz.forEach((item) => {
-                if (item.ID === selectedQuiz.ID) item.MCDescription = value.target.value;
-              });
-              setQuiz(newQuiz);
-            }}
+            onChange={handleMCDescriptionChange}
           />
           {selectedQuiz.Answer?.map((item, index) => {
             return (
               <div className={styles.choices} key={index}>
-                <div>Answer {index}</div>
+                <div>Answer {index + 1}</div>
                 <Input
                   style={{ height: '40px', width: '70%' }}
                   value={item}
@@ -632,11 +682,12 @@ const DrawerForm = ({ visible, onClose, form, setInformation }) => {
               label="Time(*)"
               rules={[{ required: true, message: 'Please enter user name' }]}
             >
-              <InputNumber
+              <TimePicker defaultOpenValue={moment('00:00:00', 'HH:mm:ss')} />
+              {/* <InputNumber
                 placeholder="Enter maximum time to do this test..."
                 style={{ width: '100%' }}
                 min={0}
-              />
+              /> */}
             </Form.Item>
           </Col>
         </Row>
@@ -668,9 +719,9 @@ const DrawerForm = ({ visible, onClose, form, setInformation }) => {
               rules={[{ required: true, message: 'Please enter user name' }]}
             >
               <Select placeholder="Please select language">
-                <Option value="easy">Easy</Option>
-                <Option value="normal">Normal</Option>
-                <Option value="difficult">Difficult</Option>
+                <Option value="Easy">Easy</Option>
+                <Option value="Medium">Medium</Option>
+                <Option value="Hard">Hard</Option>
               </Select>
             </Form.Item>
           </Col>
@@ -682,7 +733,7 @@ const DrawerForm = ({ visible, onClose, form, setInformation }) => {
             <Form.Item
               name="StartTime"
               label="Start Time"
-              rules={[{ required: true, message: 'Please enter user name' }]}
+              rules={[{ required: false, message: 'Please enter user name' }]}
             >
               <DatePicker
                 format="YYYY-MM-DD HH:mm:ss"
@@ -697,7 +748,7 @@ const DrawerForm = ({ visible, onClose, form, setInformation }) => {
             <Form.Item
               name="EndTime"
               label="End Time"
-              rules={[{ required: true, message: 'Please enter user name' }]}
+              rules={[{ required: false, message: 'Please enter user name' }]}
             >
               <DatePicker
                 format="YYYY-MM-DD HH:mm:ss"
@@ -716,7 +767,7 @@ const DrawerForm = ({ visible, onClose, form, setInformation }) => {
             <Form.Item
               name="Permissions"
               label="Permissons"
-              rules={[{ required: true, message: 'Please select permission' }]}
+              rules={[{ required: false, message: 'Please select permission' }]}
             >
               <Select placeholder="Please select permission">
                 <Option value="public">Public</Option>
@@ -728,7 +779,7 @@ const DrawerForm = ({ visible, onClose, form, setInformation }) => {
             <Form.Item
               name="Again"
               label="Again"
-              rules={[{ required: true, message: 'Again or not' }]}
+              rules={[{ required: false, message: 'Again or not' }]}
             >
               <Select placeholder="Please select permission">
                 <Option value={true}>True</Option>
@@ -742,7 +793,6 @@ const DrawerForm = ({ visible, onClose, form, setInformation }) => {
   );
 };
 
-export default connect(({ test: { testList }, loading }) => ({
+export default connect(({ test: { testList } }) => ({
   testList,
-  loading: loading.effects['test/getTestByIdModel'],
 }))(CreateTest);
