@@ -4,8 +4,10 @@ import {
   getTestById,
   createNewTest,
   postSubmission,
-  updateEditedTest,
+  checkSubmission,
 } from '@/services/test';
+import { checkSession } from '@/services/session';
+
 import moment from 'moment';
 import {
   createSubmission,
@@ -23,6 +25,8 @@ const TestModel = {
     answer: [],
     time: '',
     start: '',
+    timeINT: '',
+    isDid: false,
   },
   effects: {
     *fetchTestList(_, { call, put }) {
@@ -44,46 +48,73 @@ const TestModel = {
       });
     },
     *getTestByID({ payload }, { put, call, select }) {
-      const response = yield call(getTestById, payload.id);
-      console.log(response);
-      yield put({
-        type: 'saveTestById',
-        payload: response,
+      const checkSubmit = yield call(checkSubmission, payload.id);
+
+      const check = yield call(checkSession, {
+        TestID: payload.id,
+        Timed: moment(),
       });
-      const answerList = [];
-      yield select((state) => {
-        state.test.testById.listQuestion.forEach((e) => {
-          var temp = [];
-          console.log(e.QuestionType);
-          if (e.QuestionType === 'MultipleChoice') temp = [];
-          else temp = '';
-          answerList.push({
-            id: e.ID,
-            data: temp,
+      const response = yield call(getTestById, payload.id);
+      console.log(response.generalInformation.Again, checkSubmit)
+      if (response.generalInformation.Again === 0 && checkSubmit) {
+        yield put({
+          type: 'saveIsDid',
+          payload: true,
+        });
+      } 
+        yield put({
+          type: 'saveTestById',
+          payload: response,
+        });
+        const answerList = [];
+        yield select((state) => {
+          state.test.testById.listQuestion.forEach((e) => {
+            var temp = [];
+            console.log(e.QuestionType);
+            if (e.QuestionType === 'MultipleChoice') temp = [];
+            else temp = '';
+            answerList.push({
+              id: e.ID,
+              data: temp,
+            });
           });
         });
-      });
 
-      yield put({
-        type: 'resetAnswerReducer',
-        payload: answerList,
-      });
+        yield put({
+          type: 'resetAnswerReducer',
+          payload: answerList,
+        });
 
-      let timeArr = response.generalInformation.TestTime.split(':');
-      let time = moment().add(
-        parseInt(timeArr[0] * 60) + parseInt(timeArr[1]) + parseFloat(timeArr[2] / 60),
-        'minutes',
-      );
-      let now = moment();
-      yield put({
-        type: 'resetTime',
-        payload: time,
-      });
+        let timeArr = response.generalInformation.TestTime.split(':');
+        let time;
 
-      yield put({
-        type: 'saveStartTime',
-        payload: now,
-      });
+        if (check.check) {
+          let temp = moment(check.timed);
+          time = temp.add(
+            parseInt(timeArr[0] * 60) + parseInt(timeArr[1]) + parseFloat(timeArr[2] / 60),
+            'minutes',
+          );
+        } else
+          time = moment().add(
+            parseInt(timeArr[0] * 60) + parseInt(timeArr[1]) + parseFloat(timeArr[2] / 60),
+            'minutes',
+          );
+        let now = moment();
+        yield put({
+          type: 'resetTime',
+          payload: time,
+        });
+
+        yield put({
+          type: 'saveStartTime',
+          payload: now,
+        });
+
+        yield put({
+          type: 'saveTimeINT',
+          payload: timeArr,
+        });
+      
     },
     *createTest({ payload }, { call }) {
       try {
@@ -305,6 +336,12 @@ const TestModel = {
     saveStartTime(state, { payload }) {
       return { ...state, start: payload };
     },
+    saveTimeINT(state, { payload }) {
+      return { ...state, timeINT: payload };
+    },
+    saveIsDid(state, { payload }) {
+      return { ...state, isDid: payload };
+    },
     resetReducer(state, { payload }) {
       return {
         ...state,
@@ -313,6 +350,8 @@ const TestModel = {
         question: 0,
         answer: [],
         start: '',
+        timeINT: '',
+        isDid: false
       };
     },
   },
