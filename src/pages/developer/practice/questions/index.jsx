@@ -21,6 +21,12 @@ const questionList = ({location, practice, dispatch, loading}) => {
   const [tabChange, onTabChange] = useState(false)
   useEffect(()=>{
     dispatch({
+      type:'practice/setCurrentSubmission',
+      payload:null
+    })
+  },[tabChange]);
+  useEffect(()=>{
+    dispatch({
       type:'practice/saveMultipleChoiceResponse',
       payload: null
     })
