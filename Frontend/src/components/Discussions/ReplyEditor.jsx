@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { Button } from 'antd';
 import firebase from '@/utils/firebase'
 
-const ReplyEditor = ({pid, dispatch, handleDiscard}) =>{
+const ReplyEditor = ({location ,pid, dispatch, handleDiscard}) =>{
   const[value, setValue] = useState('')
   const handleReply=()=>{
     let cmt = {
@@ -19,8 +19,7 @@ const ReplyEditor = ({pid, dispatch, handleDiscard}) =>{
     if(typeof(pid) !== "undefined"){
       parentId=pid
     }
-    let params = (new URL(document.location)).searchParams;
-    let postId = params.get("id");
+    let postId = location.state.PracticeID
     dispatch({
       type:'discussion/postComment',
       payload: {cmt,parentId,postId}

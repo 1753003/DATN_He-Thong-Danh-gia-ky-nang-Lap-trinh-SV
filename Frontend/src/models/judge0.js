@@ -3,7 +3,7 @@ import { history } from 'umi';
 import { createSubmission, createSubmissionBatch, getSubmission, getSubmissionBatch } from '@/services/judge0'
 import { setAuthority } from '@/utils/authority';
 import { getPageQuery } from '@/utils/utils';
-import { saveSubmission } from '@/services/practice';
+import { saveSubmissionCoding } from '@/services/practice';
 
 const Model = {
   namespace: 'judge',
@@ -90,7 +90,7 @@ const Model = {
       //savedb
       const state = yield select(state => state.judge)
 
-      yield saveSubmission(payload.pid,state.result.submissions)
+      yield saveSubmissionCoding(payload.pid,state.result.submissions)
     },
     
   },

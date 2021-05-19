@@ -78,13 +78,17 @@ console.log(current)
     }}
     title="Back to Your Submmission List"
   />
-      <p>date: {practice.currentSubmission.CreatedAt}</p>
+  {practice.currentSubmission.SubmissionType === "Coding"?<div>
+  <p>date: {practice.currentSubmission.CreatedAt}</p>
       <p> score: {practice.currentSubmission.Score}</p>
       <p>correctPercent: {practice.currentSubmission.CorrectPercent}</p>
       <Divider orientation='left'>Submitted Answer</Divider>
       {editor(u_atob(current[0].source_code))}
       <Divider orientation='left'>Test Cases</Divider>
     {Testcases(current)}
+  </div>:<div>
+    hello
+    </div>}
       </div>}
     </>
   );

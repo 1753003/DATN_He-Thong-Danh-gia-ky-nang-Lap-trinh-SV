@@ -48,10 +48,16 @@ module.exports = {
         })
     },
 
+    async saveSubmissionAnswerMultipleChoice(data){
+        return db('answermultiplechoice').insert(data)
+    },
+
+
     async checkExist(DevID, TestID) {
         const res = await db('submissions').where({DevID, TestID});
         if (res.length == 0)
             return false;
         return true
     } 
+
 }
