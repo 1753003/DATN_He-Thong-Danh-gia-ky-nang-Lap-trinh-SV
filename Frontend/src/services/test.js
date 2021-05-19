@@ -76,7 +76,7 @@ export function getTestById(id) {
   });
 }
 
-export function createNewTest({ generalInformation, listQuestion }) {
+export function createNewTest({ generalInformation, listQuestion, onSuccess, onFailure }) {
   return new Promise((resolve, reject) => {
     axios
       .post(
@@ -93,42 +93,47 @@ export function createNewTest({ generalInformation, listQuestion }) {
       .then((response) => {
         // handle success
         console.log(response.data);
+        onSuccess();
         resolve(response.data);
       })
       .catch((error) => {
         // handle error
         console.log(error);
+        onFailure();
         reject();
       });
   });
 }
 
-export function updateEditedTest({ generalInformation, listQuestion }) {
+export function updateEditedTest({ generalInformation, listQuestion, id, onSuccess, onFailure }) {
   return new Promise((resolve, reject) => {
-    console.log('callapi');
-    resolve();
-    // axios
-    //   .post(
-    //     `${Constant.API}/api/creator/test`,
-    //     {
-    //       generalInformation,
-    //       listQuestion,
-    //     },
-    //     {
-    //       headers: { accessToken: Cookies.get('accessToken') },
-    //       'access-control-allow-origin': Constant.CORS,
-    //     },
-    //   )
-    //   .then((response) => {
-    //     // handle success
-    //     console.log(response.data);
-    //     resolve(response.data);
-    //   })
-    //   .catch((error) => {
-    //     // handle error
-    //     console.log(error);
-    //     reject();
-    //   });
+    console.log(generalInformation);
+    console.log(listQuestion);
+    axios
+      .patch(
+        `${Constant.API}/api/creator/test/${id}`,
+        {
+          generalInformation,
+          listQuestion,
+        },
+        {
+          headers: { accessToken: Cookies.get('accessToken') },
+          'access-control-allow-origin': Constant.CORS,
+        },
+      )
+      .then((response) => {
+        // handle success
+        onSuccess();
+        console.log(response.data);
+
+        resolve(response.data);
+      })
+      .catch((error) => {
+        // handle error
+        onFailure();
+        console.log(error);
+        reject();
+      });
   });
 }
 
@@ -142,6 +147,31 @@ export function postSubmission(data) {
         'access-control-allow-origin': Constant.CORS,
       },
       data,
+    };
+    axios
+      .request(options)
+      .then((response) => {
+        // handle success
+        // console.log(response.data)
+        resolve(response.data);
+      })
+      .catch((error) => {
+        // handle error
+        const message = error.response.data.message;
+        tokenHandling(message, resolve, options);
+      });
+  });
+}
+
+export function checkSubmission(testID) {
+  return new Promise((resolve, reject) => {
+    var options = {
+      method: 'GET',
+      url: `${Constant.API}/api/submissions/check/${testID}`,
+      headers: {
+        accessToken: Cookies.get('accessToken'),
+        'access-control-allow-origin': Constant.CORS,
+      },
     };
     axios
       .request(options)

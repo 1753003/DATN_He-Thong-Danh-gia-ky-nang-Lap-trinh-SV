@@ -1,6 +1,7 @@
 const db = require("../utils/db");
 const reportModel = require("../models/report.model");
 const { getPracticeQuestionList } = require("./question.model");
+const e = require("express");
 module.exports = {
   async createTest(generalInformation, listQuestion) {
     await db("test")
@@ -154,6 +155,77 @@ module.exports = {
     return await db("test").where("TestCode", code);
   },
   async getTestBySet(set) {
-    return await db("test").where("LanguageAllowed", "like", `%${set}"%`).where('Permissions', "public")
+    return await db("test")
+      .where("LanguageAllowed", "like", `%${set}"%`)
+      .where("Permissions", "public");
+  },
+  async updateTest(test, testID) {
+    test.generalInformation.QuestionID = JSON.stringify(
+      test.generalInformation.QuestionID
+    );
+
+    await db("test").where("TestID", testID).update(test.generalInformation);
+    for (let question of test.listQuestion) {
+      if (question.ID == undefined) {
+        await db("question")
+          .insert({
+            QuestionType: question.QuestionType,
+            Score: question.Score,
+            TestID: testID,
+          })
+          .then(async (id) => {
+            if (question.QuestionType == "MultipleChoice") {
+              await db("multiplechoice").insert({
+                MCDescription: question.MCDescription,
+                Answer: JSON.stringify(question.Answer),
+                CorrectAnswer: JSON.stringify(question.CorrectAnswer),
+                QuestionID: id[0],
+              });
+            } else if (question.QuestionType == "Coding") {
+              await db("coding").insert({
+                CodeDescription: question.CodeDescription,
+                Language_allowed: JSON.stringify(question.Language_allowed),
+                RunningTime: question.RunningTime,
+                MemoryUsage: question.MemoryUsage,
+                TestCase: JSON.stringify(question.TestCase),
+                QuestionID: id[0],
+                CodeSample: question.CodeSample,
+              });
+            }
+            const temp = (await db("test").where("TestID", testID))[0]
+              .QuestionID;
+            temp.push(id[0]);
+            await db("test")
+              .where("TestID", testID)
+              .update({
+                QuestionID: JSON.stringify(temp),
+              });
+          });
+      } else {
+        await db("question")
+          .where("ID", question.ID)
+          .update({ Score: question.Score });
+        if (question.QuestionType == "MultipleChoice") {
+          await db("multiplechoice")
+            .where("QuestionID", question.ID)
+            .update({
+              MCDescription: question.MCDescription,
+              Answer: JSON.stringify(question.Answer),
+              CorrectAnswer: JSON.stringify(question.CorrectAnswer),
+            });
+        } else if (question.QuestionType == "Code") {
+          await db("coding")
+            .where("QuestionID", question.ID)
+            .update({
+              CodeDescription: question.CodeDescription,
+              Language_allowed: JSON.stringify(question.Language_allowed),
+              RunningTime: question.RunningTime,
+              MemoryUsage: question.MemoryUsage,
+              TestCase: JSON.stringify(question.TestCase),
+              CodeSample: question.CodeSample,
+            });
+        }
+      }
+    }
   },
 };
