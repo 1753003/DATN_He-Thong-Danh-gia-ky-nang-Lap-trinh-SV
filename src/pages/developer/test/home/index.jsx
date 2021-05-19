@@ -13,6 +13,7 @@ import Texty from 'rc-texty';
 import TweenOne from 'rc-tween-one';
 import QueueAnim from 'rc-queue-anim';
 import { connect } from 'dva'
+import {history} from 'umi'
 const data = [
   {
     title: 'C Programming Set',
@@ -32,7 +33,7 @@ const data = [
   },
 ];
 
-const testHome = () => {
+const testHome = ({dispatch}) => {
   const [value, setValue] = useState("")
   const handleChange = (e) =>{
 
@@ -40,6 +41,15 @@ const testHome = () => {
   }
   const handleSubmit = (e) =>{
     console.log(value)
+    dispatch({
+      type:'test/getTestIdFromCode',
+      payload: value
+    })
+    // history.push({
+    //   pathname: '/developer/test/questions',
+    //   search: `?tid=${item.TestID}`,
+    //   state: item,
+    // })
     return
   }
 

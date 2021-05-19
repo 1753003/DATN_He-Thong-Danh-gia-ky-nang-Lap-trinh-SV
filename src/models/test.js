@@ -6,6 +6,7 @@ import {
   postSubmission,
   checkSubmission,
   updateEditedTest,
+  getTestIdByCode
 } from '@/services/test';
 import { checkSession } from '@/services/session';
 
@@ -17,6 +18,7 @@ import {
   getSubmissionBatch,
 } from '@/services/judge0';
 import { u_atob, u_btoa } from '@/utils/string';
+import {history} from 'umi'
 const TestModel = {
   namespace: 'test',
   state: {
@@ -30,6 +32,15 @@ const TestModel = {
     isDid: false,
   },
   effects: {
+    *getTestIdFromCode({ payload }, { call, put }) {
+      const response = yield call(getTestIdByCode, payload);
+      console.log(response)
+      history.push({
+      pathname: '/developer/test/questions',
+      search: `?tid=${response.TestID}`,
+      state: response,
+    })
+    },
     *fetchTestList(_, { call, put }) {
       const response = yield call(getTestList);
       yield put({
