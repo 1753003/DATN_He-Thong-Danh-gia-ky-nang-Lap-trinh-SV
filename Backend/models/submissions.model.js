@@ -46,5 +46,8 @@ module.exports = {
                 }
             }
         })
+    },
+    async saveSubmissionAnswerMultipleChoice(data){
+        return db('answermultiplechoice').insert(data)
     }
 }

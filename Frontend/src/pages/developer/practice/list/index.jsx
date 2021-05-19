@@ -19,8 +19,8 @@ const practiceList = ({location,dispatch,practice, loading}) => {
       type:'practice/getPracticeSetList',
       payload: encodeURIComponent(location.query.listName)
     })
-    console.log(practice.list)
   },[]);
+  console.log(practice.list)
   const routes = [
     {
       path: '/developer',
@@ -69,7 +69,13 @@ const practiceList = ({location,dispatch,practice, loading}) => {
             dataSource={practice.list}
             renderItem={item => (
             <List.Item onClick={()=>{
-              history.push("/developer/practice/questions?listName="+ encodeURIComponent(decodeURIComponent(location.query.listName)) + `&id=${item.PracticeID}`)
+              history.push({
+                pathname: '/developer/practice/questions',
+                search: `?listName=${encodeURIComponent(decodeURIComponent(location.query.listName))}`,
+                state: item,
+              }
+                
+              )
             }}
             style={{backgroundColor: 'white', margin: '10px 5px 10px 20px', padding:'5px 20px 5px 10px', borderRadius:'5px'}}>             
               <List.Item.Meta

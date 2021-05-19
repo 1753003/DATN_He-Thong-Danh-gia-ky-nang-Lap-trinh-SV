@@ -55,12 +55,15 @@ const Banner = (props) => {
               Let's Practice
             </Button>
           </Link>
+          <Link to = '/developer/test'>
+
           <Button 
           
           style={{ margin: '0 16px', padding:'4px 10px' }}
           type="primary" ghost>
             Do the Test
           </Button>
+          </Link>
         </div>
       </QueueAnim>
       {!props.isMobile && (

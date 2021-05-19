@@ -13,6 +13,7 @@ import { result } from 'lodash-es';
 import PageLoading from '@/components/PageLoading';
 import Submission from '@/components/Submission';
 import DisscustionTab from '@/components/Discussions/DiscusstionTab';
+import QuizWrapper from './components/QuizWrapper';
 const { TabPane } = Tabs;
 
 const questionList = ({location, practice, dispatch, loading}) => {
@@ -20,10 +21,14 @@ const questionList = ({location, practice, dispatch, loading}) => {
   const [tabChange, onTabChange] = useState(false)
   useEffect(()=>{
     dispatch({
-      type:'practice/',
-      payload: tabChange
+      type:'practice/saveMultipleChoiceResponse',
+      payload: null
     })
-  },[tabChange]);
+    dispatch({
+      type:'practice/setCurrentSubmission',
+      payload:null
+    })
+  },[]);
   const routes = [
     {
       key:'Developer',
@@ -49,7 +54,7 @@ const questionList = ({location, practice, dispatch, loading}) => {
   useEffect(()=>{
     dispatch({
       type:'practice/getPracticeListDetail',
-      payload: {'id':location.query.id}
+      payload: {'id':location.state.PracticeID}
     })
   }, [])
   
@@ -81,13 +86,13 @@ const questionList = ({location, practice, dispatch, loading}) => {
           })
         }}>
           <TabPane tab="Problem" key="1">
-            {practice.listDetail?.generalInformation.QuestionID.length<2?<Coding></Coding>:null}
+            {practice.listDetail?.generalInformation.QuestionID.length<2?<Coding></Coding>:<QuizWrapper data={practice.listDetail}></QuizWrapper>}
           </TabPane>
           <TabPane tab="Submission" key="2">
             <Submission></Submission>
           </TabPane>
           <TabPane tab="Discussion" key="3">
-            <DisscustionTab></DisscustionTab>
+            <DisscustionTab location = {location}></DisscustionTab>
           </TabPane>
         </Tabs>
       </Col>
