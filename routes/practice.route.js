@@ -90,8 +90,27 @@ router.get('/:id', async function (req, res) {
 router.post('/submissions', async function (req, res) {
   const data = req.body;
   data.DevID = req.uid
-  console.log(data)
+
+  let tmpTCPassed = []
+  let tmpOuput = []
+  JSON.parse(data.Answer).forEach((item,i)=>{
+    tmpOuput.push(item.stdout)
+    if(item.expected_output === item.stdout) 
+      tmpTCPassed.push(i)
+  })
+  let tmp={
+    TestCasePassed: JSON.stringify(tmpTCPassed),
+    DescriptionCode: JSON.parse(data.Answer)[0].source_code,
+    UsedLanguage : JSON.parse(data.Answer)[0].language.id,
+    OutputTestcase: JSON.stringify(tmpOuput)
+  }
+  delete data['Answer']
   const ret = await practiceModel.saveSubmissions(data)
+  tmp.SubmissionID = ret[0]
+  let tempQID = await practiceModel.getQuestionID(data.PracticeID)
+  tmp.QuestionID = tempQID[0].QuestionID[0]
+
+  await practiceModel.saveAnswerCoding(tmp)
   res.json(ret);
 })
 router.get('/', async function (req, res) {
