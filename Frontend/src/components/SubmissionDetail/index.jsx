@@ -65,7 +65,6 @@ const SubmissionDetail = ({dispatch, practice, loading}) =>{
         </Tabs>)};
 
 const current = JSON.parse(practice.currentSubmission.Answer);
-console.log(current)
   return (
     <>{!practice.currentSubmission?<PageLoading></PageLoading>:<div>
     <PageHeader
@@ -87,7 +86,10 @@ console.log(current)
       <Divider orientation='left'>Test Cases</Divider>
     {Testcases(current)}
   </div>:<div>
-    hello
+  <p>date: {practice.currentSubmission.CreatedAt}</p>
+      <p> score: {practice.currentSubmission.Score}</p>
+      <p>correctPercent: {practice.currentSubmission.CorrectPercent}</p>
+      <Divider orientation='left'>Submitted Answer</Divider>
     </div>}
       </div>}
     </>

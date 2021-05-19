@@ -99,6 +99,7 @@ class CodeEditor extends Component {
       });
       return;
     }
+    console.log(this.props)
     this.handleSendCode(this.props.testCases[0].Input[0], this.props.testCases[0].Output[0]);
   };
   handleSubmit = () => {
@@ -280,4 +281,5 @@ class CodeEditor extends Component {
 export default connect(({ practice, judge }) => ({
   practice,
   judge,
+  testCases: practice.listDetail?.listQuestion[0].TestCase,
 }))(CodeEditor);

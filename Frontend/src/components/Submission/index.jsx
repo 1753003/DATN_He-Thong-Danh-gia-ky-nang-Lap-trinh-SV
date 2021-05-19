@@ -46,7 +46,7 @@ const Submission = ({dispatch, practice, loading}) =>{
     });
   },[practice.submissions])
   const handleOnclick = (submission) => {
-    // console.log('set',practice.currentSubmission, submission)
+    console.log('set', submission)
     dispatch({
       type:'practice/setCurrentSubmission',
       payload:submission

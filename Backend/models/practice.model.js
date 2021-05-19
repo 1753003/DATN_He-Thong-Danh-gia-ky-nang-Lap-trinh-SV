@@ -50,4 +50,7 @@ module.exports = {
     })
     return temp;
   },
+  async getQuestionID(ID){
+    return await db('practice').where('PracticeID', ID);
+  },
 }
