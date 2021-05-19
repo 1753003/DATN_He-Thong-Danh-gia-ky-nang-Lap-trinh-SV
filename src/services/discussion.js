@@ -21,13 +21,19 @@ export function updateVote(pid, cid, value, status) {
 
 export async function postComment(payload) {
   const docRef = await firebase.firestore().collection("discussions").doc(`practice-${payload.postId}`).collection('comments').add(payload.cmt);
-  if (payload.parentId === "")
-    firebase.firestore().collection("discussions").doc(`practice-${payload.postId}`).update({
-      root: firebase.firestore.FieldValue.arrayUnion(docRef.id)
-    });
+  await firebase.firestore().collection("discussions").doc(`practice-${payload.postId}`).get().then((docSnapshot) => {
+    if (!docSnapshot.exists) {
+      firebase.firestore().collection("discussions").doc(`practice-${payload.postId}`).set({root:[]})
+    } 
+});
+if (payload.parentId === "")
+{
+  firebase.firestore().collection("discussions").doc(`practice-${payload.postId}`).update({
+    root: firebase.firestore.FieldValue.arrayUnion(docRef.id)
+  }, { merge: true });}
 
-  else
-    firebase.firestore().collection("discussions").doc(`practice-${payload.postId}`).collection("comments").doc(payload.parentId).update({
-      children: firebase.firestore.FieldValue.arrayUnion(docRef.id)
-    });
+else
+  firebase.firestore().collection("discussions").doc(`practice-${payload.postId}`).collection("comments").doc(payload.parentId).update({
+    children: firebase.firestore.FieldValue.arrayUnion(docRef.id)
+  });
 }

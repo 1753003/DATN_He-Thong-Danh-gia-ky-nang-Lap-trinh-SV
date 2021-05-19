@@ -10,11 +10,10 @@ import './style.less'
 import ReactComment from './ReactComment';
 
 
-const CommentList = ({data, loading, dispatch}) =>{
+const CommentList = ({data, loading, dispatch, location}) =>{
 
   const handleClick= (cid, react, value)=>{
-    let params = (new URL(document.location)).searchParams;
-    const postId = params.get("id");
+    let postId = location.state.PracticeID
     const payload = {
       postId: postId,
       commentId: cid,
@@ -48,7 +47,7 @@ const CommentList = ({data, loading, dispatch}) =>{
       <Col  span={20}>
       <Comment
       actions={[
-      showReplyTo&&<ReplyEditor pid={data.id} handleDiscard={handleDiscard}></ReplyEditor>,!showReplyTo&&<span key="comment-nested-reply-to" onClick={()=>replyComment(data.id)}>Reply To</span>,
+      showReplyTo&&<ReplyEditor location={location} pid={data.id} handleDiscard={handleDiscard}></ReplyEditor>,!showReplyTo&&<span key="comment-nested-reply-to" onClick={()=>replyComment(data.id)}>Reply To</span>,
       data.children.length>0?<span onClick={()=>handleViewReply()}>{viewReply?'Hide Reply': 'View Reply'}</span>:null]}
       author={
         `${data.author} ${moment(data.time.toDate()).locale('en').format('MMMM Do YYYY, h:mm:ss a')}`
