@@ -151,6 +151,9 @@ module.exports = {
   async getTestList(set) {
     return await db("test").where("TestSet", set);
   },
+  async getTestByCode(code) {
+    return await db("test").where("TestCode", code);
+  },
   async getTestBySet(set) {
     return await db("test")
       .where("LanguageAllowed", "like", `%${set}"%`)

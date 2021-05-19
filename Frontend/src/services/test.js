@@ -26,7 +26,30 @@ export function getTestList() {
       });
   });
 }
-
+export function getTestIdByCode(code) {
+  return new Promise((resolve, reject) => {
+    var options = {
+      method: 'GET',
+      url: `${Constant.API}/api/test/code/${code}`,
+      headers: {
+        accessToken: Cookies.get('accessToken'),
+        'access-control-allow-origin': Constant.CORS,
+      },
+    };
+    axios
+      .request(options)
+      .then((response) => {
+        // handle success
+        // console.log(response.data)
+        resolve(response.data);
+      })
+      .catch((error) => {
+        // handle error
+        const message = error.response.data.message;
+        tokenHandling(message, resolve, options);
+      });
+  });
+}
 export function getTestById(id) {
   console.log(id);
   return new Promise((resolve, reject) => {
