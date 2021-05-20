@@ -20,7 +20,7 @@ class TestDetail extends React.Component {
 
   constructor(props) {
     super(props);
-    const id = parseInt((location.search.split("="))[1])
+    const id = props.location.state.TestID
     this.props.dispatch({ type: 'test/getTestByID', payload: { id } });
     this.state = {  answer: [] };
     this.handleUnload = this.handleUnload.bind(this);

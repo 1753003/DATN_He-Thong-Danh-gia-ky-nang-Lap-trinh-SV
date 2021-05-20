@@ -35,5 +35,10 @@ router.get('/set/:name', async (req, res)=>{
    const list = await testModel.getTestBySet(set)
    res.json(list)
 })
+router.get('/code/:code', async (req, res)=>{
+   const code = req.params.code;
+   const id = await testModel.getTestByCode(code)
+   res.json(id[0])
+})
 
 module.exports = router;

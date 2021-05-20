@@ -73,7 +73,6 @@ const TestSetList = ({location,dispatch,testDev, loading}) => {
             <List.Item onClick={()=>{
               history.push({
                 pathname: '/developer/test/questions',
-                search: `?tid=${item.TestID}`,
                 state: item,
               }
                 

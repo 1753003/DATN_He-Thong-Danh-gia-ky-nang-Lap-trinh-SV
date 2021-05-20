@@ -4,27 +4,26 @@ import CommentList from './CommentList';
 import ReplyEditor from './ReplyEditor';
 import firebase from '@/utils/firebase'
 
-const DiscussionTab = ({ discussion, dispatch}) =>{
+const DiscussionTab = ({location, discussion, dispatch}) =>{
   const [init, setInit] = useState(false)
   useEffect(()=>{
     setInit(true)
-    let params = (new URL(document.location)).searchParams;
-    let id = params.get("id");
+    let id = location.state.PracticeID
     const rootRef =  firebase.firestore().collection('discussions').doc(`practice-${id}`)
     rootRef.onSnapshot((doc)=>{
-      let comments = doc.data().root
+      if(doc.data())
+      {let comments = doc.data().root
       if (dispatch )
         dispatch({
           type: 'discussion/setRootComments',
           payload: comments
-        });
+        });}
     })
   },[]);
   
   useEffect(()=>{
     if(init){
-    let params = (new URL(document.location)).searchParams;
-    let id = params.get("id");
+      let id = location.state.PracticeID
     
     const commentRef =  firebase.firestore().collection('discussions').doc(`practice-${id}`).collection('comments').orderBy("vote","desc").orderBy("time","desc").onSnapshot((querySnapshot) => {
       let comments = []
@@ -62,8 +61,8 @@ const DiscussionTab = ({ discussion, dispatch}) =>{
   },[discussion.rootComments]);
 
   return(<div>
-    <ReplyEditor></ReplyEditor>
-    <CommentList loading={false}></CommentList>
+    <ReplyEditor location = {location}></ReplyEditor>
+    <CommentList location={location} loading={false}></CommentList>
   </div>
   )
 } 

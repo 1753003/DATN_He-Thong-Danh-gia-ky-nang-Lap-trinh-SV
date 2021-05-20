@@ -17,7 +17,9 @@ const Collection = ({ collectionList, dispatch, loading }) => {
   const history = useHistory();
 
   useEffect(() => {
-    dispatch({ type: 'collection/fetchCollection' });
+    if (collectionList.length === 0) {
+      dispatch({ type: 'collection/fetchCollection' });
+    }
   }, []);
 
   const handleDeleteCollection = (CollectionID) => {
