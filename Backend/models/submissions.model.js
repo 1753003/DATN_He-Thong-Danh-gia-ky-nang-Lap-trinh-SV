@@ -12,7 +12,7 @@ module.exports = {
     },
 
     async postTestSubmission(uid, submission) {
-        await db('submissions').insert({
+        await db('submissions').insert({ 
             SubmissionType: 'MultipleChoice',
             TestID: submission.TestID,
             PracticeID: null,
