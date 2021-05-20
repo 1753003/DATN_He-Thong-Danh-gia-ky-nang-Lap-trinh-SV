@@ -41,8 +41,8 @@ const editor = (value) => {
       readOnly={true}
       theme="tomorrow"
       value={value}
-      minLines="1"
-      maxLines="8"
+      minLines={1}
+      maxLines={8}
       highlightActiveLine={false}
       showPrintMargin={false}
     />

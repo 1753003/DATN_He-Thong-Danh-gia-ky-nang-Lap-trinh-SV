@@ -1,4 +1,4 @@
-import { getPracticeListDetail, getSubmissionList, getPracticeSet, submitMultipleChoice, saveSubmissionMultipleChoice} from '@/services/practice'
+import { getPracticeListDetail, getSubmissionList, getPracticeSet, submitMultipleChoice, getSubmissionDetailInfo } from '@/services/practice'
 import firebase from '@/utils/firebase'
 
 const Model = {
@@ -15,6 +15,19 @@ const Model = {
     mulitpleChoiceResponse:null
   },
   effects: {
+    *getSubmissionDetail({ payload }, { call, put,select }){
+      let data = null
+
+      if(payload.submission.SubmissionType ==="Coding")
+        data = yield getSubmissionDetailInfo(payload.submission.SubmissionID, "coding")
+      else{
+        data = yield getSubmissionDetailInfo(payload.submission.SubmissionID, "multiplechoice")
+      }
+      yield put({
+        type:'changeCurrentSubmission',
+        payload: {data, info:payload.submission}
+      })
+    },
     *submitAnswerMultipleChoice({ payload }, { call, put,select }){
       const data = yield submitMultipleChoice(payload)
       yield put({
@@ -33,6 +46,7 @@ const Model = {
       let uid = 'zcwVw4Rjp7b0lRmVZQt6ZXmspql1'
       let pid = payload
       const listSubmission = yield getSubmissionList(pid, uid)
+
       yield put({
         type:'saveSubmissionList',
         payload: listSubmission
@@ -40,7 +54,7 @@ const Model = {
     },
     *getPracticeListDetail({ payload }, { call, put }) {
       const listDetail = yield getPracticeListDetail(payload.id)
-      console.log(listDetail)
+
       yield put({
         type: 'setListDetail',
         payload: {

@@ -14,10 +14,12 @@ import PageLoading from '@/components/PageLoading';
 import Submission from '@/components/Submission';
 import DisscustionTab from '@/components/Discussions/DiscusstionTab';
 import QuizWrapper from './components/QuizWrapper';
+
+
 const { TabPane } = Tabs;
 
 const questionList = ({location, practice, dispatch, loading}) => {
-
+console.log(practice)
   const [tabChange, onTabChange] = useState(false)
   useEffect(()=>{
     dispatch({

@@ -28,14 +28,12 @@ let data = [];
 
 const Submission = ({dispatch, practice, loading}) =>{
   useEffect(()=>{
-    // console.log(practice.listDetail)
     dispatch({
       type:'practice/getSubmissionList',
       payload: practice.listDetail.generalInformation.PracticeID
     })
   },[]);
   useEffect(()=>{
-    console.log(practice.submissions)
     data =[];
     let i = 1
     practice.submissions?.forEach(submission => {
@@ -46,10 +44,9 @@ const Submission = ({dispatch, practice, loading}) =>{
     });
   },[practice.submissions])
   const handleOnclick = (submission) => {
-    console.log('set', submission)
     dispatch({
-      type:'practice/setCurrentSubmission',
-      payload:submission
+      type:'practice/getSubmissionDetail',
+      payload:{submission}
     })
   }
   return (
@@ -82,5 +79,6 @@ const Submission = ({dispatch, practice, loading}) =>{
 
 export default connect(({practice, loading})=>({
   practice,
-  loading: loading.effects['practice/getSubmissionList']
+  loading: loading.effects['practice/getSubmissionList'],
+  
 }))(Submission);
