@@ -31,6 +31,7 @@ class TestDetail extends React.Component {
     if (this.interval) {
       clearInterval(this.interval);
     }
+    this.reset();
     window.removeEventListener('beforeunload', this.handleUnload);
     window.removeEventListener('popstate', this.handleBack);
   }
@@ -38,7 +39,9 @@ class TestDetail extends React.Component {
   componentDidMount() {
     window.addEventListener('beforeunload', this.handleUnload);
 
-    window.addEventListener('popstate', this.handleBack);
+    window.addEventListener('popstate', (event) => {
+      
+    });
 
     this.interval = setInterval(() => {
       const then = this.props.test.time;
@@ -51,8 +54,7 @@ class TestDetail extends React.Component {
         let hours = countdown.format('HH');
         let minutes = countdown.format('mm');
         let seconds = countdown.format('ss');
-        console.log(hours, minutes, seconds)
-        console.log(max)
+     
         let check2 = false;
         if (parseInt(hours) > parseInt(max[0]))
           check2 = true;
@@ -81,13 +83,9 @@ class TestDetail extends React.Component {
     return message;
   }
 
-  handleBack(e) {
-    console.log(e)
-    var message =
-      'Your test will be submit and you will not have a second chance, are you sure to leave?';
-
-    (e || window.event).returnValue = message; //Gecko + IE
-    return message;
+  handleBack() {
+    console.log("ABC")
+    this.reset();
   }
 
   getData = () => {
@@ -114,8 +112,6 @@ class TestDetail extends React.Component {
       return '';
     }
   };
-
-  
 
   onChangeAnswer = (checkedValues) => {
     this.props.dispatch({
@@ -144,8 +140,12 @@ class TestDetail extends React.Component {
   submit() {
     this.props.dispatch({
       type: 'test/submitTest',
-      payload: 'abc',
+      payload: '',
     });
+    this.props.dispatch({
+      type: 'test/removeSession',
+      payload: this.props.location.state.TestID
+    })
   }
 
   returnQuizQuestion = () => {
@@ -292,21 +292,44 @@ class TestDetail extends React.Component {
   };
   render() {
     const { hours, minutes, seconds, check } = this.state;
-    
-    if (!seconds) {
+    console.log(seconds, this.props.test)
+    if (this.props.test.loading) {
       return <Spin tip="Waiting seconds to load this test ..."></Spin>;
     }
 
     if (this.props.test.isDid) {
+      console.log("ABC")
       return (
         <Result
-          title="Done"
+          title="You have submited this test, you can not do twice."
           extra={
             <Button
               type="primary"
               key="console"
               onClick={() => {
                 this.reset();
+                history.push('/developer/test')
+              }}
+            >
+              Back home
+            </Button>
+          }
+        />
+      );
+    }
+
+    if (check && this.props.test.isOut) {
+      this.submit();
+      return (
+        <Result
+          title="This test was time out, you have not submited this test yet. We will submit your test with empty answer."
+          extra={
+            <Button
+              type="primary"
+              key="console"
+              onClick={() => {
+                this.reset();
+                history.push('/developer/test')
               }}
             >
               Back home
@@ -316,6 +339,7 @@ class TestDetail extends React.Component {
       );
     }
     if (check) {
+      this.submit();
       return (
         <Result
           title="This test was time out, your submission has been recorded."
@@ -325,6 +349,7 @@ class TestDetail extends React.Component {
               key="console"
               onClick={() => {
                 this.reset();
+                history.push('/developer/test')
               }}
             >
               Back home
@@ -339,8 +364,8 @@ class TestDetail extends React.Component {
         <div>
           <PageHeader
             className="site-page-header"
-            title={this.getData()?.generalInformation.TestName}
-            subTitle={this.getData()?.generalInformation.BriefDescription}
+            title={this.getData()?.generalInformation?.TestName}
+            subTitle={this.getData()?.generalInformation?.BriefDescription}
             onBack={() => history.goBack()}
           />
           <div className={styles.countdownWrapper}>

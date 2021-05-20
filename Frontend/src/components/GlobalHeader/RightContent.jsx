@@ -5,7 +5,7 @@ import { connect, SelectLang, history } from 'umi';
 import Avatar from './AvatarDropdown';
 import HeaderSearch from '../HeaderSearch';
 import styles from './index.less';
-import NoticeIconView from './NoticeIconView';
+import NoticeIconView from './NoticeIconView'; 
 
 const ENVTagColor = {
   dev: 'orange',
@@ -78,7 +78,7 @@ const GlobalHeaderRight = (props) => {
           <Tag color={ENVTagColor[REACT_APP_ENV]}>{REACT_APP_ENV}</Tag>
         </span>
       )}
-      <SelectLang className={styles.action} />
+      { <SelectLang className={styles.action} /> }
     </div>
   );
 };

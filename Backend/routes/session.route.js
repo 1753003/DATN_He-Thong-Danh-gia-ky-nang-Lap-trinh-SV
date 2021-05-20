@@ -22,8 +22,8 @@ router.post("/check", async function (req, res) {
         })
 })
 
-router.delete("/", async function (req, res) {
-    await session.deleteSession(req.uid, req.body.TestID);
+router.delete("/:TestID", async function (req, res) {
+    await session.deleteSession(req.uid, req.params.TestID);
     res.json("OK")
 })
 module.exports = router;

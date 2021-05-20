@@ -2,18 +2,18 @@ import { PlusOutlined, HomeOutlined, ContactsOutlined, PhoneOutlined } from '@an
 import { Avatar, Card, Col, Divider, Input, Row, Tag, Form, Radio } from 'antd';
 import React, { Component, useState, useRef } from 'react';
 import { GridContent } from '@ant-design/pro-layout';
-import { Link, connect } from 'umi';
+import { Link, connect, useIntl } from 'umi';
 import Projects from './components/Projects';
 import Practice from './components/Practice';
 import Test from './components/Test';
 import styles from './Center.less';
-
+import Language from '@/locales/index';
 const operationTabList = [
   {
     key: 'practice',
     tab: (
       <span>
-        Practice History{' '}
+        {Language.pages_profile_practiceHistory}{' '}
         <span
           style={{
             fontSize: 14,
@@ -39,21 +39,7 @@ const operationTabList = [
       </span>
     ),
   },
-  // {
-  //   key: 'projects',
-  //   tab: (
-  //     <span>
-  //       项目{' '}
-  //       <span
-  //         style={{
-  //           fontSize: 14,
-  //         }}
-  //       >
-  //         (8)
-  //       </span>
-  //     </span>
-  //   ),
-  // },
+  
 ];
 
 const TagList = ({ tags }) => {
@@ -150,7 +136,6 @@ class Center extends Component {
   };
 
   input = undefined;
-
   componentDidMount() {
     
   }
