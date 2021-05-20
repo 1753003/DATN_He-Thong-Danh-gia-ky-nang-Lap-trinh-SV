@@ -27,6 +27,28 @@ export function checkSession(data) {
     });
   }
 
+  export function deleteSession(TestID) {
+    return new Promise((resolve, reject) => {
+      var options = {
+        method: 'DELETE',
+        url: `${Constant.API}/api/session/${TestID}`,
+        headers: {
+          accessToken: Cookies.get('accessToken'),
+          'access-control-allow-origin': Constant.CORS,
+        },
+      };
+      axios
+        .request(options)
+        .then((response) => {
+          resolve(response.data);
+        })
+        .catch((error) => {
+          const message = error.response.data.message;
+          tokenHandling(message, resolve, options);
+        });
+    });
+  }
+
   export function postSession(data) {
     return new Promise((resolve, reject) => {
       var options = {
