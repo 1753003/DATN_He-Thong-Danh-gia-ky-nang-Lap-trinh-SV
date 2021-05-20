@@ -10,7 +10,6 @@ module.exports = {
     async getTestSubmissions(id){
         return await db('submissions').join('test', 'submissions.TestID', '=', 'test.TestID').where({DevID: id, PracticeID : null});
     },
-
     async postTestSubmission(uid, submission) {
         await db('submissions').insert({
             SubmissionType: 'MultipleChoice',
@@ -58,6 +57,11 @@ module.exports = {
         if (res.length == 0)
             return false;
         return true
-    } 
-
+    },
+    async getAnswerCodingSubmission(sid){
+        return db('answercoding').where('SubmissionID', sid)
+    },
+    async getAnswerMultipleChoiceSubmission(sid){
+        return db('answermultiplechoice').where('SubmissionID', sid)
+    },
 }
