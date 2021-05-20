@@ -1,4 +1,4 @@
-import { getPracticeListDetail, getSubmissionList, getPracticeSet} from '@/services/practice'
+import { getPracticeListDetail, getSubmissionList, getPracticeSet, submitMultipleChoice, saveSubmissionMultipleChoice} from '@/services/practice'
 import firebase from '@/utils/firebase'
 
 const Model = {
@@ -12,8 +12,16 @@ const Model = {
     currentQuestionID: null,
     tabChange:false,
     list:[],
+    mulitpleChoiceResponse:null
   },
   effects: {
+    *submitAnswerMultipleChoice({ payload }, { call, put,select }){
+      const data = yield submitMultipleChoice(payload)
+      yield put({
+        type:'saveMultipleChoiceResponse',
+        payload: data
+      })
+    },
     *getPracticeSetList({ payload }, { call, put,select }){
       const data = yield getPracticeSet(payload)
       yield put({
@@ -32,6 +40,7 @@ const Model = {
     },
     *getPracticeListDetail({ payload }, { call, put }) {
       const listDetail = yield getPracticeListDetail(payload.id)
+      console.log(listDetail)
       yield put({
         type: 'setListDetail',
         payload: {
@@ -84,6 +93,9 @@ const Model = {
     },
     changeTab(state,{payload}) {
       return { ...state, tabChange: payload };
+    },
+    saveMultipleChoiceResponse(state,{payload}) {
+      return { ...state, mulitpleChoiceResponse: payload };
     },
   },
 };

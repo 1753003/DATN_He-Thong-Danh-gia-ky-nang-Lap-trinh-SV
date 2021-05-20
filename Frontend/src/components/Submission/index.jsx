@@ -45,8 +45,8 @@ const Submission = ({dispatch, practice, loading}) =>{
       data.push(temp)
     });
   },[practice.submissions])
-  const handleOnlclick = (submission) => {
-    // console.log('set',practice.currentSubmission, submission)
+  const handleOnclick = (submission) => {
+    console.log('set', submission)
     dispatch({
       type:'practice/setCurrentSubmission',
       payload:submission
@@ -69,7 +69,7 @@ const Submission = ({dispatch, practice, loading}) =>{
       key="action"
       render={(text, record) => (
         <Space size="middle">
-          <a onClick={()=>handleOnlclick(record)}>View Details</a>
+          <a onClick={()=>handleOnclick(record)}>View Details</a>
         </Space>
       )}
     />

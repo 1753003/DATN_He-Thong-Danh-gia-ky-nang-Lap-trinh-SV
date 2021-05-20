@@ -2,18 +2,44 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import tokenHandling from './tokenHandling';
 import Constant from '@/utils/contants';
-
+export function submitMultipleChoice(data) {
+  return new Promise((resolve, reject) => {
+    var options = {
+      method: 'POST',
+      withCredentials: true,
+      url: `${Constant.API}/api/practice/submitcheck`,
+      data: data,
+      headers: {
+        'access-control-allow-origin': Constant.CORS,
+        accessToken: Cookies.get('accessToken'),
+      },
+    };
+    axios.request(options)
+    .then((response) => {
+      // handle success
+      // console.log(response.data)
+      resolve(response.data);
+    })
+    .catch((error) => {
+      const message = error.response.data.message;
+      tokenHandling(message, resolve, options);
+    });
+  })
+}
 export function getPracticeListDetail(id) {
   console.log(Cookies.get('accessToken'));
   return new Promise((resolve, reject) => {
+    var options = {
+      method: 'GET',
+      withCredentials: true,
+      url: `${Constant.API}/api/practice/${id}`,
+      headers: {
+        'access-control-allow-origin': Constant.CORS,
+        accessToken: Cookies.get('accessToken'),
+      },
+    };
     axios
-      .get(`${Constant.API}/api/practice/${id}`, {
-        withCredentials: true,
-        headers: {
-          'access-control-allow-origin': Constant.CORS,
-          accessToken: Cookies.get('accessToken'),
-        },
-      })
+      .request(options)
       .then((response) => {
         resolve(response.data);
       })
@@ -71,7 +97,7 @@ export function getSubmissionList(pid, uid) {
       });
   });
 }
-export function saveSubmission(pid, jsonData) {
+export function saveSubmissionCoding(pid, jsonData) {
   let tcPassed = 0;
   let total = 0;
 

@@ -151,6 +151,9 @@ module.exports = {
   async getTestList(set) {
     return await db("test").where("TestSet", set);
   },
+  async getTestByCode(code) {
+    return await db("test").where("TestCode", code);
+  },
   async getTestBySet(set) {
     return await db("test")
       .where("LanguageAllowed", "like", `%${set}"%`)
@@ -160,36 +163,44 @@ module.exports = {
     test.generalInformation.QuestionID = JSON.stringify(
       test.generalInformation.QuestionID
     );
-    
+
     await db("test").where("TestID", testID).update(test.generalInformation);
     for (let question of test.listQuestion) {
       if (question.ID == undefined) {
-        await db("question").insert({
-          QuestionType: question.QuestionType,
-          Score: question.Score,
-          TestID: testID
-        }).then(async id => {
-          if (question.QuestionType == 'MultipleChoice') {
-            await db("multiplechoice").insert({
-              MCDescription: question.MCDescription,
-              Answer: question.Answer,
-              CorrectAnswer: question.CorrectAnswer,
-              QuestionID: id
-            })
-          }
-          else if (question.QuestionType == 'Coding') {
-            await db("coding").insert({
-              CodeDescription: question.CodeDescription,
-              Language_allowed: question.Language_allowed,
-              RunningTime: question.RunningTime,
-              MemoryUsage: question.MemoryUsage,
-              TestCase: question.TestCase,
-              QuestionID: id,
-              CodeSample: question.CodeSample
-            })
-          }
-        })
-        
+        await db("question")
+          .insert({
+            QuestionType: question.QuestionType,
+            Score: question.Score,
+            TestID: testID,
+          })
+          .then(async (id) => {
+            if (question.QuestionType == "MultipleChoice") {
+              await db("multiplechoice").insert({
+                MCDescription: question.MCDescription,
+                Answer: JSON.stringify(question.Answer),
+                CorrectAnswer: JSON.stringify(question.CorrectAnswer),
+                QuestionID: id[0],
+              });
+            } else if (question.QuestionType == "Coding") {
+              await db("coding").insert({
+                CodeDescription: question.CodeDescription,
+                Language_allowed: JSON.stringify(question.Language_allowed),
+                RunningTime: question.RunningTime,
+                MemoryUsage: question.MemoryUsage,
+                TestCase: JSON.stringify(question.TestCase),
+                QuestionID: id[0],
+                CodeSample: question.CodeSample,
+              });
+            }
+            const temp = (await db("test").where("TestID", testID))[0]
+              .QuestionID;
+            temp.push(id[0]);
+            await db("test")
+              .where("TestID", testID)
+              .update({
+                QuestionID: JSON.stringify(temp),
+              });
+          });
       } else {
         await db("question")
           .where("ID", question.ID)
@@ -211,7 +222,7 @@ module.exports = {
               RunningTime: question.RunningTime,
               MemoryUsage: question.MemoryUsage,
               TestCase: JSON.stringify(question.TestCase),
-              CodeSample: question.CodeSample
+              CodeSample: question.CodeSample,
             });
         }
       }
