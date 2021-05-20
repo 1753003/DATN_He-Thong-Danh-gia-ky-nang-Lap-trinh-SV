@@ -21,14 +21,17 @@ firebase.initializeApp(firebaseConfig);
 router.post("/auth", async function (req, res) {});
 router.post("/signup", async function (req, res) {
   const userByEmail = await userModel.getByEmail(req.body.email);
-  console.log(userByEmail)
+  let check = 0;
+  var result = "";
+  var errorMessage = "";
+  var checkAwait = 0;
   firebase
     .auth()
     .createUserWithEmailAndPassword(req.body.email, req.body.password)
     .then(async (userCredential) => {
       // Signed in
+      console.log('ABC')
       var user = userCredential.user;
-      console.log("ABA")
       user
         .sendEmailVerification()
         .then(function () {
@@ -38,7 +41,7 @@ router.post("/signup", async function (req, res) {
           // An error happened.
         });
       var type = req.body.type;
-      var result;
+
       if (type === "developer")
         result = await userModel.createUserDeveloper(
           user.uid,
@@ -58,32 +61,16 @@ router.post("/signup", async function (req, res) {
         status: "Ok",
         uid: result,
       });
-
-      user
-        .sendEmailVerification()
-        .then(function () {
-          // Email sent.
-        })
-        .catch(function (error) {
-          // An error happened.
-        });
     })
-    .catch(async (error) => {
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      console.log("error: ", errorMessage);
-      console.log(userByEmail);
-      if (errorCode === "auth/email-already-in-use") {
-        if (userByEmail.UserStatus === "not active")
-          res.json({
-            status: "Ok",
-            uid: userByEmail.UserID,
-          });
-      }
+    .catch((error) => {
+      check = 1;
+      
+      errorMessage = error.message;
+      console.log("error: ", errorMessage); 
       res.json({
         status: "Fail",
         message: errorMessage,
-      });
+      });       
     });
 });
 

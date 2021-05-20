@@ -63,7 +63,7 @@ const TestModel = {
           payload: true,
         });
       } 
-        yield put({
+        yield put({ 
           type: 'saveTestById',
           payload: response,
         });
