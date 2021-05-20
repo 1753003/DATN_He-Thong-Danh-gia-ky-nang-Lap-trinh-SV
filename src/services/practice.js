@@ -26,6 +26,29 @@ export function submitMultipleChoice(data) {
     });
   })
 }
+export function getSubmissionDetailInfo(id, type) {
+  return new Promise((resolve, reject) => {
+    var options = {
+      method: 'GET',
+      withCredentials: true,
+      url: `${Constant.API}/api/submissions/${type}/${id}`,
+      headers: {
+        'access-control-allow-origin': Constant.CORS,
+        accessToken: Cookies.get('accessToken'),
+      },
+    };
+    axios.request(options)
+    .then((response) => {
+      // handle success
+      // console.log(response.data)
+      resolve(response.data);
+    })
+    .catch((error) => {
+      const message = error.response.data.message;
+      tokenHandling(message, resolve, options);
+    });
+  })
+}
 export function getPracticeListDetail(id) {
   console.log(Cookies.get('accessToken'));
   return new Promise((resolve, reject) => {
@@ -50,7 +73,7 @@ export function getPracticeListDetail(id) {
   });
 }
 export function getPracticeSet(set) {
-  console.log(Constant)
+
   return new Promise((resolve, reject) => {
     var options = {
       method: 'GET',
@@ -75,10 +98,9 @@ export function getPracticeSet(set) {
   });
 }
 export function getSubmissionList(pid, uid) {
-  uid = 'zcwVw4Rjp7b0lRmVZQt6ZXmspql1'; //chromevi123+1@gmail.com
   return new Promise((resolve, reject) => {
     axios
-      .get(`${Constant.API}/api/practice/submissions?pid=${pid}&uid=${uid}`, {
+      .get(`${Constant.API}/api/practice/submissions?pid=${pid}`, {
         withCredentials: true,
         headers: {
           'access-control-allow-origin': Constant.CORS,
