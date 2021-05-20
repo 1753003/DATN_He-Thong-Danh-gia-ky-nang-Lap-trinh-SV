@@ -1,4 +1,5 @@
 const db = require('../utils/db');
+const submissionsModel = require("../models/submissions.model");
 
 module.exports = {
   async getAllPractice(){
@@ -14,7 +15,28 @@ module.exports = {
   },
 
   async getSubmissions(pid, uid){
-    return await db('submissions').where({'PracticeID':pid, 'DevID':uid})
+    const list = await db('submissions').where({'PracticeID':pid, 'DevID':uid})
+    let result = []
+    for (item of list) {
+    let tempItem = item
+    // if (item.SubmissionType === "MultipleChoice") {
+    //   let temp = await submissionsModel.getAnswerMultipleChoiceSubmission(item.SubmissionID)
+    //   tempItem.Answer = temp
+    //   console.log(tempItem)
+      
+    // } else {
+    //   let temp = await submissionsModel.getAnswerCodingSubmission(item.SubmissionID)
+
+    //   let testcases  = JSON.stringify(temp[0]?.OutputTestcase)
+    //   let tmp = {
+    //     source_code:temp[0]?.DescriptionCode,
+    //     testcases: testcases
+    //   }
+    //   item.Answer = tmp
+    // }
+    result.push(tempItem)
+  };
+  return JSON.parse(JSON.stringify(result))
   },
   
   async saveSubmissions(data){

@@ -55,7 +55,7 @@ const testHome = ({dispatch}) => {
 
 
   return (<div className={styles.global}>
-  <QueueAnim className="combined-wrapper">
+  <QueueAnim className="combine-wrapper">
       <div key="input-wrapper" className="input-wrapper">
         <Input onPressEnter={handleSubmit} onChange={(e)=>handleChange(e)} className="input" size="large" placeholder="ENTER YOUR PIN CODE">
         </Input>

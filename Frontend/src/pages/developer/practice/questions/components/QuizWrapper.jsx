@@ -15,6 +15,7 @@ const QuestionGrid = ({ list, onSelectedGrid, handleSubmit }) => {
       {list?.map((item, i) => {
         return (
           <Button
+            key={i}
             type={item.type}
             size="large"
             className={styles.square}
@@ -24,7 +25,7 @@ const QuestionGrid = ({ list, onSelectedGrid, handleSubmit }) => {
           </Button>
         );
       })}
-      <Button  type="primary" block onClick={() => handleSubmit()}>
+      <Button type="primary" block onClick={() => handleSubmit()}>
         Submit
       </Button>
     </div>
@@ -97,34 +98,36 @@ const QuizWrapper = ({ submitResponse, dispatch, data, loading }) => {
           // console.log('Cancel');
         },
       });
-    else
-      {
-        dispatch({
-          type: 'practice/submitAnswerMultipleChoice',
-          payload: userChoice,
-        });
-      }
+    else {
+      dispatch({
+        type: 'practice/submitAnswerMultipleChoice',
+        payload: userChoice,
+      });
+    }
   };
-  return loading?<PageLoading/>:(submitResponse==null?
+  return loading ? (
+    <PageLoading />
+  ) : submitResponse == null ? (
     <Row gutter={32}>
       <Col span={18}>
-        <Divider orientation="left">{`Question ${currentQuestionID+1}.`}</Divider>
+        <Divider orientation="left">{`Question ${currentQuestionID + 1}.`}</Divider>
         <p>{data?.listQuestion[currentQuestionID].Description}</p>
         <Divider></Divider>
         <CheckboxGroup
+          className={styles.checkboxGroup}
           value={currentChoices}
           options={data?.listQuestion[currentQuestionID].Answer}
           onChange={(list) => handleChange(list)}
         ></CheckboxGroup>
         <Divider></Divider>
         <Space>
-            <Button disabled={backState} type="primary" onClick={() => onBack()}>
-              Back
-            </Button>
-            <Button disabled={nextState} type="primary" onClick={() => onNext()}>
-              Next
-            </Button>
-          </Space>
+          <Button disabled={backState} type="primary" onClick={() => onBack()}>
+            Back
+          </Button>
+          <Button disabled={nextState} type="primary" onClick={() => onNext()}>
+            Next
+          </Button>
+        </Space>
       </Col>
       <Col span={6}>
         <QuestionGrid
@@ -134,12 +137,20 @@ const QuizWrapper = ({ submitResponse, dispatch, data, loading }) => {
         ></QuestionGrid>
       </Col>
     </Row>
-  :<div>
-    <h2>Practice submitted successfully. </h2>
-    <h3 style={submitResponse === data.listQuestion.length?{color:"darkgreen"}:{color:"red"}}>{`Your result: ${submitResponse} / ${data.listQuestion.length} correct questions`}</h3>
-    <Divider></Divider>
-    <p>We have received and processed your submission. You can view your detail submission in "Submission Tab"</p>
-    <p>If you have anything to tell us, you can feel free to contact at codejoy@codejoy.com</p>
+  ) : (
+    <div>
+      <h2>Practice submitted successfully. </h2>
+      <h3
+        style={
+          submitResponse === data.listQuestion.length ? { color: 'darkgreen' } : { color: 'red' }
+        }
+      >{`Your result: ${submitResponse} / ${data.listQuestion.length} correct questions`}</h3>
+      <Divider></Divider>
+      <p>
+        We have received and processed your submission. You can view your detail submission in
+        "Submission Tab"
+      </p>
+      <p>If you have anything to tell us, you can feel free to contact at codejoy@codejoy.com</p>
     </div>
   );
 };
@@ -147,5 +158,5 @@ const QuizWrapper = ({ submitResponse, dispatch, data, loading }) => {
 export default connect(({ practice, loading }) => ({
   submitResponse: practice.mulitpleChoiceResponse,
   // loadingSubmit: loading.effects['practice/submitAnswerMultipleChoice']
-  loading: loading.models['practice']
+  loading: loading.models['practice'],
 }))(QuizWrapper);

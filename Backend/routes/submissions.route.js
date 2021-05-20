@@ -25,4 +25,12 @@ router.get('/check/:id', async function(req, res) {
     const response = await submisisionsModel.checkExist(req.uid, req.params.id);
     res.json(response)
 })
+router.get('/coding/:id', async function(req, res) {
+    const response = await submisisionsModel.getAnswerCodingSubmission(req.params.id);
+    res.json(response)
+})
+router.get('/multiplechoice/:id', async function(req, res) {
+    const response = await submisisionsModel.getAnswerMultipleChoiceSubmission(req.params.id);
+    res.json(response)
+})
 module.exports = router;

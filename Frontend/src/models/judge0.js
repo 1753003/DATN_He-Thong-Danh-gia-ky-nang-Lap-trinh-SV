@@ -89,7 +89,8 @@ const Model = {
       })
       //savedb
       const state = yield select(state => state.judge)
-
+      console.log(state.result
+        .submissions)
       yield saveSubmissionCoding(payload.pid,state.result.submissions)
     },
     
