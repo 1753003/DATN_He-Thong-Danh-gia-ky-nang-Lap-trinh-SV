@@ -6,7 +6,7 @@ import {
   postSubmission,
   checkSubmission,
   updateEditedTest,
-  getTestIdByCode
+  getTestIdByCode,
 } from '@/services/test';
 import { checkSession, deleteSession } from '@/services/session';
 
@@ -18,7 +18,7 @@ import {
   getSubmissionBatch,
 } from '@/services/judge0';
 import { u_atob, u_btoa } from '@/utils/string';
-import {history} from 'umi'
+import { history } from 'umi';
 const TestModel = {
   namespace: 'test',
   state: {
@@ -34,12 +34,12 @@ const TestModel = {
   effects: {
     *getTestIdFromCode({ payload }, { call, put }) {
       const response = yield call(getTestIdByCode, payload);
-      console.log(response)
+      console.log(response);
       history.push({
-      pathname: '/developer/test/questions',
-      search: `?tid=${response.TestID}`,
-      state: response,
-    })
+        pathname: '/developer/test/questions',
+        search: `?tid=${response.TestID}`,
+        state: response,
+      });
     },
     *fetchTestList(_, { call, put }) {
       const response = yield call(getTestList);
@@ -73,22 +73,21 @@ const TestModel = {
           type: 'saveIsDid',
           payload: true,
         });
-      } 
-        yield put({ 
-          type: 'saveTestById',
-          payload: response,
-        });
-        const answerList = [];
-        yield select((state) => {
-          state.test.testById.listQuestion.forEach((e) => {
-            var temp = [];
-            console.log(e.QuestionType);
-            if (e.QuestionType === 'MultipleChoice') temp = [];
-            else temp = '';
-            answerList.push({
-              id: e.ID,
-              data: temp,
-            });
+      }
+      yield put({
+        type: 'saveTestById',
+        payload: response,
+      });
+      const answerList = [];
+      yield select((state) => {
+        state.test.testById.listQuestion.forEach((e) => {
+          var temp = [];
+          console.log(e.QuestionType);
+          if (e.QuestionType === 'MultipleChoice') temp = [];
+          else temp = '';
+          answerList.push({
+            id: e.ID,
+            data: temp,
           });
         });
       });
@@ -324,9 +323,9 @@ const TestModel = {
         payload: {},
       });
     },
-    *removeSession({payload}, {call}) {
+    *removeSession({ payload }, { call }) {
       yield call(deleteSession, payload);
-    }
+    },
   },
   reducers: {
     saveTestList(state, { payload }) {
