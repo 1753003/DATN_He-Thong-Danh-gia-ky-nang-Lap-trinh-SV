@@ -7,7 +7,7 @@ import {
   checkSubmission,
   updateEditedTest
 } from '@/services/test';
-import { checkSession } from '@/services/session';
+import { checkSession, deleteSession } from '@/services/session';
 
 import moment from 'moment';
 import {
@@ -229,7 +229,6 @@ const TestModel = {
           let i = 0;
 
           result.submissions.forEach((item) => {
-            console.log(item.time);
             if (item.expected_output === item.stdout) TestCasePassed.push(i);
             i++;
             OutputTestcase.push(item.stdout);
@@ -313,6 +312,9 @@ const TestModel = {
         payload: {},
       });
     },
+    *removeSession({payload}, {call}) {
+      yield call(deleteSession, payload);
+    }
   },
   reducers: {
     saveTestList(state, { payload }) {
