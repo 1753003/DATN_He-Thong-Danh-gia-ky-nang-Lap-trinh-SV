@@ -8,7 +8,7 @@ import {
   updateEditedTest,
   getTestIdByCode
 } from '@/services/test';
-import { checkSession } from '@/services/session';
+import { checkSession, deleteSession } from '@/services/session';
 
 import moment from 'moment';
 import {
@@ -73,21 +73,22 @@ const TestModel = {
           type: 'saveIsDid',
           payload: true,
         });
-      }
-      yield put({
-        type: 'saveTestById',
-        payload: response,
-      });
-      const answerList = [];
-      yield select((state) => {
-        state.test.testById.listQuestion.forEach((e) => {
-          var temp = [];
-          console.log(e.QuestionType);
-          if (e.QuestionType === 'MultipleChoice') temp = [];
-          else temp = '';
-          answerList.push({
-            id: e.ID,
-            data: temp,
+      } 
+        yield put({ 
+          type: 'saveTestById',
+          payload: response,
+        });
+        const answerList = [];
+        yield select((state) => {
+          state.test.testById.listQuestion.forEach((e) => {
+            var temp = [];
+            console.log(e.QuestionType);
+            if (e.QuestionType === 'MultipleChoice') temp = [];
+            else temp = '';
+            answerList.push({
+              id: e.ID,
+              data: temp,
+            });
           });
         });
       });
@@ -240,7 +241,6 @@ const TestModel = {
           let i = 0;
 
           result.submissions.forEach((item) => {
-            console.log(item.time);
             if (item.expected_output === item.stdout) TestCasePassed.push(i);
             i++;
             OutputTestcase.push(item.stdout);
@@ -324,6 +324,9 @@ const TestModel = {
         payload: {},
       });
     },
+    *removeSession({payload}, {call}) {
+      yield call(deleteSession, payload);
+    }
   },
   reducers: {
     saveTestList(state, { payload }) {
