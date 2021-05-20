@@ -42,7 +42,7 @@ module.exports = {
   async getIndexMultipleChoice(qid, list){
     const ans = await db("multiplechoice").where("QuestionID", "=", qid)
     let temp = []
-    ans[0]?.Answer.forEach((item ,i)=>{
+    ans[0].Answer.forEach((item ,i)=>{
       list.forEach(listItem=>{
         if(item === listItem)
           temp.push(i)
