@@ -297,14 +297,6 @@ const TestModel = {
             QuestionID: data.answer[count].id,
             Choice: Choice,
           };
-
-          if (
-            e.CorrectAnswer.length === listAnswer[count].Choice.length &&
-            e.CorrectAnswer.every((val, index) => val === listAnswer[count].Choice[index])
-          ) {
-            score += e.Score;
-            numCorrect++;
-          }
         }
         count++;
       }
@@ -327,10 +319,11 @@ const TestModel = {
       yield call(postSubmission, {
         TestID: data.test.generalInformation.TestID,
         AnsweredNumber: numAnswer,
-        CorrectPercent: numCorrect / data.test.listQuestion.length,
+        CorrectPercent: numCorrect,
         DoingTime: time,
         Score: score,
         ListAnswer: listAnswer,
+
       });
     },
     *resetModel(_, { put }) {

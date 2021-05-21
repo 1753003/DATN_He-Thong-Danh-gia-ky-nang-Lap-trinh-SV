@@ -11,7 +11,7 @@ module.exports = {
         return await db('submissions').join('test', 'submissions.TestID', '=', 'test.TestID').where({DevID: id, PracticeID : null});
     },
     async postTestSubmission(uid, submission) {
-        await db('submissions').insert({
+        await db('submissions').insert({ 
             SubmissionType: 'MultipleChoice',
             TestID: submission.TestID,
             PracticeID: null,
