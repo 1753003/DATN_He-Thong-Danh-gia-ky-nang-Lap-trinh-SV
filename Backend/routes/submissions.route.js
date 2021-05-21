@@ -15,24 +15,26 @@ router.get('/', async function(req, res){
 
 router.post('/test', async function(req,res) {
     const submission = req.body;
-    const answer = testModel.getAnswer(req.body.TestID);
+    console.log(submission)
+    const answer = await (testModel.getAnswer(req.body.TestID));
     let score = 0;
     let numCorrect = 0;
     let count = 0;
     for (let i of submission.ListAnswer) {
         if (i.Type == "MultipleChoice") {
+            console.log(i)
             if (
                 answer[count].CorrectAnswer.length === i.Choice.length &&
                 answer[count].CorrectAnswer.every((val, index) => val === i.Choice[index])
               ) {
-                score += e.Score;
+                score += answer[count].Score;
                 numCorrect++;
               }
         }
         count++;
     }
     submission.Score += score;
-    submission.CorrectPercent = (submission.CorrectPercent + numCorrect) / answer.length
+    submission.CorrectPercent = ((submission.CorrectPercent + numCorrect) / answer.length) * 100;
     await submisisionsModel.postTestSubmission(req.uid, submission);
     res.json(
         'OK'

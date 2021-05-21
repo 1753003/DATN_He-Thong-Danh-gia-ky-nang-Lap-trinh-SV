@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './index.less';
-import { Row, Col, Button, List, Checkbox, Spin, PageHeader, Result, Popconfirm, message } from 'antd';
+import { Row, Col, Button, List, Checkbox, Spin, PageHeader, Result, Popconfirm, notification } from 'antd';
 import { connect } from 'dva';
 import moment from 'moment';
 import Coding from '@/components/Coding quiz';
@@ -146,6 +146,14 @@ class TestDetail extends React.Component {
       type: 'test/removeSession',
       payload: this.props.location.state.TestID
     })
+    const args = {
+      message: 'Submit successful!',
+      description:
+        'We recorded your submission!',
+      duration: 0,
+    };
+    notification.open(args);
+    history.push('/developer/test')
   }
 
   returnQuizQuestion = () => {
