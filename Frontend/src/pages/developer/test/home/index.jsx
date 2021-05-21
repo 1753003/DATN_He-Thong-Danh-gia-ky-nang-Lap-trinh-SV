@@ -14,6 +14,8 @@ import TweenOne from 'rc-tween-one';
 import QueueAnim from 'rc-queue-anim';
 import { connect } from 'dva'
 import {history} from 'umi'
+import Language from '@/locales/index';
+
 const data = [
   {
     title: 'C Programming Set',
@@ -57,15 +59,15 @@ const testHome = ({dispatch}) => {
   return (<div className={styles.global}>
   <QueueAnim className="combined-wrapper">
       <div key="input-wrapper" className="input-wrapper">
-        <Input onPressEnter={handleSubmit} onChange={(e)=>handleChange(e)} className="input" size="large" placeholder="ENTER YOUR PIN CODE">
+        <Input onPressEnter={handleSubmit} onChange={(e)=>handleChange(e)} className="input" size="large" placeholder={Language.pages_test_home_enterPinCode}>
         </Input>
         <Button onClick = {handleSubmit} block size="large" className="button">
-          JOIN
+          {Language.pages_test_home_join}
         </Button>
       </div>
   </QueueAnim>
     <div>
-    <Typography.Title className={styles.topic}><Texty>{'Topics'}</Texty></Typography.Title>
+    <Typography.Title className={styles.topic}><Texty>{Language.pages_practice_topics}</Texty></Typography.Title>
       <div className={styles.body}>
       <QueueAnim  delay={300} className={styles.queue}>
         {data.map((item, i)=>(

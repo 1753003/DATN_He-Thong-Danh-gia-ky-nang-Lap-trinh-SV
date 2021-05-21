@@ -5,7 +5,8 @@ import TweenOne from 'rc-tween-one';
 import BannerSVGAnim from './component/BannerSVGAnim';
 import { InputNumber, Button, Checkbox } from 'antd';
 import Children from 'rc-tween-one/lib/plugin/ChildrenPlugin';
-import {history, Link} from 'umi'
+import {history, Link} from 'umi';
+import Language from '@/locales/index';
 TweenOne.plugins.push(Children);
 
 const Banner = (props) => {
@@ -38,9 +39,9 @@ const Banner = (props) => {
             style={{ transform: 'translateX(-64px)' }}
           />
         </div>
-        <h1 key="h1">Hi Developer</h1>
+        <h1 key="h1">{Language.pages_welcome_hiDev}</h1>
         <p key="content">
-          What are you going to do ?
+          {Language.pages_welcome_whatToDoing}
         </p>
         <TweenOne className='number'
         animation={animation}
@@ -48,11 +49,11 @@ const Banner = (props) => {
       >
         0
       </TweenOne>
-      <h4 className='numtitle'>Test sets are ready for you</h4>
+      <h4 className='numtitle'>{Language.pages_welcome_testSet}</h4>
         <div key="button" className="button-wrapper">
           <Link to = '/developer/practice'>
           <Button type="primary">
-              Let's Practice
+              {Language.pages_welcome_practice}
             </Button>
           </Link>
           <Link to = '/developer/test'>
@@ -61,7 +62,7 @@ const Banner = (props) => {
           
           style={{ margin: '0 16px', padding:'4px 10px' }}
           type="primary" ghost>
-            Do the Test
+            {Language.pages_welcome_test}
           </Button>
           </Link>
         </div>

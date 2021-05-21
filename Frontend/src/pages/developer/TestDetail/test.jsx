@@ -6,6 +6,7 @@ import moment from 'moment';
 import Coding from '@/components/Coding quiz';
 import Quiz from './components/quiz';
 import { history, Link, withRouter } from 'umi';
+import Language from '@/locales/index';
 import { min, result } from 'lodash-es';
 const CheckboxGroup = Checkbox.Group;
 
@@ -207,7 +208,7 @@ class TestDetail extends React.Component {
               this.back();
             }}
           >
-            Back
+            {Language.pages_test_testDetail_back}
           </Button>
           <Button
             type="primary"
@@ -216,7 +217,7 @@ class TestDetail extends React.Component {
             }}
             className={styles.nextBtn}
           >
-            Next
+            {Language.pages_test_testDetail_next}
           </Button>
         </Row>
       );
@@ -229,7 +230,7 @@ class TestDetail extends React.Component {
               this.back();
             }}
           >
-            Back
+            {Language.pages_test_testDetail_back}
           </Button>
           <Button
             type="primary"
@@ -239,7 +240,7 @@ class TestDetail extends React.Component {
             }}
             className={styles.nextBtn}
           >
-            Next
+            {Language.pages_test_testDetail_next}
           </Button>
         </Row>
       );
@@ -252,7 +253,7 @@ class TestDetail extends React.Component {
               this.back();
             }}
           >
-            Back
+            {Language.pages_test_testDetail_back}
           </Button>
           <Button
             type="primary"
@@ -261,7 +262,7 @@ class TestDetail extends React.Component {
             }}
             className={styles.nextBtn}
           >
-            Next
+            {Language.pages_test_testDetail_next}
           </Button>
         </Row>
       );
@@ -294,14 +295,14 @@ class TestDetail extends React.Component {
     const { hours, minutes, seconds, check } = this.state;
     console.log(seconds, this.props.test)
     if (this.props.test.loading) {
-      return <Spin tip="Waiting seconds to load this test ..."></Spin>;
+      return <Spin tip={Language.pages_test_testDetail_waitingThisTest}></Spin>;
     }
 
     if (this.props.test.isDid) {
       console.log("ABC")
       return (
         <Result
-          title="You have submited this test, you can not do twice."
+          title={Language.pages_test_testDetail_submittedThisTest}
           extra={
             <Button
               type="primary"
@@ -311,7 +312,7 @@ class TestDetail extends React.Component {
                 history.push('/developer/test')
               }}
             >
-              Back home
+              {Language.pages_test_testDetail_backHome}
             </Button>
           }
         />
@@ -322,7 +323,7 @@ class TestDetail extends React.Component {
       this.submit();
       return (
         <Result
-          title="This test was time out, you have not submited this test yet. We will submit your test with empty answer."
+          title={Language.pages_test_testDetail_timeOut_notSubmit}
           extra={
             <Button
               type="primary"
@@ -332,7 +333,7 @@ class TestDetail extends React.Component {
                 history.push('/developer/test')
               }}
             >
-              Back home
+              {Language.pages_test_testDetail_backHome}
             </Button>
           }
         />
@@ -342,7 +343,7 @@ class TestDetail extends React.Component {
       this.submit();
       return (
         <Result
-          title="This test was time out, your submission has been recorded."
+          title={Language.pages_test_testDetail_timeOut_submit}
           extra={
             <Button
               type="primary"
@@ -352,7 +353,7 @@ class TestDetail extends React.Component {
                 history.push('/developer/test')
               }}
             >
-              Back home
+              {Language.pages_test_testDetail_backHome}
             </Button>
           }
         />
@@ -372,19 +373,19 @@ class TestDetail extends React.Component {
             {hours && (
               <div className={styles.countdownItem}>
                 {hours}
-                <span>hours</span>
+                <span>{Language.pages_test_testDetail_hours}</span>
               </div>
             )}
             {minutes && (
               <div className={styles.countdownItem}>
                 {minutes}
-                <span>minutes</span>
+                <span>{Language.pages_test_testDetail_minutes}</span>
               </div>
             )}
             {seconds && (
               <div className={styles.countdownItem}>
                 {seconds}
-                <span>seconds</span>
+                <span>{Language.pages_test_testDetail_seconds}</span>
               </div>
             )}
           </div>
@@ -397,17 +398,17 @@ class TestDetail extends React.Component {
             <Col span={15} className={styles.answer}>
               {this.getData().generalInformation == undefined ? (
                 <div className={styles.spin}>
-                  <Spin tip="Waiting seconds to load a test ..." />
+                  <Spin tip={Language.pages_test_testDetail_waitingATest} />
                 </div>
               ) : (
                 <>
                   <p>
                     <b>
-                      <i>Question {this.props.test.question + 1}</i>
+                      <i>{Language.pages_test_testDetail_question}{this.props.test.question + 1}</i>
                     </b>
                   </p>
                   <p>
-                    <b>Score:</b> {this.getQuestion()?.Score}
+                    <b>{Language.pages_test_testDetail_score}</b> {this.getQuestion()?.Score}
                   </p>
                   {this.getQuestion()?.QuestionType === 'Code' ? (
                     <>{this.returnCodeQuestion()}</>
@@ -426,7 +427,7 @@ class TestDetail extends React.Component {
               <List
                 header={
                   <p>
-                    <b>List Question</b>
+                    <b>{Language.pages_test_testDetail_listQuestion}</b>
                   </p>
                 }
                 footer={
@@ -439,7 +440,7 @@ class TestDetail extends React.Component {
                     <Button
                       type="primary"
                     >
-                      Submit
+                      {Language.pages_test_testDetail_submit}
                     </Button>
                   </Popconfirm>
                 }
