@@ -40,5 +40,8 @@ router.get('/code/:code', async (req, res)=>{
    const id = await testModel.getTestByCode(code)
    res.json(id[0])
 })
-
+router.get('/answer/:TestID', async (req, res) => {
+   const list = await testModel.getAnswer(req.params.TestID);
+   res.json(list);
+})
 module.exports = router;
