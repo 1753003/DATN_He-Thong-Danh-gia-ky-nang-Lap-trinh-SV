@@ -8,6 +8,7 @@ import {
 } from 'antd'
 import {history, Link, withRouter} from 'umi'
 import { connect } from 'dva'
+import Language from '@/locales/index';
 const { TabPane } = Tabs;
 
 const Questions = ({location, testDev, dispatch, loading}) => {
@@ -23,20 +24,20 @@ const Questions = ({location, testDev, dispatch, loading}) => {
       <Row>
       <Col className="tabs" span={19}>
         <Tabs className="custom" type="card" size="large" >
-          <TabPane tab="Problem" key="1">
+          <TabPane tab={Language.pages_practice_questions_problem} key="1">
             {/* <Problem data = {location.state}></Problem> */}
           </TabPane>
-          <TabPane tab="Submission" key="2">
+          <TabPane tab={Language.pages_practice_questions_submission} key="2">
 
           </TabPane>
-          <TabPane tab="Discussion" key="3">
+          <TabPane tab={Language.pages_practice_questions_discussion} key="3">
 
           </TabPane>
         </Tabs>
       </Col>
       <Col className="info" flex='auto' span={4}>
         <Row justify="space-between">
-          <Col >Author<br/>Difficulty<br/>Max Score</Col>
+          <Col >{Language.pages_practice_questions_author}<br/>{Language.pages_practice_questions_difficulty}<br/>{Language.pages_practice_questions_maxScore}</Col>
           <Col style={{textAlign:'right'}}>Admin<br/>{""}<br/>{""}</Col>
         </Row>
       </Col>

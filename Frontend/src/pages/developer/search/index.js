@@ -13,6 +13,7 @@ import {
     Tag
   } from 'antd';
 import "./style.less"
+import Language from '@/locales/index';
 const { Title, Text } = Typography;
 class SearchResult extends React.Component {
   constructor(props) {
@@ -22,7 +23,7 @@ class SearchResult extends React.Component {
     console.log(this.props.search)
     return (
       <div>
-        <h1>Search result</h1>
+        <h1>{Language.pages_search_searchResult}</h1>
         <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
           <Col className="gutter-row" span={18}>
             <List className="custom"
@@ -84,29 +85,29 @@ class SearchResult extends React.Component {
                       </div>
                     }
                   />
-                   {item.isSolve && <Button size='large' style={{width:'100px'}}>Solved</Button>}
-              {!item.isSolve && <Button size='large' style={{width:'100px'}} type="primary">  Start  </Button>}
+                   {item.isSolve && <Button size='large' style={{width:'100px'}}>{Language.pages_practice_list_solved}</Button>}
+              {!item.isSolve && <Button size='large' style={{width:'100px'}} type="primary">  {Language.pages_search_start}  </Button>}
                 </List.Item>
               )}
             />
           </Col>
           <Col className="gutter-row" span={6} style={{ margin: '30px 0px 10px 0px' }}>
-            <Title level={4}>STATUS</Title>
-            <Checkbox onChange={()=>{this.props.dispatch({type:'search/updateFilter',payload: 'solved'})}}>Solved</Checkbox>
+            <Title level={4}>{Language.pages_practice_list_status}</Title>
+            <Checkbox onChange={()=>{this.props.dispatch({type:'search/updateFilter',payload: 'solved'})}}>{Language.pages_practice_list_solved}</Checkbox>
             <br></br>
-            <Checkbox onChange={()=>{this.props.dispatch({type:'search/updateFilter',payload: 'unsolved'})}}>Unsolved</Checkbox>
+            <Checkbox onChange={()=>{this.props.dispatch({type:'search/updateFilter',payload: 'unsolved'})}}>{Language.pages_practice_list_unsolved}</Checkbox>
             <Divider />
-            <Title level={4}>DIFICULTY</Title>
-            <Checkbox onChange={()=>{this.props.dispatch({type:'search/updateFilter',payload: 'easy'})}}>Easy</Checkbox>
+            <Title level={4}>{Language.pages_practice_list_difficulty}</Title>
+            <Checkbox onChange={()=>{this.props.dispatch({type:'search/updateFilter',payload: 'easy'})}}>{Language.pages_practice_list_easy}</Checkbox>
             <br></br>
-            <Checkbox onChange={()=>{this.props.dispatch({type:'search/updateFilter',payload: 'medium'})}}>Medium</Checkbox>
+            <Checkbox onChange={()=>{this.props.dispatch({type:'search/updateFilter',payload: 'medium'})}}>{Language.pages_practice_list_medium}</Checkbox>
             <br></br>
-            <Checkbox onChange={()=>{this.props.dispatch({type:'search/updateFilter',payload: 'hard'})}}>Hard</Checkbox>
+            <Checkbox onChange={()=>{this.props.dispatch({type:'search/updateFilter',payload: 'hard'})}}>{Language.pages_practice_list_hard}</Checkbox>
             <Divider />
-            <Title level={4}>TYPE</Title>
-            <Checkbox onChange={()=>{this.props.dispatch({type:'search/updateFilter',payload: 'multiple'})}}>Multiple-choice</Checkbox>
+            <Title level={4}>{Language.pages_practice_list_type}</Title>
+            <Checkbox onChange={()=>{this.props.dispatch({type:'search/updateFilter',payload: 'multiple'})}}>{Language.pages_practice_list_multipleChoice}</Checkbox>
             <br></br>
-            <Checkbox onChange={()=>{this.props.dispatch({type:'search/updateFilter',payload: 'code'})}}>Coding</Checkbox>
+            <Checkbox onChange={()=>{this.props.dispatch({type:'search/updateFilter',payload: 'code'})}}>{Language.pages_practice_list_coding}</Checkbox>
             <Divider />
           </Col>
         </Row>

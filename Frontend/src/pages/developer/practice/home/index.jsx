@@ -10,6 +10,7 @@ import {Link} from 'umi';
 import Texty from 'rc-texty';
 import TweenOne from 'rc-tween-one';
 import QueueAnim from 'rc-queue-anim';
+import Language from '@/locales/index';
 
 const data = [
   {
@@ -124,7 +125,7 @@ const practiceHome = () => {
                 ],
               }}
             >
-              Practice Makes Perfect
+              {Language.pages_practice_title}
             </Texty>
             <Texty 
               className="content"
@@ -133,13 +134,13 @@ const practiceHome = () => {
               delay={2200}
               interval={30}
             >
-              Let jump into plenty of practices we have prepared for you.
+              {Language.pages_practice_subTitle}
             </Texty>
           </div>
         )}
       </div>
     <div>
-    <Typography.Title className={styles.topic}><Texty>{'Topics'}</Texty></Typography.Title>
+    <Typography.Title className={styles.topic}><Texty>{Language.pages_practice_topics}</Texty></Typography.Title>
       <div className={styles.body}>
       <QueueAnim  delay={300} className={styles.queue}>
         {data.map((item, i)=>(

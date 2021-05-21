@@ -28,7 +28,7 @@ const operationTabList = [
     key: 'test',
     tab: (
       <span>
-        Test History{' '}
+        {Language.pages_profile_testHistory}{' '}
         <span
           style={{
             fontSize: 14,
@@ -81,7 +81,7 @@ const TagList = ({ tags }) => {
 
   return (
     <div className={styles.tags}>
-      <div className={styles.tagsTitle}>Education</div>
+      <div className={styles.tagsTitle}>{Language.pages_profile_education}</div>
       {/* {(tags || []).concat(newTags).map((item) => (
         <Tag key={item.key}>{item.label}</Tag>
       ))} */
@@ -242,7 +242,7 @@ class Center extends Component {
                     dashed
                   />
                   <div className={styles.team}>
-                    <div className={styles.teamTitle}>About</div>
+                    <div className={styles.teamTitle}>{Language.pages_profile_about}</div>
                     <p> {info.About} </p>
                     <Row gutter={36}>
                       {currentUser.notice &&

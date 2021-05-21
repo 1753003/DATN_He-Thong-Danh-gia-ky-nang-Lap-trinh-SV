@@ -12,6 +12,8 @@ import {history, Link, useHistory} from 'umi'
 import { connect } from 'dva'
 import PageLoading from '@/components/PageLoading'
 import "./style.less";
+import Language from '@/locales/index'
+
 const { Title, Text } = Typography;
 const TestSetList = ({location,dispatch,testDev, loading}) => {
   // let history = useHistory()
@@ -90,22 +92,22 @@ const TestSetList = ({location,dispatch,testDev, loading}) => {
           />
         </Col>
         <Col className="gutter-row" span={6} style={{margin: '30px 0px 10px 0px'}}>
-        <Title level={4}>STATUS</Title>
-        <Checkbox onChange={onChange}>Solved</Checkbox>
+        <Title level={4}>{Language.pages_practice_list_status}</Title>
+        <Checkbox onChange={onChange}>{Language.pages_practice_list_solved}</Checkbox>
         <br></br>
-        <Checkbox onChange={onChange}>Unsolved</Checkbox>
+        <Checkbox onChange={onChange}>{Language.pages_practice_list_unsolved}</Checkbox>
         <Divider />
-        <Title level={4}>DIFICULTY</Title>
-        <Checkbox onChange={onChange}>Easy</Checkbox>
+        <Title level={4}>{Language.pages_practice_list_difficulty}</Title>
+        <Checkbox onChange={onChange}>{Language.pages_practice_list_easy}</Checkbox>
         <br></br>
-        <Checkbox onChange={onChange}>Medium</Checkbox>
+        <Checkbox onChange={onChange}>{Language.pages_practice_list_medium}</Checkbox>
         <br></br>
-        <Checkbox onChange={onChange}>Hard</Checkbox>
+        <Checkbox onChange={onChange}>{Language.pages_practice_list_hard}</Checkbox>
         <Divider />
-        <Title level={4}>TYPE</Title>
-        <Checkbox onChange={onChange}>Multiple-choice</Checkbox>
+        <Title level={4}>{Language.pages_practice_list_type}</Title>
+        <Checkbox onChange={onChange}>{Language.pages_practice_list_multipleChoice}</Checkbox>
         <br></br>
-        <Checkbox onChange={onChange}>Coding</Checkbox>
+        <Checkbox onChange={onChange}>{Language.pages_practice_list_coding}</Checkbox>
         <Divider />
         </Col>
       </Row>
