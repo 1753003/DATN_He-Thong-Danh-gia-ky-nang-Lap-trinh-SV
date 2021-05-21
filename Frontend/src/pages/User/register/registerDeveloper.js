@@ -19,7 +19,9 @@ class registerDeveloper extends React.Component {
                 payload: {
                     email: values.email,
                     password: values.password,
-                    type: 'developer'
+                    type: 'developer',
+                    name: values.name,
+                    image: null
                 },
             });
                  

@@ -19,7 +19,9 @@ class registerCreator extends React.Component {
                 payload: {
                     email: values.email,
                     password: values.password,
-                    type: 'creator'
+                    type: 'creator',
+                    name: values.name,
+                    image: null
                 },
             });
                  
@@ -38,6 +40,10 @@ class registerCreator extends React.Component {
         })
     }
 
+    onFinishConfirm = () => {
+        history.push('/user/login')
+    }
+    
     success = () => {
         message.success('Register successfully')
         history.push('/user/login')

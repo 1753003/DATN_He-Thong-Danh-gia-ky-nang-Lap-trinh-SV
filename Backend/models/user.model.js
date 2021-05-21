@@ -1,7 +1,7 @@
 const db = require('../utils/db');
 
 module.exports = {
-  async createUserDeveloper(uid, email, type, status ) {
+  async createUserDeveloper(uid, email, type, status, image, name ) {
     await db('userlogin').insert({
         UserID: uid,
         UserName: email,
@@ -9,15 +9,27 @@ module.exports = {
         UserType: type,
         UserStatus: status,
     })
+    await db('developer').insert({
+      UserID: uid,
+      DevImage: image,
+      DevName: name,
+      DevMail: email
+    })
     return uid;
   },
-  async createUserCreator(uid, email, type, status ) {
+  async createUserCreator(uid, email, type, status, image, name ) {
     await db('userlogin').insert({
       UserID: uid,
       UserName: email,
       UserPwd: '',
       UserType: type,
       UserStatus: status,
+  })
+  await db('creator').insert({
+    UserID: uid,
+    CreatorImg: image,
+    CreatorName: name,
+    BusinessMail: email
   })
   return uid;
   },
