@@ -15,10 +15,11 @@ const Model = {
       yield postComment(payload)
     },
     *updateVote({payload}, { call, put, select}){
-      console.log(payload)
+      const uid = yield select((state) =>
+      state.user.uid)
       var update = {}
       update[payload.commentId] = payload.status
-      yield updateVote(payload.postId, payload.commentId, payload.value, payload.status)
+      yield updateVote(uid,payload.postId, payload.commentId, payload.value, payload.status)
     }
   },
   reducers: {

@@ -3,6 +3,7 @@ import firebase from '@/utils/firebase'
 const UserModel = {
   namespace: 'user',
   state: {
+    uid:"zcwVw4Rjp7b0lRmVZQt6ZXmspql1", //need get this each time user load page
     currentUser: {
       react: {}
     },
@@ -16,10 +17,11 @@ const UserModel = {
       });
     },
     
-    *fetchCurrent(_, { call, put }) {
-      const totalNotiCount = firebase.database().ref(`users/zcwVw4Rjp7b0lRmVZQt6ZXmspql1/totalNotiCount`)
-      const unReadCount = firebase.database().ref(`users/zcwVw4Rjp7b0lRmVZQt6ZXmspql1/unreadCount`)
-      const reactRef = firebase.database().ref(`users/zcwVw4Rjp7b0lRmVZQt6ZXmspql1/react`)
+    *fetchCurrent({payload}, { call, put }) {
+      const uid = payload
+      const totalNotiCount = firebase.database().ref(`users/${uid}/totalNotiCount`)
+      const unReadCount = firebase.database().ref(`users/${uid}/unreadCount`)
+      const reactRef = firebase.database().ref(`users/${uid}/react`)
       const notiCount = yield call(()=>{ return new Promise((resolve, reject)=>{
           totalNotiCount.on('value', (snapshot)=>{
             resolve(snapshot.val())

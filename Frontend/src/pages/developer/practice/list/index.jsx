@@ -47,7 +47,7 @@ const practiceList = ({location,dispatch,practice, loading}) => {
     console.log(`checked = ${e.target.checked}`);
   }
   return (loading?<PageLoading></PageLoading>:
-    <div>
+    <div className="body">
       <PageHeader
         className="site-page-header"
         breadcrumb={{ routes, itemRender }}
