@@ -194,6 +194,9 @@ export default defineConfig({
                           path: '/developer/practice/questions',
                           component: './developer/practice/questions',
                         },
+                        {
+                          component: './404',
+                        },
                       ],
                     },
                   ],
@@ -221,6 +224,9 @@ export default defineConfig({
                         {
                           path: '/developer/test',
                           redirect: '/developer/test/home',
+                        },
+                        {
+                          component: './404',
                         },
                       ],
                     },
