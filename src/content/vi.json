@@ -1,0 +1,18 @@
+{
+    "_home": "Trang chủ",
+    "_introduce": "Giới thiệu",
+    "_login": "Đăng nhập",
+
+    "login_accountLogin": "Đăng nhập bằng email",
+    "login_username": "Username: admin or user",
+    "login_password": "Password: ant.design",
+    "login_phoneLogin": "Đăng nhập bằng số điện thoại",
+    "login_phone": "Số điện thoại",
+    "login_verificationCode": "Mã xác nhận",
+    "login_getCode": "Lấy mã",
+    "login_remember": "Lưu mật khẩu",
+    "login_forgot": "Quên mật khẩu ?",
+    "login_doNotHaveAcc": "Không có tài khoản ?",
+    "login_submit": "Đăng nhập",
+    "login_loginWith": "Đăng nhập với:"
+}

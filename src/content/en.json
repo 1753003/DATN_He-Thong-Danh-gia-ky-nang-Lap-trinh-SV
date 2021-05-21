@@ -1,0 +1,20 @@
+{
+    "_home": "Home",
+    "_introduce": "Introduce",
+    "_login": "Login",
+
+    "login_accountLogin": "Account Login",
+    "login_username": "Username: admin or user",
+    "login_password": "Password: ant.design",
+    "login_phoneLogin": "Phone Login",
+    "login_phone": "Phone Number",
+    "login_verificationCode": "Verification Code",
+    "login_getCode": "Get Code",
+    "login_remember": "Remember me",
+    "login_forgot": "Forgot password ?",
+    "login_doNotHaveAcc": "Do not have an account ?",
+    "login_submit": "Submit",
+    "login_loginWith": "Login with:",
+
+    "welcome_": ""
+}

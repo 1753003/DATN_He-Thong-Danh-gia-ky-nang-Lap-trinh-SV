@@ -14,7 +14,7 @@ import PageLoading from '@/components/PageLoading';
 import Submission from '@/components/Submission';
 import DisscustionTab from '@/components/Discussions/DiscusstionTab';
 import QuizWrapper from './components/QuizWrapper';
-
+import Language from '@/locales/index';
 
 const { TabPane } = Tabs;
 
@@ -93,20 +93,20 @@ console.log(practice)
             payload: practice.listDetail.generalInformation.PracticeID
           })
         }}>
-          <TabPane tab="Problem" key="1">
+          <TabPane tab={Language.pages_practice_questions_problem} key="1">
             {practice.listDetail?.generalInformation.QuestionID.length<2?<Coding></Coding>:<QuizWrapper data={practice.listDetail}></QuizWrapper>}
           </TabPane>
-          <TabPane tab="Submission" key="2">
+          <TabPane tab={Language.pages_practice_questions_submission} key="2">
             <Submission></Submission>
           </TabPane>
-          <TabPane tab="Discussion" key="3">
+          <TabPane tab={Language.pages_practice_questions_discussion} key="3">
             <DisscustionTab location = {location}></DisscustionTab>
           </TabPane>
         </Tabs>
       </Col>
       <Col className="info" flex='auto' span={4}>
         <Row justify="space-between">
-          <Col >Author<br/>Difficulty<br/>Max Score</Col>
+          <Col >{Language.pages_practice_questions_author}<br/>{Language.pages_practice_questions_difficulty}<br/>{Language.pages_practice_questions_maxScore}</Col>
           <Col style={{textAlign:'right'}}>Admin<br/>{practice.listDetail?.generalInformation?.DifficultLevel}<br/>{practice.listDetail?.generalInformation?.Score}</Col>
         </Row>
       </Col>
