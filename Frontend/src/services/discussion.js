@@ -1,15 +1,12 @@
 import firebase from '@/utils/firebase'
 
-export function updateVote(pid, cid, value, status) {
+export function updateVote(uid,pid, cid, value, status) {
   const dbComment = firebase.firestore().collection("discussions").doc(`practice-${pid}`).collection('comments')
-  console.log('run', status)
   return new Promise((resolve, reject) => {
     var updates={};
-    updates[`users/zcwVw4Rjp7b0lRmVZQt6ZXmspql1/react/`+cid] = status;
+    updates[`users/${uid}/react/`+cid] = status;
     firebase.database().ref().update(updates)
     dbComment.doc(cid).update({vote : value})
-
-      
     .then(() => {
       resolve()
     })

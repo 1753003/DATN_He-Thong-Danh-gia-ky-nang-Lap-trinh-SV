@@ -62,7 +62,7 @@ router.post("/submitcheck", async function (req, res) {
   const dbSubmission = {
     SubmissionType: "MultipleChoice",
     PracticeID: 2, //
-    DevID: "zcwVw4Rjp7b0lRmVZQt6ZXmspql1", //
+    DevID: req.uid, //
     AnsweredNumber: 1,
     CorrectPercent: Number((correctCount / totalUserChoice).toFixed(4)) * 100,
     DoingTime: 100,
@@ -75,7 +75,6 @@ router.post("/submitcheck", async function (req, res) {
       item.qid,
       item.list
     );
-    console.log(choice);
     let dbAnswer = {
       SubmissionID: dbSubmissionRes[0], //
       Choice: JSON.stringify(choice), //

@@ -22,10 +22,12 @@ const GlobalModel = {
       });
     },
     *changeNoticeReadState({ payload }, { put, select }) {
-      firebase.database().ref(`notifications/zcwVw4Rjp7b0lRmVZQt6ZXmspql1/${payload}`).update({ read:true });
+      const uid = yield select((state) =>
+      state.user.uid)
+      firebase.database().ref(`notifications/${uid}/${payload}`).update({ read:true });
       const count = yield select((state) =>
         state.user.currentUser.unreadCount)
-      firebase.database().ref(`users/zcwVw4Rjp7b0lRmVZQt6ZXmspql1`).update({ unreadCount: count - 1});
+      firebase.database().ref(`users/${uid}`).update({ unreadCount: count - 1});
       const notices = yield select((state) =>
         state.global.notices.map((item) => {
           const notice = { ...item };

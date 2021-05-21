@@ -72,17 +72,15 @@ const BasicLayout = (props) => {
     getCurrentUserFirebase();
   }, []);
   const getCurrentUserFirebase = () =>{
-    // if (dispatch) {
-    //   dispatch({
-    //     type: 'user/fetchCurrent',
-    //   });
-    // }
-    const userRef = firebase.database().ref(`users/zcwVw4Rjp7b0lRmVZQt6ZXmspql1`)
+    
+    const userRef = firebase.database().ref(`users/${props.uid}`)
+    // console.log("uid", userRef)
     userRef.off()
     userRef.on('value', (snapshot)=>{
       if (dispatch) {
         dispatch({
           type: 'user/fetchCurrent',
+          payload: props.uid
         });
       }
     })
@@ -178,7 +176,8 @@ const BasicLayout = (props) => {
 
 };
 
-export default connect(({ global, settings }) => ({
+export default connect(({ global, settings, user }) => ({
+  uid:user.uid,
   collapsed: global.collapsed,
   settings,
 }))(BasicLayout);
