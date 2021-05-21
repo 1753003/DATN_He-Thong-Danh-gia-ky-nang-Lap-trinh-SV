@@ -20,12 +20,12 @@ class GlobalHeaderRight extends Component {
   componentDidMount(){
     const { dispatch } = this.props;
     this.fb(dispatch)
-    console.log(firebase.auth().currentUser)
+    console.log("firebase current usere",firebase.auth().currentUser)
     if (firebase.auth().currentUser !== null) 
         console.log("user id: " + firebase.auth().currentUser.uid);
   }
   fb = (dispatch) =>{
-    const notiRef = firebase.database().ref(`notifications/zcwVw4Rjp7b0lRmVZQt6ZXmspql1`).orderByChild('datetime').limitToFirst(this.state.limit)
+    const notiRef = firebase.database().ref(`notifications/${this.props.uid}`).orderByChild('datetime').limitToFirst(this.state.limit)
     let temp = [];
     notiRef.on('value', (snapshot)=>{
       temp = []
@@ -68,12 +68,12 @@ class GlobalHeaderRight extends Component {
   };
 
   handleNoticeClear = () => { // mark all as read
-    const notiRef = firebase.database().ref(`notifications/zcwVw4Rjp7b0lRmVZQt6ZXmspql1`);
+    const notiRef = firebase.database().ref(`notifications/${this.props.uid}`);
     notiRef.once('value', (snapshot)=>{
       snapshot.forEach(function(child) {
         child.ref.update({read: true});
     });
-    firebase.database().ref(`users/zcwVw4Rjp7b0lRmVZQt6ZXmspql1`).update({unreadCount: 0})
+    firebase.database().ref(`users/${this.props.uid}`).update({unreadCount: 0})
   });
 }
 
@@ -203,6 +203,7 @@ class GlobalHeaderRight extends Component {
 }
 
 export default connect(({ user, global }) => ({
+  uid: user.uid,
   currentUser: user.currentUser,
   collapsed: global.collapsed,
   notices: global.notices,

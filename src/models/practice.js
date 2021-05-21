@@ -43,9 +43,8 @@ const Model = {
       })
     },
     *getSubmissionList({ payload }, { call, put }) {
-      let uid = 'zcwVw4Rjp7b0lRmVZQt6ZXmspql1'
       let pid = payload
-      const listSubmission = yield getSubmissionList(pid, uid)
+      const listSubmission = yield getSubmissionList(pid)
 
       yield put({
         type:'saveSubmissionList',

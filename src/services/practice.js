@@ -97,7 +97,7 @@ export function getPracticeSet(set) {
       });
   });
 }
-export function getSubmissionList(pid, uid) {
+export function getSubmissionList(pid) {
   return new Promise((resolve, reject) => {
     axios
       .get(`${Constant.API}/api/practice/submissions?pid=${pid}`, {
