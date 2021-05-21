@@ -1,4 +1,3 @@
-import request from 'umi-request';
 import axios from 'axios';
 import Constant from '@/utils/contants';
 

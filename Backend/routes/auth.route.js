@@ -47,14 +47,18 @@ router.post("/signup", async function (req, res) {
           user.uid,
           req.body.email,
           "developer",
-          "not active"
+          "not active",
+          req.body.image,
+          req.body.name
         );
       else if (type === "creator")
         result = await userModel.createUserCreator(
           user.uid,
           req.body.email,
           "creator",
-          "not active"
+          "not active",
+          req.body.image,
+          req.body.name
         );
       else result = "Incorrect Type of User";
       res.json({
@@ -227,16 +231,20 @@ router.post("/loginFacebook", async function (req, res) {
     if (type === "developer")
       await userModel.createUserDeveloper(
         uid,
-        refreshToken,
         req.body.DevMail,
-        "FB"
+        "developer",
+        "active",
+        req.body.DevImage,
+        req.body.Name
       );
     else if (type === "creator")
       await userModel.createUserCreator(
         uid,
-        refreshToken,
         req.body.DevMail,
-        "FB"
+        "developer",
+        "active",
+        req.body.DevImage,
+        req.body.Name
       );
   }
 
@@ -245,7 +253,7 @@ router.post("/loginFacebook", async function (req, res) {
     refreshToken: refreshToken,
     type: req.body.UserType,
   };
-
+  await userModel.updateRefreshToken(uid, refreshToken);
   res.json(result);
 });
 
@@ -273,6 +281,7 @@ router.post("/loginGoogle", async function (req, res) {
     }
   );
   var result;
+  
   if (user == null || user == undefined) {
     const type = req.body.UserType;
     if (type === "developer")
@@ -280,15 +289,20 @@ router.post("/loginGoogle", async function (req, res) {
         uid,
         req.body.DevMail,
         "developer",
-        "active"
+        "active",
+        req.body.DevImage,
+        req.body.Name
       );
     else if (type === "creator")
       await userModel.createUserCreator(
         uid,
-        refreshToken,
         req.body.DevMail,
-        "GM"
+        "creator",
+        "active",
+        req.body.DevImage,
+        req.body.Name
       );
+    
     result = {
       status: "OK",
       message: {
@@ -311,7 +325,7 @@ router.post("/loginGoogle", async function (req, res) {
         type: req.body.UserType,
       },
     };
-
+  await userModel.updateRefreshToken(uid, refreshToken);
   res.json(result);
 });
 
