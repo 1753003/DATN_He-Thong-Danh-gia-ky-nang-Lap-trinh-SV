@@ -26,6 +26,7 @@ import CodeEditor from '../CodeEditor'
 import PageLoading from '@/pages/dashboard/analysis/components/PageLoading'
 import { u_atob, u_btoa } from '@/utils/string'
 import AceEditor from 'react-ace';
+import moment from 'moment';
 const { Column, ColumnGroup } = Table;
 const {TabPane} = Tabs;
 const CheckboxGroup = Checkbox.Group
@@ -34,7 +35,7 @@ const SubmissionDetail = ({dispatch, data, listQuestion, loading}) =>{
   useEffect(()=>{
     const tempResult = []
     if(listQuestion[0].TestCase)
-    testCase.forEach((tc,i)=>{
+    listQuestion[0].TestCase.forEach((tc,i)=>{
       let temp = {}
       temp.expected_output = JSON.stringify(tc.Output[0]);
       temp.stdin = JSON.parse(JSON.stringify(tc.Input[0]));
@@ -66,7 +67,7 @@ const SubmissionDetail = ({dispatch, data, listQuestion, loading}) =>{
 
     const Testcases =(result)=>  {
       return(
-      <Tabs tabPosition="left" > {
+      <Tabs tabPosition="top" > {
         result.map((res,i) => {
           let title = 'Test Case '+ (i+1);
           return (
@@ -96,16 +97,16 @@ const SubmissionDetail = ({dispatch, data, listQuestion, loading}) =>{
     title="Back to Your Submmission List"
   />
   {data.info.SubmissionType === "Coding"?<div>
-  <p>date: {data.info.CreatedAt}</p>
-      <p> score: {data.info.Score}</p>
+  <p>Submit Date: {moment(data.info.CreatedAt).locale('en').format('MMMM Do YYYY, h:mm:ss a')}</p>
+      <p>Your score: {data.info.Score}</p>
       <p>correctPercent: {data.info.CorrectPercent}</p>
       <Divider orientation='left'>Submitted Answer</Divider>
       {editor(u_atob(data.data[0].DescriptionCode))}
       <Divider orientation='left'>Test Cases</Divider>
       {Testcases(result)}
   </div>:<div>
-  <p>date: {data.info.CreatedAt}</p>
-      <p> score: {data.info.Score}</p>
+  <p>Submit Date: {moment(data.info.CreatedAt).locale('en').format('MMMM Do YYYY, h:mm:ss a')}</p>
+      <p>Your score: {data.info.Score}</p>
       <p>correctPercent: {data.info.CorrectPercent}</p>
       <h2>Submitted Answer</h2>
       {data.data.map((item,i)=>{
@@ -116,7 +117,8 @@ const SubmissionDetail = ({dispatch, data, listQuestion, loading}) =>{
         return <div>
           <Divider></Divider>
           <h3>Question {i+1}. {listQuestion[i].Description}</h3>
-          <h4>Your answer: <CheckboxGroup 
+          <h4>Your answer: <CheckboxGroup style={{display: "flex",
+  "flex-direction": "column"}}
           disabled
         value={temp}
         options={listQuestion[i].Answer}
