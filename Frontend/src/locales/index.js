@@ -52,6 +52,7 @@ if (getLocale() === 'vi-VN') Language = {
     'pages_test_testDetail_submitSure': 'Bạn chắc chắn muốn nộp bài kiểm tra này',
     'pages_test_testDetail_yes': 'Đồng ý',
     'pages_test_testDetail_no': 'Không',
+    'pages_test_testDetail_submit': 'Nộp bài',
 
     'pages_search_searchResult': 'Kết quả tìm kiếm',
     'pages_search_start': 'Bắt đầu',
