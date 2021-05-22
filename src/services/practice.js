@@ -50,7 +50,7 @@ export function getSubmissionDetailInfo(id, type) {
   })
 }
 export function getPracticeListDetail(id) {
-  console.log(Cookies.get('accessToken'));
+
   return new Promise((resolve, reject) => {
     var options = {
       method: 'GET',

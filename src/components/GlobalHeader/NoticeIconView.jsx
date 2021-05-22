@@ -25,7 +25,7 @@ class GlobalHeaderRight extends Component {
         console.log("user id: " + firebase.auth().currentUser.uid);
   }
   fb = (dispatch) =>{
-    const notiRef = firebase.database().ref(`notifications/${this.props.uid}`).orderByChild('datetime').limitToFirst(this.state.limit)
+    const notiRef = firebase.database().ref(`users/${this.props.uid}/notifications`).orderByChild('datetime').limitToFirst(this.state.limit)
     let temp = [];
     notiRef.on('value', (snapshot)=>{
       temp = []
@@ -68,7 +68,7 @@ class GlobalHeaderRight extends Component {
   };
 
   handleNoticeClear = () => { // mark all as read
-    const notiRef = firebase.database().ref(`notifications/${this.props.uid}`);
+    const notiRef = firebase.database().ref(`users/${this.props.uid}/notifications/`);
     notiRef.once('value', (snapshot)=>{
       snapshot.forEach(function(child) {
         child.ref.update({read: true});
@@ -100,7 +100,7 @@ class GlobalHeaderRight extends Component {
           todo: '',
           processing: 'blue',
           urgent: 'red',
-          doing: 'gold',
+          Event: 'gold',
         }[newNotice.type];
         newNotice.extra = (
           <Tag
@@ -146,10 +146,12 @@ class GlobalHeaderRight extends Component {
     }
     )
   }
+
   render() {
     const { currentUser, onNoticeVisibleChange } = this.props;
     const noticeData = this.getNoticeData();
     const unreadMsg = this.getUnreadData(noticeData);
+    console.log(noticeData)
     return (
       <Spin 
       size='small' 
@@ -173,7 +175,7 @@ class GlobalHeaderRight extends Component {
         className="custom"
           tabKey="notification"
           count={unreadMsg.Notification}
-          list={noticeData.Notification}
+          list={noticeData?.Notification?.concat(noticeData.Event)}
           title="Notifications"
           emptyText="You don't have any notifications."
           showViewMore
@@ -186,13 +188,13 @@ class GlobalHeaderRight extends Component {
           title="消息"
           emptyText="您已读完所有消息"
           showViewMore
-        />
-        <NoticeIcon.Tab
+        /> */}
+        {/* <NoticeIcon.Tab
           tabKey="event"
-          title="待办"
-          emptyText="你已完成所有待办"
-          count={unreadMsg.event}
-          list={noticeData.event}
+          title="Event"
+          emptyText="No event currently"
+          count={unreadMsg.Event}
+          list={noticeData.Event}
           showViewMore
         /> */}
       </NoticeIcon>

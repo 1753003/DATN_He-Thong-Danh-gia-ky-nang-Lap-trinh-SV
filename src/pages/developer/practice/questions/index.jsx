@@ -19,7 +19,7 @@ import Language from '@/locales/index';
 const { TabPane } = Tabs;
 
 const questionList = ({location, practice, dispatch, loading}) => {
-console.log(practice)
+
   const [tabChange, onTabChange] = useState(false)
   useEffect(()=>{
     dispatch({

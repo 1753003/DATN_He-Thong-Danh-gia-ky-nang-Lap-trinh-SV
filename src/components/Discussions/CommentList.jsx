@@ -50,7 +50,8 @@ const CommentList = ({data, loading, dispatch, location}) =>{
       showReplyTo&&<ReplyEditor location={location} pid={data.id} handleDiscard={handleDiscard}></ReplyEditor>,!showReplyTo&&<span key="comment-nested-reply-to" onClick={()=>replyComment(data.id)}>Reply To</span>,
       data.children.length>0?<span onClick={()=>handleViewReply()}>{viewReply?'Hide Reply': 'View Reply'}</span>:null]}
       author={
-        `${data.author} ${moment(data.time.toDate()).locale('en').format('MMMM Do YYYY, h:mm:ss a')}`
+        `${data.author}
+        ${moment(data.time.toDate()).locale('en').format('MMMM Do YYYY, h:mm:ss a')}`
         }
       avatar={
         <Avatar
@@ -70,10 +71,11 @@ const CommentList = ({data, loading, dispatch, location}) =>{
           <Col className="vote" span={1}>
           <ReactComment data= {subitem.vote} id = {subitem.id} handleClick= {handleClick}></ReactComment>
           </Col>
-          <Col>
+          <Col span={20}>
           <Comment 
         author={
-          `${subitem.author} ${moment(subitem.time.toDate()).locale('en').format('MMMM Do YYYY, h:mm:ss a')}`
+          `${subitem.author}
+          ${moment(subitem.time.toDate()).locale('en').format('MMMM Do YYYY, h:mm:ss a')}`
           }
         avatar = {<Avatar
           src={subitem.authorURL}
@@ -92,9 +94,9 @@ const CommentList = ({data, loading, dispatch, location}) =>{
 </Col>
 </Row>)
   }
-  return(
+
+  return(data.length===0?<PageLoading/>:
     <List
-    loading={loading}
     itemLayout="vertical"
     size="large"
     pagination={{

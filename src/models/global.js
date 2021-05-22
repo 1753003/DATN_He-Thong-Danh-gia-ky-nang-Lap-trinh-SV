@@ -24,7 +24,7 @@ const GlobalModel = {
     *changeNoticeReadState({ payload }, { put, select }) {
       const uid = yield select((state) =>
       state.user.uid)
-      firebase.database().ref(`notifications/${uid}/${payload}`).update({ read:true });
+      firebase.database().ref(`users/${uid}/notifications/${payload}`).update({ read:true });
       const count = yield select((state) =>
         state.user.currentUser.unreadCount)
       firebase.database().ref(`users/${uid}`).update({ unreadCount: count - 1});
