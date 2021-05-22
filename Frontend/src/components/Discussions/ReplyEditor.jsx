@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'umi';
 import MDEditor from '@uiw/react-md-editor';
 import { useState } from 'react';
-import { Button } from 'antd';
+import { Button, Space } from 'antd';
 import firebase from '@/utils/firebase'
 
 const ReplyEditor = ({location ,pid, dispatch, handleDiscard}) =>{
@@ -34,11 +34,13 @@ const ReplyEditor = ({location ,pid, dispatch, handleDiscard}) =>{
         highlightEnable={true}
       />
     <span>
-    <Button disabled={value===''} onClick={(value)=>handleReply(value)}>Post Your Reply</Button>
-    <Button onClick={()=>{
+    <Space style={{marginTop:"6px"}}>
+    <Button type="primary" disabled={value===''} onClick={(value)=>handleReply(value)}>Post Your Reply</Button>
+    <Button danger disabled={value===''} onClick={()=>{
       setValue('');
       if(handleDiscard) handleDiscard()
     }}>Discard</Button>
+    </Space>
     </span>
     
   </div>

@@ -1,8 +1,25 @@
-// @import '~antd/es/style/themes/default.less';
+@import '~antd/es/style/themes/default.less';
+.container{
+  
 
+  @media only screen and (min-width: @screen-md){
+    flex-direction: row;
+  }
+  @media only screen and (max-width: @screen-md){
+    flex-direction: column-reverse;
+  }
+}
+.info{
+  padding: 0px 24px 24px 24px;
+  max-width: fit-content;
+}
 .tabs{
+
+
+  max-width: 100%;
   padding: 0px 24px 0px 24px;
   // height: 300px;
+  margin-bottom: 24px;
 }
 .tabs > .custom .ant-tabs-content {
   // height: 120px;

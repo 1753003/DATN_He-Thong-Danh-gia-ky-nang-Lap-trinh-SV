@@ -1,3 +1,4 @@
+@import '~antd/es/style/themes/default.less';
 .container{
   padding-left: 5px;
   padding-right: 5px;
@@ -19,8 +20,33 @@
   
     .customInput{
       width: 100%;
-      background-color: #0675f3;
+      background-color: #f7fbff;
     }
   }
   
+}
+.buttonNoName{
+  @media only screen and (min-width: @screen-md){
+    display: none;
+  }
+  @media only screen and (max-width: @screen-sm){
+    display: block;
+  }
+}
+
+.buttonWithName{
+  @media only screen and (min-width: @screen-md){
+    display: block;
+  }
+  @media only screen and (max-width: @screen-sm){
+    display: none;
+  }
+}
+.selectBtn{
+  @media only screen and (min-width: @screen-md){
+    width: 120px;
+  }
+  @media only screen and (max-width: @screen-sm){
+    width: 48px;
+  }
 }

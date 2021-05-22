@@ -176,17 +176,16 @@ class CodeEditor extends Component {
     return (
       <div className={styles.container}>
         <Space className={styles.header}>
-          <Select
+          <Select className={styles.selectBtn}
             defaultValue="tomorrow"
-            style={{ width: 120 }}
             onChange={(value) => this.handleThemeChange(value)}
           >
             <Select.Option value="monokai">Dark</Select.Option>
             <Option value="tomorrow">Light</Option>
           </Select>
           <Select
+            className={styles.selectBtn}
             defaultValue={2}
-            style={{ width: 120 }}
             onChange={(value) => this.handleTabSizeChange(value)}
           >
             <Option value={2}>Tab size: 2</Option>
@@ -194,7 +193,7 @@ class CodeEditor extends Component {
           </Select>
           <Select
             defaultValue={16}
-            style={{ width: 120 }}
+            className={styles.selectBtn}
             onChange={(value) => this.handleFontSizeChange(value)}
           >
             <Option value={12}>12</Option>
@@ -202,14 +201,25 @@ class CodeEditor extends Component {
             <Option value={16}>16</Option>
             <Option value={18}>18</Option>
           </Select>
-          <Button icon={<SearchOutlined />} onClick={() => this.handleSearch()}>
+          <Button
+          className={styles.buttonWithName} icon={<SearchOutlined />} onClick={() => this.handleSearch()}>
             Find
           </Button>
           <Button
+            className={styles.buttonWithName}
             icon={<QuestionCircleOutlined />}
             href="https://github.com/securingsincity/react-ace"
           >
             Help
+          </Button>
+          <Button
+          className={styles.buttonNoName} icon={<SearchOutlined />} onClick={() => this.handleSearch()}>
+          </Button>
+          <Button
+            className={styles.buttonNoName}
+            icon={<QuestionCircleOutlined />}
+            href="https://github.com/securingsincity/react-ace"
+          >
           </Button>
         </Space>
         <AceEditor

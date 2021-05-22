@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'umi';
-import { Avatar, Comment, Button, List, Col, Row } from 'antd'
+import { Avatar, Comment, Button, List, Col, Row, Divider } from 'antd'
 import MDEditor from '@uiw/react-md-editor';
 import PageLoading from '../PageLoading';
 import { useEffect } from 'react';
@@ -20,7 +20,7 @@ const CommentList = ({data, loading, dispatch, location}) =>{
       value: value,
       status: react
     }
-    console.log('click')
+
     if(dispatch)
       dispatch({
         type:'discussion/updateVote',
@@ -40,11 +40,11 @@ const CommentList = ({data, loading, dispatch, location}) =>{
       setViewReply(!viewReply)
     }
     
-    return(<Row>
+    return(<Row gutter={24}>
       <Col className="vote" span={1}>
       <ReactComment data = {data.vote} id = {data.id} handleClick= {handleClick}></ReactComment>
       </Col>
-      <Col  span={20}>
+      <Col span={20}>
       <Comment
       actions={[
       showReplyTo&&<ReplyEditor location={location} pid={data.id} handleDiscard={handleDiscard}></ReplyEditor>,!showReplyTo&&<span key="comment-nested-reply-to" onClick={()=>replyComment(data.id)}>Reply To</span>,
@@ -65,7 +65,8 @@ const CommentList = ({data, loading, dispatch, location}) =>{
       }
     >
       {viewReply && data.children.map((subitem, key)=>{
-        return <Row key={key}>
+        return <Row gutter={24} key={key}>
+                <Divider></Divider>
           <Col className="vote" span={1}>
           <ReactComment data= {subitem.vote} id = {subitem.id} handleClick= {handleClick}></ReactComment>
           </Col>
@@ -84,6 +85,7 @@ const CommentList = ({data, loading, dispatch, location}) =>{
       >
     </Comment>
       </Col>
+
     </Row>
   })}
 </Comment>
