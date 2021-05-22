@@ -112,12 +112,12 @@ class Coding extends Component {
     let alertType = 'error';
     let finalResult = [];
     // console.log(this.props.practice)
-    console.log(this.props.judge);
+    // console.log(this.props.judge);
 
     if (this.props.judge.result)
       if (this.props.practice.isRun) {
         //if isRun
-        console.log(this.props.judge.result?.expected_output);
+        // console.log(this.props.judge.result?.expected_output);
         finalResult = [
           {
             compile_output: this.props.judge.result?.compile_output,
