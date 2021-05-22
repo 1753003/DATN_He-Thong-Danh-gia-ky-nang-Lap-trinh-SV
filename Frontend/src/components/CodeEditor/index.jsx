@@ -37,13 +37,17 @@ const { TextArea, Search } = Input;
 class CodeEditor extends Component {
   constructor(props) {
     super(props);
-    console.log(this.props)
+    let temp = "c_cpp;"
+    if(this.props.practice.listDetail.generalInformation.PracticeSet === "Java")
+    temp = "java"
+    if(this.props.practice.listDetail.generalInformation.PracticeSet === "JavaScript")
+    temp = "javascript"
     this.state = {
       codeVal: '',
       customVal: '',
       isSubmitBatch: false,
       showCustom: false,
-      mode: 'c_cpp',
+      mode: temp,
       theme: 'tomorrow',
       tabSize: 2,
       fontSize: 16,
@@ -69,6 +73,10 @@ class CodeEditor extends Component {
     new Promise((resolve, reject) => {
       let code = this.state.codeVal;
       let lang_id = 54; //54 C++ 71 python
+      if(this.state.mode ==="java")
+        lang_id = 62
+      if(this.state.mode ==="javascript")
+        lang_id = 63
       if (this.state.customInput == false) input = input;
       else if (this.state.customVal == '') input = input;
       else input = this.state.customVal;
@@ -99,7 +107,7 @@ class CodeEditor extends Component {
       });
       return;
     }
-    console.log(this.props)
+
     this.handleSendCode(this.props.testCases[0].Input[0], this.props.testCases[0].Output[0]);
   };
   handleSubmit = () => {
@@ -119,6 +127,10 @@ class CodeEditor extends Component {
 
     let code = this.state.codeVal;
     let lang_id = 54; //54 C++ 71 python
+    if(this.state.mode ==="java")
+    lang_id = 62
+  if(this.state.mode ==="javascript")
+    lang_id = 63
     code = code.replace(/(^")|("$)/g, '');
     code = u_btoa(code);
     for (var tc of this.props.testCases) {
@@ -159,8 +171,6 @@ class CodeEditor extends Component {
     });
   };
   handleSearch = (value) => {
-    // console.log(value)
-    // console.log(this.editorRef.current)
     const editor = this.editorRef.current.editor;
     // editor.find(value, {
     //   backwards: false,
