@@ -1,5 +1,5 @@
 import { getPracticeListDetail, getSubmissionList, getPracticeSet, submitMultipleChoice, getSubmissionDetailInfo } from '@/services/practice'
-import firebase from '@/utils/firebase'
+
 
 const Model = {
   namespace: 'practice',
@@ -52,6 +52,7 @@ const Model = {
       })
     },
     *getPracticeListDetail({ payload }, { call, put }) {
+      console.log(payload)
       const listDetail = yield getPracticeListDetail(payload.id)
 
       yield put({

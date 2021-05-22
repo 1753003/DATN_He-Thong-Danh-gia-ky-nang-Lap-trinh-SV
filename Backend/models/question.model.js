@@ -11,20 +11,19 @@ module.exports = {
     const list = await this.getPracticeQuestionList(ID);
     const listDetail = [];
     for (const id of list.QuestionID) {
-      console.log(id);
       const question = (await db('question').where('ID', id))[0];
       var res = {};
         res.ID = question.ID;
         res.QuestionType = question.QuestionType;
         res.Score = question.Score;
         if (question.QuestionType == 'MultipleChoice') {
-            const multipleQuestion = (await db('multiplechoice').where('QuestionID', question.ID))[0];
+            const multipleQuestion = (await db('multiplechoice').where('QuestionID', res.ID))[0];
             res.Description = multipleQuestion.MCDescription;
             res.Answer = multipleQuestion.Answer;
             res.CorrectAnswer = multipleQuestion.CorrectAnswer;
         }
         else if (question.QuestionType == 'Code') {
-            const codeQuestion = (await db('coding').where('QuestionID', question.ID))[0];
+            const codeQuestion = (await db('coding').where('QuestionID', res.ID))[0];
             res.Description = codeQuestion.CodeDescription;
             res.Language_allowed = codeQuestion.Language_allowed;
             res.RunningTime = codeQuestion.RunningTime;

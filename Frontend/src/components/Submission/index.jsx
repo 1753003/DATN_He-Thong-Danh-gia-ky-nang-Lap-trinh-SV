@@ -56,11 +56,11 @@ const Submission = ({dispatch, practice, loading}) =>{
       <Column title="" dataIndex="key" key="no" />
       <Column title="RESULT" key="result" 
       render={(text, record) => (
-        <p>{record.CorrectPercent==100?record.CorrectPercent+'%':record.CorrectPercent+'%'}</p>
+        <>{record.CorrectPercent==100?record.CorrectPercent+'%':record.CorrectPercent+'%'}</>
       )}/>
       <Column title="SCORE" dataIndex="Score" key="score" />
     <Column title="TYPE" dataIndex="SubmissionType" key="type" />
-    <Column title="TIME" dataIndex="DoingTime" key="time" />
+    {/* <Column title="TIME" dataIndex="DoingTime" key="time" /> */}
     <Column
       title=""
       key="action"

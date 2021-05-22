@@ -125,7 +125,7 @@ const QuizWrapper = ({ submitResponse, dispatch, data, loading }) => {
             Back
           </Button>
           <Select className={styles.list} onChange={onSelectedGrid}
-        defaultValue={0}>{
+        value={currentQuestionID} >{
           data?.listQuestion.map((item, i)=>{
             return <Option value={i}>{i+1}</Option>
           })
