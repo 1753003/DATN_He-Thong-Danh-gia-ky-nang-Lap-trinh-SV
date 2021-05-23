@@ -12,7 +12,6 @@ import Language from '@/locales/index';
 const { TabPane } = Tabs;
 
 const Questions = ({location, testDev, dispatch, loading}) => {
-  console.log("quesions",location)
   return (
     <div>
       <PageHeader

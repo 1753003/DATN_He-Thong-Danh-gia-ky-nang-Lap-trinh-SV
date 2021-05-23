@@ -49,12 +49,12 @@ const questionList = ({location, practice, dispatch, loading}) => {
       breadcrumbName: 'Practice',
     },
     {
-      key:decodeURIComponent(location.query.listName),
+      key:'List',
       path: `/developer/practice/list?listName=${encodeURIComponent(decodeURIComponent(location.query.listName))}`,
       breadcrumbName: decodeURIComponent(location.query.listName),
     },
     {
-      key:practice.listDetail?.generalInformation?.PracticeName,
+      key:'Practice',
       path: '',
       breadcrumbName: practice.listDetail?.generalInformation?.PracticeName,
     },

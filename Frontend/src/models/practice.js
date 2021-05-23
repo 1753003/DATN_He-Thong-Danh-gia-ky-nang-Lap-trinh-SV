@@ -52,7 +52,6 @@ const Model = {
       })
     },
     *getPracticeListDetail({ payload }, { call, put }) {
-      console.log(payload)
       const listDetail = yield getPracticeListDetail(payload.id)
 
       yield put({
