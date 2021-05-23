@@ -1,6 +1,6 @@
 import { getLocale, getAllLocales } from 'umi';
 var Language;
-if (getLocale() === 'vi-VN') Language = {
+/*if (getLocale() === 'vi-VN') Language = {
     'pages_profile_practiceHistory': 'Lịch sử luyện tập',
     'pages_profile_testHistory': 'Lịch sử kiểm tra',
     'pages_profile_education': 'Học vấn',
@@ -58,6 +58,63 @@ if (getLocale() === 'vi-VN') Language = {
     'pages_search_start': 'Bắt đầu',
 };
 else Language = {
+    'pages_profile_practiceHistory': 'Practice History',
+    'pages_profile_testHistory': 'Test History',
+    'pages_profile_education': 'Education',
+    'pagrs_profile_about': 'About',
+
+    'pages_welcome_hiDev': 'Hi Developer',
+    'pages_welcome_whatToDoing': 'What are you going to do ?',
+    'pages_welcome_testSet': 'Test sets are waiting for you',
+    'pages_welcome_practice': "Let's practice",
+    'pages_welcome_test': 'Do the test',
+
+    'pages_practice_title': 'Practice Makes Perfect',
+    'pages_practice_subTitle': 'Let jump into plenty of practices we have prepared for you.',
+    'pages_practice_topics': 'Topics',
+    'pages_practice_list_status': 'STATUS',
+    'pages_practice_list_solved': 'Solved',
+    'pages_practice_list_unsolved': 'Unsolved',
+    'pages_practice_list_difficulty': 'DIFFICULTY',
+    'pages_practice_list_easy': 'Easy',
+    'pages_practice_list_medium': 'Medium',
+    'pages_practice_list_hard': 'Hard',
+    'pages_practice_list_type': 'TYPE',
+    'pages_practice_list_multipleChoice': 'Multiple-choice',
+    'pages_practice_list_coding': 'Coding',
+    'pages_practice_questions_problem': 'Problem',
+    'pages_practice_questions_submission': 'Submission',
+    'pages_practice_questions_discussion': 'Discussion',
+    'pages_practice_questions_author': 'Author',
+    'pages_practice_questions_difficulty': 'Difficulty',
+    'pages_practice_questions_maxScore': 'Max score',
+
+    'pages_test_home_enterPinCode': 'ENTER YOUR PIN CODE',
+    'pages_test_home_join': 'JOIN',
+    'pages_test_testDetail_back': 'Back',
+    'pages_test_testDetail_next': 'Next',
+    'pages_test_testDetail_testWillBeSubmit': 'Your test will be submit and you will not have a second chance, are you sure to leave?',
+    'pages_test_testDetail_waitingThisTest': 'Waiting seconds to load this test ...',
+    'pages_test_testDetail_submittedThisTest': 'You have submited this test, you can not do twice.',
+    'pages_test_testDetail_backHome': 'Back home',
+    'pages_test_testDetail_timeOut_notSubmit': 'This test was time out, you have not submited this test yet. We will submit your test with empty answer.',
+    'pages_test_testDetail_timeOut_submit': 'This test was time out, your submission has been recorded.',
+    'pages_test_testDetail_hours': 'hours',
+    'pages_test_testDetail_minutes': 'minutes',
+    'pages_test_testDetail_seconds': 'seconds',
+    'pages_test_testDetail_question': 'Question ',
+    'pages_test_testDetail_score': 'Score:',
+    'pages_test_testDetail_submit': 'Submit:',
+    'pages_test_testDetail_waitingATest': 'Waiting seconds to load a test ...',
+    'pages_test_testDetail_listQuestion': 'List question',
+    'pages_test_testDetail_submitSure': 'Are you sure to submit this test',
+    'pages_test_testDetail_yes': 'Yes',
+    'pages_test_testDetail_no': 'No',
+
+    'pages_search_searchResult': 'Search result',
+    'pages_search_start': 'Start',
+};*/
+Language = {
     'pages_profile_practiceHistory': 'Practice History',
     'pages_profile_testHistory': 'Test History',
     'pages_profile_education': 'Education',
