@@ -37,13 +37,17 @@ const { TextArea, Search } = Input;
 class CodeEditor extends Component {
   constructor(props) {
     super(props);
-    console.log(this.props)
+    let temp = "c_cpp;"
+    if(this.props.practice.listDetail.generalInformation.PracticeSet === "Java")
+    temp = "java"
+    if(this.props.practice.listDetail.generalInformation.PracticeSet === "JavaScript")
+    temp = "javascript"
     this.state = {
       codeVal: '',
       customVal: '',
       isSubmitBatch: false,
       showCustom: false,
-      mode: 'c_cpp',
+      mode: temp,
       theme: 'tomorrow',
       tabSize: 2,
       fontSize: 16,
@@ -69,6 +73,10 @@ class CodeEditor extends Component {
     new Promise((resolve, reject) => {
       let code = this.state.codeVal;
       let lang_id = 54; //54 C++ 71 python
+      if(this.state.mode ==="java")
+        lang_id = 62
+      if(this.state.mode ==="javascript")
+        lang_id = 63
       if (this.state.customInput == false) input = input;
       else if (this.state.customVal == '') input = input;
       else input = this.state.customVal;
@@ -99,7 +107,7 @@ class CodeEditor extends Component {
       });
       return;
     }
-    console.log(this.props)
+
     this.handleSendCode(this.props.testCases[0].Input[0], this.props.testCases[0].Output[0]);
   };
   handleSubmit = () => {
@@ -119,6 +127,10 @@ class CodeEditor extends Component {
 
     let code = this.state.codeVal;
     let lang_id = 54; //54 C++ 71 python
+    if(this.state.mode ==="java")
+    lang_id = 62
+  if(this.state.mode ==="javascript")
+    lang_id = 63
     code = code.replace(/(^")|("$)/g, '');
     code = u_btoa(code);
     for (var tc of this.props.testCases) {
@@ -159,8 +171,6 @@ class CodeEditor extends Component {
     });
   };
   handleSearch = (value) => {
-    // console.log(value)
-    // console.log(this.editorRef.current)
     const editor = this.editorRef.current.editor;
     // editor.find(value, {
     //   backwards: false,
@@ -176,17 +186,16 @@ class CodeEditor extends Component {
     return (
       <div className={styles.container}>
         <Space className={styles.header}>
-          <Select
+          <Select className={styles.selectBtn}
             defaultValue="tomorrow"
-            style={{ width: 120 }}
             onChange={(value) => this.handleThemeChange(value)}
           >
             <Select.Option value="monokai">Dark</Select.Option>
             <Option value="tomorrow">Light</Option>
           </Select>
           <Select
+            className={styles.selectBtn}
             defaultValue={2}
-            style={{ width: 120 }}
             onChange={(value) => this.handleTabSizeChange(value)}
           >
             <Option value={2}>Tab size: 2</Option>
@@ -194,7 +203,7 @@ class CodeEditor extends Component {
           </Select>
           <Select
             defaultValue={16}
-            style={{ width: 120 }}
+            className={styles.selectBtn}
             onChange={(value) => this.handleFontSizeChange(value)}
           >
             <Option value={12}>12</Option>
@@ -202,14 +211,25 @@ class CodeEditor extends Component {
             <Option value={16}>16</Option>
             <Option value={18}>18</Option>
           </Select>
-          <Button icon={<SearchOutlined />} onClick={() => this.handleSearch()}>
+          <Button
+          className={styles.buttonWithName} icon={<SearchOutlined />} onClick={() => this.handleSearch()}>
             Find
           </Button>
           <Button
+            className={styles.buttonWithName}
             icon={<QuestionCircleOutlined />}
             href="https://github.com/securingsincity/react-ace"
           >
             Help
+          </Button>
+          <Button
+          className={styles.buttonNoName} icon={<SearchOutlined />} onClick={() => this.handleSearch()}>
+          </Button>
+          <Button
+            className={styles.buttonNoName}
+            icon={<QuestionCircleOutlined />}
+            href="https://github.com/securingsincity/react-ace"
+          >
           </Button>
         </Space>
         <AceEditor

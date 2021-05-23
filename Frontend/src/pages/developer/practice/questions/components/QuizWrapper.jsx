@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { Typography, Card, List, Modal, Row, Col, Divider, Checkbox, Button, Space } from 'antd';
+import { Typography, Card, List, Modal, Row, Col, Divider, Checkbox, Button, Space, Dropdown, Select } from 'antd';
 import { ExclamationCircleOutlined, CheckCircleTwoTone } from '@ant-design/icons';
 import { history, Link } from 'umi';
 import { connect } from 'dva';
@@ -109,7 +109,7 @@ const QuizWrapper = ({ submitResponse, dispatch, data, loading }) => {
     <PageLoading />
   ) : submitResponse == null ? (
     <Row gutter={32}>
-      <Col span={18}>
+      <Col span={18} className={styles.question}>
         <Divider orientation="left">{`Question ${currentQuestionID + 1}.`}</Divider>
         <p>{data?.listQuestion[currentQuestionID].Description}</p>
         <Divider></Divider>
@@ -124,12 +124,20 @@ const QuizWrapper = ({ submitResponse, dispatch, data, loading }) => {
           <Button disabled={backState} type="primary" onClick={() => onBack()}>
             Back
           </Button>
+          <Select className={styles.list} onChange={onSelectedGrid}
+        value={currentQuestionID} >{
+          data?.listQuestion.map((item, i)=>{
+            return <Option value={i}>{i+1}</Option>
+          })
+          }</Select>
           <Button disabled={nextState} type="primary" onClick={() => onNext()}>
             Next
           </Button>
+          
         </Space>
       </Col>
-      <Col span={6}>
+      <Col span={6} className={styles.questionGrid}>
+        
         <QuestionGrid
           list={data?.listQuestion}
           onSelectedGrid={onSelectedGrid}
@@ -148,7 +156,7 @@ const QuizWrapper = ({ submitResponse, dispatch, data, loading }) => {
       <Divider></Divider>
       <p>
         We have received and processed your submission. You can view your detail submission in
-        "Submission Tab"
+        "Submission" Tab
       </p>
       <p>If you have anything to tell us, you can feel free to contact at codejoy@codejoy.com</p>
     </div>

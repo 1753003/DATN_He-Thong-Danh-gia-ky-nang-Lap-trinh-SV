@@ -8,7 +8,18 @@ module.exports = {
     },
 
     async getTestSubmissions(id){
-        return await db('submissions').join('test', 'submissions.TestID', '=', 'test.TestID').where({DevID: id, PracticeID : null});
+        const res = await db('submissions').join('test', 'submissions.TestID', '=', 'test.TestID').where({DevID: id, PracticeID : null});
+        for (let item in res) {
+            if (item.Permissions == "public")
+                item.isPublic = true
+            else 
+                item.isPublic = false
+            if (item.Score < item.PassScore)
+                item.isPass = false
+            else    
+                item.isPass = true
+        }
+        return res;
     },
     async postTestSubmission(uid, submission) {
         await db('submissions').insert({ 

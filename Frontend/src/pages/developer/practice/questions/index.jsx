@@ -19,7 +19,7 @@ import Language from '@/locales/index';
 const { TabPane } = Tabs;
 
 const questionList = ({location, practice, dispatch, loading}) => {
-console.log(practice)
+
   const [tabChange, onTabChange] = useState(false)
   useEffect(()=>{
     dispatch({
@@ -83,7 +83,7 @@ console.log(practice)
         title={practice.listDetail?.generalInformation?.PracticeName}
         subTitle={practice.listDetail?.generalInformation?.BriefDescription}
       />
-      <Row>
+      <Row className="container">
       <Col className="tabs" span={19}>
         <Tabs className="custom" type="card" size="large" onChange={(key)=>{
           onTabChange(!tabChange)
