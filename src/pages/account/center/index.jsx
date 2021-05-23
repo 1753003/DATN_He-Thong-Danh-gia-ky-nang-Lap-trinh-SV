@@ -8,7 +8,7 @@ import Practice from './components/Practice';
 import Test from './components/Test';
 import styles from './Center.less';
 import Language from '@/locales/index';
-const operationTabList = [
+const operationTabList = (practice, test) => ([
   {
     key: 'practice',
     tab: (
@@ -19,7 +19,7 @@ const operationTabList = [
             fontSize: 14,
           }}
         >
-          (8)
+          ({practice})
         </span>
       </span>
     ),
@@ -34,13 +34,13 @@ const operationTabList = [
             fontSize: 14,
           }}
         >
-          (8)
+          ({test})
         </span>
       </span>
     ),
   },
   
-];
+]);
 
 const TagList = ({ tags }) => {
   const ref = useRef(null);
@@ -82,57 +82,16 @@ const TagList = ({ tags }) => {
   return (
     <div className={styles.tags}>
       <div className={styles.tagsTitle}>{Language.pages_profile_education}</div>
-      {/* {(tags || []).concat(newTags).map((item) => (
-        <Tag key={item.key}>{item.label}</Tag>
-      ))} */
       <Tag>Ho Chi Minh University Of Science</Tag>
-      }
-      {/* {inputVisible && (
-        <Input
-          ref={ref}
-          type="text"
-          size="small"
-          style={{
-            width: 78,
-          }}
-          value={inputValue}
-          onChange={handleInputChange}
-          onBlur={handleInputConfirm}
-          onPressEnter={handleInputConfirm}
-        />
-      )} */}
-      {/* {!inputVisible && (
-        <Tag
-          onClick={showInput}
-          style={{
-            borderStyle: 'dashed',
-          }}
-        >
-          <PlusOutlined />
-        </Tag>
-      )} */}
+      
     </div>
   );
 };
 
 class Center extends Component {
-  // static getDerivedStateFromProps(
-  //   props: accountAndcenterProps,
-  //   state: accountAndcenterState,
-  // ) {
-  //   const { match, location } = props;
-  //   const { tabKey } = state;
-  //   const path = match && match.path;
-  //   const urlTabKey = location.pathname.replace(`${path}/`, '');
-  //   if (urlTabKey && urlTabKey !== '/' && tabKey !== urlTabKey) {
-  //     return {
-  //       tabKey: urlTabKey,
-  //     };
-  //   }
-  //   return null;
-  // }
+ 
   state = {
-    tabKey: 'practice',
+    tabKey: 'test',
   };
 
   input = undefined;
@@ -155,19 +114,12 @@ class Center extends Component {
     console.log(this.props)
   }
   onTabChange = (key) => {
-    // If you need to sync state to url
-    // const { match } = this.props;
-    // router.push(`${match.url}/${key}`);
     this.setState({
       tabKey: key,
     });
   };
 
   renderChildrenByTabKey = (tabKey) => {
-    if (tabKey === 'projects') {
-      return <Projects />;
-    }
-
     if (tabKey === 'test') {
       return <Test />;
     }
@@ -211,7 +163,7 @@ class Center extends Component {
   
   render() {
     const { tabKey } = this.state;
-    const { currentUser = {}, currentUserLoading, info } = this.props;
+    const { currentUser = {}, currentUserLoading, info, list } = this.props;
     const dataLoading = currentUserLoading || !(currentUser && Object.keys(currentUser).length);
     console.log('info: ', info);
     return (
@@ -265,7 +217,7 @@ class Center extends Component {
             <Card
               className={styles.tabsCard}
               bordered={false}
-              tabList={operationTabList}
+              tabList={operationTabList(list?.practice?.length, list?.test?.length)}
               activeTabKey={tabKey}
               onTabChange={this.onTabChange}
             >
@@ -282,4 +234,5 @@ export default connect(({ loading, accountAndcenter }) => ({
   currentUser: accountAndcenter.currentUser,
   currentUserLoading: loading.effects['accountAndcenter/fetchCurrent'],
   info: accountAndcenter.info,
+  list: accountAndcenter.list,
 }))(Center);

@@ -5,6 +5,7 @@ const Model = {
   state: {
     currentUser: {},
     list: [],
+    storeList: [],
     info: {},
   },
   effects: {
@@ -44,8 +45,8 @@ const Model = {
     },
 
     *updateFilter({ payload }, { put, select }) {
-      var newList = [];
-
+      var filter = yield select((state) => state.search.filter);
+      var list =yield select((state) => state.search.storeList);
     }
   },
   reducers: {
@@ -54,7 +55,7 @@ const Model = {
     },
 
     queryList(state, action) {
-      return { ...state, list: action.payload };
+      return { ...state, list: action.payload, filterList: action.payload };
     },
 
     queryInfo(state, action) {
