@@ -2,6 +2,7 @@
 import { defineConfig } from 'umi';
 import defaultSettings from './defaultSettings';
 import proxy from './proxy';
+import Language from '../src/locales/index';
 
 const { REACT_APP_ENV } = process.env;
 export default defineConfig({
@@ -163,7 +164,7 @@ export default defineConfig({
                   redirect: '/developer/welcome',
                 },
                 {
-                  name: 'Welcome',
+                  name: Language.config_welcome,
                   path: '/developer/welcome',
                   component: './developer/welcome',
                 },

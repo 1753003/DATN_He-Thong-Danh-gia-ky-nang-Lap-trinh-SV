@@ -1,6 +1,10 @@
 import { getLocale, getAllLocales } from 'umi';
 var Language;
 if (getLocale() === 'vi-VN') Language = {
+    'config_welcome': 'Trang chủ',
+    'config_practice': 'Luyện tập',
+    'config_test': 'Kiểm tra',
+
     'pages_profile_practiceHistory': 'Lịch sử luyện tập',
     'pages_profile_testHistory': 'Lịch sử kiểm tra',
     'pages_profile_education': 'Học vấn',
@@ -57,6 +61,10 @@ if (getLocale() === 'vi-VN') Language = {
     'pages_search_start': 'Bắt đầu',
 };
 else Language = {
+    'config_welcome': 'Home',
+    'config_practice': 'Practice',
+    'config_test': 'Test',
+
     'pages_profile_practiceHistory': 'Practice History',
     'pages_profile_testHistory': 'Test History',
     'pages_profile_education': 'Education',
