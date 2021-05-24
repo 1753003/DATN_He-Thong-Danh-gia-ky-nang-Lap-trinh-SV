@@ -37,7 +37,7 @@ const { TextArea, Search } = Input;
 class CodeEditor extends Component {
   constructor(props) {
     super(props);
-    let temp = "c_cpp;"
+    let temp = "c_cpp"
     if(this.props.practice.listDetail.generalInformation.PracticeSet === "Java")
     temp = "java"
     if(this.props.practice.listDetail.generalInformation.PracticeSet === "JavaScript")
@@ -54,6 +54,7 @@ class CodeEditor extends Component {
     };
     this.editorRef = React.createRef();
   }
+
   handleCheckBoxChange = () => {
     this.setState({
       showCustom: !this.state.showCustom,
@@ -179,6 +180,7 @@ class CodeEditor extends Component {
     //   wholeWord: false,
     //   regExp: true
     // });
+
     editor.execCommand('find');
   };
 

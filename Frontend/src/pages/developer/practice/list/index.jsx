@@ -23,7 +23,6 @@ const practiceList = ({location,dispatch,practice, loading}) => {
       payload: encodeURIComponent(location.query.listName)
     })
   },[]);
-  console.log(practice.list)
   const routes = [
     {
       path: '/developer',

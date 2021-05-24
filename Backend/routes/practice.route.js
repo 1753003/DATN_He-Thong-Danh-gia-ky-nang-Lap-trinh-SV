@@ -32,7 +32,7 @@ router.get("/submissions", async function (req, res) {
 
 router.post("/submitcheck", async function (req, res) {
   const data = req.body;
-  var dataArray = Object.values(JSON.parse(JSON.stringify(data)));
+  var dataArray = Object.values(JSON.parse(JSON.stringify(data.userChoice)));
   dataArray.forEach((x) => delete x["id"]);
   let userChoices = [];
   dataArray.forEach((item) => {
@@ -43,39 +43,46 @@ router.post("/submitcheck", async function (req, res) {
     qidList.push(item.qid);
   });
   const answer = await practiceModel.getAnswerMultipleChoice(qidList);
-
   let result = [];
-  let correctCount = 0;
+  let correctCount = [];
   let totalUserChoice = 0;
+  console.log("answer",answer)
   userChoices.forEach((question) => {
     let tmp = {};
     tmp.qid = question.qid;
     tmp.res = answer[question.qid].list.every(
       (val, index) => val === question.list[index]
     );
-    if (tmp.res) correctCount += 1;
+    if (tmp.res) correctCount.push(question.qid);
+    else correctCount.push(-1*question.qid);
     totalUserChoice += 1;
     answer[question.qid].list === question.list;
     result.push(tmp);
   });
   //save submission to db
+  let tempCount = 0;
+  correctCount.forEach(item=>{if (item>0) tempCount+=1})
   const dbSubmission = {
     SubmissionType: "MultipleChoice",
-    PracticeID: 2, //
+    PracticeID: data.pid, //
     DevID: req.uid, //
     AnsweredNumber: 1,
-    CorrectPercent: Number((correctCount / totalUserChoice).toFixed(4)) * 100,
-    DoingTime: 100,
-    Score: 100,
+    CorrectPercent: Number((tempCount / totalUserChoice).toFixed(4)) * 100,
+    DoingTime: 0,
+    Score: Number((tempCount / data.pLength).toFixed(4))*100,
   };
   const dbSubmissionRes = await practiceModel.saveSubmissions(dbSubmission);
-  userChoices.forEach(async (item) => {
+  userChoices.forEach(async (item, i) => {
 
     let choice = await practiceModel.getIndexMultipleChoice(
       item.qid,
       item.list
     );
+    let tempStatus = 0;
+    if(correctCount.includes(item.qid)) tempStatus = 1
+    if(correctCount.includes(item.qid*-1)) tempStatus = -1
     let dbAnswer = {
+      status:tempStatus,
       SubmissionID: dbSubmissionRes[0], //
       Choice: JSON.stringify(choice), //
       QuestionID: item.qid, //

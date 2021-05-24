@@ -40,7 +40,7 @@ export function getTestIdByCode(code) {
       .request(options)
       .then((response) => {
         // handle success
-        // console.log(response.data)
+        console.log("test",response.data)
         resolve(response.data);
       })
       .catch((error) => {
