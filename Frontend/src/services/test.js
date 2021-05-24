@@ -40,7 +40,7 @@ export function getTestIdByCode(code) {
       .request(options)
       .then((response) => {
         // handle success
-        // console.log(response.data)
+        console.log("test",response.data)
         resolve(response.data);
       })
       .catch((error) => {
@@ -138,6 +138,7 @@ export function updateEditedTest({ generalInformation, listQuestion, id, onSucce
 }
 
 export function postSubmission(data) {
+  console.log("ABX")
   return new Promise((resolve, reject) => {
     var options = {
       method: 'POST',

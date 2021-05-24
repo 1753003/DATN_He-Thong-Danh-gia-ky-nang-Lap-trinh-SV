@@ -31,15 +31,20 @@ const TestModel = {
     timeINT: '',
     isDid: false,
     isOut: false,
-    loading: true
+    loading: true,
+    statusFromCode:null
   },
   effects: {
     *getTestIdFromCode({ payload }, { call, put }) {
       const response = yield call(getTestIdByCode, payload);
-      console.log(response);
+      yield put({
+        type: 'saveStatusFromCode',
+        payload: response,
+      });
+      if(response!==-1)
       history.push({
         pathname: '/developer/test/questions',
-        search: `?tid=${response.TestID}`,
+        search: `?tid=${response}`,
         state: response,
       });
     },
@@ -337,6 +342,9 @@ const TestModel = {
     },
   },
   reducers: {
+    saveStatusFromCode(state, { payload }) {
+      return { ...state, statusFromCode: payload };
+    },
     saveTestList(state, { payload }) {
       return { ...state, testList: [...payload] };
     },

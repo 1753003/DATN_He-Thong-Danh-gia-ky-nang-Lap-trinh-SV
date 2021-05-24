@@ -32,13 +32,17 @@ router.post('/check/:id', async function (req, res){
 })
 router.get('/set/:name', async (req, res)=>{
    const set = req.params.name;
-   const list = await testModel.getTestBySet(set)
+   const list = await testModel.getTestBySet(set, req.uid)
+   console.log(list);
    res.json(list)
 })
 router.get('/code/:code', async (req, res)=>{
    const code = req.params.code;
    const id = await testModel.getTestByCode(code)
-   res.json(id[0])
+   if(id.length === 1)
+      res.json(id[0].TestID)
+   if(id.length === 0)
+      res.json(-1)
 })
 router.get('/answer/:TestID', async (req, res) => {
    const list = await testModel.getAnswer(req.params.TestID);

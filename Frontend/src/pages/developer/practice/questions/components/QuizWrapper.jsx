@@ -1,16 +1,24 @@
 import React, { useEffect, useState } from 'react';
 
-import { Typography, Card, List, Modal, Row, Col, Divider, Checkbox, Button, Space, Dropdown, Select } from 'antd';
-import { ExclamationCircleOutlined, CheckCircleTwoTone } from '@ant-design/icons';
-import { history, Link } from 'umi';
+import {
+  Modal,
+  Row,
+  Col,
+  Divider,
+  Checkbox,
+  Button,
+  Space,
+  Select,
+} from 'antd';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { connect } from 'dva';
 import PageLoading from '@/components/PageLoading';
 import styles from './style.less';
 
-const { confirm } = Modal;
+const { confirm, warning } = Modal;
 const CheckboxGroup = Checkbox.Group;
 const QuestionGrid = ({ list, onSelectedGrid, handleSubmit }) => {
-  return (
+  return (<div className={styles.gridContainer}>
     <div className={styles.grid}>
       {list?.map((item, i) => {
         return (
@@ -25,13 +33,14 @@ const QuestionGrid = ({ list, onSelectedGrid, handleSubmit }) => {
           </Button>
         );
       })}
+    </div>
       <Button type="primary" block onClick={() => handleSubmit()}>
         Submit
       </Button>
-    </div>
+      </div>
   );
 };
-const QuizWrapper = ({ submitResponse, dispatch, data, loading }) => {
+const QuizWrapper = ({ pLength, pid, submitResponse, dispatch, data, loading }) => {
   const [userChoice, setUserChoice] = useState({});
   const [currentQuestionID, setCurrentQuestionID] = useState(0);
   const [backState, setBackState] = useState(true);
@@ -82,7 +91,11 @@ const QuizWrapper = ({ submitResponse, dispatch, data, loading }) => {
   };
 
   const handleSubmit = () => {
-    if (data && data.listQuestion.length > Object.keys(userChoice).length)
+    if (Object.keys(userChoice).length===0)
+    warning({
+      title: 'Dont leave your practice blank.',
+    });
+    else if (data && data.listQuestion.length > Object.keys(userChoice).length)
       confirm({
         title: 'You have not finished all question.',
         icon: <ExclamationCircleOutlined />,
@@ -91,7 +104,7 @@ const QuizWrapper = ({ submitResponse, dispatch, data, loading }) => {
         onOk() {
           dispatch({
             type: 'practice/submitAnswerMultipleChoice',
-            payload: userChoice,
+            payload: {pLength,pid, userChoice},
           });
         },
         onCancel() {
@@ -101,7 +114,7 @@ const QuizWrapper = ({ submitResponse, dispatch, data, loading }) => {
     else {
       dispatch({
         type: 'practice/submitAnswerMultipleChoice',
-        payload: userChoice,
+        payload: {pLength, pid, userChoice},
       });
     }
   };
@@ -124,20 +137,17 @@ const QuizWrapper = ({ submitResponse, dispatch, data, loading }) => {
           <Button disabled={backState} type="primary" onClick={() => onBack()}>
             Back
           </Button>
-          <Select className={styles.list} onChange={onSelectedGrid}
-        value={currentQuestionID} >{
-          data?.listQuestion.map((item, i)=>{
-            return <Option value={i}>{i+1}</Option>
-          })
-          }</Select>
+          <Select className={styles.list} onChange={onSelectedGrid} value={currentQuestionID}>
+            {data?.listQuestion.map((item, i) => {
+              return <Select.Option key={i} value={i}>{i + 1}</Select.Option>;
+            })}
+          </Select>
           <Button disabled={nextState} type="primary" onClick={() => onNext()}>
             Next
           </Button>
-          
         </Space>
       </Col>
       <Col span={6} className={styles.questionGrid}>
-        
         <QuestionGrid
           list={data?.listQuestion}
           onSelectedGrid={onSelectedGrid}
@@ -152,7 +162,8 @@ const QuizWrapper = ({ submitResponse, dispatch, data, loading }) => {
         style={
           submitResponse === data.listQuestion.length ? { color: 'darkgreen' } : { color: 'red' }
         }
-      >{`Your result: ${submitResponse} / ${data.listQuestion.length} correct questions`}</h3>
+      >{`Your result: ${submitResponse.filter(function(e) {
+        return e > 0}).length} / ${data.listQuestion.length} correct questions`}</h3>
       <Divider></Divider>
       <p>
         We have received and processed your submission. You can view your detail submission in
@@ -164,7 +175,8 @@ const QuizWrapper = ({ submitResponse, dispatch, data, loading }) => {
 };
 
 export default connect(({ practice, loading }) => ({
+  pLength: practice.listDetail?.listQuestion.length,
+  pid : practice.listDetail?.generalInformation.PracticeID,
   submitResponse: practice.mulitpleChoiceResponse,
-  // loadingSubmit: loading.effects['practice/submitAnswerMultipleChoice']
   loading: loading.models['practice'],
 }))(QuizWrapper);

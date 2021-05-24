@@ -1,5 +1,6 @@
 const db = require("../utils/db");
 const reportModel = require("../models/report.model");
+
 const { getPracticeQuestionList } = require("./question.model");
 const e = require("express");
 module.exports = {
@@ -154,10 +155,9 @@ module.exports = {
   async getTestByCode(code) {
     return await db("test").where("TestCode", code);
   },
-  async getTestBySet(set) {
-    return await db("test")
-      .where("LanguageAllowed", "like", `%${set}"%`)
-      .where("Permissions", "public");
+  async getTestBySet(set, uid) {
+    const list = (await db.raw(`call getTestSet ('${uid}', '${set}')`))[0][0];
+    return list
   },
   async updateTest(test, testID) {
     test.generalInformation.QuestionID = JSON.stringify(
