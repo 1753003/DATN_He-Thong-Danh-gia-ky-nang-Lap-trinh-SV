@@ -7,6 +7,7 @@ import TweenOne from 'rc-tween-one';
 import { OverPack } from 'rc-scroll-anim';
 import Cookies from 'js-cookie';
 import AnchorLink from 'react-anchor-link-smooth-scroll';
+import Language from '@/locales/index';
 class Header extends React.Component {
   state = {
     current: 'home',
@@ -35,12 +36,12 @@ class Header extends React.Component {
         mode="horizontal"
         className={styles.menu}
       >
-        <Menu.Item key="home">Home</Menu.Item>
-        <Menu.Item key="introduce">Introduce</Menu.Item>
+        <Menu.Item key="home">{Language.home_home}</Menu.Item>
+        <Menu.Item key="introduce">{Language.home_introduce}</Menu.Item>
         {this.isLogin ? (
-          <Menu.Item key="signout">Sign out</Menu.Item>
+          <Menu.Item key="signout">{Language.home_signOut}</Menu.Item>
         ) : (
-          <Menu.Item key="signup">Login</Menu.Item>
+          <Menu.Item key="signup">{Language.home_login}</Menu.Item>
         )}
       </Menu>
     );
@@ -79,12 +80,12 @@ const Content = () => {
             <div className={styles.two + ' ' + styles.specialDesign}>
               <Row>
                 <Col span={12} className={styles.specialContent}>
-                  <div className={styles.specialTitle}>What is CodeJoy?</div>
+                  <div className={styles.specialTitle}>{Language.home_codejoy}</div>
                   <div className={styles.specialSubTitle}>
-                    The ultimate resource to practice and test your coding skills.
+                    {Language.home_ultimateResource}
                   </div>
                   <div className={styles.specialSubTitle}>
-                    The environment to create different test to challenge your developers.
+                    {Language.home_environment}
                   </div>
                   <Row gutter={64} style={{ marginTop: '40px' }}>
                     <Col span={12}>
@@ -95,7 +96,7 @@ const Content = () => {
                             alt=""
                           />
                         </div>
-                        <div className={styles.cardTitle}>Hundreds of Hand-picked questions</div>
+                        <div className={styles.cardTitle}>{Language.home_hundreds}</div>
                       </div>
                     </Col>
                     <Col span={12}>
@@ -106,7 +107,7 @@ const Content = () => {
                             alt=""
                           />
                         </div>
-                        <div className={styles.cardTitle}>Support 4 different languages</div>
+                        <div className={styles.cardTitle}>{Language.home_support}</div>
                       </div>
                     </Col>
                   </Row>
@@ -119,7 +120,7 @@ const Content = () => {
                             alt=""
                           />
                         </div>
-                        <div className={styles.cardTitle}>Code-Execution Environment</div>
+                        <div className={styles.cardTitle}>{Language.home_codeExecution}</div>
                       </div>
                     </Col>
                     <Col span={12}>
@@ -130,7 +131,7 @@ const Content = () => {
                             alt=""
                           />
                         </div>
-                        <div className={styles.cardTitle}>Space-Time Complexity Analyses</div>
+                        <div className={styles.cardTitle}>{Language.home_spaceTime}</div>
                       </div>
                     </Col>
                   </Row>
@@ -153,11 +154,11 @@ const Content = () => {
                     <img src="https://firebasestorage.googleapis.com/v0/b/devcheckpro.appspot.com/o/GuestPage%2Fdev-login.png?alt=media&token=282a2155-07e1-457e-abb1-bb424f80766a" alt="" width="80%" height="80%"/>
                   </div>
                   <Row className = {styles.text}>
-                    <div className = {styles.cardTitle}>Are you student?</div>
+                    <div className = {styles.cardTitle}>{Language.home_student}</div>
                     <Button onClick = {() => {history.push('/developer/practice')}}
                             type="primary"
                     >
-                      Join now
+                      {Language.home_join}
                     </Button>
                   </Row>
                 </Col>
@@ -166,11 +167,11 @@ const Content = () => {
                     <img src="https://firebasestorage.googleapis.com/v0/b/devcheckpro.appspot.com/o/GuestPage%2Fcreator-login.jpg?alt=media&token=b47214d7-09be-4796-a4f7-cc641e67313b" alt="" width="80%" height="80%"/>
                   </div>
                   <Row className = {styles.text}>
-                  <div className = {styles.cardTitle}>Are you teacher?</div>
+                  <div className = {styles.cardTitle}>{Language.home_teacher}</div>
                     <Button onClick = {() => {history.push('/creator')}}
                             type="primary"
                     >
-                      Join now
+                      {Language.home_join}
                     </Button>
                   </Row>
                 </Col>

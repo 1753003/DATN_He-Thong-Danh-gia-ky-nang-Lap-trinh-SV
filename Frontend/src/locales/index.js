@@ -1,9 +1,20 @@
 import { getLocale, getAllLocales } from 'umi';
 var Language;
 if (getLocale() === 'vi-VN') Language = {
-    'config_welcome': 'Trang chủ',
-    'config_practice': 'Luyện tập',
-    'config_test': 'Kiểm tra',
+    'home_home': 'Trang chủ',
+    'home_introduce': 'Giới thiệu',
+    'home_signOut': 'Đăng xuất',
+    'home_login': 'Đăng nhập',
+    'home_codejoy': 'CodeJoy là gì ?',
+    'home_ultimateResource': 'Nguồn tài nguyên tuyệt vời để luyện tập và kiểm tra kĩ năng lập trình của bạn',
+    'home_environment': 'Môi trường để tạo ra các bài kiểm tra thách thức các lập trình viên của bạn. .',
+    'home_hundreds': 'Hàng trăm câu hỏi được chọn lọc thủ công',
+    'home_support': 'Hỗ trợ 4 ngôn ngữ khác nhau',
+    'home_codeExecution': 'Môi trường thực thi mã lệnh',
+    'home_spaceTime': 'Phân tích độ phức tạp theo không-thời gian',
+    'home_student': 'Bạn là sinh viên ?',
+    'home_teacher': 'Bạn là giảng viên ?',
+    'home_join': 'Tham gia ngay',
 
     'pages_profile_practiceHistory': 'Lịch sử luyện tập',
     'pages_profile_testHistory': 'Lịch sử kiểm tra',
@@ -62,9 +73,20 @@ if (getLocale() === 'vi-VN') Language = {
     'pages_search_start': 'Bắt đầu',
 };
 else Language = {
-    'config_welcome': 'Home',
-    'config_practice': 'Practice',
-    'config_test': 'Test',
+    'home_home': 'Home',
+    'home_introduce': 'Introduce',
+    'home_signOut': 'Sign out',
+    'home_login': 'Login',
+    'home_codejoy': 'What is CodeJoy?',
+    'home_ultimateResource': 'The ultimate resource to practice and test your coding skills.',
+    'home_environment': 'The environment to create different test to challenge your developers.',
+    'home_hundreds': 'Hundreds of Hand-picked questions',
+    'home_support': 'Support 4 different languages',
+    'home_codeExecution': 'Code-Execution Environment',
+    'home_spaceTime': 'Space-Time Complexity Analyses',
+    'home_student': 'Are you student ?',
+    'home_teacher': 'Are you teacher ?',
+    'home_join': 'Join now',
 
     'pages_profile_practiceHistory': 'Practice History',
     'pages_profile_testHistory': 'Test History',
