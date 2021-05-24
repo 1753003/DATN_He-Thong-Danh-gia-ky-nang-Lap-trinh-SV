@@ -163,7 +163,7 @@ export default defineConfig({
                   redirect: '/developer/welcome',
                 },
                 {
-                  name: getMenu('vi-VN').Welcome,
+                  name: getMenu("vi-VN").Welcome,
                   path: '/developer/welcome',
                   component: './developer/welcome',
                 },
