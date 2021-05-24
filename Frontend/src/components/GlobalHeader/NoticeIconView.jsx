@@ -151,7 +151,7 @@ class GlobalHeaderRight extends Component {
     const { currentUser, onNoticeVisibleChange } = this.props;
     const noticeData = this.getNoticeData();
     const unreadMsg = this.getUnreadData(noticeData);
-    console.log(noticeData)
+    
     return (
       <Spin 
       size='small' 

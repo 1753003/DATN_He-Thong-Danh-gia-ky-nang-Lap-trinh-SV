@@ -32,7 +32,8 @@ router.post('/check/:id', async function (req, res){
 })
 router.get('/set/:name', async (req, res)=>{
    const set = req.params.name;
-   const list = await testModel.getTestBySet(set)
+   const list = await testModel.getTestBySet(set, req.uid)
+   console.log(list);
    res.json(list)
 })
 router.get('/code/:code', async (req, res)=>{
