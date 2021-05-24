@@ -29,6 +29,7 @@ const Model = {
       })
     },
     *submitAnswerMultipleChoice({ payload }, { call, put,select }){
+
       const data = yield submitMultipleChoice(payload)
       yield put({
         type:'saveMultipleChoiceResponse',
@@ -52,7 +53,6 @@ const Model = {
       })
     },
     *getPracticeListDetail({ payload }, { call, put }) {
-      console.log(payload)
       const listDetail = yield getPracticeListDetail(payload.id)
 
       yield put({
