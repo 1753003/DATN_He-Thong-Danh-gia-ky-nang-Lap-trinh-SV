@@ -37,6 +37,7 @@ const questionList = ({location, practice, dispatch, loading}) => {
       payload:null
     })
   },[]);
+  // console.log(practice)
   const routes = [
     {
       key:'Developer',

@@ -1,19 +1,14 @@
 import React, { Component, useEffect, useState } from 'react';
-import { CheckCircleTwoTone, CloseCircleTwoTone, ConsoleSqlOutlined } from '@ant-design/icons';
+import { CheckCircleTwoTone, CloseCircleTwoTone } from '@ant-design/icons';
 import styles from './style.less';
 import 'brace/mode/javascript';
 import 'brace/mode/c_cpp';
 import 'brace/mode/java';
-import {
-  PageHeader,
-  Divider,
-  Checkbox,
-  Tabs,
-} from 'antd';
+import { PageHeader, Divider, Checkbox, Tabs, Tooltip, Typography, Row, Col, Statistic } from 'antd';
 import 'brace/theme/kuroir';
 import { connect } from 'dva';
 import PageLoading from '@/pages/dashboard/analysis/components/PageLoading';
-import { u_atob} from '@/utils/string';
+import { u_atob } from '@/utils/string';
 import AceEditor from 'react-ace';
 import moment from 'moment';
 const { TabPane } = Tabs;
@@ -21,7 +16,6 @@ const CheckboxGroup = Checkbox.Group;
 const SubmissionDetail = ({ dispatch, data, listQuestion, loading }) => {
   const [result, setResult] = useState([]);
   useEffect(() => {
-    console.log(data, listQuestion);
     const tempResult = [];
     if (listQuestion[0].TestCase)
       listQuestion[0].TestCase.forEach((tc, i) => {
@@ -35,8 +29,8 @@ const SubmissionDetail = ({ dispatch, data, listQuestion, loading }) => {
         } else temp.compile_output = '';
         tempResult.push(temp);
       });
-    else{
-      console.log("multiplechoice")
+    else {
+      console.log('multiplechoice');
     }
     setResult(tempResult);
   }, []);
@@ -51,7 +45,7 @@ const SubmissionDetail = ({ dispatch, data, listQuestion, loading }) => {
         theme="kuroir"
         value={value}
         minLines={1}
-        maxLines={8}
+        maxLines={10}
         style={{ width: '100%' }}
         highlightGutterLine={false}
         highlightActiveLine={false}
@@ -126,14 +120,30 @@ const SubmissionDetail = ({ dispatch, data, listQuestion, loading }) => {
             }}
             title="Back to Your Submmission List"
           />
+          <Typography.Text>
+            Submitted at{' '}
+            {moment(data.info.CreatedAt).locale('en').format('MMMM Do YYYY, h:mm:ss a')}
+          </Typography.Text>
+          <Row>
+            <Col span={12}>
+              <Tooltip placement="topLeft" title="This is calculated using total questions number.">
+                <span>
+                <Statistic title="Your score" value={data.info.Score} precision={0} />
+                </span>
+              </Tooltip>
+            </Col>
+            <Col span={12}>
+              <Tooltip placement="topLeft" title="This is calculated using number of answer you submitted.">
+                <span>
+                <Statistic title="Correct Percent" value={data.info.CorrectPercent} suffix='%'/>
+                </span>
+              </Tooltip>
+            </Col>
+          </Row>
+          <Divider></Divider>
+          <Typography.Title level={3}>Submitted Answer</Typography.Title>
           {data.info.SubmissionType === 'Coding' ? (
             <div>
-              <p>
-                Submit Date:{' '}
-                {moment(data.info.CreatedAt).locale('en').format('MMMM Do YYYY, h:mm:ss a')}
-              </p>
-              <p>Your score: {data.info.Score}</p>
-              <p>correctPercent: {data.info.CorrectPercent}</p>
               <Divider orientation="left">Submitted Answer</Divider>
               {editor(u_atob(data.data[0].DescriptionCode))}
               <Divider orientation="left">Test Cases</Divider>
@@ -141,33 +151,30 @@ const SubmissionDetail = ({ dispatch, data, listQuestion, loading }) => {
             </div>
           ) : (
             <div>
-              <p>
-                Submit Date:{' '}
-                {moment(data.info.CreatedAt).locale('en').format('MMMM Do YYYY, h:mm:ss a')}
-              </p>
-              <p>Your score: {data.info.Score}</p>
-              <p>correctPercent: {data.info.CorrectPercent}</p>
-              <h2>Submitted Answer</h2>
-              {data.data.map((item, i) => {
+              {listQuestion.map((item, i) => {
                 let temp = [];
-                for (var choice in item.Choice) {
-                  temp.push(listQuestion[i].Answer[choice]);
+                if (data.data[i])
+                {
+                  for (let choice in data.data[i]?.Choice) {
+                    temp.push(item.Answer[choice]);
+                  }
                 }
                 return (
                   <div key={i}>
-                    <Divider></Divider>
-                    <h3>
-                      Question {i + 1}. {listQuestion[i].Description}
+                    
+                    <h3 style={data.data[i]?.status === 1 ? { color: 'green' } : { color: 'red' }}>
+                      Question {i + 1}. {item.Description}
                     </h3>
                     <h4>
                       Your answer:{' '}
                       <CheckboxGroup
                         style={{ display: 'flex', flexDirection: 'column' }}
-                        disabled
+                        onChange={() => console.log('')}
                         value={temp}
-                        options={listQuestion[i].Answer}
+                        options={item.Answer}
                       ></CheckboxGroup>
                     </h4>
+                    <Divider></Divider>
                   </div>
                 );
               })}

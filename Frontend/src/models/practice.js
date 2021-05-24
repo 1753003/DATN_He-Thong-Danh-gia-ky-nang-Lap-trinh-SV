@@ -29,6 +29,7 @@ const Model = {
       })
     },
     *submitAnswerMultipleChoice({ payload }, { call, put,select }){
+
       const data = yield submitMultipleChoice(payload)
       yield put({
         type:'saveMultipleChoiceResponse',
