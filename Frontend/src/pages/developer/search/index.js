@@ -60,7 +60,7 @@ class SearchResult extends React.Component {
                     padding: '5px 20px 5px 10px',
                     borderRadius: '5px',
                   }}
-                >
+                > 
                   <List.Item.Meta
                     title={
                       <Row>
