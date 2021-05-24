@@ -8,8 +8,9 @@ router.get('/', async function(req, res){
     res.json(list);
 })
 
-router.get('/practice', async (req, res) => {
-
+router.patch('/', async (req, res) => {
+    await developerModel.update(req.uid, req.body)
+    res.json (await developerModel.get(req.uid))
 })
 
 module.exports = router;
