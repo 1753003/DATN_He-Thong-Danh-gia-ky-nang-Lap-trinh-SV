@@ -21,7 +21,7 @@ let list1 = [];
   let list3 = [];
 const TestSetList = ({location,dispatch,testDev, loading}) => {
   // let history = useHistory()
-  const [list, setList] = useState([])
+  
   const [solved, setSolved] = useState(false);
   const [unsolved, setUnsolved] = useState(false);
   const [easy, setEasy] = useState(false);
@@ -29,20 +29,20 @@ const TestSetList = ({location,dispatch,testDev, loading}) => {
   const [hard, setHard] = useState(false);
   const [multiple, setMultiple] = useState(false);
   const [coding, setCoding] = useState(false);
-
-  
+  const [list, setList] = useState([])
 
   useEffect(()=>{
     dispatch({
       type:'testDev/fetchTestListBySet',
-      payload: decodeURIComponent(location.query.listName)
+      payload: {listname: decodeURIComponent(location.query.listName), Callback: setList}
     })
-    console.log("ABD")
-    setList(testDev.setList)
+
+    
+    console.log("ABC")
     list1 = testDev.setList
     list2 = testDev.setList
     list3 = testDev.setList
-    console.log(list1, list2, list3)
+   
   },[]);
  
   const routes = [

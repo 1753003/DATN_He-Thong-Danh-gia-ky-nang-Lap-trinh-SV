@@ -9,7 +9,8 @@ const TestModel = {
   },
   effects: {
     *fetchTestListBySet({payload}, { call, put }) {
-      const response = yield getTestListBySet(payload.split(' ')[0]);
+      const response = yield getTestListBySet(payload.listname.split(' ')[0]);
+      payload.Callback(response)
       yield put({
         type: 'saveTestList',
         payload: response,
@@ -19,6 +20,7 @@ const TestModel = {
   },
   reducers: {
     saveTestList(state, { payload }) {
+      console.log("reducers")
       return { ...state, setList: [...payload] };
     },
     saveTestById(state, { payload }) {
