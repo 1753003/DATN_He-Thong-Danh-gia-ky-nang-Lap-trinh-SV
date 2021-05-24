@@ -85,7 +85,6 @@ class TestDetail extends React.Component {
   }
 
   handleBack() {
-    console.log("ABC")
     this.reset();
   }
 
@@ -301,13 +300,11 @@ class TestDetail extends React.Component {
   };
   render() {
     const { hours, minutes, seconds, check } = this.state;
-    console.log(seconds, this.props.test)
     if (this.props.test.loading) {
       return <Spin tip={Language.pages_test_testDetail_waitingThisTest}></Spin>;
     }
 
     if (this.props.test.isDid) {
-      console.log("ABC")
       return (
         <Result
           title={Language.pages_test_testDetail_submittedThisTest}
