@@ -61,3 +61,35 @@ export function getInfo() {
     })
   })
 }
+
+export function updateInfo(data) {
+  return new Promise((resolve, reject) => {
+    var options = {
+      method: 'PATCH',
+      withCredentials: true,
+      url: `${Constant.API}/api/developer`,
+      headers: {
+        accessToken: Cookies.get('accessToken'),
+        'access-control-allow-origin': Constant.CORS,
+      },
+      data
+    };
+    axios
+    .request(options)
+    .then((response) => {
+    // handle success
+    console.log(response.data)
+    resolve(response.data)
+    })
+    .catch((error) => {
+      try {
+      const message = error?.response?.data?.message;
+      tokenHandling(message, resolve, options);
+      }
+      catch(e) {
+        console.log(error)
+      }
+    })
+  })
+}
+
