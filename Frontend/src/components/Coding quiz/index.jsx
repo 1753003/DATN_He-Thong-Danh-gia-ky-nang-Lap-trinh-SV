@@ -170,7 +170,8 @@ class Coding extends Component {
         <div className="code-editor">
           <CodeEditor testCases = {this.props.testCases}
               getCode={(value) => this.props.getCode(value)}
-              codeDefault={this.props.codeDefault}></CodeEditor>
+              codeDefault={this.props.codeDefault}
+              language = {this.props.language}></CodeEditor>
           {this.props.loading ? (
             <PageLoading></PageLoading>
           ) : (

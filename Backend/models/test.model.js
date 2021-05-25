@@ -76,6 +76,8 @@ module.exports = {
         res.Description = multipleQuestion.MCDescription;
         res.Answer = multipleQuestion.Answer;
         res.CorrectAnswer = multipleQuestion.CorrectAnswer;
+        res.CodeSample = multipleQuestion.MCCoding;
+        console.log(res)
         }
         catch(e) {
           res.Description = "";

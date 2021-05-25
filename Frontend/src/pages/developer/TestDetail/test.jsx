@@ -21,7 +21,7 @@ import Language from '@/locales/index';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { docco } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 const CheckboxGroup = Checkbox.Group;
-const codeString = '#include <iostream> \n(num) => num + 1;\nlet a = 0;';
+
 class TestDetail extends React.Component {
   state = {
     hours: undefined,
@@ -128,6 +128,12 @@ class TestDetail extends React.Component {
       return '';
     }
   };
+  
+  getCodeSampleMC = (i) => {
+    const e = i;
+    console.log(i, typeof(i))
+    return e.replaceAll('\\n', "\n")
+  }
 
   onChangeAnswer = (checkedValues) => {
     this.props.dispatch({
@@ -288,6 +294,7 @@ class TestDetail extends React.Component {
       key={this.getQuestion()?.ID}
       description={this.getQuestion()?.Description}
       testCases={this.getQuestion()?.TestCase}
+      language={this.getQuestion()?.Language_allowed}
       getCode={(value) => {
         this.props.dispatch({
           type: 'test/updateAnswer',
@@ -449,9 +456,13 @@ class TestDetail extends React.Component {
                   ) : (
                     <>
                       <p>{this.getQuestion()?.Description}</p>
-                      <SyntaxHighlighter language="c" style={docco}>
-                        {codeString}
+                      {this.getQuestion()?.CodeSample != null ? 
+                      
+                      <SyntaxHighlighter language="javascript" style={docco}>
+                        {this.getCodeSampleMC(this.getQuestion()?.CodeSample)}
                       </SyntaxHighlighter>
+                      :
+                      ""}
                       {this.returnQuizQuestion()}
                     </>
                   )}
