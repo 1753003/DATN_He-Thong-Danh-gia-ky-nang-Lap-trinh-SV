@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const submisisionsModel = require('../models/submissions.model')
 const testModel = require('../models/test.model')
+const reportModel = require('../models/report.model')
 router.get('/', async function(req, res){
     console.log(req.uid);
     const listTest = await submisisionsModel.getTestSubmissions(req.uid);
@@ -15,8 +16,9 @@ router.get('/', async function(req, res){
 
 router.post('/test', async function(req,res) {
     const submission = req.body;
-    console.log(submission)
+    
     const answer = await (testModel.getAnswer(req.body.TestID));
+    
     let score = 0;
     let numCorrect = 0;
     let count = 0;
@@ -36,6 +38,42 @@ router.post('/test', async function(req,res) {
     submission.Score += score;
     submission.CorrectPercent = ((submission.CorrectPercent + numCorrect) / answer.length) * 100;
     await submisisionsModel.postTestSubmission(req.uid, submission);
+
+    const statics = await submisisionsModel.getStatics(submission.TestID);
+    let percentSuccess = 0
+    let percentPass = 0
+
+    console.log(statics)
+    if (submission.Score >= statics.PassScore) {
+        if (statics.Num - 1 == 0)
+            percentPass = 100
+        else
+            percentPass = ((statics.PercentPass * (statics.Num - 1) /100) + 1) * 100 / (statics.Num);
+    }
+    else {
+        
+        if (statics.PercentPass == 0)
+            percentPass = 0;
+        else {
+            percentPass = (statics.PercentPass * (statics.Num - 1)) / parseFloat(statics.Num);
+        }
+    }
+
+    if (submission.Score == statics.MaxScore) {
+        if (statics.Num == 1)
+            percentSuccess = 100
+        else
+            percentSuccess = ((statics.PercentSuccess * (statics.Num - 1) /100) + 1) * 100 / (statics.Num);
+    }
+    else {
+        if (statics.PercentSuccess == 0)
+            percentSuccess = 0;
+        else
+            percentSuccess = (statics.PercentSuccess * (statics.Num - 1) / 100) * 100 / (statics.Num);
+    }
+    console.log(percentPass, percentSuccess)
+    await reportModel.updateReport(submission.TestID, percentPass, percentSuccess)
+
     res.json(
         'OK'
     )
