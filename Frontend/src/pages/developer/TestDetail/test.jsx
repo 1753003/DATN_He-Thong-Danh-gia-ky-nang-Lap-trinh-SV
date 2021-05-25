@@ -1,15 +1,27 @@
 import React from 'react';
 import styles from './index.less';
-import { Row, Col, Button, List, Checkbox, Spin, PageHeader, Result, Popconfirm, notification } from 'antd';
+import {
+  Row,
+  Col,
+  Button,
+  List,
+  Checkbox,
+  Spin,
+  PageHeader,
+  Result,
+  Popconfirm,
+  notification,
+} from 'antd';
 import { connect } from 'dva';
 import moment from 'moment';
 import Coding from '@/components/Coding quiz';
 import Quiz from './components/quiz';
 import { history, Link, withRouter } from 'umi';
 import Language from '@/locales/index';
-import { min, result } from 'lodash-es';
+import SyntaxHighlighter from 'react-syntax-highlighter';
+import { docco } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 const CheckboxGroup = Checkbox.Group;
-
+const codeString = '#include <iostream> \n(num) => num + 1;\nlet a = 0;';
 class TestDetail extends React.Component {
   state = {
     hours: undefined,
@@ -17,20 +29,19 @@ class TestDetail extends React.Component {
     seconds: undefined,
     then: '',
     check: false,
-    error: false
+    error: false,
   };
 
   constructor(props) {
     super(props);
-    const id = props.location.state?.ID
+    const id = props.location.state?.ID;
     if (id != null) {
-    this.props.dispatch({ type: 'test/getTestByID', payload: { id } });
-    this.state = {  answer: [] };
-    this.handleUnload = this.handleUnload.bind(this);
-    this.handleBack = this.handleBack.bind(this);}
-    else 
-    {
-      this.state = {error: true}
+      this.props.dispatch({ type: 'test/getTestByID', payload: { id } });
+      this.state = { answer: [] };
+      this.handleUnload = this.handleUnload.bind(this);
+      this.handleBack = this.handleBack.bind(this);
+    } else {
+      this.state = { error: true };
     }
   }
 
@@ -42,16 +53,14 @@ class TestDetail extends React.Component {
     window.removeEventListener('beforeunload', this.handleUnload);
     window.removeEventListener('popstate', this.handleBack);
     this.props.dispatch({
-      type: 'judge/clearState'
-    })
+      type: 'judge/clearState',
+    });
   }
 
   componentDidMount() {
     window.addEventListener('beforeunload', this.handleUnload);
 
-    window.addEventListener('popstate', (event) => {
-      
-    });
+    window.addEventListener('popstate', (event) => {});
 
     this.interval = setInterval(() => {
       const then = this.props.test.time;
@@ -64,19 +73,17 @@ class TestDetail extends React.Component {
         let hours = countdown.format('HH');
         let minutes = countdown.format('mm');
         let seconds = countdown.format('ss');
-     
+
         let check2 = false;
-        if (parseInt(hours) > parseInt(max[0]))
-          check2 = true;
+        if (parseInt(hours) > parseInt(max[0])) check2 = true;
         else if (parseInt(minutes) > parseInt(max[1]) && parseInt(hours) == parseInt(max[0]))
-          check2= true;
-        else if ((parseInt(seconds) > parseInt(max[2])) && (parseInt(minutes) == parseInt(max[1])))
           check2 = true;
-        if (check2)
-        {
-          hours = "00";
-          minutes = "00";
-          seconds = "00"
+        else if (parseInt(seconds) > parseInt(max[2]) && parseInt(minutes) == parseInt(max[1]))
+          check2 = true;
+        if (check2) {
+          hours = '00';
+          minutes = '00';
+          seconds = '00';
         }
         this.setState({ hours, minutes, seconds });
 
@@ -84,7 +91,7 @@ class TestDetail extends React.Component {
       }
     }, 1000);
   }
-  
+
   handleUnload(e) {
     var message =
       'Your test will be submit and you will not have a second chance, are you sure to leave?';
@@ -153,16 +160,8 @@ class TestDetail extends React.Component {
     });
     this.props.dispatch({
       type: 'test/removeSession',
-      payload: this.props.location.state.ID
-    })
-    const args = {
-      message: 'Submit successful!',
-      description:
-        'We recorded your submission!',
-      duration: 0,
-    };
-    notification.open(args);
-    history.push('/developer/test')
+      payload: this.props.location.state.ID,
+    });
   }
 
   returnQuizQuestion = () => {
@@ -310,8 +309,8 @@ class TestDetail extends React.Component {
   render() {
     const { hours, minutes, seconds, check, error } = this.state;
     if (error)
-    return (
-      <Result
+      return (
+        <Result
           title="Some error!"
           extra={
             <Button
@@ -319,14 +318,14 @@ class TestDetail extends React.Component {
               key="console"
               onClick={() => {
                 this.reset();
-                history.push('/developer/test')
+                history.push('/developer/test');
               }}
             >
               {Language.pages_test_testDetail_backHome}
             </Button>
           }
         />
-    )
+      );
     if (this.props.test.loading) {
       return <Spin tip={Language.pages_test_testDetail_waitingThisTest}></Spin>;
     }
@@ -341,7 +340,7 @@ class TestDetail extends React.Component {
               key="console"
               onClick={() => {
                 this.reset();
-                history.push('/developer/test')
+                history.push('/developer/test');
               }}
             >
               {Language.pages_test_testDetail_backHome}
@@ -362,7 +361,7 @@ class TestDetail extends React.Component {
               key="console"
               onClick={() => {
                 this.reset();
-                history.push('/developer/test')
+                history.push('/developer/test');
               }}
             >
               {Language.pages_test_testDetail_backHome}
@@ -382,7 +381,7 @@ class TestDetail extends React.Component {
               key="console"
               onClick={() => {
                 this.reset();
-                history.push('/developer/test')
+                history.push('/developer/test');
               }}
             >
               {Language.pages_test_testDetail_backHome}
@@ -436,7 +435,10 @@ class TestDetail extends React.Component {
                 <>
                   <p>
                     <b>
-                      <i>{Language.pages_test_testDetail_question}{this.props.test.question + 1}</i>
+                      <i>
+                        {Language.pages_test_testDetail_question}
+                        {this.props.test.question + 1}
+                      </i>
                     </b>
                   </p>
                   <p>
@@ -447,6 +449,9 @@ class TestDetail extends React.Component {
                   ) : (
                     <>
                       <p>{this.getQuestion()?.Description}</p>
+                      <SyntaxHighlighter language="c" style={docco}>
+                        {codeString}
+                      </SyntaxHighlighter>
                       {this.returnQuizQuestion()}
                     </>
                   )}
@@ -465,15 +470,20 @@ class TestDetail extends React.Component {
                 footer={
                   <Popconfirm
                     title="Are you sure to submit this test"
-                    onConfirm={()=>{this.submit()}}
+                    onConfirm={() => {
+                      this.submit();
+                      const args = {
+                        message: 'Submit successful!',
+                        description: 'We recorded your submission!',
+                        duration: 0,
+                      };
+                      notification.open(args);
+                      history.push('/developer/test');
+                    }}
                     okText="Yes"
                     cancelText="No"
                   >
-                    <Button
-                      type="primary"
-                    >
-                      {Language.pages_test_testDetail_submit}
-                    </Button>
+                    <Button type="primary">{Language.pages_test_testDetail_submit}</Button>
                   </Popconfirm>
                 }
                 bordered
