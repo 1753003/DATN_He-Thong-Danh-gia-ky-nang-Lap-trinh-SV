@@ -93,7 +93,11 @@ const Model = {
         .submissions)
       yield saveSubmissionCoding(payload.pid,state.result.submissions)
     },
-    
+    *clearState(_, {put}) {
+      yield put({
+        type: 'clearJudge',
+      })
+    }
   },
   reducers: {
     setDataDB(state, {payload}){
@@ -109,6 +113,13 @@ const Model = {
     setResult(state, { payload}) {
       return { ...state, result: payload };
     },
+    clearJudge(state, _) {
+      console.log("ABC")
+      return { ... state, isDone: true,
+    token: null,
+    result: null,
+    savetoDb: null, }
+    }
   },
 };
 export default Model;

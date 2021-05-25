@@ -17,15 +17,21 @@ class TestDetail extends React.Component {
     seconds: undefined,
     then: '',
     check: false,
+    error: false
   };
 
   constructor(props) {
     super(props);
-    const id = props.location.state.TestID
+    const id = props.location.state?.ID
+    if (id != null) {
     this.props.dispatch({ type: 'test/getTestByID', payload: { id } });
     this.state = {  answer: [] };
     this.handleUnload = this.handleUnload.bind(this);
-    this.handleBack = this.handleBack.bind(this);
+    this.handleBack = this.handleBack.bind(this);}
+    else 
+    {
+      this.state = {error: true}
+    }
   }
 
   componentWillUnmount() {
@@ -35,6 +41,9 @@ class TestDetail extends React.Component {
     this.reset();
     window.removeEventListener('beforeunload', this.handleUnload);
     window.removeEventListener('popstate', this.handleBack);
+    this.props.dispatch({
+      type: 'judge/clearState'
+    })
   }
 
   componentDidMount() {
@@ -144,7 +153,7 @@ class TestDetail extends React.Component {
     });
     this.props.dispatch({
       type: 'test/removeSession',
-      payload: this.props.location.state.TestID
+      payload: this.props.location.state.ID
     })
     const args = {
       message: 'Submit successful!',
@@ -299,7 +308,25 @@ class TestDetail extends React.Component {
     });
   };
   render() {
-    const { hours, minutes, seconds, check } = this.state;
+    const { hours, minutes, seconds, check, error } = this.state;
+    if (error)
+    return (
+      <Result
+          title="Some error!"
+          extra={
+            <Button
+              type="primary"
+              key="console"
+              onClick={() => {
+                this.reset();
+                history.push('/developer/test')
+              }}
+            >
+              {Language.pages_test_testDetail_backHome}
+            </Button>
+          }
+        />
+    )
     if (this.props.test.loading) {
       return <Spin tip={Language.pages_test_testDetail_waitingThisTest}></Spin>;
     }
@@ -462,7 +489,8 @@ class TestDetail extends React.Component {
     );
   }
 }
-export default connect(({ test, loading }) => ({
+export default connect(({ test, judge, loading }) => ({
   test,
+  judge,
   loading: loading.effects['test/getTestByIdModel'],
 }))(TestDetail);

@@ -12,7 +12,7 @@ if (getLocale() === 'vi-VN') Language = {
     'pages_welcome_practice': "Thực hành",
     'pages_welcome_test': 'Kiểm tra',
 
-    'pages_practice_title': 'Luyện tập tạo nên sự hoàn hảo',
+    'pages_practice_title': 'Có chí thì nên',
     'pages_practice_subTitle': 'Hãy bắt đầu với những bài thực hành chúng tôi đã chuẩn bị cho bạn',
     'pages_practice_topics': 'Chủ đề',
     'pages_practice_list_status': 'TRẠNG THÁI',
