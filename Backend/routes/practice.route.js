@@ -130,7 +130,7 @@ router.post("/submissions", async function (req, res) {
 });
 router.get("/", async function (req, res) {
   const set = req.query.set.split(" ")[0];
-  const list = await practiceModel.getPracticeList(set);
+  const list = await practiceModel.getPracticeList(req.uid, set);
   res.json(list);
 });
 

@@ -10,7 +10,9 @@ const TestModel = {
   effects: {
     *fetchTestListBySet({payload}, { call, put }) {
       const response = yield getTestListBySet(payload.listname.split(' ')[0]);
+    
       payload.Callback(response)
+     
       yield put({
         type: 'saveTestList',
         payload: response,
