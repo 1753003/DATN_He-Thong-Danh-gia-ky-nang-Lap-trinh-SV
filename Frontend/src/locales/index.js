@@ -12,7 +12,7 @@ if (getLocale() === 'vi-VN') Language = {
     'pages_welcome_practice': "Thực hành",
     'pages_welcome_test': 'Kiểm tra',
 
-    'pages_practice_title': 'Luyện tập tạo nên sự hoàn hảo',
+    'pages_practice_title': 'Có chí thì nên',
     'pages_practice_subTitle': 'Hãy bắt đầu với những bài thực hành chúng tôi đã chuẩn bị cho bạn',
     'pages_practice_topics': 'Chủ đề',
     'pages_practice_list_status': 'TRẠNG THÁI',
@@ -52,6 +52,7 @@ if (getLocale() === 'vi-VN') Language = {
     'pages_test_testDetail_submitSure': 'Bạn chắc chắn muốn nộp bài kiểm tra này',
     'pages_test_testDetail_yes': 'Đồng ý',
     'pages_test_testDetail_no': 'Không',
+    'pages_test_testDetail_submit': 'Nộp bài',
 
     'pages_search_searchResult': 'Kết quả tìm kiếm',
     'pages_search_start': 'Bắt đầu',
@@ -60,7 +61,7 @@ else Language = {
     'pages_profile_practiceHistory': 'Practice History',
     'pages_profile_testHistory': 'Test History',
     'pages_profile_education': 'Education',
-    'pagrs_profile_about': 'About',
+    'pages_profile_about': 'About',
 
     'pages_welcome_hiDev': 'Hi Developer',
     'pages_welcome_whatToDoing': 'What are you going to do ?',
@@ -113,4 +114,5 @@ else Language = {
     'pages_search_searchResult': 'Search result',
     'pages_search_start': 'Start',
 };
+
 export default Language;

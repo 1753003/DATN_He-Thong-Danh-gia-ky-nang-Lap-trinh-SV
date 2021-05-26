@@ -1,5 +1,5 @@
 import request from 'umi-request';
-
+import Constant from '@/utils/contants';
 import axios from 'axios'
 import tokenHandling from '../../../services/tokenHandling';
 import Cookies from 'js-cookie';
@@ -17,10 +17,10 @@ export function getHistory() {
     var options = {
       method: 'GET',
       withCredentials: true,
-      url: `http://localhost:5000/api/submissions`,
+      url: `${Constant.API}/api/submissions`,
       headers: {
         accessToken: Cookies.get('accessToken'),
-        'access-control-allow-origin': 'http://localhost:8001',
+        'access-control-allow-origin': Constant.CORS,
       },
     };
     axios
@@ -42,22 +42,54 @@ export function getInfo() {
     var options = {
       method: 'GET',
       withCredentials: true,
-      url: `http://localhost:5000/api/developer`,
+      url: `${Constant.API}/api/developer`,
       headers: {
         accessToken: Cookies.get('accessToken'),
-        'access-control-allow-origin': 'http://localhost:8001',
+        'access-control-allow-origin': Constant.CORS,
       },
     };
     axios
     .request(options)
     .then((response) => {
     // handle success
-    // console.log(response.data)
+    console.log(response.data)
     resolve(response.data)
     })
     .catch((error) => {
-      const message = error.response.data.message;
+      const message = error?.response?.data?.message;
       tokenHandling(message, resolve, options);
     })
   })
 }
+
+export function updateInfo(data) {
+  return new Promise((resolve, reject) => {
+    var options = {
+      method: 'PATCH',
+      withCredentials: true,
+      url: `${Constant.API}/api/developer`,
+      headers: {
+        accessToken: Cookies.get('accessToken'),
+        'access-control-allow-origin': Constant.CORS,
+      },
+      data
+    };
+    axios
+    .request(options)
+    .then((response) => {
+    // handle success
+    console.log(response.data)
+    resolve(response.data)
+    })
+    .catch((error) => {
+      try {
+      const message = error?.response?.data?.message;
+      tokenHandling(message, resolve, options);
+      }
+      catch(e) {
+        console.log(error)
+      }
+    })
+  })
+}
+

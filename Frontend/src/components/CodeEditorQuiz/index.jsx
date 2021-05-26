@@ -37,13 +37,17 @@ const { TextArea, Search } = Input;
 class CodeEditor extends Component {
   constructor(props) {
     super(props);
-    console.log(this.props)
+    let temp = 'c_cpp'
+    if (this.props.language[0] === 'Java')
+      temp = 'java';
+    else if (this.props.language[0] === 'Javascript')
+      temp = 'javascript'
     this.state = {
       codeVal: this.props.codeDefault === [] ? "" : this.props.codeDefault,
       customVal: '',
       isSubmitBatch: false,
       showCustom: false,
-      mode: 'c_cpp',
+      mode: temp,
       theme: 'tomorrow',
       tabSize: 2,
       fontSize: 16,
@@ -70,6 +74,10 @@ class CodeEditor extends Component {
     new Promise((resolve, reject) => {
       let code = this.state.codeVal;
       let lang_id = 54; //54 C++ 71 python
+      if(this.state.mode ==="java")
+        lang_id = 62
+      if(this.state.mode ==="javascript")
+        lang_id = 63
       if (this.state.customInput == false) input = input;
       else if (this.state.customVal == '') input = input;
       else input = this.state.customVal;
@@ -171,16 +179,36 @@ class CodeEditor extends Component {
     // });
     editor.execCommand('find');
   };
-
+  handleLanguageChange = (value) => {
+    let temp = 'c_cpp'
+    if (value == 'Java')
+      temp = 'java';
+    else if (value == 'Javascript')
+      temp = 'javascript'
+    this.setState({
+      mode: temp
+    })
+  }
   getCode = () => {
     this.props.getCode(this.state.codeVal);
   };
 
-
+  renderLanguageArray = () => {
+    let res = [];
+    this.props.language.forEach(e => {
+      res.push(<Option key={e}>{e}</Option>)
+    })
+    return res;
+  }
   render() {
     return (
       <div className={styles.container}>
         <Space className={styles.header}>
+          <Select
+            defaultValue={this.props.language[0]}
+            onChange={(value) => this.handleLanguageChange(value)}>
+            {this.renderLanguageArray()}
+          </Select>
           <Select
             defaultValue="tomorrow"
             style={{ width: 120 }}

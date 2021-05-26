@@ -1,5 +1,6 @@
 const db = require("../utils/db");
 const reportModel = require("../models/report.model");
+
 const { getPracticeQuestionList } = require("./question.model");
 const e = require("express");
 module.exports = {
@@ -68,12 +69,21 @@ module.exports = {
       res.QuestionType = question.QuestionType;
       res.Score = question.Score;
       if (question.QuestionType == "MultipleChoice") {
+        try {
         const multipleQuestion = (
           await db("multiplechoice").where("QuestionID", question.ID)
         )[0];
         res.Description = multipleQuestion.MCDescription;
         res.Answer = multipleQuestion.Answer;
         res.CorrectAnswer = multipleQuestion.CorrectAnswer;
+        res.CodeSample = multipleQuestion.MCCoding;
+        console.log(res)
+        }
+        catch(e) {
+          res.Description = "";
+        res.Answer = [];
+        res.CorrectAnswer = [];
+        }
       } else if (question.QuestionType == "Code") {
         const codeQuestion = (
           await db("coding").where("QuestionID", question.ID)
@@ -154,10 +164,9 @@ module.exports = {
   async getTestByCode(code) {
     return await db("test").where("TestCode", code);
   },
-  async getTestBySet(set) {
-    return await db("test")
-      .where("LanguageAllowed", "like", `%${set}"%`)
-      .where("Permissions", "public");
+  async getTestBySet(set, uid) {
+    const list = (await db.raw(`call getTestSet ('${uid}', '${set}')`))[0][0];
+    return list
   },
   async updateTest(test, testID) {
     test.generalInformation.QuestionID = JSON.stringify(

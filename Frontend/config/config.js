@@ -2,7 +2,7 @@
 import { defineConfig } from 'umi';
 import defaultSettings from './defaultSettings';
 import proxy from './proxy';
-
+import {getMenu}from '../src/locales/menu';
 const { REACT_APP_ENV } = process.env;
 export default defineConfig({
   hash: true,

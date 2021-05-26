@@ -1,5 +1,7 @@
 export default {
-  'menu.welcome': 'Welcome',
+  'menu.Welcome': 'Chào mừng',
+  'menu.Practice': 'Luyện tập',
+  'menu.Test': 'Kiểm tra',
   'menu.more-blocks': 'More Blocks',
   'menu.home': 'Home',
   'menu.admin': 'Admin',

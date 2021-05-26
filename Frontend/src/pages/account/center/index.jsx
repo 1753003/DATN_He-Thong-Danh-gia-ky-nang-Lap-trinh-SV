@@ -1,5 +1,19 @@
-import { PlusOutlined, HomeOutlined, ContactsOutlined, PhoneOutlined } from '@ant-design/icons';
-import { Avatar, Card, Col, Divider, Input, Row, Tag, Form, Radio } from 'antd';
+import { PlusOutlined, HomeOutlined, ContactsOutlined, PhoneOutlined, GlobalOutlined } from '@ant-design/icons';
+import {
+  Avatar,
+  Card,
+  Col,
+  Divider,
+  Input,
+  Row,
+  Tag,
+  Form,
+  DatePicker,
+  Button,
+  Drawer,
+  Select,
+  message
+} from 'antd';
 import React, { Component, useState, useRef } from 'react';
 import { GridContent } from '@ant-design/pro-layout';
 import { Link, connect, useIntl } from 'umi';
@@ -8,7 +22,8 @@ import Practice from './components/Practice';
 import Test from './components/Test';
 import styles from './Center.less';
 import Language from '@/locales/index';
-const operationTabList = [
+const { Option } = Select;
+const operationTabList = (practice, test) => [
   {
     key: 'practice',
     tab: (
@@ -19,7 +34,7 @@ const operationTabList = [
             fontSize: 14,
           }}
         >
-          (8)
+          ({practice})
         </span>
       </span>
     ),
@@ -34,112 +49,22 @@ const operationTabList = [
             fontSize: 14,
           }}
         >
-          (8)
+          ({test})
         </span>
       </span>
     ),
   },
-  
 ];
 
-const TagList = ({ tags }) => {
-  const ref = useRef(null);
-  const [newTags, setNewTags] = useState([]);
-  const [inputVisible, setInputVisible] = useState(false);
-  const [inputValue, setInputValue] = useState('');
-
-  const showInput = () => {
-    setInputVisible(true);
-
-    if (ref.current) {
-      // eslint-disable-next-line no-unused-expressions
-      ref.current?.focus();
-    }
-  };
-
-  const handleInputChange = (e) => {
-    setInputValue(e.target.value);
-  };
-
-  const handleInputConfirm = () => {
-    let tempsTags = [...newTags];
-
-    if (inputValue && tempsTags.filter((tag) => tag.label === inputValue).length === 0) {
-      tempsTags = [
-        ...tempsTags,
-        {
-          key: `new-${tempsTags.length}`,
-          label: inputValue,
-        },
-      ];
-    }
-
-    setNewTags(tempsTags);
-    setInputVisible(false);
-    setInputValue('');
-  };
-
-  return (
-    <div className={styles.tags}>
-      <div className={styles.tagsTitle}>{Language.pages_profile_education}</div>
-      {/* {(tags || []).concat(newTags).map((item) => (
-        <Tag key={item.key}>{item.label}</Tag>
-      ))} */
-      <Tag>Ho Chi Minh University Of Science</Tag>
-      }
-      {/* {inputVisible && (
-        <Input
-          ref={ref}
-          type="text"
-          size="small"
-          style={{
-            width: 78,
-          }}
-          value={inputValue}
-          onChange={handleInputChange}
-          onBlur={handleInputConfirm}
-          onPressEnter={handleInputConfirm}
-        />
-      )} */}
-      {/* {!inputVisible && (
-        <Tag
-          onClick={showInput}
-          style={{
-            borderStyle: 'dashed',
-          }}
-        >
-          <PlusOutlined />
-        </Tag>
-      )} */}
-    </div>
-  );
-};
-
 class Center extends Component {
-  // static getDerivedStateFromProps(
-  //   props: accountAndcenterProps,
-  //   state: accountAndcenterState,
-  // ) {
-  //   const { match, location } = props;
-  //   const { tabKey } = state;
-  //   const path = match && match.path;
-  //   const urlTabKey = location.pathname.replace(`${path}/`, '');
-  //   if (urlTabKey && urlTabKey !== '/' && tabKey !== urlTabKey) {
-  //     return {
-  //       tabKey: urlTabKey,
-  //     };
-  //   }
-  //   return null;
-  // }
   state = {
     tabKey: 'practice',
+    visible: false,
   };
 
   input = undefined;
-  componentDidMount() {
-    
-  }
-  
+  componentDidMount() {}
+
   constructor(props) {
     super(props);
     const { dispatch } = this.props;
@@ -152,22 +77,15 @@ class Center extends Component {
     dispatch({
       type: 'accountAndcenter/fetchInfo',
     });
-    console.log(this.props)
+    console.log(this.props);
   }
   onTabChange = (key) => {
-    // If you need to sync state to url
-    // const { match } = this.props;
-    // router.push(`${match.url}/${key}`);
     this.setState({
       tabKey: key,
     });
   };
 
   renderChildrenByTabKey = (tabKey) => {
-    if (tabKey === 'projects') {
-      return <Projects />;
-    }
-
     if (tabKey === 'test') {
       return <Test />;
     }
@@ -205,19 +123,57 @@ class Center extends Component {
         />
         {this.props.info.Address}
       </p>
+      <p>
+        <GlobalOutlined 
+          style={{
+            marginRight: 8,
+          }}
+        />
+        {this.props.info.Website}
+      </p>
     </div>
   );
 
-  
+  showDrawer = () => {
+    this.setState({
+      visible: true,
+    });
+  };
+
+  onClose = () => {
+    this.setState({
+      visible: false,
+    });
+  };
+
+  onFinish = (values) => {
+    let data = {};
+    if (values.name != undefined) data.DevName = values.name;
+    if (values.address != undefined) data.Address = values.address;
+    if (values.description != undefined) data.About = values.description;
+    if (values.education != undefined) data.Education = values.education;
+    if (values.gender != undefined) data.DevGender = values.gender;
+    if (values.phone != undefined) data.PhoneNumber = values.phone;
+    if (values.url != undefined) data.Website = values.url;
+    
+    this.props.dispatch({
+      type: 'accountAndcenter/updateInfo',
+      payload: data
+    })
+
+    message.success('This is a success message');
+    this.onClose()
+  };
+
   render() {
     const { tabKey } = this.state;
-    const { currentUser = {}, currentUserLoading, info } = this.props;
+    const { currentUser = {}, currentUserLoading, info, list } = this.props;
     const dataLoading = currentUserLoading || !(currentUser && Object.keys(currentUser).length);
     console.log('info: ', info);
     return (
       <GridContent>
-        <Row gutter={24}>
-          <Col lg={7} md={24}>
+        <Row>
+          <Col lg={7} md={24} className={styles.info}>
             <Card
               bordered={false}
               style={{
@@ -234,14 +190,10 @@ class Center extends Component {
                   </div>
                   {this.renderUserInfo(currentUser)}
                   <Divider dashed />
-                  <TagList tags={currentUser.tags || []} />
-                  <Divider
-                    style={{
-                      marginTop: 16,
-                    }}
-                    dashed
-                  />
                   <div className={styles.team}>
+                  <div className={styles.teamTitle}>{Language.pages_profile_education}</div>
+                    <p> {info.Education} </p>
+                    <Divider dashed />
                     <div className={styles.teamTitle}>{Language.pages_profile_about}</div>
                     <p> {info.About} </p>
                     <Row gutter={36}>
@@ -256,16 +208,19 @@ class Center extends Component {
                         ))}
                     </Row>
                   </div>
-                 
                 </div>
               )}
+              <Button type="primary" className={styles.editButton} onClick={this.showDrawer}>
+                Edit
+              </Button>
             </Card>
           </Col>
+
           <Col lg={17} md={24}>
             <Card
               className={styles.tabsCard}
               bordered={false}
-              tabList={operationTabList}
+              tabList={operationTabList(list?.practice?.length, list?.test?.length)}
               activeTabKey={tabKey}
               onTabChange={this.onTabChange}
             >
@@ -273,6 +228,85 @@ class Center extends Component {
             </Card>
           </Col>
         </Row>
+        <Drawer
+          title="Edit information"
+          width={400}
+          onClose={this.onClose}
+          visible={this.state.visible}
+          bodyStyle={{ paddingBottom: 80 }}
+          footer={
+            <div
+              style={{
+                textAlign: 'right',
+              }}
+            >
+            </div>
+          }
+        >
+          <Form layout="vertical" hideRequiredMark onFinish={this.onFinish}>
+            <Form.Item
+              name="name"
+              label="Name"
+            >
+              <Input placeholder="Please enter user name" defaultValue={info.DevName} />
+            </Form.Item>
+
+            <Form.Item
+              name="url"
+              label="Website"
+            >
+              <Input
+                style={{ width: '100%' }}
+                placeholder="Please enter url"
+                defaultValue={info.Website}
+              />
+            </Form.Item>
+
+            <Form.Item
+              name="phone"
+              label="Phone number"
+            >
+              <Input placeholder="Please enter user name" defaultValue={info.PhoneNumber} />
+            </Form.Item>
+            
+            <Form.Item
+              name="education"
+              label="Education / School"
+            >
+              <Input placeholder="Please enter your education/ school" defaultValue={info.Education} />
+            </Form.Item>
+
+            <Form.Item
+              name="gender"
+              label="Gender"
+            >
+              <Select placeholder="Please choose your gender" defaultValue={info.DevGender}>
+                <Option value="male">Male</Option>
+                <Option value="female">Female</Option>
+                <Option value="other">Other</Option>
+              </Select>
+            </Form.Item>
+            
+            <Form.Item
+              name="address"
+              label="Address"
+            >
+              <Input.TextArea rows={3} placeholder="Please enter your address" defaultValue={info.Address}/>
+            </Form.Item>
+            
+            <Form.Item
+              name="description"
+              label="Description"
+            >
+              <Input.TextArea rows={4} placeholder="Please enter some note about your profile" defaultValue={info.About}/>
+            </Form.Item>
+            <Form.Item>
+              <Button type="primary" htmlType="submit">
+                Submit
+              </Button>
+            </Form.Item>
+          </Form>
+        </Drawer>
       </GridContent>
     );
   }
@@ -282,4 +316,5 @@ export default connect(({ loading, accountAndcenter }) => ({
   currentUser: accountAndcenter.currentUser,
   currentUserLoading: loading.effects['accountAndcenter/fetchCurrent'],
   info: accountAndcenter.info,
+  list: accountAndcenter.list,
 }))(Center);
