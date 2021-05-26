@@ -73,6 +73,7 @@ const TestSetList = ({location,dispatch,testDev, loading}) => {
             dataSource={testDev.setList}
             renderItem={item => (
             <List.Item onClick={()=>{
+
               history.push({
                 pathname: '/developer/test/questions',
                 state: item,

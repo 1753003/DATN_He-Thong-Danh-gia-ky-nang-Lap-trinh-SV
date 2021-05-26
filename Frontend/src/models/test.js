@@ -44,8 +44,7 @@ const TestModel = {
       if(response!==-1)
       history.push({
         pathname: '/developer/test/questions',
-        search: `?tid=${response}`,
-        state: response,
+        state: {TestID:response},
       });
     },
     *fetchTestList(_, { call, put }) {
