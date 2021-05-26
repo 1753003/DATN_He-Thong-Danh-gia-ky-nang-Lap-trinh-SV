@@ -259,6 +259,11 @@ export default defineConfig({
               path: '/',
               component: './guest/index',
             },
+            {
+              name: "Introduction",
+              path: '/introduction',
+              component: './guest/introduction',             
+            }
           ],
         },
       ],

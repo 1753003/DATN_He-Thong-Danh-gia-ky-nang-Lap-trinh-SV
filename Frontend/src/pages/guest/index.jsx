@@ -24,6 +24,7 @@ class Header extends React.Component {
       history.push('/user/login');
       
     }
+    else if (e.key === 'introduce') history.push('/introduction')
   };
 
   isLogin = localStorage.getItem('currentUser');
