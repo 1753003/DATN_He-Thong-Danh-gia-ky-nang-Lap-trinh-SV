@@ -71,6 +71,15 @@ if (getLocale() === 'vi-VN') Language = {
 
     'pages_search_searchResult': 'Kết quả tìm kiếm',
     'pages_search_start': 'Bắt đầu',
+
+    'pages_guest_introduction_aboutUs': 'Về chúng tôi',
+    'pages_guest_introduction_aboutUs_1': 'DevCheck là một nền tảng để kiểm tra khả năng lập trình. Chúng tôi cung cấp hàng trăm bài kiểm tra và luyện tập bằng nhiều ngôn ngữ lập trình khác nhau như C++, Java ...',
+    'pages_guest_introduction_aboutUs_2': 'Giúp đỡ các ông ty công nghệ dễ dàng hơn trong việc tìm kiếm các lập trình viên chất lượng cho dự án của họ.',
+    'pages_guest_introduction_ourStory': 'Câu chuyện của chúng tôi',
+    'pages_guest_introduction_ourStory_1': 'Chúng tôi - những sinh viên năm cuối nung nấu trong mình ý tưởng về một sản phẩm có thể giúp đỡ người mới học lập trình một cách đơn giản và nhanh chóng.',
+    'pages_guest_introduction_ourStory_2': 'DevCheck muốn trở thành một nền tảng dành cho việc thực hành lập trình, chia sẻ kiến thức về lập trình và cung cấp những bài kiểm tra chất lượng cho các nhà tuyển dụng.',
+    'pages_guest_introduction_ourTeam': 'Các thành viên của chúng tôi',
+    'pages_guest_introduction_ourTeam_1': 'DevCheck luôn chào đón những người cùng chí hướng tham gia và trở thành một phần của DevCheck.',
 };
 else Language = {
     'home_home': 'Home',
@@ -143,6 +152,15 @@ else Language = {
 
     'pages_search_searchResult': 'Search result',
     'pages_search_start': 'Start',
+
+    'pages_guest_introduction_aboutUs': 'About Us',
+    'pages_guest_introduction_aboutUs_1': 'DevCheck is a platform for testing programming capabilities. We provide hundreds of tests, practices in different languages such as C++, Java ...',
+    'pages_guest_introduction_aboutUs_2': 'Helping technology companies minimize the process of finding quality programmers for projects.',
+    'pages_guest_introduction_ourStory': 'Our Story',
+    'pages_guest_introduction_ourStory_1': 'We - 4th year students always have the idea of a product that can help beginners learn to code easily and quickly access the industry.',
+    'pages_guest_introduction_ourStory_2': 'DevCheck wants to become a platform for coding practice, sharing programming knowledge and providing input quality tests for employers all over Vietnam.',
+    'pages_guest_introduction_ourTeam': 'Our Team',
+    'pages_guest_introduction_ourTeam_1': 'DevCheck always welcomes those who have the same idea, enthusiasm, passion to join and become a part of DevCheck.',
 };
 
 export default Language;
