@@ -5,6 +5,8 @@ import { enquireScreen } from 'enquire-js';
 import Header from './Header';
 import Banner from './Banner';
 import './static/style';
+import '@/locales/index'
+import Language from '@/locales/index';
 
 let isMobile;
 
@@ -25,7 +27,7 @@ class Home extends React.PureComponent {
   }
   render() {
     return (
-      <DocumentTitle title="Welcome">
+      <DocumentTitle title={Language.config_welcome}>
         <div>
           {/* <Header isMobile={this.state.isMobile} /> */}
           <div className="home-wrapper">
