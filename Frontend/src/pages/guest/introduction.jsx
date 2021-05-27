@@ -77,7 +77,7 @@ export default class Introduction extends React.Component {
                             <h1>{Language.pages_guest_introduction_aboutUs}</h1>
                             <p>{Language.pages_guest_introduction_aboutUs_1}</p>
                             <p>{Language.pages_guest_introduction_aboutUs_2}</p>
-                            <Button onClick={()=>{this.start()}} className = {styles.btn} type="primary" shape="round" icon={<ArrowRightOutlined />}> Get Started </Button>
+                            <Button onClick={()=>{this.start()}} className = {styles.btn} type="primary" shape="round" icon={<ArrowRightOutlined />}>{Language.pages_guest_introduction_getStarted}</Button>
                         </Col>
                         <Col span={12}>
                             <img className = {styles.img1} src="https://lh3.googleusercontent.com/4JtP84JssU-FnsEKzXTt-9DvxrquDSXrxdPtYK7ZrWSmhknA6SkGCj-8Jzl3-BsQp5zn99mJ0bcBmR1Lu1MFZ7KVldV5QiwwEAXQQ5nVF7t4JSrqsWHBbbZ_bsYEYTOTGrPQZAIjSx1mo4_aMJjokGqc3OnUs-KdbOeCRYxpYHccvgx9m44NIgRfxJdXKPVqe45chYjUu-LHHfX8acVF3yJkPeZ3HY0LX9AABiGOfnqu26RuNBj5o6CltHVKBYR7rE6mFnQkFGF5o_25axcw8-EnbT9fVgD_Uwdnm90gcmnLpmvP8R5V3pd3pMSBqMAEVrkIstz-J-4JtUY_fI_KNg6XcNILut5iNdQ-ivYgzLlXTitCOmXWpaPkeAZBY3E_bEUS5ZEGYo-A6AoXiEaj0N26jYPpW4jTGFteRegF9ev6dDFsKsq7UopttlY1Vc2BIPcB0YdUzOrSKjYbL_xVzXMhFril4A0TfE-QryoXpcixHoxzemIPUG71c5axkWow98JKPQWTYZrxTHoRG3My1PUJ_tP7991w1ATcFqpw0t0dH1exaxPA-YWvGkKMWtNGJfGEPmLcLIpmiMHMKxNuNErfQYeC7YMH_GgsFP-RVKDrpkNxvcSy-psw8jQmJ5Z9AsWRzF1K-6u_amp_2dptYczZwqTJXv0DNM2i2Wb1e-uEoci1_GkwS-K5n-AEWQ0JYLfnWzwkOpi9XqNoNmWia3zU=w1270-h953-no?authuser=0" alt="img1" />

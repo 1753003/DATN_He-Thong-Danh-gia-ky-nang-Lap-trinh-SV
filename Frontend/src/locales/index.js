@@ -72,6 +72,7 @@ if (getLocale() === 'vi-VN') Language = {
     'pages_search_searchResult': 'Kết quả tìm kiếm',
     'pages_search_start': 'Bắt đầu',
 
+    'pages_guest_introduction_getStarted': 'Bắt đầu',
     'pages_guest_introduction_aboutUs': 'Về chúng tôi',
     'pages_guest_introduction_aboutUs_1': 'DevCheck là một nền tảng để kiểm tra khả năng lập trình. Chúng tôi cung cấp hàng trăm bài kiểm tra và luyện tập bằng nhiều ngôn ngữ lập trình khác nhau như C++, Java ...',
     'pages_guest_introduction_aboutUs_2': 'Giúp đỡ các ông ty công nghệ dễ dàng hơn trong việc tìm kiếm các lập trình viên chất lượng cho dự án của họ.',
@@ -153,6 +154,7 @@ else Language = {
     'pages_search_searchResult': 'Search result',
     'pages_search_start': 'Start',
 
+    'pages_guest_introduction_getStarted': ' Get Started ',
     'pages_guest_introduction_aboutUs': 'About Us',
     'pages_guest_introduction_aboutUs_1': 'DevCheck is a platform for testing programming capabilities. We provide hundreds of tests, practices in different languages such as C++, Java ...',
     'pages_guest_introduction_aboutUs_2': 'Helping technology companies minimize the process of finding quality programmers for projects.',
