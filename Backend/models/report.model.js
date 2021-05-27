@@ -243,4 +243,10 @@ module.exports = {
     }
     return result;
   },
+  async updateReport(testID, percentPass, percentSuccess) {
+    await db('report').where('TestID', testID).update({
+      PercentSuccess: percentSuccess,
+      PercentPass: percentPass
+    })
+  }
 };

@@ -6,8 +6,8 @@ module.exports = {
     return await db('practice');
   },
 
-  async getPracticeList(set){
-    return await db('practice').where('PracticeSet', set);
+  async getPracticeList(uid, set){
+    return (await db.raw(`call getPracticeSet('${uid}', '${set}')`))[0][0];
   },
 
   async getPracticeByLevel(level){

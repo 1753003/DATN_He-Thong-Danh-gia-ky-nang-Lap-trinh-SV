@@ -69,12 +69,21 @@ module.exports = {
       res.QuestionType = question.QuestionType;
       res.Score = question.Score;
       if (question.QuestionType == "MultipleChoice") {
+        try {
         const multipleQuestion = (
           await db("multiplechoice").where("QuestionID", question.ID)
         )[0];
         res.Description = multipleQuestion.MCDescription;
         res.Answer = multipleQuestion.Answer;
         res.CorrectAnswer = multipleQuestion.CorrectAnswer;
+        res.CodeSample = multipleQuestion.MCCoding;
+        console.log(res)
+        }
+        catch(e) {
+          res.Description = "";
+        res.Answer = [];
+        res.CorrectAnswer = [];
+        }
       } else if (question.QuestionType == "Code") {
         const codeQuestion = (
           await db("coding").where("QuestionID", question.ID)

@@ -97,12 +97,12 @@ const Model = {
       
       if ((filter.code && filter.multiple) || (!filter.code && !filter.multiple)) 
         newList = newList.filter((item) => {
-          return (item.Type == 'Code' || item.Type == 'MultipleChoice');
+          return (item.Type == 'Coding' || item.Type == 'MultipleChoice');
         },
       )
       else if (filter.code && !filter.multiple)
         newList = newList.filter((item) => {
-          return (item.Type == 'Code');
+          return (item.Type == 'Coding');
         },
       )
       else if (!filter.code && filter.multiple) 
