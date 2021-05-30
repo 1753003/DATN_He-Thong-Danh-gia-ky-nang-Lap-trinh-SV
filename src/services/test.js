@@ -40,7 +40,7 @@ export function getTestIdByCode(code) {
       .request(options)
       .then((response) => {
         // handle success
-        console.log("test",response.data)
+        console.log('test', response.data);
         resolve(response.data);
       })
       .catch((error) => {
@@ -105,6 +105,36 @@ export function createNewTest({ generalInformation, listQuestion, onSuccess, onF
   });
 }
 
+export function deleteTest({ generalInformation, listQuestion, onSuccess, onFailure }) {
+  return new Promise((resolve, reject) => {
+    resolve();
+    // axios
+    //   .post(
+    //     `${Constant.API}/api/creator/test`,
+    //     {
+    //       generalInformation,
+    //       listQuestion,
+    //     },
+    //     {
+    //       headers: { accessToken: Cookies.get('accessToken') },
+    //       'access-control-allow-origin': Constant.CORS,
+    //     },
+    //   )
+    //   .then((response) => {
+    //     // handle success
+    //     console.log(response.data);
+    //     onSuccess();
+    //     resolve(response.data);
+    //   })
+    //   .catch((error) => {
+    //     // handle error
+    //     console.log(error);
+    //     onFailure();
+    //     reject();
+    //   });
+  });
+}
+
 export function updateEditedTest({ generalInformation, listQuestion, id, onSuccess, onFailure }) {
   return new Promise((resolve, reject) => {
     console.log(generalInformation);
@@ -138,7 +168,7 @@ export function updateEditedTest({ generalInformation, listQuestion, id, onSucce
 }
 
 export function postSubmission(data) {
-  console.log("ABX")
+  console.log('ABX');
   return new Promise((resolve, reject) => {
     var options = {
       method: 'POST',
