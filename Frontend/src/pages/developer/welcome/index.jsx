@@ -28,12 +28,9 @@ class Home extends React.PureComponent {
   render() {
     return (
       <DocumentTitle title={Language.config_welcome}>
-        <div>
-          {/* <Header isMobile={this.state.isMobile} /> */}
           <div className="home-wrapper">
             <Banner isMobile={this.state.isMobile} />
           </div>
-        </div>
       </DocumentTitle>
     );
   }

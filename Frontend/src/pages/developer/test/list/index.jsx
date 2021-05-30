@@ -259,7 +259,7 @@ const TestSetList = ({ location, dispatch, testDev, loading }) => {
                   </Button>
                 )}
                 {item.SubmissionID == null && (
-                  <Button size="large" style={{ width: '100px' }} type="primary">
+                  <Button size="large" style={{background:"#3ebae0",border:"2px solid #3ebae0", width: '100px' }} type="primary">
                     {' '}
                     Start{' '}
                   </Button>
