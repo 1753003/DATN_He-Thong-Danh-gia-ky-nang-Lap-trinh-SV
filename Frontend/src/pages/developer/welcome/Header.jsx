@@ -4,7 +4,7 @@ import {connect, history} from 'umi'
 import { enquireScreen } from 'enquire-js';
 import HeaderSearch from '@/components/HeaderSearch';
 import Avatar from '@/components/GlobalHeader/AvatarDropdown';
-const LOGO_URL = 'https://firebasestorage.googleapis.com/v0/b/devcheckpro.appspot.com/o/Logo%2Fbanner.png?alt=media&token=ab32e21e-7770-41ee-ba60-83aa439ad5d6';
+
 
 class Header extends React.Component {
   state = {
@@ -61,7 +61,7 @@ class Header extends React.Component {
         <Row>
           <Col xxl={4} xl={5} lg={8} md={8} sm={24} xs={24}>
             <div id="logo" to="/">
-              <img src={LOGO_URL} alt="logo" />
+              <img alt="logo" />
             </div>
           </Col>
           <Col xxl={20} xl={19} lg={16} md={16} sm={0} xs={0}>
