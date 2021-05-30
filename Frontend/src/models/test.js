@@ -7,6 +7,7 @@ import {
   checkSubmission,
   updateEditedTest,
   getTestIdByCode,
+  deleteTest,
 } from '@/services/test';
 import { checkSession, deleteSession } from '@/services/session';
 
@@ -32,7 +33,7 @@ const TestModel = {
     isDid: false,
     isOut: false,
     loading: true,
-    statusFromCode:null
+    statusFromCode: null,
   },
   effects: {
     *getTestIdFromCode({ payload }, { call, put }) {
@@ -41,11 +42,11 @@ const TestModel = {
         type: 'saveStatusFromCode',
         payload: response,
       });
-      if(response!==-1)
-      history.push({
-        pathname: '/developer/test/questions',
-        state: {TestID:response},
-      });
+      if (response !== -1)
+        history.push({
+          pathname: '/developer/test/questions',
+          state: { TestID: response },
+        });
     },
     *fetchTestList(_, { call, put }) {
       const response = yield call(getTestList);
@@ -68,15 +69,15 @@ const TestModel = {
     *getTestByID({ payload }, { put, call, select }) {
       const checkSubmit = yield call(checkSubmission, payload.id);
       const response = yield call(getTestById, payload.id);
-      console.log("1")
+      console.log('1');
       if (response.generalInformation.Again === 0 && checkSubmit) {
-        console.log("2")
+        console.log('2');
         yield put({
           type: 'saveIsDid',
           payload: true,
         });
       } else {
-        console.log("3")
+        console.log('3');
         const check = yield call(checkSession, {
           TestID: payload.id,
           Timed: moment(),
@@ -141,7 +142,7 @@ const TestModel = {
           payload: timeArr,
         });
       }
-      console.log("4")
+      console.log('4');
       yield put({
         type: 'saveLoading',
         payload: false,
@@ -152,6 +153,14 @@ const TestModel = {
         yield call(createNewTest, payload);
       } catch (e) {
         console.log(e);
+      }
+    },
+    *deleteTest({ payload }, { call }) {
+      try {
+        yield call(deleteTest, payload);
+        payload?.onSuccess();
+      } catch (e) {
+        payload?.onFail();
       }
     },
     *updateTest({ payload }, { call }) {
@@ -327,7 +336,6 @@ const TestModel = {
         DoingTime: time,
         Score: score,
         ListAnswer: listAnswer,
-
       });
     },
     *resetModel(_, { put }) {
@@ -370,15 +378,15 @@ const TestModel = {
       return { ...state, timeINT: payload };
     },
     saveIsDid(state, { payload }) {
-      console.log(payload)
+      console.log(payload);
       return { ...state, isDid: payload };
     },
     saveIsOut(state, { payload }) {
       return { ...state, isOut: payload };
-    }, 
+    },
     saveLoading(state, { payload }) {
-      return {...state, loading: payload}
-    } ,
+      return { ...state, loading: payload };
+    },
     resetReducer(state, { payload }) {
       return {
         ...state,

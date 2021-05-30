@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Table, Input, Upload, Dropdown, Menu } from 'antd';
 import { useHistory, connect } from 'umi';
 import styles from './index.less';
@@ -14,14 +14,47 @@ const { Dragger } = Upload;
 
 const MyTests = ({ testList, dispatch, loading }) => {
   const history = useHistory();
+  const [list, setList] = useState([]);
+
+  useEffect(() => {
+    setList(testList);
+  }, [testList]);
+
+  const handleEditClick = (TestID) => {
+    history.push({
+      pathname: '/creator/createTest',
+      query: {
+        id: TestID,
+      },
+    });
+  };
+
+  const handleDeleteClick = (TestID) => {
+    dispatch({
+      type: 'test/deleteTest',
+      payload: {
+        TestID,
+        onSuccess: () => {
+          console.log('Success');
+        },
+        onFail: () => {
+          console.log('Fail');
+        },
+      },
+    });
+  };
 
   const menu = (item) => {
     return (
       <Menu>
-        <Menu.Item key="edit" icon={<EditOutlined />}>
+        <Menu.Item key="edit" icon={<EditOutlined />} onClick={() => handleEditClick(item.TestID)}>
           Edit
         </Menu.Item>
-        <Menu.Item key="delete" icon={<DeleteOutlined />}>
+        <Menu.Item
+          key="delete"
+          icon={<DeleteOutlined />}
+          onClick={() => handleDeleteClick(item.TestID)}
+        >
           Delete
         </Menu.Item>
       </Menu>
@@ -43,23 +76,35 @@ const MyTests = ({ testList, dispatch, loading }) => {
       },
     },
     {
-      title: '',
+      title: 'Action',
       render: (item) => {
         return (
-          <Dropdown overlay={() => menu(item)} placement="bottomRight">
-            <MoreOutlined />
-          </Dropdown>
+          <>
+            <EditOutlined
+              onClick={() => handleEditCollection(item.TestID)}
+              style={{ width: '25px', height: '25px' }}
+            />
+            <DeleteOutlined
+              onClick={() => handleDeleteCollection(item.TestID)}
+              style={{ width: '25px', height: '25px' }}
+            />
+          </>
         );
       },
     },
   ];
 
   const onSearch = (value) => {
-    console.log(value);
+    const searchList = [];
+    testList.forEach((element) => {
+      if (element.TestName.includes(value)) {
+        searchList.push(element);
+      }
+    });
+    setList(searchList);
   };
 
   const buttonModalOnClick = () => {
-    // setModalVisible(true);
     history.push({
       pathname: '/creator/createTest',
     });
@@ -75,9 +120,7 @@ const MyTests = ({ testList, dispatch, loading }) => {
   };
 
   useEffect(() => {
-    // if (testList.length === 0) {
     dispatch({ type: 'test/fetchTestList' });
-    // }
   }, []);
 
   return (
@@ -88,19 +131,19 @@ const MyTests = ({ testList, dispatch, loading }) => {
           Create test
         </Button>
       </div>
-      {testList.length > 0 ? (
-        <Search
-          placeholder="input search text"
-          onSearch={onSearch}
-          enterButton
-          className={styles.searchBar}
-        />
-      ) : null}
+      <Search
+        placeholder="input search text"
+        onSearch={onSearch}
+        enterButton
+        className={styles.searchBar}
+      />
+
       <div className={styles.content}>
         <Table
           columns={columns}
-          dataSource={testList}
+          dataSource={list}
           loading={loading}
+          scroll={{ y: '55vh' }}
           onRow={(record, rowIndex) => {
             return {
               onDoubleClick: (event) => {

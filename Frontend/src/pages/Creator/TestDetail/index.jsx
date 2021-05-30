@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styles from './index.less';
-import { Button } from 'antd';
+import { Button, Typography } from 'antd';
 import { CheckCircleTwoTone, CloseCircleTwoTone } from '@ant-design/icons';
 import { connect, useHistory } from 'umi';
 import { PageLoading } from '@ant-design/pro-layout';
@@ -56,7 +56,7 @@ const TestDetail = ({ dispatch, location }) => {
           </p>
           <p>
             <b className={styles.bold}>Do again: </b>
-            {test.generalInformation?.Again}
+            {test.generalInformation?.Again || 'false'}
           </p>
           <p>
             <b className={styles.bold}>Total of questions: </b>
@@ -66,6 +66,19 @@ const TestDetail = ({ dispatch, location }) => {
             <b className={styles.bold}>Max score: </b>
             {test.generalInformation?.MaxScore} marks
           </p>
+          {test.generalInformation?.StartTime && (
+            <p>
+              <b className={styles.bold}>Start date: </b>
+              {test.generalInformation?.StartTime} marks
+            </p>
+          )}
+
+          {test.generalInformation?.EndTime && (
+            <p>
+              <b className={styles.bold}>End Time: </b>
+              {test.generalInformation?.EndTime} marks
+            </p>
+          )}
         </div>
       </div>
       <div className={styles.right}>
@@ -89,7 +102,7 @@ const Question = ({ list }) => {
           {item.ID}-{item.QuestionType}
         </div>
         <div className={styles.question}>{item.Question}</div>
-        <div style={{ fontSize: '18px' }}>{item.Description}</div>
+        <div style={{ fontSize: '18px', whiteSpace: 'pre-line' }}>{item.Description}</div>
         <div className={styles.mark}>{item.Score} mark</div>
         {item.QuestionType === 'Code' ? (
           <div>
@@ -107,7 +120,7 @@ const Question = ({ list }) => {
             </div>
             <div>
               <b>CodeSample: </b>
-              {item?.CodeSample}
+              {item?.CodeSample || 'Empty'}
             </div>
             {item?.TestCase?.map((tc, index) => {
               return (
@@ -125,20 +138,26 @@ const Question = ({ list }) => {
             })}
           </div>
         ) : (
-          item?.Answer?.map((choice, index) => {
-            return (
-              <div className={styles.multipleChoiceContainer}>
-                <div className={styles.answer}>{choice}</div>
-                <div className={styles.answer}>
-                  {checkCorrect(item.CorrectAnswer, index) ? (
-                    <CheckCircleTwoTone twoToneColor="#52c41a" style={{ fontSize: '32px' }} />
-                  ) : (
-                    <CloseCircleTwoTone twoToneColor="red" style={{ fontSize: '32px' }} />
-                  )}
+          <>
+            <div>
+              <b>CodeSample: </b>
+              {item?.CodeSample || 'Empty'}
+            </div>
+            {item?.Answer?.map((choice, index) => {
+              return (
+                <div className={styles.multipleChoiceContainer}>
+                  <div className={styles.answer}>{choice}</div>
+                  <div className={styles.answer}>
+                    {checkCorrect(item.CorrectAnswer, index) ? (
+                      <CheckCircleTwoTone twoToneColor="#52c41a" style={{ fontSize: '32px' }} />
+                    ) : (
+                      <CloseCircleTwoTone twoToneColor="red" style={{ fontSize: '32px' }} />
+                    )}
+                  </div>
                 </div>
-              </div>
-            );
-          })
+              );
+            })}
+          </>
         )}
       </div>
     );
