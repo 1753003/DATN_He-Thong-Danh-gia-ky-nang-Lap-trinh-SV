@@ -106,14 +106,51 @@ export function createNewCollection({ CollectionName, CollectionDescription, Cov
       })
       .catch((error) => {
         // handle error
-        const message = error.response.data.message;
+        const message = error.response?.data?.message;
+        tokenHandling(message, resolve, options);
+      });
+  });
+}
+
+export function editCollection({
+  CollectionName,
+  CollectionDescription,
+  CoverImage,
+  CollectionID,
+}) {
+  return new Promise((resolve, reject) => {
+    var options = {
+      method: 'PATCH',
+      url: `${Constant.API}/api/creator/collection`,
+      headers: {
+        accessToken: Cookies.get('accessToken'),
+        'access-control-allow-origin': Constant.CORS,
+      },
+      data: {
+        collectionID: CollectionID,
+        editCollection: {
+          CollectionName,
+          CollectionDescription,
+          CoverImage,
+        },
+      },
+    };
+    axios
+      .request(options)
+      .then((response) => {
+        // handle success
+        // console.log(response.data)
+        resolve(response.data);
+      })
+      .catch((error) => {
+        // handle error
+        const message = error.response?.data?.message;
         tokenHandling(message, resolve, options);
       });
   });
 }
 
 export function removeTestFromCollection({ testID, collectionID }) {
-  console.log(testID, collectionID);
   return new Promise((resolve, reject) => {
     var options = {
       method: 'DELETE',

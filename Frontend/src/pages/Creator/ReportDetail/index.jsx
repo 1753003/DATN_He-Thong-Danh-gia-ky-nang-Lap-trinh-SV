@@ -9,6 +9,7 @@ import { Menu } from 'antd';
 import PageLoading from '@/pages/dashboard/analysis/components/PageLoading';
 
 const ReportDetail = ({ summaryReport, location, dispatch, loading, summaryUser }) => {
+  console.log(summaryReport);
   useEffect(() => {
     if (location.query?.id) {
       const payload = {
@@ -26,13 +27,14 @@ const ReportDetail = ({ summaryReport, location, dispatch, loading, summaryUser 
       <div className={styles.header}>
         <div className={styles.headerLeft}>
           <h2>Report</h2>
-          <h1>C Basic Test - KTPM Class - 2021</h1>
+          <h1>{summaryReport?.ReportName}</h1>
           <Menu
             mode="horizontal"
             className={styles.menu}
             onSelect={(info) => {
               setMenuKey(info.key);
             }}
+            selectedKeys={menuKey}
           >
             <Menu.Item key="summary">Summary</Menu.Item>
             <Menu.Item key="users">Users</Menu.Item>
@@ -56,8 +58,6 @@ const RenderBody = ({ menuKey, summaryReport, summaryUser }) => {
       return <Users summaryUser={summaryUser} />;
     case 'questions':
       return <Questions summaryReport={summaryReport} />;
-    case 'feedback':
-      return <Feedback summaryReport={summaryReport} />;
     default:
       return <Summary summaryReport={summaryReport} />;
   }

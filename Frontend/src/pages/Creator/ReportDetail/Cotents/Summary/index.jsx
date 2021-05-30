@@ -143,7 +143,7 @@ const Summary = ({ summaryReport }) => {
             <div className={styles.cardTitle}>
               <div className={styles.cardTitleLeft}>
                 <div style={{ marginRight: 20 }}>Didn’t finish</div>
-                <Tag color="#63b1f6">3</Tag>
+                <Tag color="#63b1f6">{summaryReport?.listNotFinish?.length}</Tag>
               </div>
               <div className={styles.cardTitleRight}>
                 <QuestionCircleOutlined />

@@ -215,6 +215,7 @@ const CreateTest = ({ dispatch, location }) => {
                 MCDescription: '',
                 Answer: [],
                 CorrectAnswer: [],
+                CodeSample: '',
                 Score: 0,
               };
               if (action === 'UPDATE') {
@@ -258,6 +259,7 @@ const CreateTest = ({ dispatch, location }) => {
                         item.MCDescription = '';
                         item.Answer = [];
                         item.CorrectAnswer = [];
+                        item.CodeSample = '';
                         delete item.TestCase;
                         delete item.CodeDescription;
                         delete item.RunningTime;
@@ -270,6 +272,7 @@ const CreateTest = ({ dispatch, location }) => {
                         item.TestCase = [];
                         item.RunningTime = '';
                         item.MemoryUsage = '';
+                        item.CodeSample = '';
                         delete item.CorrectAnswer;
                         delete item.Answer;
                         delete item.MCDescription;
@@ -344,6 +347,7 @@ const RenderMiddle = ({ option, selectedQuiz, setQuiz, quiz, action }) => {
   };
 
   const onChangeCodeDescription = (e) => {
+    console.log(e.target.value);
     const newQuiz = [...quiz];
     newQuiz.forEach((item) => {
       if (item.ID === selectedQuiz.ID) item.CodeDescription = e.target.value;
@@ -354,12 +358,43 @@ const RenderMiddle = ({ option, selectedQuiz, setQuiz, quiz, action }) => {
     case 'quiz':
       return (
         <div className={styles.quizInfoContainer}>
+          <h3>Description</h3>
           <Input.TextArea
             placeholder="Typing your question here ..."
-            autoSize={{ minRows: 6, maxRows: 6 }}
+            autoSize={{ minRows: 10, maxRows: 20 }}
             value={selectedQuiz.MCDescription}
             onChange={handleMCDescriptionChange}
           />
+          <div>
+            <h3>CodeSample</h3>
+            <AceEditor
+              // ref ={this.editorRef}
+              // tabSize= {this.state.tabSize}
+              style={{ whiteSpace: 'pre-wrap', border: 'solid #dcdcdc 1px' }}
+              width="100%"
+              height="400px"
+              showPrintMargin={false}
+              showGutter
+              value={selectedQuiz.CodeSample || ''}
+              mode={'c_cpp'}
+              fontSize={16}
+              editorProps={{ $blockScrolling: true, $blockSelectEnabled: false }}
+              setOptions={{
+                enableBasicAutocompletion: true,
+                enableLiveAutocompletion: true,
+                enableSnippets: true,
+              }}
+              onChange={(value) => {
+                const newQuiz = [...quiz];
+                newQuiz.forEach((quiz) => {
+                  if (quiz.ID === selectedQuiz.ID) {
+                    quiz.CodeSample = value;
+                  }
+                });
+                setQuiz(newQuiz);
+              }}
+            />
+          </div>
           {selectedQuiz.Answer?.map((item, index) => {
             return (
               <div className={styles.choices} key={index}>
@@ -442,7 +477,7 @@ const RenderMiddle = ({ option, selectedQuiz, setQuiz, quiz, action }) => {
           {selectedQuiz.TestCase?.map((item, index) => {
             return (
               <div className={styles.TC}>
-                <h4>Test Case {index}</h4>
+                <h4>Test Case {index + 1}</h4>
                 <div className={styles.TCConatiner}>
                   <div style={{ width: '50%' }}>
                     <p>Input: </p>

@@ -1,15 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import styles from './styles.less';
-import { Button, Card, List, Skeleton, Modal, Input } from 'antd';
+import { Button, Card, List, Skeleton, Modal, Input, message } from 'antd';
 import { DeleteOutlined, MoreOutlined } from '@ant-design/icons';
-import { connect } from 'umi';
+import { connect, useHistory } from 'umi';
+import '../../../components/GlobalHeader/style.less';
+import _ from 'lodash';
 
 const { Search } = Input;
 
 const CollectionDetail = ({ location, collection, dispatch, testList }) => {
   const [modalVisible, setModalVisible] = useState(false);
+  const [testAddList, setTestAddList] = useState(false);
+  const history = useHistory();
   const handleModalCancel = () => {
     setModalVisible(false);
+    dispatch({ type: 'collection/getCollectionByIdModel', payload: { id: location.query.id } });
+    dispatch({ type: 'test/fetchTestList' });
   };
 
   useEffect(() => {
@@ -17,24 +23,43 @@ const CollectionDetail = ({ location, collection, dispatch, testList }) => {
     dispatch({ type: 'test/fetchTestList' });
   }, []);
 
+  useEffect(() => {
+    setTestAddList(_.differenceBy(testList, collection.Test, 'TestID'));
+  }, [testList]);
+
+  const onTestSearch = (value) => {
+    const list = _.differenceBy(testList, collection.Test, 'TestID');
+    const searchList = [];
+    list.forEach((test) => {
+      if (test.TestName.toLowerCase().includes(value)) {
+        searchList.push(test);
+      }
+    });
+    setTestAddList(searchList);
+  };
+
+  const handleTestOnClick = (testID) => {
+    history.push({
+      pathname: '/creator/testDetail',
+      query: {
+        id: testID,
+      },
+    });
+  };
+
   return (
-    <div className={styles.container}>
+    <div className={`${styles.container} custom`}>
       <div className={styles.header}>
         <div className={styles.headerLeft}>
-          <img
-            src={'https://trainghiemso.vn/wp-content/uploads/2020/05/%C3%B4m-ti%E1%BB%81n.png'}
-          />
+          <img src={collection.CoverImage} />
           <h1>{collection.CollectionName}</h1>
-          <Button type="primary" className={styles.button}>
-            Settings
-          </Button>
         </div>
-        <div className={styles.headerRight}>
+        {/* <div className={styles.headerRight}>
           <Button className={styles.button}>Exit</Button>
           <Button type="primary" className={styles.button}>
             Done
           </Button>
-        </div>
+        </div> */}
       </div>
       <div className={styles.content}>
         <div className={styles.testContainer}>
@@ -51,9 +76,14 @@ const CollectionDetail = ({ location, collection, dispatch, testList }) => {
             </Button>
           </div>
           <div className={styles.listTest}>
-            <div className={styles.testCount}>2 tests</div>
+            <div className={styles.testCount}>{collection.Test?.length} tests</div>
             <div className={styles.testInfo}>
-              <Test list={collection.Test} collectionID={location.query.id} dispatch={dispatch} />
+              <Test
+                list={collection.Test}
+                collectionID={location.query.id}
+                dispatch={dispatch}
+                handleTestOnClick={handleTestOnClick}
+              />
             </div>
           </div>
         </div>
@@ -66,22 +96,31 @@ const CollectionDetail = ({ location, collection, dispatch, testList }) => {
       <AddTestModal
         visible={modalVisible}
         handleCancel={handleModalCancel}
-        testList={testList}
+        testList={testAddList}
         dispatch={dispatch}
         collectionID={location.query.id}
         testIDInCollection={collection.TestID}
+        onTestSearch={onTestSearch}
       />
     </div>
   );
 };
 
-const Test = ({ list, collectionID, dispatch }) => {
+const Test = ({ list, collectionID, dispatch, handleTestOnClick }) => {
+  const onDeleteSuccess = () => {
+    dispatch({ type: 'collection/getCollectionByIdModel', payload: { id: collectionID } });
+    dispatch({ type: 'test/fetchTestList' });
+
+    message.success('Remove test from collection successfully !!!');
+  };
   const handleRemoveTest = (testID) => {
     dispatch({
       type: 'collection/removeTestToCollectionModel',
       payload: {
         testID,
         collectionID,
+        onSuccess: onDeleteSuccess,
+        onFail: () => message.error('Fail to remove test !!!'),
       },
     });
   };
@@ -93,7 +132,10 @@ const Test = ({ list, collectionID, dispatch }) => {
       renderItem={(item) => (
         <List.Item>
           <Skeleton avatar title={false} loading={item.loading} active>
-            <div className={styles.testInfoContainer}>
+            <div
+              className={styles.testInfoContainer}
+              onClick={() => handleTestOnClick(item.TestID)}
+            >
               <div className={styles.questions}>{item.TotalQuestion} questions</div>
               <img src={item.TestImage} className={styles.collectionImg} />
               <div className={styles.infoContainer}>
@@ -102,13 +144,15 @@ const Test = ({ list, collectionID, dispatch }) => {
                   <div className={styles.MoreOutlined}>
                     <MoreOutlined style={{ fontSize: '22px' }} />
                   </div>
-                  <Button
-                    className={styles.description}
-                    style={{ width: 'auto' }}
-                    onClick={() => handleRemoveTest(item.TestID)}
-                  >
-                    <DeleteOutlined /> Delete from the collection
-                  </Button>
+                  <div style={{ flexDirection: 'row', display: 'flex' }}>
+                    <Button
+                      className={styles.description}
+                      style={{ width: 'auto' }}
+                      onClick={() => handleRemoveTest(item.TestID)}
+                    >
+                      <DeleteOutlined /> Delete from the collection
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -126,6 +170,7 @@ const AddTestModal = ({
   collectionID,
   testIDInCollection,
   dispatch,
+  onTestSearch,
 }) => {
   const handleAddTestClick = (testID) => {
     dispatch({
@@ -133,6 +178,8 @@ const AddTestModal = ({
       payload: {
         testID,
         collectionID,
+        onSuccess: () => message.success('Add test successfully !!!'),
+        onFail: () => message.error('Fail to Add Test !!!'),
       },
     });
   };
@@ -151,16 +198,13 @@ const AddTestModal = ({
       onCancel={handleCancel}
       footer={[
         <Button key="back" onClick={handleCancel}>
-          Cancel
-        </Button>,
-        <Button key="submit" type="primary">
           Done
         </Button>,
       ]}
-      className={styles.modal}
+      className={`${styles.modal} custom`}
       width={600}
     >
-      <Search placeholder="Search tests..." enterButton />
+      <Search placeholder="Search tests..." enterButton onSearch={onTestSearch} />
       <div className={styles.modalList}>
         <div className={styles.testCount}>{testList.length} tests</div>
         <div className={styles.testInfo}>
