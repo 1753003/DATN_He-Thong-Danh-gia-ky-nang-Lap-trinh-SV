@@ -4,7 +4,6 @@ import { PageHeader, Tabs, Row, Col } from 'antd';
 import { Link } from 'umi';
 import { connect } from 'dva';
 import PageLoading from '@/components/PageLoading';
-
 import DisscustionTab from '@/components/Discussions/DiscusstionTab';
 import Language from '@/locales/index';
 import AsyncQuizWrapper from './components/AsyncQuizWrapper';
@@ -16,6 +15,10 @@ const { TabPane } = Tabs;
 const questionList = ({ location, practice, dispatch, loading }) => {
   const [tabChange, onTabChange] = useState(false);
   useEffect(() => {
+    dispatch({
+      type:'practice/saveSubmissionList',
+      payload: null
+    });
     dispatch({
       type: 'practice/setCurrentSubmission',
       payload: null,

@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
 import { Table, Space, ConfigProvider } from 'antd';
 import { connect } from 'dva';
-import SubmissionDetail from '../SubmissionDetail';
+// import SubmissionDetail from '../SubmissionDetail';
 import { SmileOutlined } from '@ant-design/icons';
+import AsyncSubmissionDetail from './AsyncSubmissionDetail';
 const { Column } = Table;
 
 let data = [];
@@ -42,7 +43,7 @@ const Submission = ({ dispatch, practice, loading }) => {
       {
         <div>
           {practice.currentSubmission != null ? (
-            <SubmissionDetail></SubmissionDetail>
+            <AsyncSubmissionDetail></AsyncSubmissionDetail>
           ) : (
             <ConfigProvider renderEmpty={customizeRenderEmpty}>
               <Table loading={loading} dataSource={data}>
