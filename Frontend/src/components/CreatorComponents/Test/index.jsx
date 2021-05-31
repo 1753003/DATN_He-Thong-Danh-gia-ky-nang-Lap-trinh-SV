@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Button, List, Skeleton, Avatar } from 'antd';
+import React, { useState } from 'react';
+import { List, Skeleton } from 'antd';
 import styles from './index.less';
 import { DownOutlined } from '@ant-design/icons';
 

@@ -1,5 +1,5 @@
 const db = require('../utils/db');
-const submissionsModel = require("../models/submissions.model");
+
 
 module.exports = {
   async getAllPractice(){

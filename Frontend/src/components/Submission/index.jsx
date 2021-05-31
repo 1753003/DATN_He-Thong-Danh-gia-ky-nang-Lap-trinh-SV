@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Table, Space, ConfigProvider } from 'antd';
 import { connect } from 'dva';
 import SubmissionDetail from '../SubmissionDetail';
@@ -44,7 +44,7 @@ const Submission = ({ dispatch, practice, loading }) => {
           {practice.currentSubmission != null ? (
             <SubmissionDetail></SubmissionDetail>
           ) : (
-            <ConfigProvider renderEmpty={ customizeRenderEmpty}>
+            <ConfigProvider renderEmpty={customizeRenderEmpty}>
               <Table loading={loading} dataSource={data}>
                 <Column title="" dataIndex="key" key="no" />
                 <Column
