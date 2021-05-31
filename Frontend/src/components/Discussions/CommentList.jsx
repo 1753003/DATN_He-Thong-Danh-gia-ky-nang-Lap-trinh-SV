@@ -16,12 +16,12 @@ const customizeRenderEmpty = () => (
   </div>
 );
 const CommentList = ({ data, dispatch, location }) => {
-  const [loading, setLoading] = useState(true)
-  useEffect(()=>{
-    setTimeout(()=>{
-      setLoading(false)
-    },1000)
-  },[])
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+  }, []);
   const handleClick = (cid, react, value) => {
     let postId = location.state.PracticeID;
     const payload = {
@@ -114,22 +114,27 @@ const CommentList = ({ data, dispatch, location }) => {
     <PageLoading />
   ) : (
     <ConfigProvider renderEmpty={customizeRenderEmpty}>
-    <List
-      itemLayout="vertical"
-      size="large"
-      pagination={data.length>0?{
-        pageSize: 3,
-        onChange: (page) => {
-          console.log(page);
-        },
-      }:null}
-      dataSource={data}
-      renderItem={(item) => (
-        <List.Item key={item.id}>
-          <ParentComment handleClick={handleClick} data={item}></ParentComment>
-        </List.Item>
-      )}
-    /></ConfigProvider>
+      <List
+        itemLayout="vertical"
+        size="large"
+        pagination={
+          data.length > 0
+            ? {
+                pageSize: 3,
+                onChange: (page) => {
+                  console.log(page);
+                },
+              }
+            : null
+        }
+        dataSource={data}
+        renderItem={(item) => (
+          <List.Item key={item.id}>
+            <ParentComment handleClick={handleClick} data={item}></ParentComment>
+          </List.Item>
+        )}
+      />
+    </ConfigProvider>
   );
 };
 

@@ -6,6 +6,7 @@ import {
   removeTestFromCollection,
   createNewCollection,
   deleteCollection,
+  editCollection,
 } from '@/services/collection';
 
 const CollectionModal = {
@@ -33,16 +34,45 @@ const CollectionModal = {
       });
     },
     *createNewCollectionModel({ payload }, { call }) {
-      yield call(createNewCollection, payload);
+      try {
+        yield call(createNewCollection, payload);
+        payload?.onSuccess();
+      } catch (e) {
+        payload?.onFail();
+      }
+    },
+    *editCollection({ payload }, { call }) {
+      try {
+        yield call(editCollection, payload);
+        payload?.onSuccess();
+      } catch (e) {
+        payload?.onFail();
+      }
     },
     *addTestToCollectionModel({ payload }, { call }) {
-      yield call(addTestToCollection, payload);
+      try {
+        yield call(addTestToCollection, payload);
+        payload?.onSuccess();
+      } catch (e) {
+        payload?.onFail();
+      }
     },
     *removeTestToCollectionModel({ payload }, { call }) {
-      yield call(removeTestFromCollection, payload);
+      try {
+        yield call(removeTestFromCollection, payload);
+        payload?.onSuccess();
+      } catch (e) {
+        console.log(e);
+        payload?.onFail();
+      }
     },
     *deleteCollectionModel({ payload }, { call }) {
-      yield call(deleteCollection, payload);
+      try {
+        yield call(deleteCollection, payload);
+        payload?.onSuccess();
+      } catch {
+        payload?.onFail();
+      }
     },
   },
   reducers: {

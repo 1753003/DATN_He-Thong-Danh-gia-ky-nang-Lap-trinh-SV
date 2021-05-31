@@ -1,15 +1,25 @@
-import React, { Component, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { CheckCircleTwoTone, CloseCircleTwoTone } from '@ant-design/icons';
+import AceEditor from 'react-ace';
 import styles from './style.less';
-import 'brace/mode/javascript';
-import 'brace/mode/c_cpp';
-import 'brace/mode/java';
-import { PageHeader, Divider, Checkbox, Tabs, Tooltip, Typography, Row, Col, Statistic } from 'antd';
+// import 'brace/mode/javascript';
+// import 'brace/mode/c_cpp';
+// import 'brace/mode/java';
+import {
+  PageHeader,
+  Divider,
+  Checkbox,
+  Tabs,
+  Tooltip,
+  Typography,
+  Row,
+  Col,
+  Statistic,
+} from 'antd';
 import 'brace/theme/kuroir';
 import { connect } from 'dva';
 import PageLoading from '@/pages/dashboard/analysis/components/PageLoading';
 import { u_atob } from '@/utils/string';
-import AceEditor from 'react-ace';
 import moment from 'moment';
 const { TabPane } = Tabs;
 const CheckboxGroup = Checkbox.Group;
@@ -39,7 +49,7 @@ const SubmissionDetail = ({ dispatch, data, listQuestion, loading }) => {
     return (
       <AceEditor
         className={styles.editor}
-        mode="c_cpp"
+        // mode="c_cpp"
         fontSize={16}
         readOnly={true}
         theme="kuroir"
@@ -128,14 +138,17 @@ const SubmissionDetail = ({ dispatch, data, listQuestion, loading }) => {
             <Col span={12}>
               <Tooltip placement="topLeft" title="This is calculated using total questions number.">
                 <span>
-                <Statistic title="Your score" value={data.info.Score} precision={0} />
+                  <Statistic title="Your score" value={data.info.Score} precision={0} />
                 </span>
               </Tooltip>
             </Col>
             <Col span={12}>
-              <Tooltip placement="topLeft" title="This is calculated using number of answer you submitted.">
+              <Tooltip
+                placement="topLeft"
+                title="This is calculated using number of answer you submitted."
+              >
                 <span>
-                <Statistic title="Correct Percent" value={data.info.CorrectPercent} suffix='%'/>
+                  <Statistic title="Correct Percent" value={data.info.CorrectPercent} suffix="%" />
                 </span>
               </Tooltip>
             </Col>
@@ -153,15 +166,13 @@ const SubmissionDetail = ({ dispatch, data, listQuestion, loading }) => {
             <div>
               {listQuestion.map((item, i) => {
                 let temp = [];
-                if (data.data[i])
-                {
+                if (data.data[i]) {
                   for (let choice in data.data[i]?.Choice) {
                     temp.push(item.Answer[choice]);
                   }
                 }
                 return (
                   <div key={i}>
-                    
                     <h3 style={data.data[i]?.status === 1 ? { color: 'green' } : { color: 'red' }}>
                       Question {i + 1}. {item.Description}
                     </h3>

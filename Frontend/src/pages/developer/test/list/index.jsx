@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import styles from './style.less';
-import { Typography, Card, List, PageHeader, Row, Col, Divider, Checkbox, Button } from 'antd';
-import { history, Link, useHistory } from 'umi';
+import { Typography, List, PageHeader, Row, Col, Divider, Checkbox, Button } from 'antd';
+import { history, Link } from 'umi';
 import { connect } from 'dva';
-import PageLoading from '@/components/PageLoading';
 import './style.less';
 import Language from '@/locales/index';
 
@@ -259,7 +257,7 @@ const TestSetList = ({ location, dispatch, testDev, loading }) => {
                   </Button>
                 )}
                 {item.SubmissionID == null && (
-                  <Button size="large" style={{ width: '100px' }} type="primary">
+                  <Button size="large" style={{background:"#3ebae0",border:"2px solid #3ebae0", width: '100px' }} type="primary">
                     {' '}
                     Start{' '}
                   </Button>

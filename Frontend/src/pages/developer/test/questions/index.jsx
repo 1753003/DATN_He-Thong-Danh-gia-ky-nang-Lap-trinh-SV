@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import './style.less'
 import {
   PageHeader,
@@ -6,7 +6,7 @@ import {
   Row,
   Col
 } from 'antd'
-import {history, Link, withRouter} from 'umi'
+import {history, withRouter} from 'umi'
 import { connect } from 'dva'
 import Language from '@/locales/index';
 const { TabPane } = Tabs;

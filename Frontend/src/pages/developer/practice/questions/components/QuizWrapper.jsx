@@ -160,7 +160,8 @@ const QuizWrapper = ({ pLength, pid, submitResponse, dispatch, data, loading }) 
       <h2>Practice submitted successfully. </h2>
       <h3
         style={
-          submitResponse === data.listQuestion.length ? { color: 'darkgreen' } : { color: 'red' }
+          submitResponse.filter(function(e) {
+            return e > 0}).length === data.listQuestion.length ? { color: 'darkgreen' } : { color: 'red' }
         }
       >{`Your result: ${submitResponse.filter(function(e) {
         return e > 0}).length} / ${data.listQuestion.length} correct questions`}</h3>
