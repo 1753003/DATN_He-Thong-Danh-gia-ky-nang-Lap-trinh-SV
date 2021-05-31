@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { CheckCircleTwoTone, CloseCircleTwoTone } from '@ant-design/icons';
+import AceEditor from 'react-ace';
 import styles from './style.less';
 import 'brace/mode/javascript';
 import 'brace/mode/c_cpp';
@@ -19,7 +20,6 @@ import 'brace/theme/kuroir';
 import { connect } from 'dva';
 import PageLoading from '@/pages/dashboard/analysis/components/PageLoading';
 import { u_atob } from '@/utils/string';
-import AceEditor from 'react-ace';
 import moment from 'moment';
 const { TabPane } = Tabs;
 const CheckboxGroup = Checkbox.Group;

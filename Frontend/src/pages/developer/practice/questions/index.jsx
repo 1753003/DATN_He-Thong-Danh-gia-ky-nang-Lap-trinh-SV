@@ -4,10 +4,11 @@ import { PageHeader, Tabs, Row, Col } from 'antd';
 import { Link } from 'umi';
 import { connect } from 'dva';
 import PageLoading from '@/components/PageLoading';
-import Submission from '@/components/Submission';
+
 import DisscustionTab from '@/components/Discussions/DiscusstionTab';
 import Language from '@/locales/index';
 import AsyncQuizWrapper from './components/AsyncQuizWrapper';
+import AsyncSubmission from './components/AsyncSubmission';
 import AsyncCoding from '@/components/AsyncCoding/AsyncCoding';
 
 const { TabPane } = Tabs;
@@ -106,7 +107,7 @@ const questionList = ({ location, practice, dispatch, loading }) => {
               )}
             </TabPane>
             <TabPane tab={Language.pages_practice_questions_submission} key="2">
-              <Submission></Submission>
+              <AsyncSubmission></AsyncSubmission>
             </TabPane>
             <TabPane tab={Language.pages_practice_questions_discussion} key="3">
               <DisscustionTab location={location}></DisscustionTab>
