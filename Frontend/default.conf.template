@@ -5,9 +5,29 @@ server {
     gzip on;
     gzip_min_length 1k;
     gzip_comp_level 9;
-    gzip_types text/plain text/css text/javascript application/json application/javascript application/x-javascript application/xml;
     gzip_vary on;
     gzip_disable "MSIE [1-6]\.";
+    gzip_types 
+        application/atom+xml
+        application/geo+json
+        application/javascript
+        application/x-javascript
+        application/json
+        application/ld+json
+        application/manifest+json
+        application/rdf+xml
+        application/rss+xml
+        application/xhtml+xml
+        application/xml
+        font/eot
+        font/otf
+        font/ttf
+        image/svg+xml
+        text/css
+        text/javascript
+        text/plain
+        text/xml;
+    
 
     root /usr/share/nginx/html;
     
