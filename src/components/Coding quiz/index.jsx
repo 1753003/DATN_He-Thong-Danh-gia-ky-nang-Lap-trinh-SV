@@ -2,22 +2,14 @@ import React, { Component } from 'react';
 import { CheckCircleTwoTone, CloseCircleTwoTone } from '@ant-design/icons';
 import styles from './style.less';
 import {
-  Typography,
-  Card,
-  List,
-  PageHeader,
   Divider,
-  Button,
-  Checkbox,
-  Input,
   Tabs,
   Alert,
 } from 'antd';
-import { history, Link } from 'umi';
 import { connect } from 'dva';
 import CodeEditor from '../CodeEditorQuiz';
 import PageLoading from '@/components/PageLoading';
-import { u_atob, u_btoa } from '@/utils/string';
+import { u_atob } from '@/utils/string';
 import AceEditor from 'react-ace';
 import 'brace/theme/tomorrow';
 import ReactMarkdown from 'react-markdown';

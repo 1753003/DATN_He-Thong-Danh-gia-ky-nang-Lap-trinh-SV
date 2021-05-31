@@ -1,26 +1,15 @@
 import React, { Component } from 'react';
+
 import { CheckCircleTwoTone, CloseCircleTwoTone } from '@ant-design/icons';
 import styles from './style.less';
-import {
-  Typography,
-  Card,
-  List,
-  PageHeader,
-  Divider,
-  Button,
-  Checkbox,
-  Input,
-  Tabs,
-  Alert,
-} from 'antd';
-import { history, Link } from 'umi';
+import { Divider, Tabs, Alert } from 'antd';
+import MDEditor from '@uiw/react-md-editor';
 import { connect } from 'dva';
 import CodeEditor from '../CodeEditor';
 import PageLoading from '@/components/PageLoading';
-import { u_atob, u_btoa } from '@/utils/string';
+import { u_atob } from '@/utils/string';
 import AceEditor from 'react-ace';
 import 'brace/theme/tomorrow';
-import ReactMarkdown from 'react-markdown';
 
 const { TabPane } = Tabs;
 
@@ -167,7 +156,7 @@ class Coding extends Component {
 
     return (
       <>
-        <ReactMarkdown className="problem">{this.props.description}</ReactMarkdown>
+        <MDEditor.Markdown className="problem">{this.props.description}</MDEditor.Markdown>
         <Divider></Divider>
         <div className="code-editor">
           <CodeEditor></CodeEditor>

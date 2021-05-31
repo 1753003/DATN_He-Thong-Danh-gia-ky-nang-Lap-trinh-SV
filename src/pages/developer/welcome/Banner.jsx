@@ -3,9 +3,8 @@ import PropTypes from 'prop-types';
 import QueueAnim from 'rc-queue-anim';
 import TweenOne from 'rc-tween-one';
 import BannerSVGAnim from './component/BannerSVGAnim';
-import { InputNumber, Button, Checkbox } from 'antd';
 import Children from 'rc-tween-one/lib/plugin/ChildrenPlugin';
-import {history, Link} from 'umi';
+import { Link } from 'umi';
 import Language from '@/locales/index';
 TweenOne.plugins.push(Children);
 
