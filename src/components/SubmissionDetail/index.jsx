@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { CheckCircleTwoTone, CloseCircleTwoTone } from '@ant-design/icons';
 import AceEditor from 'react-ace';
 import styles from './style.less';
-import 'brace/mode/javascript';
-import 'brace/mode/c_cpp';
-import 'brace/mode/java';
+// import 'brace/mode/javascript';
+// import 'brace/mode/c_cpp';
+// import 'brace/mode/java';
 import {
   PageHeader,
   Divider,
@@ -49,7 +49,7 @@ const SubmissionDetail = ({ dispatch, data, listQuestion, loading }) => {
     return (
       <AceEditor
         className={styles.editor}
-        mode="c_cpp"
+        // mode="c_cpp"
         fontSize={16}
         readOnly={true}
         theme="kuroir"
