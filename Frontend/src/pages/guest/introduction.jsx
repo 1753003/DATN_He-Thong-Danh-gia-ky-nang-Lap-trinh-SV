@@ -3,6 +3,7 @@ import { Col, Menu, Row, Button } from 'antd';
 import { ArrowRightOutlined } from '@ant-design/icons';
 import styles from './introduce.less';
 import Language from '@/locales/index';
+import Cookies from 'js-cookie';
 import { history } from 'umi';
 
 class Header extends React.Component {
