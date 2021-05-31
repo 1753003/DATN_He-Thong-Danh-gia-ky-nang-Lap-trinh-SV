@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import styles from './style.less';
-import { Typography, Card, List, PageHeader, Row, Col, Divider, Checkbox, Button } from 'antd';
+import { Typography, List, PageHeader, Row, Col, Divider, Checkbox, Button } from 'antd';
 import { history, Link } from 'umi';
 import { connect } from 'dva';
 import PageLoading from '@/components/PageLoading';
 import './style.less';
 import Language from '@/locales/index';
-import { createLanguageServiceSourceFile } from 'typescript';
 
-const { Title, Text } = Typography;
+const { Title } = Typography;
 
 let list1 = [];
 let list2 = [];
@@ -59,7 +57,7 @@ const practiceList = ({ location, dispatch, practice, loading }) => {
   function onChange(e) {
     const val = e.target.value;
     const temp = practice.list;
-    console.log(val)
+    console.log(val);
     if (val == 'Solved') {
       if (!solved && !unsolved) {
         list1 = temp.filter((e) => e.SubmissionID != null);

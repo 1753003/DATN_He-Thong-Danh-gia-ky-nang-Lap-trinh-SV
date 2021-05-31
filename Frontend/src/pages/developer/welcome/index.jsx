@@ -2,7 +2,6 @@ import React from 'react';
 import DocumentTitle from 'react-document-title';
 import { enquireScreen } from 'enquire-js';
 
-import Header from './Header';
 import Banner from './Banner';
 import './static/style';
 import '@/locales/index'
