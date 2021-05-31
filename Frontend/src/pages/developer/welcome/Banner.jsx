@@ -6,6 +6,7 @@ import BannerSVGAnim from './component/BannerSVGAnim';
 import Children from 'rc-tween-one/lib/plugin/ChildrenPlugin';
 import { Link } from 'umi';
 import Language from '@/locales/index';
+import { Button } from 'antd';
 TweenOne.plugins.push(Children);
 
 const Banner = (props) => {

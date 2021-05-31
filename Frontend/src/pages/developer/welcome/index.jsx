@@ -7,7 +7,7 @@ import './static/style';
 import '@/locales/index'
 import Language from '@/locales/index';
 
-let isMobile;
+let isMobile = false ;
 
 enquireScreen((b) => {
   isMobile = b;
@@ -26,7 +26,7 @@ class Home extends React.PureComponent {
   }
   render() {
     return (
-      <DocumentTitle title={Language.config_welcome}>
+      <DocumentTitle title="Welcome to Codejoy">
           <div className="home-wrapper">
             <Banner isMobile={this.state.isMobile} />
           </div>
