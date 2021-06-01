@@ -6,7 +6,7 @@ import React from 'react';
 import logo from '../assets/logo.svg';
 import styles from './UserLayout.less';
 import { getPageQuery } from '@/utils/utils';
-import { SmileOutlined } from '@ant-design/icons';
+import { GithubOutlined, SmileOutlined } from '@ant-design/icons';
 const UserLayout = (props) => {
   const {
     route = {
@@ -59,7 +59,7 @@ const UserLayout = (props) => {
             <div className={styles.header}>
               <Link to="/">
                 <img alt="logo" className={styles.logo} src={logo} />
-                <span className={styles.title}>DevCheck</span>
+                <span className={styles.title}>Codejoy</span>
               </Link>
             </div>
             <div className={styles.desc}>
@@ -71,7 +71,24 @@ const UserLayout = (props) => {
           </div>
           {children}
         </div>
-        <DefaultFooter />
+        <DefaultFooter
+    copyright={`${new Date().getFullYear()} Codejoy`}
+    links={[
+      {
+        key: 'Codejoy',
+        title: 'Codejoy',
+        href: 'https://github.com/1753003/DATN_He-Thong-Danh-gia-ky-nang-Lap-trinh-SV',
+        blankTarget: true,
+      },
+      {
+        key: 'github',
+        title: <GithubOutlined />,
+        href: 'https://github.com/1753003/DATN_He-Thong-Danh-gia-ky-nang-Lap-trinh-SV',
+        blankTarget: true,
+      },
+      
+    ]}
+  />
       </div>
     </HelmetProvider>
   );
