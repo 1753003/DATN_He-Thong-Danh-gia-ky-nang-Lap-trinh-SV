@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './style.less';
-import { PageHeader, Tabs, Row, Col } from 'antd';
+import { PageHeader, Tabs, Row, Col, Typography } from 'antd';
 import { Link } from 'umi';
 import { connect } from 'dva';
 import PageLoading from '@/components/PageLoading';
@@ -87,7 +87,7 @@ const questionList = ({ location, practice, dispatch, loading }) => {
         title={practice.listDetail?.generalInformation?.PracticeName}
         subTitle={practice.listDetail?.generalInformation?.BriefDescription}
       />
-      <Row className="container">
+      <Row className="container" justify="space-around" >
         <Col className="tabs" span={19}>
           <Tabs
             className="custom"
@@ -117,8 +117,8 @@ const questionList = ({ location, practice, dispatch, loading }) => {
             </TabPane>
           </Tabs>
         </Col>
-        <Col className="info" flex="auto" span={4}>
-          <Row justify="space-between">
+        <Col className="info" flex span={5}>
+          <Row gutter={12} justify="space-between">
             <Col>
               {Language.pages_practice_questions_author}
               <br />
@@ -127,9 +127,9 @@ const questionList = ({ location, practice, dispatch, loading }) => {
               {Language.pages_practice_questions_maxScore}
             </Col>
             <Col style={{ textAlign: 'right' }}>
-              Admin
+              Codejoy
               <br />
-              {practice.listDetail?.generalInformation?.DifficultLevel}
+              <Typography.Text strong style={practice.listDetail?.generalInformation?.DifficultLevel==="Easy"?{color:"green"}:practice.listDetail?.generalInformation?.DifficultLevel==="Medium"?{color:"#ed7e0c"}:{color:"red"}}>{practice.listDetail?.generalInformation?.DifficultLevel}</Typography.Text>
               <br />
               {practice.listDetail?.generalInformation?.Score}
             </Col>

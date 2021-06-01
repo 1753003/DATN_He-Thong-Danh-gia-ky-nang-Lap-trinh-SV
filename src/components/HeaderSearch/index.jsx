@@ -1,5 +1,5 @@
 import { SearchOutlined } from '@ant-design/icons';
-import { AutoComplete, Input } from 'antd';
+import { AutoComplete, Input, notification } from 'antd';
 import useMergedState from 'rc-util/es/hooks/useMergedState';
 import React, { useRef } from 'react';
 import classNames from 'classnames';
@@ -70,8 +70,17 @@ const HeaderSearch = (props) => {
           bordered={false}
           onKeyDown={(e) => {
             if (e.key === 'Enter') {
+              var format = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+              
               if (restProps.onPressEnter) {
-                restProps.onPressEnter(value);
+                if(format.test(value)){
+                  notification.open({
+                    description: 'Search keyword must not include special character(s)',
+                    type: 'warning',
+                  });
+                }
+                else
+                  restProps.onPressEnter(value);
               }
             }
           }}

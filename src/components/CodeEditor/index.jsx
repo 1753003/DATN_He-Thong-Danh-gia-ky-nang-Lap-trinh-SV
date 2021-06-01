@@ -210,29 +210,16 @@ class CodeEditor extends Component {
             <Select.Option value={18}>18</Select.Option>
           </Select>
           <Button
-            className={styles.buttonWithName}
             icon={<SearchOutlined />}
             onClick={() => this.handleSearch()}
           >
             Find
           </Button>
           <Button
-            className={styles.buttonWithName}
             icon={<QuestionCircleOutlined />}
             href="https://github.com/securingsincity/react-ace"
           >
-            Help
           </Button>
-          <Button
-            className={styles.buttonNoName}
-            icon={<SearchOutlined />}
-            onClick={() => this.handleSearch()}
-          ></Button>
-          <Button
-            className={styles.buttonNoName}
-            icon={<QuestionCircleOutlined />}
-            href="https://github.com/securingsincity/react-ace"
-          ></Button>
         </Space>
         <AceEditor
           ref={this.editorRef}
