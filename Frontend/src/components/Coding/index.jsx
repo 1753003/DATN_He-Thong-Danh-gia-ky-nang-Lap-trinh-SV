@@ -156,7 +156,7 @@ class Coding extends Component {
 
     return (
       <>
-        <MDEditor.Markdown className="problem">{this.props.description}</MDEditor.Markdown>
+        <MDEditor.Markdown className="problem" source={this.props.description}></MDEditor.Markdown>
         <Divider></Divider>
         <div className="code-editor">
           <CodeEditor></CodeEditor>

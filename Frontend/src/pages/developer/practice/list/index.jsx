@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Typography, List, PageHeader, Row, Col, Divider, Checkbox, Button } from 'antd';
+import { Typography, List, PageHeader, Row, Col, Divider, Checkbox, Button, Card } from 'antd';
 import { history, Link } from 'umi';
 import { connect } from 'dva';
 import PageLoading from '@/components/PageLoading';
@@ -49,15 +49,15 @@ const practiceList = ({ location, dispatch, practice, loading }) => {
   function itemRender(route, params, routes, paths) {
     const last = routes.indexOf(route) === routes.length - 1;
     return last ? (
-      <span>{route.breadcrumbName}</span>
+      <span key={route.breadcrumbName}>{route.breadcrumbName}</span>
     ) : (
-      <Link to={route.path}>{route.breadcrumbName}</Link>
+      <Link to={route.path} key={route.breadcrumbName}>{route.breadcrumbName}</Link>
     );
   }
   function onChange(e) {
     const val = e.target.value;
     const temp = practice.list;
-    console.log(val);
+
     if (val == 'Solved') {
       if (!solved && !unsolved) {
         list1 = temp.filter((e) => e.SubmissionID != null);
@@ -197,9 +197,9 @@ const practiceList = ({ location, dispatch, practice, loading }) => {
     const temp2 = list2.map((e) => e.PracticeID);
     const temp3 = list3.map((e) => e.PracticeID);
 
-    console.log(temp1);
-    console.log(temp2);
-    console.log(temp3);
+    // console.log(temp1);
+    // console.log(temp2);
+    // console.log(temp3);
     const filter = temp1.filter((value) => -1 !== temp2.indexOf(value));
 
     const filter2 = filter.filter((value) => -1 !== temp3.indexOf(value));
@@ -234,6 +234,7 @@ const practiceList = ({ location, dispatch, practice, loading }) => {
             }}
             dataSource={list}
             renderItem={(item) => (
+              <Card bordered size="small" hoverable style={{ marginBottom:"12px"}}>
               <List.Item
                 onClick={() => {
                   history.push({
@@ -245,10 +246,10 @@ const practiceList = ({ location, dispatch, practice, loading }) => {
                   });
                 }}
                 style={{
-                  backgroundColor: 'white',
-                  margin: '10px 5px 10px 20px',
+                  // backgroundColor: 'white',
+                  // margin: '10px 5px 10px 20px',
                   padding: '5px 20px 5px 10px',
-                  borderRadius: '5px',
+                  // borderRadius: '5px',
                 }}
               >
                 <List.Item.Meta
@@ -256,10 +257,10 @@ const practiceList = ({ location, dispatch, practice, loading }) => {
                   description={
                     <div>
                       {' '}
-                      {item.DifficultLevel +
-                        ',' +
+                      <Typography.Text strong style={item.DifficultLevel==="Easy"?{color:"green"}:item.DifficultLevel==="Medium"?{color:"#ed7e0c"}:{color:"red"}}>{item.DifficultLevel}</Typography.Text> {
+                        ', ' +
                         item.PracticeType +
-                        ',' +
+                        ', ' +
                         item.Score} <br></br> {item.BriefDescription}
                     </div>
                   }
@@ -275,7 +276,7 @@ const practiceList = ({ location, dispatch, practice, loading }) => {
                     Start{' '}
                   </Button>
                 )}
-              </List.Item>
+              </List.Item></Card>
             )}
           />
         </Col>

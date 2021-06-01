@@ -174,7 +174,7 @@ class GlobalHeaderRight extends Component {
         <NoticeIcon.Tab
         className="custom"
           tabKey="notification"
-          count={unreadMsg.Notification}
+          count={unreadMsg.Notification + unreadMsg.Event}
           list={noticeData?.Notification?.concat(noticeData.Event)}
           title="Notifications"
           emptyText="You don't have any notifications."

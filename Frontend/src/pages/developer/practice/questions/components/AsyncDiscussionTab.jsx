@@ -3,8 +3,8 @@ import Loading from '@/components/PageLoading'
 export default dynamic({
   loader: async function() {
     // webpackChunkName tells webpack create separate bundle for HugeA
-    const { default: AsyncQuizWrapper } = await import(/* webpackChunkName: "external_A" */ './QuizWrapper');
-    return AsyncQuizWrapper;
+    const { default: AsyncDiscussionTab } = await import(/* webpackChunkName: "external_A" */ '@/components/Discussions/DiscusstionTab');
+    return AsyncDiscussionTab;
   },
   loading: Loading,
 });
