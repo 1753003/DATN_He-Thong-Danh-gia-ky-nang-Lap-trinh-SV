@@ -4,7 +4,7 @@ import React from 'react';
 import { connect } from 'umi';
 import PracticeListContent from '../PracticeListContent';
 import styles from './index.less';
-
+import '../../../../../components/GlobalHeader/style.less'
 const Practice = (props) => {
   const { list } = props;
 
@@ -32,7 +32,7 @@ const Practice = (props) => {
       </Row> */}
       <List
       size="large"
-      className={styles.articleList}
+      className={`${styles.articleList} custom`}
       rowKey="id"
       itemLayout="vertical"
       dataSource={list.practice}
