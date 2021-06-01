@@ -3,6 +3,7 @@ import { search } from '@/services/search';
 const Model = {
   namespace: 'search',
   state: {
+    keyword:"",
     list: [],
     filterList: [],
     filter: {
@@ -17,6 +18,10 @@ const Model = {
   },
   effects: {
     *getSearchList({ payload }, { put }) {
+      yield put({
+        type: 'setKeyword',
+        payload: payload,
+      });
       const data = yield search(payload);
       yield put({
         type: 'setList',
@@ -119,6 +124,9 @@ const Model = {
   reducers: {
     setList(state, { payload }) {
       return { ...state, list: payload };
+    },
+    setKeyword(state, { payload }) {
+      return { ...state, keyword: payload };
     },
     setFilterList(state, { payload }) {
       return { ...state, filterList: payload };
