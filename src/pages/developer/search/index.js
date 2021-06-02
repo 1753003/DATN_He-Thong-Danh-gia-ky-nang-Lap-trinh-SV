@@ -1,15 +1,29 @@
 import React from 'react';
 import { connect } from 'dva';
 import { history } from 'umi';
-import { Typography, ConfigProvider, Card, List, Row, Col, Divider, Checkbox, Button, Tag } from 'antd';
+import {
+  Typography,
+  ConfigProvider,
+  Card,
+  List,
+  Row,
+  Col,
+  Divider,
+  Checkbox,
+  Button,
+  Tag,
+} from 'antd';
 import './style.less';
 import Language from '@/locales/index';
 import { SearchOutlined } from '@ant-design/icons';
 const { Title } = Typography;
 const customizeRenderEmpty = () => (
   <div style={{ textAlign: 'center' }}>
-    <SearchOutlined style={{ fontSize: "64px" }} />
-    <p>Hmm, we're not getting any results.<br/> Maybe you should try another search</p>
+    <SearchOutlined style={{ fontSize: '64px' }} />
+    <p>
+      Hmm, we're not getting any results.
+      <br /> Maybe you should try another search
+    </p>
   </div>
 );
 class SearchResult extends React.Component {
@@ -17,110 +31,122 @@ class SearchResult extends React.Component {
     super(props);
   }
   render() {
-
     return (
       <div>
-        <div style={{padding:" 24px 24px 0px 24px"}}>
-        <Typography.Title level={3}>{Language.pages_search_searchResult}{' '}"{this.props.search.keyword}"</Typography.Title>
-        <Typography.Text type="secondary">About{' '}{this.props.search.filterList.length}{' '}result(s)</Typography.Text>
+        <div style={{ padding: ' 24px 24px 0px 24px' }}>
+          <Typography.Title level={3}>
+            {Language.pages_search_searchResult} "{this.props.search.keyword}"
+          </Typography.Title>
+          <Typography.Text type="secondary">
+            About {this.props.search.filterList.length} result(s)
+          </Typography.Text>
         </div>
         <Divider></Divider>
         <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
           <Col className="gutter-row" span={18}>
-          <ConfigProvider renderEmpty={customizeRenderEmpty}>
-            <List
-              className="custom"
-              loading={this.props.loading}
-              style={{ margin: '0px 0px 10px 10px' }}
-              itemLayout="horizontal"
-              pagination={{
-                onChange: (page) => {
-                  console.log(page);
-                },
-                pageSize: 6,
-              }}
-              dataSource={this.props.search.filterList}
-              renderItem={(item) => (
-                <Card bordered size="small" hoverable style={{ marginBottom: '12px' }}>
-                  <List.Item
-                    onClick={() => {
-                      item.IsPractice
-                        ? history.push({
-                            pathname: '/developer/practice/questions',
-                            search: `?listName=${encodeURIComponent(
-                              decodeURIComponent(location.query.listName),
-                            )}`,
-                            state: item,
-                          })
-                        : history.push({
-                            pathname: '/developer/test/questions',
-                            search: `?listName=${encodeURIComponent(
-                              decodeURIComponent(location.query.listName),
-                            )}`,
-                            state: item,
-                          });
-                    }}
-                    style={{
-                      // backgroundColor: 'white',
-                      // margin: '10px 5px 10px 20px',
-                      padding: '5px 20px 5px 10px',
-                      // borderRadius: '5px',
-                    }}
-                  >
-                    <Row style={{width:"100%"}} justify="start" align="middle">
-                      <Col xs={{span:24}} md={{span:10}}>
-                        <List.Item.Meta
-                          title={item.Name}
-                          description={
-                            <div>
-                              <Typography.Text
-                                strong
-                                style={
-                                  item.DifficultLevel === 'Easy'
-                                    ? { color: 'green' }
-                                    : item.DifficultLevel === 'Medium'
-                                    ? { color: '#ed7e0c' }
-                                    : { color: 'red' }
-                                }
-                              >
-                                {item.DifficultLevel}
-                              </Typography.Text>
-                              {', ' + item.Type + ', ' + item.Score}
-                              <br></br>
-                              {item.BriefDescription}
-                            </div>
-                          }
-                        />
-                      </Col>
-                      <Col xs={{span:14}} md={{span:8}} lg={{span:10}}>
-                        <Tag style={{ marginBottom: '12px' }} color={item._Set === "Java"?"green":item._Set==="JavaScript"?"orange":"blue"}>
-                          {item._Set}
-                        </Tag>
-                        <br />
-                        {item.IsPractice ? (
-                          <Tag color="#467ab8">Practice</Tag>
-                        ) : (
-                          <Tag color="#27a3c8">Test</Tag>
-                        )}
-                      </Col>
-                      <Col >
-                        {item.isSolve && (
-                          <Button size="large" style={{ width: '100px' }}>
-                            {Language.pages_practice_list_solved}
-                          </Button>
-                        )}
-                        {!item.isSolve && (
-                          <Button size="large" style={{ width: '100px' }} type="primary">
-                            {' '}
-                            {Language.pages_search_start}{' '}
-                          </Button>
-                        )}
-                      </Col>
-                    </Row>
-                  </List.Item>
-                </Card>
-              )}
-            />
+            <ConfigProvider renderEmpty={customizeRenderEmpty}>
+              <List
+                className="custom"
+                loading={this.props.loading}
+                style={{ margin: '0px 0px 10px 10px' }}
+                itemLayout="horizontal"
+                pagination={{
+                  onChange: (page) => {
+                    console.log(page);
+                  },
+                  pageSize: 6,
+                }}
+                dataSource={this.props.search.filterList}
+                renderItem={(item) => (
+                  <Card bordered size="small" hoverable style={{ marginBottom: '12px' }}>
+                    <List.Item
+                      onClick={() => {
+                        item.IsPractice
+                          ? history.push({
+                              pathname: '/developer/practice/questions',
+                              search: `?listName=${encodeURIComponent(
+                                decodeURIComponent(location.query.listName),
+                              )}`,
+                              state: item,
+                            })
+                          : history.push({
+                              pathname: '/developer/test/questions',
+                              search: `?listName=${encodeURIComponent(
+                                decodeURIComponent(location.query.listName),
+                              )}`,
+                              state: item,
+                            });
+                      }}
+                      style={{
+                        // backgroundColor: 'white',
+                        // margin: '10px 5px 10px 20px',
+                        padding: '5px 20px 5px 10px',
+                        // borderRadius: '5px',
+                      }}
+                    >
+                      <Row style={{ width: '100%' }} justify="start" align="middle">
+                        <Col xs={{ span: 24 }} md={{ span: 10 }}>
+                          <List.Item.Meta
+                            title={item.Name}
+                            description={
+                              <div>
+                                <Typography.Text
+                                  strong
+                                  style={
+                                    item.DifficultLevel === 'Easy'
+                                      ? { color: 'green' }
+                                      : item.DifficultLevel === 'Medium'
+                                      ? { color: '#ed7e0c' }
+                                      : { color: 'red' }
+                                  }
+                                >
+                                  {item.DifficultLevel}
+                                </Typography.Text>
+                                {', ' + item.Type + ', ' + item.Score}
+                                <br></br>
+                                {item.BriefDescription}
+                              </div>
+                            }
+                          />
+                        </Col>
+                        <Col xs={{ span: 14 }} md={{ span: 8 }} lg={{ span: 10 }}>
+                          <Tag
+                            style={{ marginBottom: '12px' }}
+                            color={
+                              item._Set === 'Java'
+                                ? 'green'
+                                : item._Set === 'JavaScript'
+                                ? 'orange'
+                                : 'blue'
+                            }
+                          >
+                            {item._Set}
+                          </Tag>
+                          <br />
+                          {item.IsPractice ? (
+                            <Tag color="#467ab8">Practice</Tag>
+                          ) : (
+                            <Tag color="#27a3c8">Test</Tag>
+                          )}
+                        </Col>
+                        <Col>
+                          {item.isSolve && (
+                            <Button size="large" style={{ width: '100px' }}>
+                              {Language.pages_practice_list_solved}
+                            </Button>
+                          )}
+                          {!item.isSolve && (
+                            <Button size="large" style={{ width: '100px' }} type="primary">
+                              {' '}
+                              {Language.pages_search_start}{' '}
+                            </Button>
+                          )}
+                        </Col>
+                      </Row>
+                    </List.Item>
+                  </Card>
+                )}
+              />
             </ConfigProvider>
           </Col>
           <Col className="gutter-row" span={6} style={{ margin: '30px 0px 10px 0px' }}>
