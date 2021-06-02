@@ -2,6 +2,7 @@ const db = require('../utils/db');
 
 module.exports = {
     async createCollection(newCollection) {
+        console.log(newCollection)
         await db('collection').insert(newCollection);
     },
     async getCollectionByUID(uid) {

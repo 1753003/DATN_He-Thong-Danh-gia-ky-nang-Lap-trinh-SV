@@ -93,6 +93,7 @@ module.exports = {
         res.RunningTime = codeQuestion.RunningTime;
         res.MemoryUsage = codeQuestion.MemoryUsage;
         res.TestCase = codeQuestion.TestCase;
+        res.CodeSample = codeQuestion.CodeSample;
       }
       listQuestion.push(res);
     }
