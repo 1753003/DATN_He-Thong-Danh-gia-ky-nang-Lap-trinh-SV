@@ -16,11 +16,10 @@ import { connect } from 'dva';
 import moment from 'moment';
 import Coding from '@/components/Coding quiz';
 import Quiz from './components/quiz';
-import { history, Link, withRouter } from 'umi';
+import { history } from 'umi';
 import Language from '@/locales/index';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { docco } from 'react-syntax-highlighter/dist/esm/styles/hljs';
-const CheckboxGroup = Checkbox.Group;
 
 class TestDetail extends React.Component {
   state = {

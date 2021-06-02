@@ -23,9 +23,9 @@ import 'brace/ext/language_tools';
 // import "ace-builds/src-noconflict/snippets/javascript"
 // import 'ace-builds/src-min-noconflict/ext-language_tools';
 
-import { Button, Checkbox, Input, notification, Switch, Select, Space, Row } from 'antd';
+import { Button, Checkbox, Input, notification, Select, Space } from 'antd';
 import { connect } from 'dva';
-import { u_atob, u_btoa } from '@/utils/string';
+import { u_btoa } from '@/utils/string';
 import '../Coding/style.less';
 import { QuestionCircleOutlined, CaretRightOutlined, SearchOutlined } from '@ant-design/icons';
 

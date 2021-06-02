@@ -17,21 +17,28 @@ const Users = ({ summaryUser }) => {
       title: 'Rank',
       dataIndex: 'Rank',
       key: 'Rank',
+      sorter: (a, b) => a.Rank - b.Rank,
     },
     {
       title: 'Correct Percent',
       dataIndex: 'CorrectPercent',
       key: 'CorrectPercent',
+      defaultSortOrder: 'ascend',
+      sorter: (a, b) => a.CorrectPercent - b.CorrectPercent,
     },
     {
       title: 'Unanswered',
       dataIndex: 'Unanswered',
       key: 'Unanswered',
+      defaultSortOrder: 'ascend',
+      sorter: (a, b) => a.Unanswered - b.Unanswered,
     },
     {
       title: 'Final Score',
       dataIndex: 'Score',
       key: 'Score',
+      defaultSortOrder: 'ascend',
+      sorter: (a, b) => a.Score - b.Score,
     },
   ];
 
@@ -121,7 +128,11 @@ const Users = ({ summaryUser }) => {
             <Divider />
           </div>
         </div>
-        <Table dataSource={currentSelect?.ListQuestion} columns={userCollumns} />
+        <Table
+          dataSource={currentSelect?.ListQuestion}
+          columns={userCollumns}
+          scroll={{ y: '40vh' }}
+        />
       </Modal>
     </div>
   );

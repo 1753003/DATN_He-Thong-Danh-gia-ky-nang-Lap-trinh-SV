@@ -1,6 +1,6 @@
 export default {
   'pages.layouts.userLayout.title':
-    'Devcheck will be your best choice!',
+    'Codejoy will be your best choice!',
   'pages.login.accountLogin.tab': 'Account Login',
   'pages.login.accountLogin.errorMessage': 'Incorrect username/password（admin/ant.design)',
   'pages.login.username.placeholder': 'Username: admin or user',

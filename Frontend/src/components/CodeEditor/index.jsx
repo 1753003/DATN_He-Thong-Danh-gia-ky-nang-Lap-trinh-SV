@@ -23,25 +23,24 @@ import 'brace/ext/language_tools';
 // import "ace-builds/src-noconflict/snippets/javascript"
 // import 'ace-builds/src-min-noconflict/ext-language_tools';
 
-import { Button, Checkbox, Input, notification, Switch, Select, Space, Row } from 'antd';
+import { Button, Checkbox, Input, notification, Select, Space } from 'antd';
 import { connect } from 'dva';
-import { u_atob, u_btoa } from '@/utils/string';
+import { u_btoa } from '@/utils/string';
 import '../Coding/style.less';
 import { QuestionCircleOutlined, CaretRightOutlined, SearchOutlined } from '@ant-design/icons';
 
 // const IconFont = createFromIconfontCN({
 //   scriptUrl: '//at.alicdn.com/t/font_2449607_3tn2o8mjobx.js',
 // });
-const { TextArea, Search } = Input;
+const { TextArea } = Input;
 
 class CodeEditor extends Component {
   constructor(props) {
     super(props);
-    let temp = "c_cpp"
-    if(this.props.practice.listDetail.generalInformation.PracticeSet === "Java")
-    temp = "java"
-    if(this.props.practice.listDetail.generalInformation.PracticeSet === "JavaScript")
-    temp = "javascript"
+    let temp = 'c_cpp';
+    if (this.props.practice.listDetail.generalInformation.PracticeSet === 'Java') temp = 'java';
+    if (this.props.practice.listDetail.generalInformation.PracticeSet === 'JavaScript')
+      temp = 'javascript';
     this.state = {
       codeVal: '',
       customVal: '',
@@ -74,10 +73,8 @@ class CodeEditor extends Component {
     new Promise((resolve, reject) => {
       let code = this.state.codeVal;
       let lang_id = 54; //54 C++ 71 python
-      if(this.state.mode ==="java")
-        lang_id = 62
-      if(this.state.mode ==="javascript")
-        lang_id = 63
+      if (this.state.mode === 'java') lang_id = 62;
+      if (this.state.mode === 'javascript') lang_id = 63;
       if (this.state.customInput == false) input = input;
       else if (this.state.customVal == '') input = input;
       else input = this.state.customVal;
@@ -128,10 +125,8 @@ class CodeEditor extends Component {
 
     let code = this.state.codeVal;
     let lang_id = 54; //54 C++ 71 python
-    if(this.state.mode ==="java")
-    lang_id = 62
-  if(this.state.mode ==="javascript")
-    lang_id = 63
+    if (this.state.mode === 'java') lang_id = 62;
+    if (this.state.mode === 'javascript') lang_id = 63;
     code = code.replace(/(^")|("$)/g, '');
     code = u_btoa(code);
     for (var tc of this.props.testCases) {
@@ -188,7 +183,8 @@ class CodeEditor extends Component {
     return (
       <div className={styles.container}>
         <Space className={styles.header}>
-          <Select className={styles.selectBtn}
+          <Select
+            className={styles.selectBtn}
             defaultValue="tomorrow"
             onChange={(value) => this.handleThemeChange(value)}
           >
@@ -200,35 +196,26 @@ class CodeEditor extends Component {
             defaultValue={2}
             onChange={(value) => this.handleTabSizeChange(value)}
           >
-            <Option value={2}>Tab size: 2</Option>
-            <Option value={4}>Tab size: 4</Option>
+            <Select.Option value={2}>Tab size: 2</Select.Option>
+            <Select.Option value={4}>Tab size: 4</Select.Option>
           </Select>
           <Select
             defaultValue={16}
             className={styles.selectBtn}
             onChange={(value) => this.handleFontSizeChange(value)}
           >
-            <Option value={12}>12</Option>
-            <Option value={14}>14</Option>
-            <Option value={16}>16</Option>
-            <Option value={18}>18</Option>
+            <Select.Option value={12}>12</Select.Option>
+            <Select.Option value={14}>14</Select.Option>
+            <Select.Option value={16}>16</Select.Option>
+            <Select.Option value={18}>18</Select.Option>
           </Select>
           <Button
-          className={styles.buttonWithName} icon={<SearchOutlined />} onClick={() => this.handleSearch()}>
+            icon={<SearchOutlined />}
+            onClick={() => this.handleSearch()}
+          >
             Find
           </Button>
           <Button
-            className={styles.buttonWithName}
-            icon={<QuestionCircleOutlined />}
-            href="https://github.com/securingsincity/react-ace"
-          >
-            Help
-          </Button>
-          <Button
-          className={styles.buttonNoName} icon={<SearchOutlined />} onClick={() => this.handleSearch()}>
-          </Button>
-          <Button
-            className={styles.buttonNoName}
             icon={<QuestionCircleOutlined />}
             href="https://github.com/securingsincity/react-ace"
           >

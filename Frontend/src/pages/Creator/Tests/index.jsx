@@ -34,7 +34,6 @@ const Tests = ({ location }) => {
   };
 
   const RightContent = () => {
-    console.log(query.menuKey);
     switch (query.menuKey) {
       case 'collection':
         return <Collection />;

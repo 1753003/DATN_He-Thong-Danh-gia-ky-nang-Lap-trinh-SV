@@ -1,43 +1,38 @@
 import {
-  AlipayCircleOutlined,
   LockOutlined,
   MailOutlined,
   MobileOutlined,
-  TaobaoCircleOutlined,
   UserOutlined,
-  WeiboCircleOutlined,
-  FacebookFilled,
   FacebookOutlined,
   GoogleOutlined,
   GithubOutlined
 } from '@ant-design/icons';
 
-import firebase from "firebase/app";
-import "firebase/auth";
+import firebase from '@/utils/firebase'
 
-import { Alert, Space, message, Tabs } from 'antd';
+import { Alert, Space, Tabs } from 'antd';
 import React, { useState } from 'react';
 import ProForm, { ProFormCaptcha, ProFormCheckbox, ProFormText } from '@ant-design/pro-form';
 import { useIntl, connect, FormattedMessage } from 'umi';
 import { getFakeCaptcha } from '@/services/login';
 import styles from './index.less';
 
-const firebaseConfig = {
-  apiKey: "AIzaSyC_FKi-svb2idZpvqsfPFWASeHUS60O9eU",
-  authDomain: "devcheckpro.firebaseapp.com",
-  projectId: "devcheckpro",
-  storageBucket: "devcheckpro.appspot.com",
-  messagingSenderId: "594608048066",
-  appId: "1:594608048066:web:fe4fadd828cdc36181f85b",
-  measurementId: "G-44GFLD429W"
-};
+// const firebaseConfig = {
+//   apiKey: "AIzaSyC_FKi-svb2idZpvqsfPFWASeHUS60O9eU",
+//   authDomain: "devcheckpro.firebaseapp.com",
+//   projectId: "devcheckpro",
+//   storageBucket: "devcheckpro.appspot.com",
+//   messagingSenderId: "594608048066",
+//   appId: "1:594608048066:web:fe4fadd828cdc36181f85b",
+//   measurementId: "G-44GFLD429W"
+// };
 
 // Initialize Firebase
-try {
-  firebase.initializeApp(firebaseConfig);
-} catch(e) {
+// try {
+//   firebase.initializeApp(firebaseConfig);
+// } catch(e) {
 
-}
+// }
 const LoginMessage = ({ content }) => (
   <Alert
     style={{

@@ -1,5 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Button, Table, Input, Modal, Form, Upload, Image, Dropdown, Menu } from 'antd';
+import {
+  Card,
+  Button,
+  Table,
+  Input,
+  Modal,
+  Form,
+  Upload,
+  Image,
+  Dropdown,
+  Menu,
+  message,
+} from 'antd';
 import { useHistory, connect } from 'umi';
 import styles from './index.less';
 import {
@@ -9,11 +21,15 @@ import {
   EditOutlined,
   DeleteOutlined,
 } from '@ant-design/icons';
+import { set } from 'js-cookie';
 const { Search } = Input;
 const { Dragger } = Upload;
+import _ from 'lodash';
 
 const Collection = ({ collectionList, dispatch, loading }) => {
   const [modalVisible, setModalVisible] = useState(false);
+  const [currentCollection, setCurrentCollection] = useState(undefined);
+  const [list, setList] = useState([]);
   const history = useHistory();
 
   useEffect(() => {
@@ -22,33 +38,24 @@ const Collection = ({ collectionList, dispatch, loading }) => {
     }
   }, []);
 
+  useEffect(() => {
+    setList(collectionList);
+  }, [collectionList]);
+
   const handleDeleteCollection = (CollectionID) => {
     dispatch({
       type: 'collection/deleteCollectionModel',
       payload: {
         CollectionID,
+        onSuccess: () => message.success('Delete Collection Successfully !!!'),
+        onFail: () => message.error('Fail to delete collection !!!'),
       },
     });
   };
 
-  const menu = (item) => {
-    return (
-      <Menu>
-        <Menu.Item key="open" icon={<FolderOpenOutlined />} onClick={() => {}}>
-          Open
-        </Menu.Item>
-        <Menu.Item key="edit" icon={<EditOutlined />}>
-          Edit
-        </Menu.Item>
-        <Menu.Item
-          key="delete"
-          icon={<DeleteOutlined />}
-          onClick={() => handleDeleteCollection(item.CollectionID)}
-        >
-          Delete
-        </Menu.Item>
-      </Menu>
-    );
+  const handleEditCollection = (item) => {
+    setCurrentCollection(item);
+    setModalVisible(true);
   };
 
   const columns = [
@@ -63,20 +70,33 @@ const Collection = ({ collectionList, dispatch, loading }) => {
       key: 'CreatedAt',
     },
     {
-      title: '',
+      title: 'Action',
       render: (item) => {
-        console.log(item);
         return (
-          <Dropdown overlay={() => menu(item)} placement="bottomRight">
-            <MoreOutlined />
-          </Dropdown>
+          <>
+            <EditOutlined
+              onClick={() => handleEditCollection(item)}
+              style={{ width: '25px', height: '25px' }}
+            />
+            <DeleteOutlined
+              onClick={() => handleDeleteCollection(item.CollectionID)}
+              style={{ width: '25px', height: '25px' }}
+            />
+          </>
         );
       },
     },
   ];
 
   const onSearch = (value) => {
-    console.log(value);
+    const searchList = [];
+    collectionList.forEach((element) => {
+      if (element.CollectionName.includes(value)) {
+        console.log(element);
+        searchList.push(element);
+      }
+    });
+    setList(searchList);
   };
 
   const buttonModalOnClick = () => {
@@ -85,6 +105,7 @@ const Collection = ({ collectionList, dispatch, loading }) => {
 
   const handleModalCancel = () => {
     setModalVisible(false);
+    setCurrentCollection(undefined);
   };
 
   const handleCollectionOnClick = (collectionID) => {
@@ -104,18 +125,17 @@ const Collection = ({ collectionList, dispatch, loading }) => {
           Create Collection
         </Button>
       </div>
-      {collectionList.length > 0 ? (
-        <Search
-          placeholder="input search text"
-          onSearch={onSearch}
-          enterButton
-          className={styles.searchBar}
-        />
-      ) : null}
+      <Search
+        placeholder="input search text"
+        onSearch={onSearch}
+        enterButton
+        className={styles.searchBar}
+      />
       <div className={styles.content}>
         <Table
           columns={columns}
-          dataSource={collectionList}
+          dataSource={list}
+          scroll={{ y: '50vh' }}
           loading={loading}
           onRow={(record, rowIndex) => {
             return {
@@ -130,25 +150,55 @@ const Collection = ({ collectionList, dispatch, loading }) => {
         visible={modalVisible}
         handleCancel={handleModalCancel}
         dispatch={dispatch}
+        currentCollection={currentCollection}
       />
     </div>
   );
 };
 
-const CreateCollectionModal = ({ visible, handleCancel, dispatch }) => {
+const CreateCollectionModal = ({ visible, handleCancel, dispatch, currentCollection }) => {
   const [imageUrl, setImageUrl] = useState('');
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [action, setAction] = useState('CREATE');
+
+  useEffect(() => {
+    if (!_.isNil(currentCollection)) {
+      console.log(currentCollection);
+      setAction('EDIT');
+      setTitle(currentCollection.CollectionName);
+      setDescription(currentCollection.CollectionDescription);
+      setImageUrl(currentCollection.CoverImage);
+    }
+  }, [currentCollection]);
 
   const handleSubmit = () => {
-    dispatch({
-      type: 'collection/createNewCollectionModel',
-      payload: {
-        CollectionName: title,
-        CollectionDescription: description,
-        CoverImage: imageUrl,
-      },
-    });
+    if (action === 'CREATE') {
+      dispatch({
+        type: 'collection/createNewCollectionModel',
+        payload: {
+          CollectionName: title,
+          CollectionDescription: description,
+          CoverImage: imageUrl,
+          onSuccess: () => message.success('Create Collection Successfully !!!'),
+          onFail: () => message.error('Fail to create collection !!!'),
+        },
+      });
+    } else {
+      dispatch({
+        type: 'collection/editCollection',
+        payload: {
+          CollectionID: currentCollection.CollectionID,
+          CollectionName: title,
+          CollectionDescription: description,
+          CoverImage: imageUrl,
+          onSuccess: () => message.success('Create Collection Successfully !!!'),
+          onFail: () => message.error('Fail to create collection !!!'),
+        },
+      });
+    }
+
+    handleCancel();
   };
 
   function getBase64(img, callback) {
@@ -159,18 +209,21 @@ const CreateCollectionModal = ({ visible, handleCancel, dispatch }) => {
 
   const handleChange = (info) => {
     if (info.file.status === 'uploading') {
-      // this.setState({ loading: true });
       return;
     }
     if (info.file.status === 'done') {
-      // Get this url from response in real world.
-      getBase64(info.file.originFileObj, (imageUrl) => setImageUrl(imageUrl));
+      if (
+        info.file.originFileObj.type.endsWith('png') ||
+        info.file.originFileObj.type.endsWith('jpeg')
+      ) {
+        getBase64(info.file.originFileObj, (imageUrl) => setImageUrl(imageUrl));
+      } else {
+        message.error('You must select PNG OR JPEG');
+      }
     }
   };
 
-  const onOk = () => {
-    //call api
-  };
+  const onOk = () => {};
 
   return (
     <Modal
@@ -188,7 +241,7 @@ const CreateCollectionModal = ({ visible, handleCancel, dispatch }) => {
           disabled={title === '' || imageUrl === ''}
           onClick={handleSubmit}
         >
-          Create
+          {action === 'CREATE' ? 'CREATE' : 'EDIT'}
         </Button>,
       ]}
       className={styles.modal}
@@ -201,7 +254,7 @@ const CreateCollectionModal = ({ visible, handleCancel, dispatch }) => {
             <Input
               className={styles.titleInput}
               placeholder="Collection Name"
-              // value={title}
+              value={title}
               onChange={(e) => {
                 setTitle(e.target.value);
               }}
@@ -212,6 +265,7 @@ const CreateCollectionModal = ({ visible, handleCancel, dispatch }) => {
             <Input.TextArea
               className={styles.descriptionInput}
               autoSize={{ minRows: 6, maxRows: 6 }}
+              value={description}
               placeholder="Type some description for this collection"
               onChange={(e) => {
                 setDescription(e.target.value);
@@ -230,7 +284,10 @@ const CreateCollectionModal = ({ visible, handleCancel, dispatch }) => {
             onRemove={() => {
               setImageUrl('');
             }}
-            style={{ display: imageUrl !== '' ? 'none' : null, marginTop: '-22px' }}
+            style={{
+              display: imageUrl !== '' && action === 'CREATE' ? 'none' : null,
+              marginTop: '-22px',
+            }}
           >
             <p className="ant-upload-drag-icon">
               <InboxOutlined />

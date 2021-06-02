@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'umi';
-import { Tag, message, Spin } from 'antd';
+import { Tag, Spin } from 'antd';
 import groupBy from 'lodash/groupBy';
 import moment from 'moment';
 import NoticeIcon from '../NoticeIcon';
@@ -174,7 +174,7 @@ class GlobalHeaderRight extends Component {
         <NoticeIcon.Tab
         className="custom"
           tabKey="notification"
-          count={unreadMsg.Notification}
+          count={unreadMsg.Notification + unreadMsg.Event}
           list={noticeData?.Notification?.concat(noticeData.Event)}
           title="Notifications"
           emptyText="You don't have any notifications."

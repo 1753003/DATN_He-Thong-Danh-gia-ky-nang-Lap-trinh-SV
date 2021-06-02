@@ -1,8 +1,8 @@
 import { PageLoading } from '@ant-design/pro-layout'; // loading components from code split
 // https://umijs.org/plugin/umi-plugin-react.html#dynamicimport
-import { Spin } from 'antd';
-import Icon, { LoadingOutlined } from '@ant-design/icons';
-import styles from './style.less'
+// import { Spin } from 'antd';
+// import Icon, { LoadingOutlined } from '@ant-design/icons';
+// import styles from './style.less'
 
 
 // const PageLoading = () =>{
