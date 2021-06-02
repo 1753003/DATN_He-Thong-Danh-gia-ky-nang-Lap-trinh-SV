@@ -28,32 +28,32 @@ const data = [
 ];
 
 const testHome = ({ dispatch, status }) => {
-  useEffect(()=>{
-    if(status===-1)
-    notification.open({
-      description: 'Your have enter wrong PIN code!',
-      className: 'code-notification',
-      type: 'error',
-    });
+  useEffect(() => {
+    if (status === -1)
+      notification.open({
+        description: 'Your have enter wrong PIN code!',
+        className: 'code-notification',
+        type: 'error',
+      });
     dispatch({
       type: 'test/saveStatusFromCode',
       payload: null,
-    })
-  },[status])
+    });
+  }, [status]);
   const [value, setValue] = useState('');
   const handleChange = (e) => {
     setValue(e.target.value);
   };
   const handleSubmit = (e) => {
-    if(value==="")
-    notification.open({
-      description: 'Your have not enter PIN code!',
-      type: 'warning',
-    });
+    if (value === '')
+      notification.open({
+        description: 'Your have not enter PIN code!',
+        type: 'warning',
+      });
     dispatch({
       type: 'test/saveStatusFromCode',
       payload: null,
-    })
+    });
     if (value !== '')
       dispatch({
         type: 'test/getTestIdFromCode',
@@ -67,7 +67,7 @@ const testHome = ({ dispatch, status }) => {
       <QueueAnim className="combine-wrapper">
         <div key="input-wrapper" className="input-wrapper">
           <Input
-          // allowClear
+            // allowClear
             onPressEnter={handleSubmit}
             onChange={(e) => handleChange(e)}
             className="input"
@@ -100,6 +100,6 @@ const testHome = ({ dispatch, status }) => {
   );
 };
 
-export default connect(({test}) => ({
-  status: test.statusFromCode
+export default connect(({ test }) => ({
+  status: test.statusFromCode,
 }))(testHome);
