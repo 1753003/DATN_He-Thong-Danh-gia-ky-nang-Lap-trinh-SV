@@ -16,8 +16,8 @@ const questionList = ({ location, practice, dispatch, loading }) => {
   const [tabChange, onTabChange] = useState(false);
   useEffect(() => {
     dispatch({
-      type:'practice/saveSubmissionList',
-      payload: null
+      type: 'practice/saveSubmissionList',
+      payload: null,
     });
     dispatch({
       type: 'practice/setCurrentSubmission',
@@ -87,7 +87,7 @@ const questionList = ({ location, practice, dispatch, loading }) => {
         title={practice.listDetail?.generalInformation?.PracticeName}
         subTitle={practice.listDetail?.generalInformation?.BriefDescription}
       />
-      <Row className="container" justify="space-around" >
+      <Row className="container" justify="space-around">
         <Col className="tabs" span={19}>
           <Tabs
             className="custom"
@@ -129,7 +129,18 @@ const questionList = ({ location, practice, dispatch, loading }) => {
             <Col style={{ textAlign: 'right' }}>
               Codejoy
               <br />
-              <Typography.Text strong style={practice.listDetail?.generalInformation?.DifficultLevel==="Easy"?{color:"green"}:practice.listDetail?.generalInformation?.DifficultLevel==="Medium"?{color:"#ed7e0c"}:{color:"red"}}>{practice.listDetail?.generalInformation?.DifficultLevel}</Typography.Text>
+              <Typography.Text
+                strong
+                style={
+                  practice.listDetail?.generalInformation?.DifficultLevel === 'Easy'
+                    ? { color: 'green' }
+                    : practice.listDetail?.generalInformation?.DifficultLevel === 'Medium'
+                    ? { color: '#ed7e0c' }
+                    : { color: 'red' }
+                }
+              >
+                {practice.listDetail?.generalInformation?.DifficultLevel}
+              </Typography.Text>
               <br />
               {practice.listDetail?.generalInformation?.Score}
             </Col>
