@@ -13,9 +13,9 @@ import { u_atob } from '@/utils/string';
 import AceEditor from 'react-ace';
 import 'brace/theme/tomorrow';
 import ReactMarkdown from 'react-markdown';
-
+import SyntaxHighlighter from 'react-syntax-highlighter';
+import { docco } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 const { TabPane } = Tabs;
-
 const AlertComponent = (alertMessage, alertDescription, alertType) => (
   <Alert
     style={{ whiteSpace: 'pre-wrap' }}
@@ -97,7 +97,10 @@ class Coding extends Component {
     alertMessage: '',
     alertDescription: '',
   };
-
+  getDescription = (text) => {
+    var temp = text;
+    return temp.split('\\n').map((str) => <p>{str}</p>);
+  };
   render() {
     let alertMessage = '';
     let alertDescription = '';
@@ -154,16 +157,25 @@ class Coding extends Component {
       }
 
     //if isSubmit
-    
+
     return (
       <>
-        <ReactMarkdown className="problem">{this.props.description}</ReactMarkdown>
+        <div className="problem" style={{'whiteSpace': 'pre-line'}}>{this.getDescription(this.props.description)}</div>
+        {this.props.codeSample == null ? (
+          ''
+        ) : (
+          <SyntaxHighlighter language="c" style={docco}>
+            {this.props.codeSample.replaceAll('\\n', '\n')}
+          </SyntaxHighlighter>
+        )}
         <Divider></Divider>
         <div className="code-editor">
-          <CodeEditor testCases = {this.props.testCases}
-              getCode={(value) => this.props.getCode(value)}
-              codeDefault={this.props.codeDefault}
-              language = {this.props.language}></CodeEditor>
+          <CodeEditor
+            testCases={this.props.testCases}
+            getCode={(value) => this.props.getCode(value)}
+            codeDefault={this.props.codeDefault}
+            language={this.props.language}
+          ></CodeEditor>
           {this.props.loading ? (
             <PageLoading></PageLoading>
           ) : (

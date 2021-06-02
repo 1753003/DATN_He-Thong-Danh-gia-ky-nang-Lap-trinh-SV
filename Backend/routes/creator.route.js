@@ -63,7 +63,7 @@ router.post('/collection', async function (req, res) {
    const uid = req.uid;
    var newCollection = req.body;
    newCollection.CreatedBy = uid;
-   newCollection.TestID = [];
+   newCollection.TestID = JSON.stringify([]);
    await collectionModel.createCollection(newCollection);
    res.json('OK');
 })
@@ -116,11 +116,13 @@ router.get('/report/getList', async function (req, res) {
 
 router.get('/report/summary/:id', async function (req, res) {
    const summary = await reportModel.getSummary (req.params.id);
+   
    res.json(summary);
 })
 
 router.get('/report/user/:id', async function (req, res) {
    const users = await reportModel.getUser (req.params.id);
+   
    res.json(users);
 })
 

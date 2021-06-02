@@ -72,7 +72,7 @@ const MyTests = ({ testList, dispatch, loading }) => {
       dataIndex: 'Permissions',
       key: 'Permissions',
       render: (permissions) => {
-        return permissions === 'Private' ? <LockOutlined /> : <UnlockOutlined />;
+        return permissions === 'private' ? <LockOutlined /> : <UnlockOutlined />;
       },
     },
     {
