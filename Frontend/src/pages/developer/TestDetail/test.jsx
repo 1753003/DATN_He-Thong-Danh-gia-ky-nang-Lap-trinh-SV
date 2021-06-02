@@ -131,7 +131,6 @@ class TestDetail extends React.Component {
   
   getCodeSampleMC = (i) => {
     const e = i;
-    console.log(i, typeof(i))
     return e.replaceAll('\\n', "\n")
   }
 
@@ -295,6 +294,7 @@ class TestDetail extends React.Component {
       description={this.getQuestion()?.Description}
       testCases={this.getQuestion()?.TestCase}
       language={this.getQuestion()?.Language_allowed}
+      codeSample={this.getQuestion()?.CodeSample}
       getCode={(value) => {
         this.props.dispatch({
           type: 'test/updateAnswer',

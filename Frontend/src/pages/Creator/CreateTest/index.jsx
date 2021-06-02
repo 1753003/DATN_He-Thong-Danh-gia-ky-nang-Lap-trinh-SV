@@ -344,6 +344,7 @@ const RenderMiddle = ({ option, selectedQuiz, setQuiz, quiz, action }) => {
   };
 
   const onChangeCodeDescription = (e) => {
+    console.log(e.target.value)
     const newQuiz = [...quiz];
     newQuiz.forEach((item) => {
       if (item.ID === selectedQuiz.ID) item.CodeDescription = e.target.value;

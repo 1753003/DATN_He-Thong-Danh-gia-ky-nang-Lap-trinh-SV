@@ -26,11 +26,12 @@ module.exports = {
                                          where TestID = ${testID}
                                         `)
     )[0][0].numOfUsers;
+    console.log(testID)
     const numOfQuestion = (
-      await db.raw(`select count(*) as numOfQuestions
-                                             from question
+      await db.raw(`select QuestionID
+                                             from test
                                              where TestID = ${testID}`)
-    )[0][0].numOfQuestions;
+    )[0][0].QuestionID.length;
     const time = (await db("test").where("TestID", testID))[0].TestTime;
     const listSubmission = await db("submissions").where("TestID", testID);
     const listNotFinish = [];

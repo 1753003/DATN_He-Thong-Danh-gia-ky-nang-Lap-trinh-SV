@@ -6,7 +6,7 @@ import '../../../../../components/GlobalHeader/style.less';
 const Users = ({ summaryUser }) => {
   const [visible, setVisible] = useState(false);
   const [currentSelect, setCurrentSelect] = useState(null);
-
+  console.log(currentSelect)
   const columns = [
     {
       title: 'Name',

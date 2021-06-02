@@ -13,6 +13,7 @@ let list2 = [];
 let list3 = [];
 const TestSetList = ({ location, dispatch, testDev, loading }) => {
   // let history = useHistory()
+  
 
   const [solved, setSolved] = useState(false);
   const [unsolved, setUnsolved] = useState(false);
@@ -34,6 +35,10 @@ const TestSetList = ({ location, dispatch, testDev, loading }) => {
     list3 = testDev.setList;
   }, []);
 
+  list1 = testDev.setList;
+  list2 = testDev.setList;
+  list3 = testDev.setList;
+  
   const routes = [
     {
       path: '/developer',
@@ -59,7 +64,7 @@ const TestSetList = ({ location, dispatch, testDev, loading }) => {
   function onChange(e) {
     const val = e.target.value;
     const temp = testDev.setList;
-
+    console.log(list1, list2, list3, temp);
     if (val == 'Solved') {
       if (!solved && !unsolved) {
         list1 = temp.filter((e) => e.SubmissionID != null);
