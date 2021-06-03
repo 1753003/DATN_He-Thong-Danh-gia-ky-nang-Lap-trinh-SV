@@ -12,7 +12,7 @@ export function createSubmission(data) {
   return new Promise( (resolve, reject) => {
     var options = {
       method: 'POST',
-      url: 'https://judge0-ce.p.rapidapi.com/submissions',
+      url: 'http://3.0.40.66:2358/submissions',
       params: {base64_encoded: 'true', fields: '*'},
       headers: headers,
       data
@@ -30,7 +30,7 @@ export function createSubmissionBatch(data) {
   return new Promise( (resolve, reject) => {
     var options = {
       method: 'POST',
-      url: 'https://judge0-ce.p.rapidapi.com/submissions/batch',
+      url: 'http://3.0.40.66:2358/submissions/batch',
       params: {base64_encoded: 'true', fields: '*'},
       headers: headers,
       data
@@ -48,7 +48,7 @@ export function getSubmissionBatch(param) {
   return new Promise( (resolve, reject) => {
     var options = {
       method: 'GET',
-      url: 'https://judge0-ce.p.rapidapi.com/submissions/batch',
+      url: 'http://3.0.40.66:2358/submissions/batch',
       params: {
         tokens: param,
         base64_encoded: 'true',
@@ -76,7 +76,7 @@ export function getSubmissionBatch(param) {
     return new Promise( (resolve, reject) => {
       var options = {
         method: 'GET',
-        url: `https://judge0-ce.p.rapidapi.com/submissions/${param}`,
+        url: `hhttp://3.0.40.66:2358/submissions/${param}`,
         params: {
           base64_encoded: 'true',
           fields: '*'
@@ -101,7 +101,7 @@ export function getSubmission(param) {
   return new Promise( (resolve, reject) => {
     var options = {
       method: 'GET',
-      url: `https://judge0-ce.p.rapidapi.com/submissions/${param}`,
+      url: `http://3.0.40.66:2358/submissions/${param}`,
       params: {
         base64_encoded: 'true',
         fields: '*'

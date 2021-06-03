@@ -108,49 +108,11 @@ class CodeEditor extends Component {
       });
       return;
     }
+    console.log(this.state.showCustom)
+    this.props.checkCustom(!this.state.showCustom)
     this.handleSendCode(this.props.testCases[0].Input[0], this.props.testCases[0].Output[0]);
   };
-  handleSubmit = () => {
-    if (this.state.codeVal == '') {
-      notification.open({
-        message: 'Hey Listen!',
-        description: 'Dont leave your code blank',
-        className: 'code-notification',
-        type: 'error',
-      });
-      return;
-    }
-    this.setState({
-      isSubmitBatch: true,
-    });
-    let batch_Submission = [];
-
-    let code = this.state.codeVal;
-    let lang_id = 54; //54 C++ 71 python
-    code = code.replace(/(^")|("$)/g, '');
-    code = u_btoa(code);
-    for (var tc of this.props.testCases) {
-      // console.log(tc.Input[0])
-      var input = tc.Input[0];
-      var expected_output = tc.Output[0];
-      let data = {
-        source_code: code,
-        language_id: lang_id,
-        stdin: u_btoa(input),
-        expected_output: u_btoa(expected_output),
-      };
-      batch_Submission.push(data);
-    }
-    const batch = {
-      submissions: batch_Submission,
-      pid: this.props.practice.listDetail.generalInformation.PracticeID,
-    };
-
-    this.props.dispatch({
-      type: 'judge/sendCodeBatch',
-      payload: batch,
-    });
-  };
+  
   handleThemeChange = (value) => {
     this.setState({
       theme: value,
@@ -277,14 +239,7 @@ class CodeEditor extends Component {
               <CaretRightOutlined style={{ fontSize: '18px' }} />
               Run Code
             </Button>
-            <Button
-              size="large"
-              className={styles.submitBtn}
-              type="primary"
-              onClick={this.handleSubmit.bind(this)}
-            >
-              Submit
-            </Button>
+           
             <Checkbox onChange={this.handleCheckBoxChange.bind(this)}>Custom Input</Checkbox>
           </Space>
           <Animate
