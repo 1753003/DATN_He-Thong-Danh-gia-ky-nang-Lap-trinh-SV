@@ -1,11 +1,7 @@
 import React, { Component } from 'react';
 import { CheckCircleTwoTone, CloseCircleTwoTone } from '@ant-design/icons';
 import styles from './style.less';
-import {
-  Divider,
-  Tabs,
-  Alert,
-} from 'antd';
+import { Divider, Tabs, Alert } from 'antd';
 import { connect } from 'dva';
 import CodeEditor from '../CodeEditorQuiz';
 import PageLoading from '@/components/PageLoading';
@@ -40,12 +36,13 @@ const editor = (value) => {
     />
   );
 };
-const Testcases = (result) => {
+const Testcases = (result, custom) => {
   return (
     <Tabs tabPosition="left">
       {' '}
       {result.map((res, i) => {
         let title = result.length > 1 ? 'Test Case ' + (i + 1) : 'Example Test Case';
+        if (custom == false) title = 'Custom check';
         return (
           <TabPane
             className={styles.testCase}
@@ -73,7 +70,7 @@ const Testcases = (result) => {
                 {editor(u_atob(res.stdin))}
               </>
             )}
-            {res.expected_output != '' && (
+            {res.expected_output != '' && custom != false && (
               <>
                 <h3>Expected Output</h3>
                 {editor(u_atob(res.expected_output))}
@@ -96,10 +93,15 @@ class Coding extends Component {
     alertType: 'error',
     alertMessage: '',
     alertDescription: '',
+    custom: false,
   };
   getDescription = (text) => {
     var temp = text;
     return temp.split('\\n').map((str) => <p>{str}</p>);
+  };
+
+  setCustom = (value) => {
+    this.setState({ custom: value });
   };
   render() {
     let alertMessage = '';
@@ -119,6 +121,7 @@ class Coding extends Component {
             stdout: this.props.judge.result?.stdout,
           },
         ];
+
         switch (this.props.judge.result?.status_id) {
           case 3:
             alertType = 'success';
@@ -135,32 +138,15 @@ class Coding extends Component {
             alertDescription = `Tip: Check the Compiler Output or Ask your Friends for help.`;
             break;
         }
-      } else {
-        //alert
-        let tcPassed = 0;
-        let total = 0;
-        if (this.props.judge.result)
-          for (var res of this.props.judge.result.submissions) {
-            total += 1;
-            res.status_id == 3 ? (tcPassed += 1) : (tcPassed = tcPassed);
-          }
-        alertType = tcPassed < total ? 'error' : 'success';
-        alertMessage =
-          tcPassed < total
-            ? `${tcPassed}/${total} TEST CASES PASS`
-            : `${tcPassed}/${total} TEST CASES PASS`;
-        alertDescription = tcPassed < total ? 'Try again.' : 'You solved this challenge.';
-        //  testcases
-        finalResult = this.props.judge.result.submissions;
-
-        console.log(finalResult);
       }
 
     //if isSubmit
 
     return (
       <>
-        <div className="problem" style={{'whiteSpace': 'pre-line'}}>{this.getDescription(this.props.description)}</div>
+        <div className="problem" style={{ whiteSpace: 'pre-line' }}>
+          {this.getDescription(this.props.description)}
+        </div>
         {this.props.codeSample == null ? (
           ''
         ) : (
@@ -175,15 +161,22 @@ class Coding extends Component {
             getCode={(value) => this.props.getCode(value)}
             codeDefault={this.props.codeDefault}
             language={this.props.language}
+            checkCustom={(value) => this.setCustom(value)}
           ></CodeEditor>
           {this.props.loading ? (
             <PageLoading></PageLoading>
           ) : (
             (this.props.practice.isRun || this.props.practice.isSubmit) && (
               <div>
-                {AlertComponent(alertMessage, alertDescription, alertType)}
-                <Divider orientation="left">Test Case</Divider>
-                {Testcases(finalResult)}
+                {this.state.custom != false
+                  ? AlertComponent(alertMessage, alertDescription, alertType)
+                  : ''}
+                {this.state.custom != false ? (
+                  <Divider orientation="left">Test Case</Divider>
+                ) : (
+                  <Divider orientation="left">Your output</Divider>
+                )}
+                {Testcases(finalResult, this.state.custom)}
               </div>
             )
           )}
