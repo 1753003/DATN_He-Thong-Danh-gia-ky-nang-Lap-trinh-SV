@@ -60,7 +60,9 @@ module.exports = {
 
   async getTestByID(testID) {
     const test = (await db("test").where("TestID", testID))[0];
-    const listQuestionID = test.QuestionID;
+    const listQuestion = (await db.raw(`call getQuestionList('${test.TestID}')`))[0][0];
+    
+    /*const listQuestionID = test.QuestionID;
     const listQuestion = [];
     for (const item of listQuestionID) {
       const question = (await db("question").where("ID", item))[0];
@@ -96,7 +98,7 @@ module.exports = {
         res.CodeSample = codeQuestion.CodeSample;
       }
       listQuestion.push(res);
-    }
+    }*/
     var result = {
       generalInformation: test,
       listQuestion: listQuestion,
