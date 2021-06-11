@@ -27,4 +27,11 @@ server {
         proxy_set_header   Host              $http_host;
         proxy_set_header   X-Real-IP         $remote_addr;
     }
+
+    location /judge {
+        proxy_pass http://3.0.40.66:2358;
+        proxy_set_header   X-Forwarded-Proto $scheme;
+        proxy_set_header   Host              $http_host;
+        proxy_set_header   X-Real-IP         $remote_addr;
+    }
 }
