@@ -23,7 +23,7 @@ import 'brace/ext/language_tools';
 // import "ace-builds/src-noconflict/snippets/javascript"
 // import 'ace-builds/src-min-noconflict/ext-language_tools';
 
-import { Button, Checkbox, Input, notification, Select, Space } from 'antd';
+import { Button, Checkbox, Input, notification, Select, Space, Tooltip} from 'antd';
 import { connect } from 'dva';
 import { u_btoa } from '@/utils/string';
 import '../Coding/style.less';
@@ -209,17 +209,23 @@ class CodeEditor extends Component {
             <Select.Option value={16}>16</Select.Option>
             <Select.Option value={18}>18</Select.Option>
           </Select>
-          <Button
-            icon={<SearchOutlined />}
-            onClick={() => this.handleSearch()}
-          >
+          <Button icon={<SearchOutlined />} onClick={() => this.handleSearch()}>
             Find
           </Button>
-          <Button
-            icon={<QuestionCircleOutlined />}
-            href="https://github.com/securingsincity/react-ace"
-          >
-          </Button>
+
+          <Tooltip title="Help">
+            <a
+              style={{
+                color: 'inherit',
+              }}
+              target="_blank"
+              href="https://github.com/1753003/DATN_He-Thong-Danh-gia-ky-nang-Lap-trinh-SV"
+              rel="noopener noreferrer"
+              className={styles.action}
+            >
+              <QuestionCircleOutlined />
+            </a>
+          </Tooltip>
         </Space>
         <AceEditor
           ref={this.editorRef}

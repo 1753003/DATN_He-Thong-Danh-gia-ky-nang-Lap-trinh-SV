@@ -28,10 +28,26 @@ const Model = {
 
     *fetchHistory(_, { call, put}) {
       const res = yield call(getHistory);
-      //console.log(res);
+      let i = 0;
+      const temp1 = res.test.map(e => {
+        e.key = i;
+        i++;
+        return e
+      })
+      
+      const temp2 = res.practice.map(e => {
+        e.key = i;
+        i++;
+        return e
+      })
+    
+
       yield put({
         type: 'queryList',
-        payload: res
+        payload: {
+          test: temp1,
+          practice: temp2
+        }
       })
     },
 

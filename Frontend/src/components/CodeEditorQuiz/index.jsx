@@ -23,7 +23,7 @@ import 'brace/ext/language_tools';
 // import "ace-builds/src-noconflict/snippets/javascript"
 // import 'ace-builds/src-min-noconflict/ext-language_tools';
 
-import { Button, Checkbox, Input, notification, Select, Space } from 'antd';
+import { Button, Checkbox, Input, notification, Select, Space , Tooltip} from 'antd';
 import { connect } from 'dva';
 import { u_btoa } from '@/utils/string';
 import '../Coding/style.less';
@@ -37,13 +37,11 @@ const { TextArea, Search } = Input;
 class CodeEditor extends Component {
   constructor(props) {
     super(props);
-    let temp = 'c_cpp'
-    if (this.props.language[0] === 'Java')
-      temp = 'java';
-    else if (this.props.language[0] === 'Javascript')
-      temp = 'javascript'
+    let temp = 'c_cpp';
+    if (this.props.language[0] === 'Java') temp = 'java';
+    else if (this.props.language[0] === 'Javascript') temp = 'javascript';
     this.state = {
-      codeVal: this.props.codeDefault === [] ? "" : this.props.codeDefault,
+      codeVal: this.props.codeDefault === [] ? '' : this.props.codeDefault,
       customVal: '',
       isSubmitBatch: false,
       showCustom: false,
@@ -74,10 +72,8 @@ class CodeEditor extends Component {
     new Promise((resolve, reject) => {
       let code = this.state.codeVal;
       let lang_id = 54; //54 C++ 71 python
-      if(this.state.mode ==="java")
-        lang_id = 62
-      if(this.state.mode ==="javascript")
-        lang_id = 63
+      if (this.state.mode === 'java') lang_id = 62;
+      if (this.state.mode === 'javascript') lang_id = 63;
       if (this.state.customInput == false) input = input;
       else if (this.state.customVal == '') input = input;
       else input = this.state.customVal;
@@ -108,11 +104,11 @@ class CodeEditor extends Component {
       });
       return;
     }
-    console.log(this.state.showCustom)
-    this.props.checkCustom(!this.state.showCustom)
+    console.log(this.state.showCustom);
+    this.props.checkCustom(!this.state.showCustom);
     this.handleSendCode(this.props.testCases[0].Input[0], this.props.testCases[0].Output[0]);
   };
-  
+
   handleThemeChange = (value) => {
     this.setState({
       theme: value,
@@ -142,33 +138,32 @@ class CodeEditor extends Component {
     editor.execCommand('find');
   };
   handleLanguageChange = (value) => {
-    let temp = 'c_cpp'
-    if (value == 'Java')
-      temp = 'java';
-    else if (value == 'Javascript')
-      temp = 'javascript'
+    let temp = 'c_cpp';
+    if (value == 'Java') temp = 'java';
+    else if (value == 'Javascript') temp = 'javascript';
     this.setState({
-      mode: temp
-    })
-  }
+      mode: temp,
+    });
+  };
   getCode = () => {
     this.props.getCode(this.state.codeVal);
   };
 
   renderLanguageArray = () => {
     let res = [];
-    this.props.language.forEach(e => {
-      res.push(<Option key={e}>{e}</Option>)
-    })
+    this.props.language.forEach((e) => {
+      res.push(<Option key={e}>{e}</Option>);
+    });
     return res;
-  }
+  };
   render() {
     return (
       <div className={styles.container}>
         <Space className={styles.header}>
           <Select
             defaultValue={this.props.language[0]}
-            onChange={(value) => this.handleLanguageChange(value)}>
+            onChange={(value) => this.handleLanguageChange(value)}
+          >
             {this.renderLanguageArray()}
           </Select>
           <Select
@@ -200,12 +195,19 @@ class CodeEditor extends Component {
           <Button icon={<SearchOutlined />} onClick={() => this.handleSearch()}>
             Find
           </Button>
-          <Button
-            icon={<QuestionCircleOutlined />}
-            href="https://github.com/securingsincity/react-ace"
-          >
-            Help
-          </Button>
+          <Tooltip title="Help">
+            <a
+              style={{
+                color: 'inherit',
+              }}
+              target="_blank"
+              href="https://github.com/1753003/DATN_He-Thong-Danh-gia-ky-nang-Lap-trinh-SV"
+              rel="noopener noreferrer"
+              className={styles.action}
+            >
+              <QuestionCircleOutlined />
+            </a>
+          </Tooltip>
         </Space>
         <AceEditor
           ref={this.editorRef}
@@ -239,7 +241,7 @@ class CodeEditor extends Component {
               <CaretRightOutlined style={{ fontSize: '18px' }} />
               Run Code
             </Button>
-           
+
             <Checkbox onChange={this.handleCheckBoxChange.bind(this)}>Custom Input</Checkbox>
           </Space>
           <Animate
