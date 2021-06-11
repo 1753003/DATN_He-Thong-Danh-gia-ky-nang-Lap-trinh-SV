@@ -70,7 +70,7 @@ const HeaderSearch = (props) => {
           bordered={false}
           onKeyDown={(e) => {
             if (e.key === 'Enter') {
-              var format = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+              var format = /[ `!@#$%^&*()_\-=\[\]{};':"\\|,.<>\/?~]/;
               
               if (restProps.onPressEnter) {
                 if(format.test(value)){

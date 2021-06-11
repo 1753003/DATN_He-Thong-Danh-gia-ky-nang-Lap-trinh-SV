@@ -18,6 +18,8 @@ const Test = (props) => {
   const [filter1, setFilter1] = useState('');
   const [filter2, setFilter2] = useState('');
   const [filter3, setFilter3] = useState('All');
+
+  
   function onFilterChange(e) {
     const val = e.target.value;
     if (val == 'Pass') {
@@ -115,7 +117,7 @@ const Test = (props) => {
         itemLayout="vertical"
         dataSource={testList}
         renderItem={(item) => (
-          <List.Item key={item.TestID}>
+          <List.Item key={item.key}>
             <List.Item.Meta
               title={<a className={styles.listItemMetaTitle}>{item.TestName}</a>}
               description={

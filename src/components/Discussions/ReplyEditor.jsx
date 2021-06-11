@@ -36,7 +36,7 @@ const ReplyEditor = ({ location, pid, dispatch, handleDiscard }) => {
       />
       <span>
         <Space style={{ marginTop: '6px' }}>
-          <Button type="primary" disabled={value === ''} onClick={(value) => handleReply(value)}>
+          <Button type="primary" onClick={(value) => handleReply(value)}>
             Post Your Reply
           </Button>
           <Button
