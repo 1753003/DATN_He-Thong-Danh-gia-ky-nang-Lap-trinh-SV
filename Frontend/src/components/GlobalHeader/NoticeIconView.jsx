@@ -7,6 +7,7 @@ import NoticeIcon from '../NoticeIcon';
 import styles from './index.less';
 import './style.less'
 import firebase from '@/utils/firebase'
+import Language from '@/locales/index';
 class GlobalHeaderRight extends Component {
   constructor (props){
     super(props)
@@ -164,7 +165,7 @@ class GlobalHeaderRight extends Component {
           this.changeReadState(item);
         }}
         loading={this.state.loading}
-        clearText="Read All"
+        clearText={Language.header_readAll}
         viewMoreText={this.state.viewMoreText}
         onClear={this.handleNoticeClear}
         onPopupVisibleChange={onNoticeVisibleChange}
@@ -176,7 +177,7 @@ class GlobalHeaderRight extends Component {
           tabKey="notification"
           count={unreadMsg.Notification + unreadMsg.Event}
           list={noticeData?.Notification?.concat(noticeData.Event)}
-          title="Notifications"
+          title={Language.header_notifications}
           emptyText="You don't have any notifications."
           showViewMore
           loading = {this.state.loadingMore}

@@ -23,7 +23,7 @@ export default {
   'formandbasic-form.form.get-captcha': 'Get Captcha',
   'formandbasic-form.captcha.second': 'sec',
   'formandbasic-form.form.optional': ' (optional) ',
-  'formandbasic-form.form.submit': 'Submit',
+  'formandbasic-form.form.submit': 'Submittt',
   'formandbasic-form.form.save': 'Save',
   'formandbasic-form.email.placeholder': 'Email',
   'formandbasic-form.password.placeholder': 'Password',

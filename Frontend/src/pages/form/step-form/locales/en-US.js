@@ -23,7 +23,7 @@ export default {
   'formandstep-form.form.get-captcha': 'Get Captcha',
   'formandstep-form.captcha.second': 'sec',
   'formandstep-form.form.optional': ' (optional) ',
-  'formandstep-form.form.submit': 'Submit',
+  'formandstep-form.form.submit': 'Submited',
   'formandstep-form.form.save': 'Save',
   'formandstep-form.email.placeholder': 'Email',
   'formandstep-form.password.placeholder': 'Password',

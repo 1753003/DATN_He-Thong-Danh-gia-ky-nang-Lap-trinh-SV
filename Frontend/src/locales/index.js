@@ -16,6 +16,15 @@ if (getLocale() === 'vi-VN') Language = {
     'home_teacher': 'Bạn là giảng viên ?',
     'home_join': 'Tham gia ngay',
 
+    'header_notifications': 'Thông Báo',
+    'header_readAll': 'Đọc tất cả',
+    'header_loadMore': 'Tải thêm',
+
+    'avtDropdown_profile': 'Trang cá nhân',
+    'avtDropdown_logout': 'Đăng xuất',
+
+    'login_doNotHaveAnAccount': 'Không có tài khoản?',
+
     'pages_profile_practiceHistory': 'Lịch sử luyện tập',
     'pages_profile_testHistory': 'Lịch sử kiểm tra',
     'pages_profile_education': 'Học vấn',
@@ -97,6 +106,15 @@ else Language = {
     'home_student': 'Are you student ?',
     'home_teacher': 'Are you teacher ?',
     'home_join': 'Join now',
+
+    'header_notifications': 'Notifications',
+    'header_readAll': 'Read All',
+    'header_loadMore': 'Load More',
+
+    'avtDropdown_profile': 'Profile',
+    'avtDropdown_logout': 'Logout',
+
+    'login_doNotHaveAnAccount': 'Do not have an account?',
 
     'pages_profile_practiceHistory': 'Practice History',
     'pages_profile_testHistory': 'Test History',

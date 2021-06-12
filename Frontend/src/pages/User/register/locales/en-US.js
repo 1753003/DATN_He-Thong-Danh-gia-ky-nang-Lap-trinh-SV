@@ -40,7 +40,7 @@ export default {
   'userandregister.form.get-captcha': 'Get Captcha',
   'userandregister.captcha.second': 'sec',
   'userandregister.form.optional': ' (optional) ',
-  'userandregister.form.submit': 'Submit',
+  'userandregister.form.submit': 'Submited',
   'userandregister.form.save': 'Save',
   'userandregister.email.placeholder': 'Email',
   'userandregister.password.placeholder': 'Password',
