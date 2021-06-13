@@ -1,4 +1,10 @@
-import { PlusOutlined, HomeOutlined, ContactsOutlined, PhoneOutlined, GlobalOutlined } from '@ant-design/icons';
+import {
+  PlusOutlined,
+  HomeOutlined,
+  ContactsOutlined,
+  PhoneOutlined,
+  GlobalOutlined,
+} from '@ant-design/icons';
 import {
   Avatar,
   Card,
@@ -12,7 +18,7 @@ import {
   Button,
   Drawer,
   Select,
-  message
+  message,
 } from 'antd';
 import React, { Component, useState, useRef } from 'react';
 import { GridContent } from '@ant-design/pro-layout';
@@ -68,16 +74,13 @@ class Center extends Component {
   constructor(props) {
     super(props);
     const { dispatch } = this.props;
-    dispatch({
-      type: 'accountAndcenter/fetchCurrent',
-    });
+
     dispatch({
       type: 'accountAndcenter/fetchHistory',
     });
     dispatch({
       type: 'accountAndcenter/fetchInfo',
     });
-    console.log(this.props);
   }
   onTabChange = (key) => {
     this.setState({
@@ -97,7 +100,7 @@ class Center extends Component {
     return null;
   };
 
-  renderUserInfo = (currentUser) => (
+  renderUserInfo = () => (
     <div className={styles.detail}>
       <p>
         <ContactsOutlined
@@ -124,7 +127,7 @@ class Center extends Component {
         {this.props.info.Address}
       </p>
       <p>
-        <GlobalOutlined 
+        <GlobalOutlined
           style={{
             marginRight: 8,
           }}
@@ -155,21 +158,20 @@ class Center extends Component {
     if (values.gender != undefined) data.DevGender = values.gender;
     if (values.phone != undefined) data.PhoneNumber = values.phone;
     if (values.url != undefined) data.Website = values.url;
-    
+
     this.props.dispatch({
       type: 'accountAndcenter/updateInfo',
-      payload: data
-    })
+      payload: data,
+    });
 
     message.success('This is a success message');
-    this.onClose()
+    this.onClose();
   };
 
   render() {
     const { tabKey } = this.state;
-    const { currentUser = {}, currentUserLoading, info, list } = this.props;
-    const dataLoading = currentUserLoading || !(currentUser && Object.keys(currentUser).length);
-    console.log('info: ', info);
+    const { currentUserLoading, info, list } = this.props;
+    const dataLoading = currentUserLoading;
     return (
       <GridContent>
         <Row>
@@ -184,29 +186,25 @@ class Center extends Component {
               {!dataLoading && (
                 <div>
                   <div className={styles.avatarHolder}>
-                    <img alt="" src={currentUser.avatar} />
+                    <img
+                      alt=""
+                      src={
+                        info.DevImage == null
+                          ? 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQAAAADFCAMAAACM/tznAAAAPFBMVEXm5+inqaykpqnp6uvf4OHj5OWpq67LzM6rrbDc3d7W19musLO9v8Hh4uO0trnd3t/Dxce3ubvIycvQ0dO/bc7sAAAFNElEQVR4nO2d25qrIAyFlWitWq3W93/X7bG7nelBCPmYFfkv54qsgZwkNEkikUgkEolEIpFIJBKJRCKRSCQSiUQikUhEHiIKvYRAjJbnWVkNxVCVWX40HYjKojePtLfyMBqM1ncnY9Jnxj9cqiNoQDTUv6zfNDgX6iWgqn5t/arBaVCtAF3bT+bPEtSVYgm6b+bPElxynRLQ9ePuf1DgrHIT0LDP/FmCQp8CVOy3f1Sg06aAzf9/VuCmSwGq7OwfFdAVD7OTpf2jAqUmBXb6/ydOeehVe4N2xf9fW6APvW5f2DuAVQE1wfDsZP+oQBZ65V5wOwCzAK2KLVC62j8qoCEnpq8F4AfOCgRw9IDrFsBPh6hn2K9hC2ScDTB5gdAGMHEPAasAPfgWIPsi4IcCoS1gwoiBqwDYbpBubAEu2ALwYsAEdhxgu4BxC0BXxTn3BKAHQrYPnLxgaCM4sPLgTQBkJ+BDAOi2SBQgChAFiAJwBYCOAtejJ0KJBwHK0DZwINdPAg8ChLaBBfXsLVAjuwDLaxEvNwD4VQlmTxTeByZUMwVIsTcAuycG3hFL2C0R7CA4QReWAgq+D7PcILoLnGBtAQUbIEmaY28ATiDADwErrrmAmotyjs1xFRdkZtwqAjUHYMKhKDRt6EX7JLd3AycdlwQ3rrZfSfU4gAWqLO2HboW+wk4BffaPCpS778ybk7L9v5LvrApMm6m0fxocOn+XwKRF6HXKQXn3Zm74br65NEr//QuUXT5IYEyvalLoJXR9J8EhzJ+gfHk94dl40xa6N/8jREl16+v7+xHnvqsS9U8H/ICmd0OasiqbnI72hMgdWgm9jhAs//7h1nW3oSrzgx0AoqZozfMzMqMLPIoGYxRof0fCUYMhOYIE1HTpm1TIpJ3S1zMeuX1KhlUXAhPfn5ExreZ0iIZ3u/9xEyhshmzsawiYLvQ6ZaBm7xCt6bV8EnqEyh3dkE2Bugm9XO9QadMYN2ddXwVs7Z8UULYHMtsro6ZW5Qdy+2dk9Lyhkjhek1H0mJTtO1qbAvBX5DYax/nROvTCPeF8ZRz9ovSK4wGYFVBxCHLGADX2sMAC66Ik9sjYAnN+OvTy2VDLsh/eD7q+JPdfAfCagD02Bn5bkBEC7wpAF8Y+5gaRt4CHDYDtBfgzYyl2IPAwPD5yCm2GM8yBqQ3cW5MeXhGaQZ0c4g8Or6AWhV5c4CwAqBv04wInMB9U8+QCJ0DH5/gvyd0FgMwG/Z0AzFTA4wkAPQP+TgDmGfB5AsY4ENoca7yeAMgzwO8EPAkAlwv5PQF4Xwi4T2r/5hraJDu81QEbaDWxww8LfREAKxB6aQY+gxUI/buANIVqCnh3AWhOwLsLQHMCvrOACaRMQMIFQD0pwfwm/hqkciD3WwisAgDdGywF7Ef6wRmBNGgC59qg517ABo4XFPGBSF5QxAci3ZkT8YFAuaCQD8TJBUXywAmUMRoPPy/1BpSK2H8tvIASBgRq4VUAkGRYohZeBMAIA2JBAOWykFgQGOMgxCyhh1+VeAdGNSDQEN3ACANClcAsAERn2Pr9VAsBIOKgWBQEiYOCURAjDvJ/afcDCF0xoX7YKgBAIiDUD1uASATk0oAUoiAWTAMwMiGxYngWACATEuqIrgIANIYF8yCI64KieRBCKuhtUOi1AH//A6loIoiQCwv2g2YBQtv3FdFMGCEXlvsqgiKAZCkA8XVMVgCAaki0FgIQwOE3paz482MDjWQxiDBHfXgBrN/OVCeAZDsAQYCrqP3+W0L/AOggQRK505yuAAAAAElFTkSuQmCC'
+                          : info.DevImage
+                      }
+                    />
                     <div className={styles.name}>{info.DevName}</div>
                     <div>{info.DevMail}</div>
                   </div>
-                  {this.renderUserInfo(currentUser)}
+                  {this.renderUserInfo()}
                   <Divider dashed />
                   <div className={styles.team}>
-                  <div className={styles.teamTitle}>{Language.pages_profile_education}</div>
+                    <div className={styles.teamTitle}>{Language.pages_profile_education}</div>
                     <p> {info.Education} </p>
                     <Divider dashed />
                     <div className={styles.teamTitle}>{Language.pages_profile_about}</div>
                     <p> {info.About} </p>
-                    <Row gutter={36}>
-                      {currentUser.notice &&
-                        currentUser.notice.map((item) => (
-                          <Col key={item.id} lg={24} xl={12}>
-                            <Link to={item.href}>
-                              <Avatar size="small" src={item.logo} />
-                              {item.member}
-                            </Link>
-                          </Col>
-                        ))}
-                    </Row>
                   </div>
                 </div>
               )}
@@ -239,8 +237,7 @@ class Center extends Component {
               style={{
                 textAlign: 'right',
               }}
-            >
-            </div>
+            ></div>
           }
         >
           <Form layout="vertical" hideRequiredMark onFinish={this.onFinish}>
@@ -313,8 +310,7 @@ class Center extends Component {
 }
 
 export default connect(({ loading, accountAndcenter }) => ({
-  currentUser: accountAndcenter.currentUser,
-  currentUserLoading: loading.effects['accountAndcenter/fetchCurrent'],
+  currentUserLoading: loading.effects['accountAndcenter/fetchInfo'],
   info: accountAndcenter.info,
   list: accountAndcenter.list,
 }))(Center);

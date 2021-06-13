@@ -2,103 +2,34 @@ import React, { useState } from 'react';
 import { Button, List, Skeleton, Avatar } from 'antd';
 import styles from './index.less';
 import { DownOutlined } from '@ant-design/icons';
+import { connect, useHistory } from 'umi';
 
-const Collection = () => {
-  const [initLoading, setInitLoading] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [collectionList, setCollectionList] = useState([
-    {
-      CollectionID: '1',
-      CollectionName: 'C++ tests',
-      CollectionDescription: 'Includes 8 tests',
-      CoverImage: 'https://codelearn.io/Media/Default/Users/Trg_5FPhu/blog1/blog1.jpg',
-      CreatedBy: 'Phu Vinh Hung',
-      UpdatedAt: '24 Feb 2021',
-    },
-    {
-      CollectionID: '2',
-      CollectionName: 'C++ tests',
-      CollectionDescription: 'Includes 8 tests',
-      CoverImage: 'https://codelearn.io/Media/Default/Users/Trg_5FPhu/blog1/blog1.jpg',
-      CreatedBy: 'Phu Vinh Hung',
-      UpdatedAt: '24 Feb 2021',
-    },
-    {
-      CollectionID: '3',
-      CollectionName: 'C++ tests',
-      CollectionDescription: 'Includes 8 tests',
-      CoverImage: 'https://codelearn.io/Media/Default/Users/Trg_5FPhu/blog1/blog1.jpg',
-      CreatedBy: 'Phu Vinh Hung',
-      UpdatedAt: '24 Feb 2021',
-    },
-  ]);
+const Collection = ({ collectionList }) => {
+  const history = useHistory();
 
   const onLoadMore = () => {
-    setCollectionList([
-      ...collectionList,
-      {
-        CollectionID: '1',
-        CollectionName: 'C++ tests',
-        CollectionDescription: 'Includes 8 tests',
-        CoverImage: 'https://codelearn.io/Media/Default/Users/Trg_5FPhu/blog1/blog1.jpg',
-        CreatedBy: 'Phu Vinh Hung',
-        UpdatedAt: '24 Feb 2021',
+    history.push({
+      pathname: '/creator/tests',
+      query: {
+        menuKey: 'collection',
       },
-      {
-        CollectionID: '2',
-        CollectionName: 'C++ tests',
-        CollectionDescription: 'Includes 8 tests',
-        CoverImage: 'https://codelearn.io/Media/Default/Users/Trg_5FPhu/blog1/blog1.jpg',
-        CreatedBy: 'Phu Vinh Hung',
-        UpdatedAt: '24 Feb 2021',
-      },
-      {
-        CollectionID: '3',
-        CollectionName: 'C++ tests',
-        CollectionDescription: 'Includes 8 tests',
-        CoverImage: 'https://codelearn.io/Media/Default/Users/Trg_5FPhu/blog1/blog1.jpg',
-        CreatedBy: 'Phu Vinh Hung',
-        UpdatedAt: '24 Feb 2021',
-      },
-    ]);
-    // this.setState({
-    //   loading: true,
-    //   list: this.state.data.concat([...new Array(count)].map(() => ({ loading: true, name: {} }))),
-    // });
-    // this.getData(res => {
-    //   const data = this.state.data.concat(res.results);
-    //   this.setState(
-    //     {
-    //       data,
-    //       list: data,
-    //       loading: false,
-    //     },
-    //     () => {
-    //       // Resetting window's offsetTop so as to display react-virtualized demo underfloor.
-    //       // In real scene, you can using public method of react-virtualized:
-    //       // https://stackoverflow.com/questions/46700726/how-to-use-public-method-updateposition-of-react-virtualized
-    //       window.dispatchEvent(new Event('resize'));
-    //     },
-    //   );
-    // });
-    console.log('Load More');
+    });
   };
 
-  const loadMore =
-    !initLoading && !loading ? (
-      <div
-        style={{
-          textAlign: 'center',
-          marginTop: 12,
-          height: 32,
-          lineHeight: '32px',
-        }}
-      >
-        <div onClick={onLoadMore} className={styles.seeAll}>
-          See all <DownOutlined />
-        </div>
+  const loadMore = (
+    <div
+      style={{
+        textAlign: 'center',
+        marginTop: 12,
+        height: 32,
+        lineHeight: '32px',
+      }}
+    >
+      <div onClick={onLoadMore} className={styles.seeAll}>
+        See all <DownOutlined />
       </div>
-    ) : null;
+    </div>
+  );
 
   return collectionList.length > 0 ? (
     <List
@@ -106,7 +37,7 @@ const Collection = () => {
       //   loading={initLoading}
       itemLayout="horizontal"
       loadMore={loadMore}
-      dataSource={collectionList}
+      dataSource={_.chunk(collectionList, 3)[0]}
       renderItem={(item) => (
         <List.Item>
           <Skeleton avatar title={false} loading={item.loading} active>
@@ -137,4 +68,6 @@ const Collection = () => {
   );
 };
 
-export default Collection;
+export default connect(({ collection: { collectionList } }) => ({
+  collectionList,
+}))(Collection);

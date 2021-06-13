@@ -57,7 +57,7 @@ const RenderBody = ({ menuKey, summaryReport, summaryUser }) => {
     case 'users':
       return <Users summaryUser={summaryUser} />;
     case 'questions':
-      return <Questions summaryReport={summaryReport} />;
+      return <Questions summaryReport={summaryReport} id={location.query?.id} />;
     default:
       return <Summary summaryReport={summaryReport} />;
   }

@@ -34,6 +34,7 @@ class TestDetail extends React.Component {
   constructor(props) {
     super(props);
     const id = props.location.state?.ID;
+    console.log(id)
     if (id != null) {
       this.props.dispatch({ type: 'test/getTestByID', payload: { id } });
       this.state = { answer: [] };

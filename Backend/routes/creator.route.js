@@ -25,7 +25,7 @@ router.post('/test', async function (req, res) {
    generalInformation.CreatedBy = req.uid;
    generalInformation.TestCode = result;
    await testModel.createTest(generalInformation, req.body.listQuestion);
-   res.json("OK");
+   res.json(result);
   
 })
 

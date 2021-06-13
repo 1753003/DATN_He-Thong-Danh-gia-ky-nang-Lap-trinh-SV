@@ -8,10 +8,6 @@ import Language from '@/locales/index';
 
 const { Title } = Typography;
 
-let list1 = [];
-let list2 = [];
-let list3 = [];
-
 const practiceList = ({ location, dispatch, practice, loading }) => {
   const [solved, setSolved] = useState(false);
   const [unsolved, setUnsolved] = useState(false);
@@ -21,16 +17,16 @@ const practiceList = ({ location, dispatch, practice, loading }) => {
   const [multiple, setMultiple] = useState(false);
   const [coding, setCoding] = useState(false);
   const [list, setList] = useState([]);
+  let [list1, setList1] = useState([]);
+  let [list2, setList2] = useState([]);
+  let [list3, setList3] = useState([]);
 
   useEffect(() => {
     dispatch({
       type: 'practice/getPracticeSetList',
-      payload: { listName: encodeURIComponent(location.query.listName), callback: setList },
+      payload: { listName: encodeURIComponent(location.query.listName), callback: setList,
+      callback1: setList1, callback2: setList2, callback3: setList3  },
     });
-
-    list1 = practice.list;
-    list2 = practice.list;
-    list3 = practice.list;
   }, []);
   const routes = [
     {
@@ -57,7 +53,7 @@ const practiceList = ({ location, dispatch, practice, loading }) => {
   function onChange(e) {
     const val = e.target.value;
     const temp = practice.list;
-
+   
     if (val == 'Solved') {
       if (!solved && !unsolved) {
         list1 = temp.filter((e) => e.SubmissionID != null);
@@ -165,11 +161,12 @@ const practiceList = ({ location, dispatch, practice, loading }) => {
         setHard(false);
       }
     } else if (val == 'Multiple') {
+      console.log(temp)
       if (!multiple && !coding) {
-        list3 = temp.filter((e) => e.Type == 'MultipleChoice');
+        list3 = temp.filter((e) => e.PracticeType == 'MultipleChoice');
         setMultiple(true);
       } else if (multiple && coding) {
-        list3 = temp.filter((e) => e.Type != 'MultipleChoice');
+        list3 = temp.filter((e) => e.PracticeType != 'MultipleChoice');
         setMultiple(false);
       } else if (multiple) {
         list3 = temp;
@@ -180,10 +177,10 @@ const practiceList = ({ location, dispatch, practice, loading }) => {
       }
     } else if (val == 'Coding') {
       if (!coding && !multiple) {
-        list3 = temp.filter((e) => e.Type != 'MultipleChoice');
+        list3 = temp.filter((e) => e.PracticeType != 'MultipleChoice');
         setCoding(true);
       } else if (coding && multiple) {
-        list3 = temp.filter((e) => e.Type == 'MultipleChoice');
+        list3 = temp.filter((e) => e.PracticeType == 'MultipleChoice');
         setCoding(false);
       } else if (coding) {
         list3 = temp;
@@ -193,22 +190,22 @@ const practiceList = ({ location, dispatch, practice, loading }) => {
         setCoding(true);
       }
     }
+    
     const temp1 = list1.map((e) => e.PracticeID);
     const temp2 = list2.map((e) => e.PracticeID);
     const temp3 = list3.map((e) => e.PracticeID);
-
-    // console.log(temp1);
-    // console.log(temp2);
-    // console.log(temp3);
-    const filter = temp1.filter((value) => -1 !== temp2.indexOf(value));
-
-    const filter2 = filter.filter((value) => -1 !== temp3.indexOf(value));
-
+    let filter = [];
+    let filter2 = [];
+    filter = temp1.filter((value) => -1 !== temp2.indexOf(value));
+    filter2 = filter.filter((value) => -1 !== temp3.indexOf(value));
     setList(
       temp.filter((e) => {
         return -1 != filter2.indexOf(e.PracticeID);
       }),
     );
+    setList1(list1);
+    setList2(list2);
+    setList3(list3);
   }
   return loading ? (
     <PageLoading></PageLoading>

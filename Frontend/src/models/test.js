@@ -45,7 +45,7 @@ const TestModel = {
       if (response !== -1)
         history.push({
           pathname: '/developer/test/questions',
-          state: { TestID: response },
+          state: { ID: response },
         });
     },
     *fetchTestList(_, { call, put }) {
@@ -287,6 +287,7 @@ const TestModel = {
             MemoryUsage,
             OutputTestcase,
             TestCasePassed,
+            QuestionID: data.answer[count].id,
           };
 
           if (TestCasePassed.length === OutputTestcase.length) {

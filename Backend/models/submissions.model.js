@@ -43,6 +43,7 @@ module.exports = {
               Choice: JSON.stringify(item.Choice),
             });
           } else if (item.Type === "Code") {
+            console.log(item)
             await db("answercoding").insert({
               SubmissionID: ID,
               QuestionID: item.QuestionID,

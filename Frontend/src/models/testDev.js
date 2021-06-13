@@ -12,7 +12,9 @@ const TestModel = {
       const response = yield getTestListBySet(payload.listname.split(' ')[0]);
     
       payload.Callback(response)
-     
+      payload.Callback1(response)
+      payload.Callback2(response)
+      payload.Callback3(response)
       yield put({
         type: 'saveTestList',
         payload: response,
