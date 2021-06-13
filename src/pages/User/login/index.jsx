@@ -16,6 +16,7 @@ import ProForm, { ProFormCaptcha, ProFormCheckbox, ProFormText } from '@ant-desi
 import { useIntl, connect, FormattedMessage } from 'umi';
 import { getFakeCaptcha } from '@/services/login';
 import styles from './index.less';
+import Language from '@/locales/index';
 
 // const firebaseConfig = {
 //   apiKey: "AIzaSyC_FKi-svb2idZpvqsfPFWASeHUS60O9eU",
@@ -332,7 +333,7 @@ const Login = (props) => {
             }}
             href="/user/register"
           >
-            <FormattedMessage id="pages.login.register" defaultMessage="Do not have an account?" />
+            <FormattedMessage id="pages.login.register" defaultMessage={Language.login_doNotHaveAnAccount} />
           </a>
         </div>
       </ProForm>

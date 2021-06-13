@@ -4,6 +4,7 @@ import React from 'react';
 import { history, connect } from 'umi';
 import HeaderDropdown from '../HeaderDropdown';
 import styles from './index.less';
+import Language from '@/locales/index';
 
 function generateDarkColorHex() {
   let color = "#";
@@ -49,14 +50,14 @@ class AvatarDropdown extends React.Component {
         {menu && (
           <Menu.Item key="profile">
             <UserOutlined />
-            Profile
+            {Language.avtDropdown_profile}
           </Menu.Item>
         )}
         
         {menu && <Menu.Divider />}
         <Menu.Item key="logout">
           <LogoutOutlined />
-          Logout
+          {Language.avtDropdown_logout}
         </Menu.Item>
       </Menu>
     );

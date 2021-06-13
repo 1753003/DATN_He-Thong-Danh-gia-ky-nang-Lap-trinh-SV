@@ -209,7 +209,7 @@ class Center extends Component {
                 </div>
               )}
               <Button type="primary" className={styles.editButton} onClick={this.showDrawer}>
-                Edit
+                {Language.pages_profile_edit}
               </Button>
             </Card>
           </Col>
@@ -227,7 +227,7 @@ class Center extends Component {
           </Col>
         </Row>
         <Drawer
-          title="Edit information"
+          title={Language.pages_profile_editInfo}
           width={400}
           onClose={this.onClose}
           visible={this.state.visible}
@@ -241,55 +241,65 @@ class Center extends Component {
           }
         >
           <Form layout="vertical" hideRequiredMark onFinish={this.onFinish}>
-            <Form.Item name="name" label="Name">
-              <Input placeholder="Please enter user name" defaultValue={info.DevName} />
+            <Form.Item
+              name="name"
+              label={Language.pages_profile_name}
+            >
+              <Input placeholder={Language.pages_profile_edit_name} defaultValue={info.DevName} />
             </Form.Item>
 
-            <Form.Item name="url" label="Website">
+            <Form.Item
+              name="url"
+              label={Language.pages_profile_website}
+            >
               <Input
                 style={{ width: '100%' }}
-                placeholder="Please enter url"
+                placeholder={Language.pages_profile_edit_website}
                 defaultValue={info.Website}
               />
             </Form.Item>
 
-            <Form.Item name="phone" label="Phone number">
-              <Input placeholder="Please enter user name" defaultValue={info.PhoneNumber} />
+            <Form.Item
+              name="phone"
+              label={Language.pages_profile_phone}
+            >
+              <Input placeholder={Language.pages_profile_edit_phone} defaultValue={info.PhoneNumber} />
+            </Form.Item>
+            
+            <Form.Item
+              name="education"
+              label={Language.pages_profile_education}
+            >
+              <Input placeholder={Language.pages_profile_edit_education} defaultValue={info.Education} />
             </Form.Item>
 
-            <Form.Item name="education" label="Education / School">
-              <Input
-                placeholder="Please enter your education/ school"
-                defaultValue={info.Education}
-              />
-            </Form.Item>
-
-            <Form.Item name="gender" label="Gender">
-              <Select placeholder="Please choose your gender" defaultValue={info.DevGender}>
-                <Option value="male">Male</Option>
-                <Option value="female">Female</Option>
-                <Option value="other">Other</Option>
+            <Form.Item
+              name="gender"
+              label={Language.pages_profile_gender}
+            >
+              <Select placeholder={Language.pages_profile_edit_gender} defaultValue={info.DevGender}>
+                <Option value="male">{Language.pages_profile_male}</Option>
+                <Option value="female">{Language.pages_profile_female}</Option>
+                <Option value="other">{Language.pages_profile_other}</Option>
               </Select>
             </Form.Item>
-
-            <Form.Item name="address" label="Address">
-              <Input.TextArea
-                rows={3}
-                placeholder="Please enter your address"
-                defaultValue={info.Address}
-              />
+            
+            <Form.Item
+              name="address"
+              label={Language.pages_profile_address}
+            >
+              <Input.TextArea rows={3} placeholder={Language.pages_profile_edit_address} defaultValue={info.Address}/>
             </Form.Item>
-
-            <Form.Item name="description" label="Description">
-              <Input.TextArea
-                rows={4}
-                placeholder="Please enter some note about your profile"
-                defaultValue={info.About}
-              />
+            
+            <Form.Item
+              name="description"
+              label={Language.pages_profile_description}
+            >
+              <Input.TextArea rows={4} placeholder={Language.pages_profile_edit_description} defaultValue={info.About}/>
             </Form.Item>
             <Form.Item>
               <Button type="primary" htmlType="submit">
-                Submit
+                {Language.pages_profile_save}
               </Button>
             </Form.Item>
           </Form>
