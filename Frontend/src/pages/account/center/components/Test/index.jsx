@@ -5,6 +5,7 @@ import { connect } from 'umi';
 import TestListContent from '../TestListContent';
 import styles from './index.less';
 import '../../../../../components/GlobalHeader/style.less';
+import Language from '@/locales/index';
 const Test = (props) => {
   const { list } = props;
 
@@ -91,17 +92,17 @@ const Test = (props) => {
     <div styles={{ display: 'block' }}>
       <Row justify="end">
         <Radio.Group className={styles.rdGroup} onChange={onFilterChange} value={filter3}>
-          <Radio.Button value="All">All</Radio.Button>
+          <Radio.Button value="All">{Language.pages_profile_all}</Radio.Button>
         </Radio.Group>
 
         <Radio.Group className={styles.rdGroup} onChange={onFilterChange} value={filter1}>
-          <Radio.Button value="Pass">Passed</Radio.Button>
-          <Radio.Button value="Fail">Failed</Radio.Button>
+          <Radio.Button value="Pass">{Language.pages_profile_passed}</Radio.Button>
+          <Radio.Button value="Fail">{Language.pages_profile_failed}</Radio.Button>
         </Radio.Group>
 
         <Radio.Group className={styles.rdGroup} onChange={onFilterChange} value={filter2}>
-          <Radio.Button value="Public">Public</Radio.Button>
-          <Radio.Button value="Private">Private</Radio.Button>
+          <Radio.Button value="Public">{Language.pages_profile_public}</Radio.Button>
+          <Radio.Button value="Private">{Language.pages_profile_private}</Radio.Button>
         </Radio.Group>
       </Row>
 
