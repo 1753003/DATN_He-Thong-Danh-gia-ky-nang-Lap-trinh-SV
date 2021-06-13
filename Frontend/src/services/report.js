@@ -97,7 +97,7 @@ export function getSummaryQuestion(id) {
       })
       .catch((error) => {
         // handle error
-        const message = error.response.data.message;
+        const message = error.response?.data.message;
         tokenHandling(message, resolve, options);
       });
   });

@@ -10,7 +10,6 @@ const Questions = ({ dispatch, summaryReport }) => {
   const [list, setList] = useState([]);
 
   const setTestInformation = (testObject) => {
-    console.log(testObject);
     setList(testObject.listQuestion);
   };
 
@@ -37,9 +36,8 @@ const Questions = ({ dispatch, summaryReport }) => {
   ];
 
   const callBackSumaryQuestion = (response) => {
+    // console.log(response);
     setVisible(true);
-    set;
-    console.log(response);
   };
 
   return (
