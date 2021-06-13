@@ -93,7 +93,6 @@ export function createNewTest({ generalInformation, listQuestion, onSuccess, onF
       .then((response) => {
         // handle success
         console.log(response.data);
-        onSuccess();
         resolve(response.data);
       })
       .catch((error) => {

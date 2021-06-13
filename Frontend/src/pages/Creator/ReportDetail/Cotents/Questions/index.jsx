@@ -1,65 +1,81 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './index.less';
-import { Table } from 'antd';
+import { Table, Modal, Progress, Typography } from 'antd';
 import '../../../../../components/GlobalHeader/style.less';
+import { connect } from 'umi';
 
-const Questions = () => {
+const Questions = ({ dispatch, summaryReport }) => {
+  const [visible, setVisible] = useState(false);
+  const [currentSelect, setCurrentSelect] = useState(null);
+  const [list, setList] = useState([]);
+
+  const setTestInformation = (testObject) => {
+    console.log(testObject);
+    setList(testObject.listQuestion);
+  };
+
+  useEffect(() => {
+    if (summaryReport) {
+      dispatch({
+        type: 'test/getTestByIdModel',
+        payload: { id: summaryReport.ID, callback: setTestInformation },
+      });
+    }
+  }, []);
+
   const columns = [
     {
-      title: 'Question',
-      dataIndex: 'Question',
-      key: 'Question',
+      title: 'Description',
+      dataIndex: 'Description',
+      key: 'Description',
     },
     {
       title: 'Type',
-      dataIndex: 'Type',
-      key: 'Type',
-    },
-    {
-      title: 'Correct',
-      dataIndex: 'Correct',
-      key: 'Correct',
+      dataIndex: 'QuestionType',
+      key: 'QuestionType',
     },
   ];
 
-  const dataSource = [
-    {
-      key: 0,
-      Question: '1. What is your comment on the below C statement?',
-      Type: 'Quiz',
-      Correct: 90,
-    },
-    {
-      key: 1,
-      Question: '2.  What is the output of the following program?  ',
-      Type: 'Quiz',
-      Correct: 90,
-    },
-    {
-      key: 2,
-      Question: '3. A macro can execute faster than a function.',
-      Type: 'Quiz',
-      Correct: 90,
-    },
-    {
-      key: 3,
-      Question: '4. What is the output of the following program?',
-      Type: 'True and False',
-      Correct: 90,
-    },
-    {
-      key: 4,
-      Question: '5. What is the built in library function to compare two strings?',
-      Type: 'True and False',
-      Correct: 90,
-    },
-  ];
+  const callBackSumaryQuestion = (response) => {
+    setVisible(true);
+    set;
+    console.log(response);
+  };
 
   return (
     <div className={`${styles.container} custom`}>
-      <Table dataSource={dataSource} columns={columns} />
+      <Table
+        dataSource={list}
+        columns={columns}
+        onRow={(record, rowIndex) => {
+          return {
+            onClick: (event) => {
+              const payload = {
+                id: record.ID,
+                callback: callBackSumaryQuestion,
+              };
+              dispatch({ type: 'report/getSummaryQuestionById', payload });
+            }, // double click row
+          };
+        }}
+      />
+      <Modal
+        title={`${currentSelect?.ID} - ${currentSelect?.QuestionType}`}
+        className="custom"
+        visible={visible}
+        onCancel={() => setVisible(false)}
+        footer={null}
+        width={800}
+      >
+        <div>
+          <b>{currentSelect?.Description}</b>
+        </div>
+      </Modal>
     </div>
   );
 };
 
-export default Questions;
+export default connect(({ report: { reportList }, loading }) => ({
+  reportList,
+  loading: loading.effects['report/fetchReportList'],
+}))(Questions);

@@ -2,97 +2,36 @@ import React, { useState } from 'react';
 import { List, Skeleton } from 'antd';
 import styles from './index.less';
 import { DownOutlined } from '@ant-design/icons';
+import { connect, useHistory } from 'umi';
+import _ from 'lodash';
 
-const Test = () => {
-  const [initLoading, setInitLoading] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [testList, setTestList] = useState([
-    {
-      TestID: '1',
-      TestName: 'C++ tests',
-      TestImage: 'https://codelearn.io/Media/Default/Users/Trg_5FPhu/blog1/blog1.jpg',
-      TestSet: 9,
-      TestDone: 39,
-    },
-    {
-      TestID: '2',
-      TestName: 'C++ tests fasdjfhaskjdfhasdkf',
-      TestImage: 'https://codelearn.io/Media/Default/Users/Trg_5FPhu/blog1/blog1.jpg',
-      TestSet: 6,
-      TestDone: 100,
-    },
-    {
-      TestID: '3',
-      TestName: 'C++ tests fasdjfhaskjdfhasdkf',
-      TestImage: 'https://codelearn.io/Media/Default/Users/Trg_5FPhu/blog1/blog1.jpg',
-      TestSet: 6,
-      TestDone: 100,
-    },
-  ]);
+const Test = ({ testList }) => {
+  const history = useHistory();
 
   const onLoadMore = () => {
-    setTestList([
-      ...testList,
-      {
-        TestID: '1',
-        TestName: 'C++ tests',
-        TestImage: 'https://codelearn.io/Media/Default/Users/Trg_5FPhu/blog1/blog1.jpg',
-        TestSet: 9,
-        TestDone: 39,
+    history.push({
+      pathname: '/creator/tests',
+      query: {
+        menuKey: 'tests',
       },
-      {
-        TestID: '2',
-        TestName: 'C++ tests fasdjfhaskjdfhasdkf',
-        TestImage: 'https://codelearn.io/Media/Default/Users/Trg_5FPhu/blog1/blog1.jpg',
-        TestSet: 6,
-        TestDone: 100,
-      },
-      {
-        TestID: '3',
-        TestName: 'C++ tests fasdjfhaskjdfhasdkf',
-        TestImage: 'https://codelearn.io/Media/Default/Users/Trg_5FPhu/blog1/blog1.jpg',
-        TestSet: 6,
-        TestDone: 100,
-      },
-    ]);
-    // this.setState({
-    //   loading: true,
-    //   list: this.state.data.concat([...new Array(count)].map(() => ({ loading: true, name: {} }))),
-    // });
-    // this.getData(res => {
-    //   const data = this.state.data.concat(res.results);
-    //   this.setState(
-    //     {
-    //       data,
-    //       list: data,
-    //       loading: false,
-    //     },
-    //     () => {
-    //       // Resetting window's offsetTop so as to display react-virtualized demo underfloor.
-    //       // In real scene, you can using public method of react-virtualized:
-    //       // https://stackoverflow.com/questions/46700726/how-to-use-public-method-updateposition-of-react-virtualized
-    //       window.dispatchEvent(new Event('resize'));
-    //     },
-    //   );
-    // });
-    console.log('Load More');
+    });
   };
 
-  const loadMore =
-    !initLoading && !loading ? (
-      <div
-        style={{
-          textAlign: 'center',
-          marginTop: 12,
-          height: 32,
-          lineHeight: '32px',
-        }}
-      >
-        <div onClick={onLoadMore} className={styles.seeAll}>
-          See all <DownOutlined />
-        </div>
+  const loadMore = (
+    <div
+      style={{
+        textAlign: 'center',
+        marginTop: 12,
+        height: 32,
+        lineHeight: '32px',
+        cursor: 'pointer',
+      }}
+    >
+      <div onClick={onLoadMore} className={styles.seeAll}>
+        See all <DownOutlined />
       </div>
-    ) : null;
+    </div>
+  );
 
   return (
     <List
@@ -100,17 +39,21 @@ const Test = () => {
       //   loading={initLoading}
       itemLayout="horizontal"
       loadMore={loadMore}
-      dataSource={testList}
+      loading={testList.length === 0}
+      dataSource={_.chunk(testList, 3)[0]}
       renderItem={(item) => (
         <List.Item>
           <Skeleton avatar title={false} loading={item.loading} active>
             <div className={styles.container}>
               <div className={styles.questions}>{item.TestSet} questions</div>
 
-              <img src={item.TestImage} className={styles.collectionImg} />
+              <img
+                src={'https://codelearn.io/Media/Default/Users/Trg_5FPhu/blog1/blog1.jpg'}
+                className={styles.collectionImg}
+              />
               <div className={styles.infoContainer}>
                 <h3 className={styles.title}>{item.TestName}</h3>
-                <p className={styles.description}>{item.TestDone} done</p>
+                <p className={styles.description}>{item.TotalDone} done</p>
               </div>
             </div>
           </Skeleton>
@@ -120,4 +63,6 @@ const Test = () => {
   );
 };
 
-export default Test;
+export default connect(({ test: { testList } }) => ({
+  testList,
+}))(Test);

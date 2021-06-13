@@ -95,11 +95,13 @@ const CreateTest = ({ dispatch, location }) => {
 
   const createSuccess = () => {
     message.success('Create test successfully !!!');
+    setLoading(false);
     history.back();
   };
 
   const createFail = () => {
     message.error('Fail to create test !!!');
+    setLoading(false);
   };
 
   const updateSuccess = () => {
@@ -112,6 +114,7 @@ const CreateTest = ({ dispatch, location }) => {
 
   const handleSubmitTest = () => {
     if (quiz.length > 0 && information.TestName) {
+      setLoading(true);
       const refactorQuestions = [];
       quiz.forEach((element) => {
         const newQuiz = { ...element };
@@ -135,11 +138,14 @@ const CreateTest = ({ dispatch, location }) => {
 
       payload.generalInformation.TestTime = information.TestTime.locale('en').format('hh:mm:ss');
 
-      if (information.EndTime || information.StartTime) {
-        payload.generalInformation.EndTime = information.EndTime.locale('en').format(
+      if (information.StartTime) {
+        payload.generalInformation.StartTime = information.StartTime.locale('en').format(
           'yy-MM-DD hh:mm:ss',
         );
-        payload.generalInformation.StartTime = information.StartTime.locale('en').format(
+      }
+
+      if (information.EndTime) {
+        payload.generalInformation.EndTime = information.EndTime.locale('en').format(
           'yy-MM-DD hh:mm:ss',
         );
       }
@@ -169,10 +175,10 @@ const CreateTest = ({ dispatch, location }) => {
           payload,
         });
       }
+    } else {
+      message.error('Please fill in all off the information !!!');
     }
   };
-
-  const commuteID = () => {};
 
   return loading ? (
     <PageLoading />

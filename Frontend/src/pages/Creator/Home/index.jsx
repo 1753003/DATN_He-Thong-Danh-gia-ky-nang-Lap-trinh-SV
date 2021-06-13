@@ -1,11 +1,19 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styles from './index.less';
-import { Typography } from 'antd';
 import Collection from '@/components/CreatorComponents/Collection';
 import Test from '@/components/CreatorComponents/Test';
 import '../../../components/GlobalHeader/style.less';
+import { connect } from 'umi';
 
-const Home = () => {
+const Home = ({ dispatch, collectionList, testList }) => {
+  useEffect(() => {
+    if (collectionList.length === 0) {
+      dispatch({ type: 'collection/fetchCollection' });
+    }
+    if (testList.length === 0) {
+      dispatch({ type: 'test/fetchTestList' });
+    }
+  }, []);
   return (
     <div className={`${styles.container} custom`}>
       <div className={styles.quickReportContainer}>
@@ -23,4 +31,7 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default connect(({ collection: { collectionList }, test: { testList } }) => ({
+  collectionList,
+  testList,
+}))(Home);

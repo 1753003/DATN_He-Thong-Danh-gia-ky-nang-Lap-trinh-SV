@@ -41,15 +41,19 @@ const TestDetail = ({ dispatch, location }) => {
   return !loading ? (
     <div className={styles.container}>
       <div className={styles.left}>
-        <img src={test.generalInformation?.img} />
         <div className={styles.testName}>{test.generalInformation?.TestName}</div>
-        <div className={styles.editContainer}>
-          <Button type="primary" onClick={handleEditClick}>
-            Edit
-          </Button>
-        </div>
+
         <div className={styles.otherInfo}>
-          <p className={styles.bold}>{test.generalInformation?.Permissions} Test</p>
+          <p>
+            <b>Permission: </b>
+            {test.generalInformation?.Permissions || 'Public'}
+          </p>
+
+          <p>
+            <b>TestCode: </b>
+            {test.generalInformation?.TestCode}
+          </p>
+
           <p>
             <b>Time: </b>
             {test.generalInformation?.TestTime}
@@ -80,7 +84,13 @@ const TestDetail = ({ dispatch, location }) => {
             </p>
           )}
         </div>
+        <div className={styles.editContainer}>
+          <Button type="primary" onClick={handleEditClick}>
+            Edit
+          </Button>
+        </div>
       </div>
+
       <div className={styles.right}>
         <h3>Questions</h3>
         <Question list={test?.listQuestion} />
