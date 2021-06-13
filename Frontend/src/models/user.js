@@ -1,4 +1,4 @@
-import { queryCurrent, query as queryUsers } from '@/services/user';
+import { query as queryUsers } from '@/services/user';
 import firebase from '@/utils/firebase'
 const UserModel = {
   namespace: 'user',
