@@ -31,6 +31,16 @@ import {
 import { connect } from 'umi';
 import ReactMarkdown from 'react-markdown';
 import _ from 'lodash';
+import 'brace/mode/javascript';
+import 'brace/mode/c_cpp';
+import 'brace/mode/java';
+import 'brace/theme/monokai';
+import 'brace/theme/tomorrow';
+import 'brace/snippets/c_cpp';
+import 'brace/snippets/java';
+import 'brace/snippets/javascript';
+import 'brace/ext/language_tools';
+import 'brace/ext/searchbox';
 
 const { Option } = Select;
 const CreateTest = ({ dispatch, location }) => {
@@ -93,13 +103,15 @@ const CreateTest = ({ dispatch, location }) => {
     setVisibleDrawer(false);
   };
 
-  const createSuccess = () => {
-    message.success('Create test successfully !!!');
+  const createSuccess = (testCode) => {
+    message.success(`Create test successfully with TestCode: ${testCode} !!!`);
+    setLoading(false);
     history.back();
   };
 
   const createFail = () => {
     message.error('Fail to create test !!!');
+    setLoading(false);
   };
 
   const updateSuccess = () => {
@@ -112,6 +124,7 @@ const CreateTest = ({ dispatch, location }) => {
 
   const handleSubmitTest = () => {
     if (quiz.length > 0 && information.TestName) {
+      setLoading(true);
       const refactorQuestions = [];
       quiz.forEach((element) => {
         const newQuiz = { ...element };
@@ -135,11 +148,14 @@ const CreateTest = ({ dispatch, location }) => {
 
       payload.generalInformation.TestTime = information.TestTime.locale('en').format('hh:mm:ss');
 
-      if (information.EndTime || information.StartTime) {
-        payload.generalInformation.EndTime = information.EndTime.locale('en').format(
+      if (information.StartTime) {
+        payload.generalInformation.StartTime = information.StartTime.locale('en').format(
           'yy-MM-DD hh:mm:ss',
         );
-        payload.generalInformation.StartTime = information.StartTime.locale('en').format(
+      }
+
+      if (information.EndTime) {
+        payload.generalInformation.EndTime = information.EndTime.locale('en').format(
           'yy-MM-DD hh:mm:ss',
         );
       }
@@ -169,10 +185,10 @@ const CreateTest = ({ dispatch, location }) => {
           payload,
         });
       }
+    } else {
+      message.error('Please fill in all off the information !!!');
     }
   };
-
-  const commuteID = () => {};
 
   return loading ? (
     <PageLoading />
@@ -374,6 +390,7 @@ const RenderMiddle = ({ option, selectedQuiz, setQuiz, quiz, action }) => {
               height="400px"
               showPrintMargin={false}
               showGutter
+              theme="tomorrow"
               value={selectedQuiz.CodeSample || ''}
               mode={'c_cpp'}
               fontSize={16}
@@ -593,6 +610,7 @@ const RenderMiddle = ({ option, selectedQuiz, setQuiz, quiz, action }) => {
                 value={selectedQuiz.CodeSample}
                 mode={'c_cpp'}
                 fontSize={16}
+                theme="tomorrow"
                 editorProps={{ $blockScrolling: true, $blockSelectEnabled: false }}
                 setOptions={{
                   enableBasicAutocompletion: true,

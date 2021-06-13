@@ -1,5 +1,10 @@
 // import { queryCurrent, query as queryUsers } from '@/services/user';
-import { getReportList, getSummaryReport, getSummaryUser } from '@/services/report';
+import {
+  getReportList,
+  getSummaryReport,
+  getSummaryUser,
+  getSummaryQuestion,
+} from '@/services/report';
 
 const ReportModel = {
   namespace: 'report',
@@ -30,6 +35,12 @@ const ReportModel = {
         type: 'saveSummaryUser',
         payload: response,
       });
+    },
+    *getSummaryQuestionById({ payload }, { call, put }) {
+      console.log('ehllo');
+      const response = yield call(getSummaryQuestion, payload.id);
+      console.log(response);
+      payload?.callback(response);
     },
   },
   reducers: {

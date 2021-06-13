@@ -11,32 +11,6 @@ import {
 } from '@ant-design/icons';
 
 const Summary = ({ summaryReport }) => {
-  const report = {
-    PercentPass: 70,
-    PercentSuccess: 50,
-    Users: 52,
-    Questions: 15,
-    Time: 45,
-    DifficultQuestion: [
-      'Kho Qua di',
-      'fasldkjflkasdjfklasjdfklasjdflajks',
-      'fasdkfjaskldfjklasjdfaskdfjaslkdfj',
-    ],
-    DidNotFinish: [
-      {
-        name: 'Nguyễn Phạm Quang Định',
-        questions: 4,
-      },
-      {
-        name: 'Phạm Khánh Duy',
-        questions: 2,
-      },
-      {
-        name: 'Khánh Duy Pon Pham AAA',
-        questions: 5,
-      },
-    ],
-  };
   return (
     <div className={styles.container}>
       <div className={styles.analysis}>
