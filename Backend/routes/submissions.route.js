@@ -16,7 +16,7 @@ router.get('/', async function(req, res){
 
 router.post('/test', async function(req,res) {
     const submission = req.body;
-    
+    console.log(submission)
     const answer = await (testModel.getAnswer(req.body.TestID));
     
     let score = 0;

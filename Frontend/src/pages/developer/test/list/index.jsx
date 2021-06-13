@@ -6,12 +6,9 @@ import './style.less';
 import Language from '@/locales/index';
 
 const { Title } = Typography;
-let list1 = [];
-let list2 = [];
-let list3 = [];
+
 const TestSetList = ({ location, dispatch, testDev, loading }) => {
   // let history = useHistory()
-  
 
   const [solved, setSolved] = useState(false);
   const [unsolved, setUnsolved] = useState(false);
@@ -21,22 +18,22 @@ const TestSetList = ({ location, dispatch, testDev, loading }) => {
   const [multiple, setMultiple] = useState(false);
   const [coding, setCoding] = useState(false);
   const [list, setList] = useState([]);
-
+  let [list1, setList1] = useState([]);
+  let [list2, setList2] = useState([]);
+  let [list3, setList3] = useState([]);
   useEffect(() => {
     dispatch({
       type: 'testDev/fetchTestListBySet',
-      payload: { listname: decodeURIComponent(location.query.listName), Callback: setList },
+      payload: {
+        listname: decodeURIComponent(location.query.listName),
+        Callback: setList,
+        Callback1: setList1,
+        Callback2: setList2,
+        Callback3: setList3,
+      },
     });
-
-    list1 = testDev.setList;
-    list2 = testDev.setList;
-    list3 = testDev.setList;
   }, []);
 
-  list1 = testDev.setList;
-  list2 = testDev.setList;
-  list3 = testDev.setList;
-  
   const routes = [
     {
       path: '/developer',
@@ -56,7 +53,9 @@ const TestSetList = ({ location, dispatch, testDev, loading }) => {
     return last ? (
       <span key={route.breadcrumbName}>{route.breadcrumbName}</span>
     ) : (
-      <Link key={route.breadcrumbName} to={route.path}>{route.breadcrumbName}</Link>
+      <Link key={route.breadcrumbName} to={route.path}>
+        {route.breadcrumbName}
+      </Link>
     );
   }
   function onChange(e) {
@@ -207,6 +206,9 @@ const TestSetList = ({ location, dispatch, testDev, loading }) => {
     const filter2 = filter.filter((value) => -1 !== temp3.indexOf(value));
 
     setList(temp.filter((e) => -1 != filter2.indexOf(e.ID)));
+    setList1(list1);
+    setList2(list2);
+    setList3(list3);
   }
 
   return (
@@ -232,43 +234,59 @@ const TestSetList = ({ location, dispatch, testDev, loading }) => {
             }}
             dataSource={list}
             renderItem={(item) => (
-              <Card bordered size="small" hoverable style={{ marginBottom:"12px"}}>
-              <List.Item
-                onClick={() => {
-                  history.push({
-                    pathname: '/developer/test/questions',
-                    state: item,
-                  });
-                }}
-                style={{
-                  // backgroundColor: 'white',
-                  // margin: '10px 5px 10px 20px',
-                  padding: '5px 20px 5px 10px',
-                  // borderRadius: '5px',
-                }}
-              >
-                <List.Item.Meta
-                  title={item.Name}
-                  description={
-                    <div>
+              <Card bordered size="small" hoverable style={{ marginBottom: '12px' }}>
+                <List.Item
+                  onClick={() => {
+                    history.push({
+                      pathname: '/developer/test/questions',
+                      state: item,
+                    });
+                  }}
+                  style={{
+                    // backgroundColor: 'white',
+                    // margin: '10px 5px 10px 20px',
+                    padding: '5px 20px 5px 10px',
+                    // borderRadius: '5px',
+                  }}
+                >
+                  <List.Item.Meta
+                    title={item.Name}
+                    description={
+                      <div>
+                        {' '}
+                        <Typography.Text
+                          strong
+                          style={
+                            item.DifficultLevel === 'Easy'
+                              ? { color: 'green' }
+                              : item.DifficultLevel === 'Medium'
+                              ? { color: '#ed7e0c' }
+                              : { color: 'red' }
+                          }
+                        >
+                          {item.DifficultLevel}
+                        </Typography.Text>
+                        {',' + item.Type + ',' + item.Score} <br></br> {item.BriefDescription}
+                      </div>
+                    }
+                  />
+                  {item.SubmissionID != null && (
+                    <Button size="large" style={{ width: '100px' }}>
+                      Solved
+                    </Button>
+                  )}
+                  {item.SubmissionID == null && (
+                    <Button
+                      size="large"
+                      style={{ background: '#3ebae0', border: '2px solid #3ebae0', width: '100px' }}
+                      type="primary"
+                    >
                       {' '}
-                      <Typography.Text strong style={item.DifficultLevel==="Easy"?{color:"green"}:item.DifficultLevel==="Medium"?{color:"#ed7e0c"}:{color:"red"}}>{item.DifficultLevel}</Typography.Text>{',' + item.Type + ',' + item.Score} <br></br>{' '}
-                      {item.BriefDescription}
-                    </div>
-                  }
-                />
-                {item.SubmissionID != null && (
-                  <Button size="large" style={{ width: '100px' }}>
-                    Solved
-                  </Button>
-                )}
-                {item.SubmissionID == null && (
-                  <Button size="large" style={{background:"#3ebae0",border:"2px solid #3ebae0", width: '100px' }} type="primary">
-                    {' '}
-                    Start{' '}
-                  </Button>
-                )}
-              </List.Item></Card>
+                      Start{' '}
+                    </Button>
+                  )}
+                </List.Item>
+              </Card>
             )}
           />
         </Col>

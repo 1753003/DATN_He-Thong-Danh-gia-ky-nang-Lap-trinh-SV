@@ -151,10 +151,13 @@ module.exports = {
   },
   async getQuestion(testID) {
     console.log("TestID: ", testID);
-    const list = await db("question").where("TestID", testID);
+    const templist = (await db("test").where("TestID", testID))[0].QuestionID
     let result = [];
     const submission = await db("submissions").where("TestID", testID);
-
+    const list = [];
+    for (const i of templist) {
+      list.push((await db('question').where("ID", i))[0])
+    }
     for (item of list) {
       let NumberUserAnswer = [];
       let ListUser = [];
@@ -190,6 +193,7 @@ module.exports = {
         }
         item.NumberUserAnswer= NumberUserAnswer;
       } else {
+        console.log(item.ID, e.SubmissionID);
         const question = (await db("coding").where("QuestionID", item.ID))[0];
         item.Question = {
           Question: question.CodeDescription,
@@ -206,7 +210,7 @@ module.exports = {
         for (let tc of question.TestCase) {
             tcPassNumber.push(0)
         }
-        for (const e of submission) {
+        for (const e of submission) { 
           const answer = (
             await db("answercoding").where({
               QuestionID: item.ID,

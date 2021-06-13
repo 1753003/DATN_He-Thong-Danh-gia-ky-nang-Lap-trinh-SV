@@ -39,6 +39,9 @@ const Model = {
     *getPracticeSetList({ payload }, { call, put,select }){
       const data = yield getPracticeSet(payload.listName)
       payload.callback(data);
+      payload.callback1(data);
+      payload.callback2(data);
+      payload.callback3(data);
       yield put({
         type:'setList',
         payload: data
