@@ -166,11 +166,11 @@ const SubmissionDetail = ({ dispatch, data, listQuestion, loading }) => {
             <div>
               {listQuestion.map((item, i) => {
                 let temp = [];
-                if (data.data[i]) {
-                  for (let choice in data.data[i]?.Choice) {
+                  data.data[i]?.Choice.forEach(choice=> {
+                    console.log(choice)
                     temp.push(item.Answer[choice]);
-                  }
-                }
+                  })
+                console.log(data);
                 return (
                   <div key={i}>
                     <h3 style={data.data[i]?.status === 1 ? { color: 'green' } : { color: 'red' }}>
