@@ -6,7 +6,7 @@ const Constant = {
       ? 'https://codejoy-fe.herokuapp.com'
       : 'http://localhost:5000',
   JUDGE: process.env.NODE_ENV === 'production'
-  ? 'https://codejoy-fe.herokuapp.com/judge'
+  ? 'http://3.0.40.66:2358'
   : 'http://3.0.40.66:2358',
 };
 
