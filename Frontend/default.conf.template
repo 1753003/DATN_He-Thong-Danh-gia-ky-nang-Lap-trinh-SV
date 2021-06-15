@@ -34,4 +34,6 @@ server {
         proxy_set_header   Host              $http_host;
         proxy_set_header   X-Real-IP         $remote_addr;
     }
-}
+    location /judge {
+        rewrite ^/judge(.*)$ http://3.0.40.66:2358 redirect;
+    }
