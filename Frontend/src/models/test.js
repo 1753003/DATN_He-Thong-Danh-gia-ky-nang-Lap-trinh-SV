@@ -255,6 +255,7 @@ const TestModel = {
           const token = token_batch.join(',');
 
           let result = yield getSubmissionBatch(token);
+        
           result = JSON.parse(
             JSON.stringify(result, function (key, value) {
               return value == null ? '' : value;
@@ -267,7 +268,7 @@ const TestModel = {
           let TestCasePassed = [];
 
           let i = 0;
-
+          console.log(result.submissions)
           result.submissions.forEach((item) => {
             if (item.expected_output === item.stdout) TestCasePassed.push(i);
             i++;
