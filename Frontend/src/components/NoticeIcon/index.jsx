@@ -53,7 +53,7 @@ const NoticeIcon = (props) => {
               onViewMore?.(child.props, event);
             }}
             showClear={showClear}
-            showViewMore={showViewMore}
+            showViewMore={list?.length>5||showViewMore}
             title={title}
           />
         </TabPane>,
