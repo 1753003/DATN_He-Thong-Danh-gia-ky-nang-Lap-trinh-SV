@@ -1,4 +1,4 @@
-import Constant from '@/utils/contants';
+import Constant from '@/utils/constants';
 import request from '@/utils/request';
 export async function query() {
   return request(`${Constant.API}/api/users`);

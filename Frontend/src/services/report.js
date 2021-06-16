@@ -1,4 +1,4 @@
-import Constant from '@/utils/contants';
+import Constant from '@/utils/constants';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import tokenHandling from './tokenHandling';
