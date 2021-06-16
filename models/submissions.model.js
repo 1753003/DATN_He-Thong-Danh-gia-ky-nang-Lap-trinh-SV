@@ -13,7 +13,8 @@ module.exports = {
     const res = await db("submissions")
       .join("test", "submissions.TestID", "=", "test.TestID")
       .where({ DevID: id, PracticeID: null });
-    for (let item in res) {
+
+    for (item of res) {
       if (item.Permissions == "public") item.isPublic = true;
       else item.isPublic = false;
       if (item.Score < item.PassScore) item.isPass = false;
