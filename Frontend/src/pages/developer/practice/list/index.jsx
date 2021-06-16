@@ -234,6 +234,7 @@ const practiceList = ({ location, dispatch, practice, loading }) => {
               <Card bordered size="small" hoverable style={{ marginBottom:"12px"}}>
               <List.Item
                 onClick={() => {
+                  console.log(item)
                   history.push({
                     pathname: '/developer/practice/questions',
                     search: `?listName=${encodeURIComponent(
