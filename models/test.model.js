@@ -79,6 +79,7 @@ module.exports = {
       generalInformation: test,
       listQuestion: listQuestion,
     };
+    console.log(result)
     return result;
   },
 
