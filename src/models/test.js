@@ -213,7 +213,6 @@ const TestModel = {
         data.start = state.test.start;
       });
       let count = 0;
-      console.log(data.test.listQuestion);
       let listAnswer = [];
       let score = 0;
       let numCorrect = 0;
@@ -231,6 +230,7 @@ const TestModel = {
             // console.log(tc.Input[0])
             var input = tc.Input[0];
             var expected_output = tc.Output[0];
+            console.log(tc.Input, tc.Input[0], u_btoa(input))
             let data = {
               source_code: code,
               language_id: lang_id,
