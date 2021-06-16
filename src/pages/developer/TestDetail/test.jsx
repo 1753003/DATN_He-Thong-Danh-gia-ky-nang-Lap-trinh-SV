@@ -397,7 +397,7 @@ class TestDetail extends React.Component {
         />
       );
     }
-
+    
     return (
       <div className={styles.body}>
         <div>
