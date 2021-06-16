@@ -20,13 +20,26 @@ module.exports = {
             .then(async (result) => {
               questionID.push(result[0]);
               if (element.QuestionType === "MultipleChoice") {
+                console.log(element);
                 await db("multiplechoice").insert({
                   MCDescription: element.MCDescription,
                   Answer: JSON.stringify(element.Answer),
                   CorrectAnswer: JSON.stringify(element.CorrectAnswer),
                   QuestionID: result[0],
+                  MCCoding: element.CodeSample
                 });
               } else if (element.QuestionType === "Code") {
+                console.log(element.TestCase);
+                let temp;
+                let temp2 = [], temp3 = [];
+                temp = element.TestCase.map(e => {
+                  temp2.push(e.Input);
+                  temp3.push(e.Output);
+                  e.Input = temp2;
+                  e.Output = temp3;
+                  return e;
+                })
+                console.log(temp)
                 await db("coding").insert({
                   CodeDescription: element.CodeDescription,
                   Language_allowed: generalInformation.LanguageAllowed,
@@ -62,43 +75,6 @@ module.exports = {
     const test = (await db("test").where("TestID", testID))[0];
     const listQuestion = (await db.raw(`call getQuestionList('${test.TestID}')`))[0][0];
     
-    /*const listQuestionID = test.QuestionID;
-    const listQuestion = [];
-    for (const item of listQuestionID) {
-      const question = (await db("question").where("ID", item))[0];
-      var res = {};
-      res.ID = question.ID;
-      res.QuestionType = question.QuestionType;
-      res.Score = question.Score;
-      if (question.QuestionType == "MultipleChoice") {
-        try {
-        const multipleQuestion = (
-          await db("multiplechoice").where("QuestionID", question.ID)
-        )[0];
-        res.Description = multipleQuestion.MCDescription;
-        res.Answer = multipleQuestion.Answer;
-        res.CorrectAnswer = multipleQuestion.CorrectAnswer;
-        res.CodeSample = multipleQuestion.MCCoding;
-        console.log(res)
-        }
-        catch(e) {
-          res.Description = "";
-        res.Answer = [];
-        res.CorrectAnswer = [];
-        }
-      } else if (question.QuestionType == "Code") {
-        const codeQuestion = (
-          await db("coding").where("QuestionID", question.ID)
-        )[0];
-        res.Description = codeQuestion.CodeDescription;
-        res.Language_allowed = codeQuestion.Language_allowed;
-        res.RunningTime = codeQuestion.RunningTime;
-        res.MemoryUsage = codeQuestion.MemoryUsage;
-        res.TestCase = codeQuestion.TestCase;
-        res.CodeSample = codeQuestion.CodeSample;
-      }
-      listQuestion.push(res);
-    }*/
     var result = {
       generalInformation: test,
       listQuestion: listQuestion,

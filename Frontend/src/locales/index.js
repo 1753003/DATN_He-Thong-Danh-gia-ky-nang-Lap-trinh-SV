@@ -90,7 +90,7 @@ if (getLocale() === 'vi-VN') Language = {
     'pages_test_testDetail_waitingThisTest': 'Vui lòng đợi một vài giây để tải lên bài kiểm tra này ...',
     'pages_test_testDetail_submittedThisTest': 'Bạn đã nộp bài kiểm tra này, bạn không thể nộp 2 lần',
     'pages_test_testDetail_backHome': 'Quay về trang chủ',
-    'pages_test_testDetail_timeOut_notSubmit': 'Hết giờ, bạn chưa bấm nộp. Chúng tôi sẽ nộp bài làm của bạn với câu trả lời rỗng.',
+    'pages_test_testDetail_timeOut_notSubmit': 'Thời gian làm bài kiểm tra này đã hết và dường như bạn đã thoát ra nữa chừng khi đang làm kiểm tra, chúng tôi sẽ nộp câu trả lời rỗng ngay bây giờ.',
     'pages_test_testDetail_timeOut_submit': 'Hết giờ, bài làm của bạn đã được ghi nhận.',
     'pages_test_testDetail_hours': 'giờ',
     'pages_test_testDetail_minutes': 'phút',
