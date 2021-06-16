@@ -42,8 +42,8 @@ class SearchResult extends React.Component {
           </Typography.Text>
         </div>
         <Divider></Divider>
-        <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
-          <Col className="gutter-row" span={18}>
+        <Row>
+          <Col className="gutter-row" span={17}>
             <ConfigProvider renderEmpty={customizeRenderEmpty}>
               <List
                 className="custom"
@@ -113,14 +113,14 @@ class SearchResult extends React.Component {
                           <Tag
                             style={{ marginBottom: '12px' }}
                             color={
-                              item._Set === 'Java'
+                              item._Set?.includes('Java')
                                 ? 'green'
-                                : item._Set === 'JavaScript'
+                                : item._Set?.includes('JavaScript')
                                 ? 'orange'
                                 : 'blue'
                             }
                           >
-                            {item._Set}
+                            {item.IsPractice ? item._Set : JSON.parse(item._Set)}
                           </Tag>
                           <br />
                           {item.IsPractice ? (
@@ -149,6 +149,7 @@ class SearchResult extends React.Component {
               />
             </ConfigProvider>
           </Col>
+          <Col className="gutter-row" span={1}></Col>
           <Col className="gutter-row" span={6} style={{ margin: '30px 0px 10px 0px' }}>
             <Title level={4}>{Language.pages_practice_list_status}</Title>
             <Checkbox

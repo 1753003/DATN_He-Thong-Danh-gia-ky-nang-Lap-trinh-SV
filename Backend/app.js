@@ -8,9 +8,9 @@ const app = express();
 app.use(express.json());
 
 app.use(morgan('dev'));
-const WEB = process.env.WEB || 'http://codejoy-fe.herokuapp.com/';
+const WEB = process.env.WEB || 'http://localhost:8000';
 app.use(cors({ credentials: true, origin: WEB}));
-app.use(cookieParser());
+app.use(cookieParser()); 
 // const csrfProtection = csrf({
 //     cookie: true
 //   });
@@ -30,8 +30,7 @@ app.use('/api/search', auth, require('./routes/search.route'))
 app.use('/api/developer', auth, require('./routes/developer.route'))
 app.use('/api/session', auth, require('./routes/session.route'))
 
-const PORT = 2359;
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, function() {
     console.log(`Backend is runnning at ${WEB}:${PORT}`);
 })
-
