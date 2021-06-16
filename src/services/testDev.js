@@ -1,7 +1,7 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import tokenHandling from './tokenHandling';
-import Constant from '@/utils/contants';
+import Constant from '@/utils/constants';
 
 export function getTestListBySet(set) {
   return new Promise((resolve, reject) => {

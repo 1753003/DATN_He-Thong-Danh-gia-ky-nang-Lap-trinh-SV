@@ -1,5 +1,5 @@
 import axios from 'axios';
-import Constant from '@/utils/contants';
+import Constant from '@/utils/constants';
 
 export function Register(params) {
   console.log(params)

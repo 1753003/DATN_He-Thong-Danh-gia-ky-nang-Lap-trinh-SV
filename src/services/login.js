@@ -1,6 +1,6 @@
 import request from '@/utils/request';
 import axios from 'axios';
-import Constant from '@/utils/contants';
+import Constant from '@/utils/constants';
 
 export function Login(params) {
   return new Promise((resolve, reject) => {
