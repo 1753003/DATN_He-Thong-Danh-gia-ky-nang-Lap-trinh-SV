@@ -397,7 +397,7 @@ class TestDetail extends React.Component {
         />
       );
     }
-
+    
     return (
       <div className={styles.body}>
         <div>
@@ -427,10 +427,7 @@ class TestDetail extends React.Component {
               </div>
             )}
           </div>
-          <Row>
-            <Col span={1}></Col>
-            <h2>{this.getData()?.generalInformation?.TestName}</h2>
-          </Row>
+          
           <Row className={styles.container}>
             <Col span={1}></Col>
             <Col span={15} className={styles.answer}>

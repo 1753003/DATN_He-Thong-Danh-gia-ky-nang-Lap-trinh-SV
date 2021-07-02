@@ -152,7 +152,7 @@ class GlobalHeaderRight extends Component {
     const { currentUser, onNoticeVisibleChange } = this.props;
     const noticeData = this.getNoticeData();
     const unreadMsg = this.getUnreadData(noticeData);
-
+    console.log(this.props.currentUser.totalNotiCount)
     return (
       <Spin 
       size='small' 
@@ -179,7 +179,7 @@ class GlobalHeaderRight extends Component {
           list={noticeData?.Notification?.concat(noticeData.Event)}
           title={Language.header_notifications}
           emptyText="You don't have any notifications."
-          showViewMore
+          showViewMore={this.props.currentUser.totalNotiCount>5}
           loading = {this.state.loadingMore}
         />
         {/* <NoticeIcon.Tab

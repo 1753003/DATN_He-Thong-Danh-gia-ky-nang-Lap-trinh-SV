@@ -1,5 +1,5 @@
 import request from 'umi-request';
-import Constant from '@/utils/contants';
+import Constant from '@/utils/constants';
 import axios from 'axios'
 import tokenHandling from '../../../services/tokenHandling';
 import Cookies from 'js-cookie';

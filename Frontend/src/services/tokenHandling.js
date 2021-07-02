@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie';
 import axios from 'axios';
-import Constant from '@/utils/contants';
+import Constant from '@/utils/constants';
 
 export default function tokenHandling(status, resolve, options) {
   const accessToken = Cookies.get('accessToken');
