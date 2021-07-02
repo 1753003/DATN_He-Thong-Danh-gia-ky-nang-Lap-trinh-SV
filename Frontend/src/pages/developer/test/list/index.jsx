@@ -272,7 +272,7 @@ const TestSetList = ({ location, dispatch, testDev, loading }) => {
                   />
                   {item.SubmissionID != null && (
                     <Button size="large" style={{ width: '100px' }}>
-                      Solved
+                      {Language.pages_practice_list_solved}
                     </Button>
                   )}
                   {item.SubmissionID == null && (
@@ -282,7 +282,7 @@ const TestSetList = ({ location, dispatch, testDev, loading }) => {
                       type="primary"
                     >
                       {' '}
-                      Start{' '}
+                      {Language.pages_search_start}{' '}
                     </Button>
                   )}
                 </List.Item>
