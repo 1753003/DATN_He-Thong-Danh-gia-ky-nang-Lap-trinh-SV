@@ -264,13 +264,13 @@ const practiceList = ({ location, dispatch, practice, loading }) => {
                 />
                 {item.SubmissionID != null && (
                   <Button size="large" style={{ width: '100px' }}>
-                    Solved
+                    {Language.pages_practice_list_solved}
                   </Button>
                 )}
                 {item.SubmissionID == null && (
                   <Button size="large" style={{ width: '100px' }} type="primary">
                     {' '}
-                    Start{' '}
+                    {Language.pages_search_start}{' '}
                   </Button>
                 )}
               </List.Item></Card>
