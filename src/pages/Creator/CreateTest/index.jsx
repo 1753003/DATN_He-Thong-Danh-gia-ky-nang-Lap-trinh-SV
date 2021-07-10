@@ -373,9 +373,12 @@ const RenderMiddle = ({ option, selectedQuiz, setQuiz, quiz, action }) => {
     case 'quiz':
       return (
         <div className={styles.quizInfoContainer}>
+          <Card title="Preview Description" style={{ marginBottom: '20px' }}>
+            <ReactMarkdown>{selectedQuiz?.MCDescription}</ReactMarkdown>
+          </Card>
           <h3>Description</h3>
           <Input.TextArea
-            placeholder="Typing your question here ..."
+            placeholder="Use markdown and Typing your question here ..."
             autoSize={{ minRows: 10, maxRows: 20 }}
             value={selectedQuiz.MCDescription}
             onChange={handleMCDescriptionChange}
@@ -481,13 +484,14 @@ const RenderMiddle = ({ option, selectedQuiz, setQuiz, quiz, action }) => {
     case 'code':
       return (
         <div className={styles.codeContainer}>
-          <Card title="Preview" style={{ marginBottom: '20px' }}>
+          <Card title="Preview Description" style={{ marginBottom: '20px' }}>
             <ReactMarkdown>{selectedQuiz?.CodeDescription}</ReactMarkdown>
           </Card>
           <h3>Code Description</h3>
           <Input.TextArea
             onChange={onChangeCodeDescription}
             value={selectedQuiz?.CodeDescription}
+            placeholder="Use markdown and Typing your description here ..."
           />
           <h3>Test Case</h3>
           {selectedQuiz.TestCase?.map((item, index) => {
