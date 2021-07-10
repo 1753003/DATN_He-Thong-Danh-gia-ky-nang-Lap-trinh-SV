@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import styles from './index.less';
-import { Button, Typography } from 'antd';
+import { Button, Typography, Card } from 'antd';
 import { CheckCircleTwoTone, CloseCircleTwoTone } from '@ant-design/icons';
 import { connect, useHistory } from 'umi';
 import { PageLoading } from '@ant-design/pro-layout';
+import ReactMarkdown from 'react-markdown';
 
 const TestDetail = ({ dispatch, location }) => {
   const history = useHistory();
@@ -112,7 +113,7 @@ const Question = ({ list }) => {
           {item.ID}-{item.QuestionType}
         </div>
         <div className={styles.question}>{item.Question}</div>
-        <div style={{ fontSize: '18px', whiteSpace: 'pre-line' }}>{item.Description}</div>
+        <ReactMarkdown>{item.Description}</ReactMarkdown>
         <div className={styles.mark}>{item.Score} mark</div>
         {item.QuestionType === 'Code' ? (
           <div>
@@ -130,6 +131,7 @@ const Question = ({ list }) => {
             </div>
             <div>
               <b>CodeSample: </b>
+              <br />
               {item?.CodeSample || 'Empty'}
             </div>
             {item?.TestCase?.map((tc, index) => {
