@@ -26,20 +26,9 @@ module.exports = {
                   Answer: JSON.stringify(element.Answer),
                   CorrectAnswer: JSON.stringify(element.CorrectAnswer),
                   QuestionID: result[0],
-                  MCCoding: element.CodeSample
+                  MCCoding: element.CodeSample,
                 });
               } else if (element.QuestionType === "Code") {
-                console.log(element.TestCase);
-                let temp;
-                let temp2 = [], temp3 = [];
-                temp = element.TestCase.map(e => {
-                  temp2.push(e.Input);
-                  temp3.push(e.Output);
-                  e.Input = temp2;
-                  e.Output = temp3;
-                  return e;
-                })
-                console.log(temp)
                 await db("coding").insert({
                   CodeDescription: element.CodeDescription,
                   Language_allowed: generalInformation.LanguageAllowed,
@@ -73,13 +62,15 @@ module.exports = {
 
   async getTestByID(testID) {
     const test = (await db("test").where("TestID", testID))[0];
-    const listQuestion = (await db.raw(`call getQuestionList('${test.TestID}')`))[0][0];
-    
+    const listQuestion = (
+      await db.raw(`call getQuestionList('${test.TestID}')`)
+    )[0][0];
+
     var result = {
       generalInformation: test,
       listQuestion: listQuestion,
     };
-    console.log(result)
+    console.log(result);
     return result;
   },
 
@@ -146,7 +137,7 @@ module.exports = {
   },
   async getTestBySet(set, uid) {
     const list = (await db.raw(`call getTestSet ('${uid}', '${set}')`))[0][0];
-    return list
+    return list;
   },
   async updateTest(test, testID) {
     test.generalInformation.QuestionID = JSON.stringify(
