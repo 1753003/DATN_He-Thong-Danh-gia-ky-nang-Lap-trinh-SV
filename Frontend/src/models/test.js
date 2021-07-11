@@ -171,7 +171,6 @@ const TestModel = {
     },
     *updateTest({ payload }, { call }) {
       try {
-        console.log('hádfjkasjdfajskdf');
         yield call(updateEditedTest, payload);
       } catch (e) {
         console.log(e);

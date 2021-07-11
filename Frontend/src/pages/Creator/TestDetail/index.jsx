@@ -6,6 +6,7 @@ import { connect, useHistory } from 'umi';
 import { PageLoading } from '@ant-design/pro-layout';
 import ReactMarkdown from 'react-markdown';
 import NotFound from '@/pages/404';
+import MDEditor from '@uiw/react-md-editor';
 
 const TestDetail = ({ dispatch, location }) => {
   const history = useHistory();
@@ -118,7 +119,9 @@ const Question = ({ list }) => {
           {item.ID}-{item.QuestionType}
         </div>
         <div className={styles.question}>{item.Question}</div>
-        <ReactMarkdown>{item.Description}</ReactMarkdown>
+        <b>Description: </b>
+        <MDEditor.Markdown className="problem" source={item.Description}></MDEditor.Markdown>
+
         <div className={styles.mark}>{item.Score} mark</div>
         {item.QuestionType === 'Code' ? (
           <div>
@@ -137,7 +140,11 @@ const Question = ({ list }) => {
             <div>
               <b>CodeSample: </b>
               <br />
-              {item?.CodeSample || 'Empty'}
+              <MDEditor.Markdown
+                className="problem"
+                source={`\`\`\` \n${item?.CodeSample}\n\`\`\`` || 'Empty'}
+              ></MDEditor.Markdown>
+              <br />
             </div>
             {item?.TestCase?.map((tc, index) => {
               return (
@@ -158,7 +165,11 @@ const Question = ({ list }) => {
           <>
             <div>
               <b>CodeSample: </b>
-              {item?.CodeSample || 'Empty'}
+              <MDEditor.Markdown
+                className="problem"
+                source={`\`\`\`\n${item?.CodeSample}\n\`\`\`` || 'Empty'}
+              ></MDEditor.Markdown>
+              <br />
             </div>
             {item?.Answer?.map((choice, index) => {
               return (
