@@ -160,8 +160,9 @@ module.exports = {
                 Answer: JSON.stringify(question.Answer),
                 CorrectAnswer: JSON.stringify(question.CorrectAnswer),
                 QuestionID: id[0],
+                MCCoding: question.CodeSample,
               });
-            } else if (question.QuestionType == "Coding") {
+            } else if (question.QuestionType == "Code") {
               await db("coding").insert({
                 CodeDescription: question.CodeDescription,
                 Language_allowed: JSON.stringify(question.Language_allowed),
@@ -192,6 +193,7 @@ module.exports = {
               MCDescription: question.MCDescription,
               Answer: JSON.stringify(question.Answer),
               CorrectAnswer: JSON.stringify(question.CorrectAnswer),
+              MCCoding: question.CodeSample,
             });
         } else if (question.QuestionType == "Code") {
           await db("coding")
