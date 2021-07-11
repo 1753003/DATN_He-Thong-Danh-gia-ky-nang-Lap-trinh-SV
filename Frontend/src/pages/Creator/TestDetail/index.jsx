@@ -5,6 +5,7 @@ import { CheckCircleTwoTone, CloseCircleTwoTone } from '@ant-design/icons';
 import { connect, useHistory } from 'umi';
 import { PageLoading } from '@ant-design/pro-layout';
 import ReactMarkdown from 'react-markdown';
+import NotFound from '@/pages/404';
 
 const TestDetail = ({ dispatch, location }) => {
   const history = useHistory();
@@ -39,67 +40,71 @@ const TestDetail = ({ dispatch, location }) => {
     });
   };
 
-  return !loading ? (
-    <div className={styles.container}>
-      <div className={styles.left}>
-        <div className={styles.testName}>{test.generalInformation?.TestName}</div>
+  if (loading) return <PageLoading />;
+  if (test)
+    return (
+      <div className={styles.container}>
+        <div className={styles.left}>
+          <div className={styles.testName}>{test.generalInformation?.TestName}</div>
 
-        <div className={styles.otherInfo}>
-          <p>
-            <b>Permission: </b>
-            {test.generalInformation?.Permissions || 'Public'}
-          </p>
-
-          <p>
-            <b>TestCode: </b>
-            {test.generalInformation?.TestCode}
-          </p>
-
-          <p>
-            <b>Time: </b>
-            {test.generalInformation?.TestTime}
-          </p>
-          <p>
-            <b className={styles.bold}>Do again: </b>
-            {test.generalInformation?.Again || 'false'}
-          </p>
-          <p>
-            <b className={styles.bold}>Total of questions: </b>
-            {test.listQuestion?.length}
-          </p>
-          <p>
-            <b className={styles.bold}>Max score: </b>
-            {test.generalInformation?.MaxScore} marks
-          </p>
-          {test.generalInformation?.StartTime && (
+          <div className={styles.otherInfo}>
             <p>
-              <b className={styles.bold}>Start date: </b>
-              {test.generalInformation?.StartTime} marks
+              <b>Permission: </b>
+              {test.generalInformation?.Permissions || 'Public'}
             </p>
-          )}
 
-          {test.generalInformation?.EndTime && (
             <p>
-              <b className={styles.bold}>End Time: </b>
-              {test.generalInformation?.EndTime} marks
+              <b>TestCode: </b>
+              {test.generalInformation?.TestCode}
             </p>
-          )}
+
+            <p>
+              <b>Time: </b>
+              {test.generalInformation?.TestTime}
+            </p>
+            <p>
+              <b className={styles.bold}>Do again: </b>
+              {test.generalInformation?.Again || 'false'}
+            </p>
+            <p>
+              <b className={styles.bold}>Total of questions: </b>
+              {test.listQuestion?.length}
+            </p>
+            <p>
+              <b className={styles.bold}>Max score: </b>
+              {test.generalInformation?.MaxScore} marks
+            </p>
+            {test.generalInformation?.StartTime && (
+              <p>
+                <b className={styles.bold}>Start date: </b>
+                {test.generalInformation?.StartTime} marks
+              </p>
+            )}
+
+            {test.generalInformation?.EndTime && (
+              <p>
+                <b className={styles.bold}>End Time: </b>
+                {test.generalInformation?.EndTime} marks
+              </p>
+            )}
+          </div>
+          <div className={styles.editContainer}>
+            <Button type="primary" onClick={handleEditClick}>
+              Edit
+            </Button>
+          </div>
         </div>
-        <div className={styles.editContainer}>
-          <Button type="primary" onClick={handleEditClick}>
-            Edit
-          </Button>
+
+        <div className={styles.right}>
+          <h3>Questions</h3>
+          <Question list={test?.listQuestion} />
         </div>
       </div>
+    );
 
-      <div className={styles.right}>
-        <h3>Questions</h3>
-        <Question list={test?.listQuestion} />
-      </div>
-    </div>
-  ) : (
-    <PageLoading />
-  );
+  if (!test) {
+    return <NotFound />;
+  }
 };
 
 const Question = ({ list }) => {
