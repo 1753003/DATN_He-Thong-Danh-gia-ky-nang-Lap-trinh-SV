@@ -56,9 +56,16 @@ const TestModel = {
       });
     },
     *getTestByIdModel({ payload }, { call, put }) {
-      const response = yield call(getTestById, payload.id);
-      if (payload.callback) {
-        payload.callback(response);
+      try {
+        const response = yield call(getTestById, payload.id);
+        if (payload.callback) {
+          payload.callback(response);
+        }
+      } catch (e) {
+        console.log(e);
+        if (payload.callback) {
+          payload.callback(undefined);
+        }
       }
 
       yield put({
@@ -230,7 +237,7 @@ const TestModel = {
             // console.log(tc.Input[0])
             var input = tc.Input[0];
             var expected_output = tc.Output[0];
-            console.log(tc.Input, tc.Input[0], u_btoa(input))
+            console.log(tc.Input, tc.Input[0], u_btoa(input));
             let data = {
               source_code: code,
               language_id: lang_id,
@@ -255,7 +262,7 @@ const TestModel = {
           const token = token_batch.join(',');
 
           let result = yield getSubmissionBatch(token);
-        
+
           result = JSON.parse(
             JSON.stringify(result, function (key, value) {
               return value == null ? '' : value;
@@ -268,7 +275,7 @@ const TestModel = {
           let TestCasePassed = [];
 
           let i = 0;
-          console.log(result.submissions)
+          console.log(result.submissions);
           result.submissions.forEach((item) => {
             if (item.expected_output === item.stdout) TestCasePassed.push(i);
             i++;

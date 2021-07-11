@@ -30,6 +30,7 @@ import {
 } from '@ant-design/icons';
 import { connect } from 'umi';
 import ReactMarkdown from 'react-markdown';
+import NotFound from '@/pages/404';
 import _ from 'lodash';
 import 'brace/mode/javascript';
 import 'brace/mode/c_cpp';
@@ -54,33 +55,37 @@ const CreateTest = ({ dispatch, location }) => {
   const [form] = Form.useForm();
 
   const updateEditInformation = (response) => {
-    const { generalInformation, listQuestion } = response;
-    generalInformation.LanguageAllowed = JSON.parse(generalInformation.LanguageAllowed);
-    if (generalInformation.StartTime) {
-      generalInformation.StartTime = moment(generalInformation.StartTime);
-    }
-    if (generalInformation.EndTime) {
-      generalInformation.EndTime = moment(generalInformation.EndTime);
-    }
-    generalInformation.TestTime = moment(generalInformation.TestTime, 'hh:mm:ss');
-    setInformation(generalInformation);
-    listQuestion.forEach((item, index) => {
-      item.key = index;
-      if (item.QuestionType === 'MultipleChoice') {
-        item.QuestionType = 'quiz';
-        item.MCDescription = item.Description;
-        delete item.Description;
+    if (response) {
+      const { generalInformation, listQuestion } = response;
+      generalInformation.LanguageAllowed = JSON.parse(generalInformation.LanguageAllowed);
+      if (generalInformation.StartTime) {
+        generalInformation.StartTime = moment(generalInformation.StartTime);
       }
-      if (item.QuestionType === 'Code') {
-        item.QuestionType = 'code';
-        item.CodeDescription = item.Description;
-        delete item.Description;
+      if (generalInformation.EndTime) {
+        generalInformation.EndTime = moment(generalInformation.EndTime);
       }
-    });
-    setQuiz(listQuestion);
-    setSelectedQuiz(listQuestion[0]);
+      generalInformation.TestTime = moment(generalInformation.TestTime, 'hh:mm:ss');
+      setInformation(generalInformation);
+      listQuestion.forEach((item, index) => {
+        item.key = index;
+        if (item.QuestionType === 'MultipleChoice') {
+          item.QuestionType = 'quiz';
+          item.MCDescription = item.Description;
+          delete item.Description;
+        }
+        if (item.QuestionType === 'Code') {
+          item.QuestionType = 'code';
+          item.CodeDescription = item.Description;
+          delete item.Description;
+        }
+      });
+      setQuiz(listQuestion);
+      setSelectedQuiz(listQuestion[0]);
 
-    form.setFieldsValue(generalInformation);
+      form.setFieldsValue(generalInformation);
+    } else {
+      setInformation(undefined);
+    }
     setLoading(false);
   };
 
@@ -116,6 +121,7 @@ const CreateTest = ({ dispatch, location }) => {
 
   const updateSuccess = () => {
     message.success('Update test successfully !!!');
+    history.back();
   };
 
   const updateFail = () => {
@@ -190,147 +196,151 @@ const CreateTest = ({ dispatch, location }) => {
     }
   };
 
-  return loading ? (
-    <PageLoading />
-  ) : (
-    <div className={styles.container}>
-      <div className={styles.header}>
-        <Button
-          type="primary"
-          onClick={() => {
-            setVisibleDrawer(true);
-          }}
-        >
-          Test Infomation <PlusOutlined />
-        </Button>
-        <Button onClick={handleSubmitTest} className={styles.submitBtn}>
-          {action === 'CREATE' ? 'CREATE' : 'UPDATE'}
-        </Button>
-      </div>
-      <div className={styles.bodyContainer}>
-        <div className={styles.left}>
-          {quiz?.map((item, index) => {
-            return (
-              <Button
-                className={styles.quizContainer}
-                onClick={() => handleChangeQuiz(item)}
-                key={index}
-                type={item.ID === selectedQuiz.ID ? 'primary' : 'default'}
-              >
-                {index + 1} - {item.QuestionType}
-              </Button>
-            );
-          })}
+  if (information) {
+    return loading ? (
+      <PageLoading />
+    ) : (
+      <div className={styles.container}>
+        <div className={styles.header}>
           <Button
-            onClick={() => {
-              const newQuiz = [...quiz];
-              const payload = {
-                key: newQuiz.length,
-                QuestionType: 'quiz',
-                ID: (newQuiz.length + 1).toString(),
-                MCDescription: '',
-                Answer: [],
-                CorrectAnswer: [],
-                CodeSample: '',
-                Score: 0,
-              };
-              if (action === 'UPDATE') {
-                payload.ID = '_' + Math.random().toString(36).substr(2, 9);
-              }
-              newQuiz.push(payload);
-              setQuiz(newQuiz);
-            }}
             type="primary"
-            style={{ marginTop: 20 }}
+            onClick={() => {
+              setVisibleDrawer(true);
+            }}
           >
-            Create New Quiz
+            Test Infomation <PlusOutlined />
+          </Button>
+          <Button onClick={handleSubmitTest} className={styles.submitBtn}>
+            {action === 'CREATE' ? 'CREATE' : 'UPDATE'}
           </Button>
         </div>
-        <div className={styles.mid}>
-          <RenderMiddle
-            option={option}
-            selectedQuiz={selectedQuiz}
-            setQuiz={setQuiz}
-            quiz={quiz}
-            action={action}
-          />
-        </div>
-        {selectedQuiz.ID && (
-          <div className={styles.right}>
-            <div className={styles.option}>
-              <div className={styles.optionTitle}>
-                <QuestionOutlined />
-                Question Type
-              </div>
-              <Select
-                style={{ width: '100%' }}
-                value={selectedQuiz.QuestionType}
-                onChange={(value) => {
-                  const newQuiz = [...quiz];
-                  newQuiz.forEach((item) => {
-                    if (item.ID === selectedQuiz.ID) {
-                      if (value === 'quiz') {
-                        item.QuestionType = 'quiz';
-                        item.Score = 0;
-                        item.MCDescription = '';
-                        item.Answer = [];
-                        item.CorrectAnswer = [];
-                        item.CodeSample = '';
-                        delete item.TestCase;
-                        delete item.CodeDescription;
-                        delete item.RunningTime;
-                        delete item.MemoryUsage;
-                      }
-                      if (value === 'code') {
-                        item.QuestionType = 'code';
-                        item.Score = 0;
-                        item.CodeDescription = '';
-                        item.TestCase = [];
-                        item.RunningTime = '';
-                        item.MemoryUsage = '';
-                        item.CodeSample = '';
-                        delete item.CorrectAnswer;
-                        delete item.Answer;
-                        delete item.MCDescription;
-                      }
-                    }
-                  });
-                  setQuiz(newQuiz);
-                }}
-              >
-                <Option value="quiz">Quiz</Option>
-                <Option value="code">Code</Option>
-              </Select>
-            </div>
-            <div className={styles.option}>
-              <div className={styles.optionTitle}>
-                <DollarCircleOutlined />
-                Points
-              </div>
-              <InputNumber
-                onChange={(value) => {
-                  const newQuiz = [...quiz];
-                  newQuiz.forEach((item) => {
-                    if (item.ID === selectedQuiz.ID) item.Score = value;
-                  });
-                  setQuiz(newQuiz);
-                }}
-                value={selectedQuiz.Score}
-                style={{ width: '100%' }}
-              />
-            </div>
+        <div className={styles.bodyContainer}>
+          <div className={styles.left}>
+            {quiz?.map((item, index) => {
+              return (
+                <Button
+                  className={styles.quizContainer}
+                  onClick={() => handleChangeQuiz(item)}
+                  key={index}
+                  type={item.ID === selectedQuiz.ID ? 'primary' : 'default'}
+                >
+                  {index + 1} - {item.QuestionType}
+                </Button>
+              );
+            })}
+            <Button
+              onClick={() => {
+                const newQuiz = [...quiz];
+                const payload = {
+                  key: newQuiz.length,
+                  QuestionType: 'quiz',
+                  ID: (newQuiz.length + 1).toString(),
+                  MCDescription: '',
+                  Answer: [],
+                  CorrectAnswer: [],
+                  CodeSample: '',
+                  Score: 0,
+                };
+                if (action === 'UPDATE') {
+                  payload.ID = '_' + Math.random().toString(36).substr(2, 9);
+                }
+                newQuiz.push(payload);
+                setQuiz(newQuiz);
+              }}
+              type="primary"
+              style={{ marginTop: 20 }}
+            >
+              Create New Quiz
+            </Button>
           </div>
-        )}
-      </div>
+          <div className={styles.mid}>
+            <RenderMiddle
+              option={option}
+              selectedQuiz={selectedQuiz}
+              setQuiz={setQuiz}
+              quiz={quiz}
+              action={action}
+            />
+          </div>
+          {selectedQuiz.ID && (
+            <div className={styles.right}>
+              <div className={styles.option}>
+                <div className={styles.optionTitle}>
+                  <QuestionOutlined />
+                  Question Type
+                </div>
+                <Select
+                  style={{ width: '100%' }}
+                  value={selectedQuiz.QuestionType}
+                  onChange={(value) => {
+                    const newQuiz = [...quiz];
+                    newQuiz.forEach((item) => {
+                      if (item.ID === selectedQuiz.ID) {
+                        if (value === 'quiz') {
+                          item.QuestionType = 'quiz';
+                          item.Score = 0;
+                          item.MCDescription = '';
+                          item.Answer = [];
+                          item.CorrectAnswer = [];
+                          item.CodeSample = '';
+                          delete item.TestCase;
+                          delete item.CodeDescription;
+                          delete item.RunningTime;
+                          delete item.MemoryUsage;
+                        }
+                        if (value === 'code') {
+                          item.QuestionType = 'code';
+                          item.Score = 0;
+                          item.CodeDescription = '';
+                          item.TestCase = [];
+                          item.RunningTime = '';
+                          item.MemoryUsage = '';
+                          item.CodeSample = '';
+                          delete item.CorrectAnswer;
+                          delete item.Answer;
+                          delete item.MCDescription;
+                        }
+                      }
+                    });
+                    setQuiz(newQuiz);
+                  }}
+                >
+                  <Option value="quiz">Quiz</Option>
+                  <Option value="code">Code</Option>
+                </Select>
+              </div>
+              <div className={styles.option}>
+                <div className={styles.optionTitle}>
+                  <DollarCircleOutlined />
+                  Points
+                </div>
+                <InputNumber
+                  onChange={(value) => {
+                    const newQuiz = [...quiz];
+                    newQuiz.forEach((item) => {
+                      if (item.ID === selectedQuiz.ID) item.Score = value;
+                    });
+                    setQuiz(newQuiz);
+                  }}
+                  value={selectedQuiz.Score}
+                  style={{ width: '100%' }}
+                />
+              </div>
+            </div>
+          )}
+        </div>
 
-      <DrawerForm
-        visible={visibleDrawer}
-        onClose={onClose}
-        form={form}
-        setInformation={setInformation}
-      />
-    </div>
-  );
+        <DrawerForm
+          visible={visibleDrawer}
+          onClose={onClose}
+          form={form}
+          setInformation={setInformation}
+        />
+      </div>
+    );
+  } else {
+    return <NotFound />;
+  }
 };
 
 const RenderMiddle = ({ option, selectedQuiz, setQuiz, quiz, action }) => {

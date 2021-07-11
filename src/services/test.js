@@ -21,7 +21,7 @@ export function getTestList() {
       })
       .catch((error) => {
         // handle error
-        const message = error.response.data.message;
+        const message = error.response?.data.message;
         tokenHandling(message, resolve, options);
       });
   });
@@ -45,7 +45,7 @@ export function getTestIdByCode(code) {
       })
       .catch((error) => {
         // handle error
-        const message = error.response.data.message;
+        const message = error.response?.data.message;
         tokenHandling(message, resolve, options);
       });
   });
@@ -70,8 +70,9 @@ export function getTestById(id) {
       })
       .catch((error) => {
         // handle error
-        const message = error.response.data.message;
+        const message = error.response?.data.message;
         tokenHandling(message, resolve, options);
+        reject();
       });
   });
 }
@@ -188,8 +189,9 @@ export function postSubmission(data) {
       })
       .catch((error) => {
         // handle error
-        const message = error.response.data.message;
+        const message = error.response?.data.message;
         tokenHandling(message, resolve, options);
+        reject();
       });
   });
 }
@@ -213,8 +215,9 @@ export function checkSubmission(testID) {
       })
       .catch((error) => {
         // handle error
-        const message = error.response.data.message;
+        const message = error.response?.data.message;
         tokenHandling(message, resolve, options);
+        reject();
       });
   });
 }
