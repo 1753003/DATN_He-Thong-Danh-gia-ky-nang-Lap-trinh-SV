@@ -29,7 +29,7 @@ const TestDetail = ({ dispatch, location }) => {
         payload: { id: location.query.id, callback: setTestInformation },
       });
     }
-  }, []);
+  }, [location]);
 
   const handleEditClick = () => {
     history.push({
