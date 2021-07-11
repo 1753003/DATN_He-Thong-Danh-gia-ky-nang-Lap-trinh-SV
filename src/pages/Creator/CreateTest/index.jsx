@@ -98,7 +98,7 @@ const CreateTest = ({ dispatch, location }) => {
         payload: { id: location.query.id, callback: updateEditInformation },
       });
     }
-  }, [location.query.id]);
+  }, [location]);
 
   const handleChangeQuiz = (item) => {
     setSelectedQuiz(item);
@@ -196,10 +196,12 @@ const CreateTest = ({ dispatch, location }) => {
     }
   };
 
+  if (loading) {
+    return <PageLoading />;
+  }
+
   if (information) {
-    return loading ? (
-      <PageLoading />
-    ) : (
+    return (
       <div className={styles.container}>
         <div className={styles.header}>
           <Button

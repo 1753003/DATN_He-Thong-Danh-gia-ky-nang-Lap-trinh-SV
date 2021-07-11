@@ -58,6 +58,10 @@ const TestModel = {
     *getTestByIdModel({ payload }, { call, put }) {
       try {
         const response = yield call(getTestById, payload.id);
+        yield put({
+          type: 'saveTestById',
+          payload: response,
+        });
         if (payload.callback) {
           payload.callback(response);
         }
@@ -67,11 +71,6 @@ const TestModel = {
           payload.callback(undefined);
         }
       }
-
-      yield put({
-        type: 'saveTestById',
-        payload: response,
-      });
     },
     *getTestByID({ payload }, { put, call, select }) {
       const checkSubmit = yield call(checkSubmission, payload.id);
