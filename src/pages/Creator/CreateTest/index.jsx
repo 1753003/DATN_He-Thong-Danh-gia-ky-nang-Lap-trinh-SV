@@ -31,7 +31,7 @@ import {
 import { connect } from 'umi';
 import ReactMarkdown from 'react-markdown';
 import NotFound from '@/pages/404';
-import _ from 'lodash';
+import _, { random } from 'lodash';
 import 'brace/mode/javascript';
 import 'brace/mode/c_cpp';
 import 'brace/mode/java';
@@ -42,6 +42,7 @@ import 'brace/snippets/java';
 import 'brace/snippets/javascript';
 import 'brace/ext/language_tools';
 import 'brace/ext/searchbox';
+import MDEditor from '@uiw/react-md-editor';
 
 const { Option } = Select;
 const CreateTest = ({ dispatch, location }) => {
@@ -70,13 +71,9 @@ const CreateTest = ({ dispatch, location }) => {
         item.key = index;
         if (item.QuestionType === 'MultipleChoice') {
           item.QuestionType = 'quiz';
-          item.MCDescription = item.Description;
-          delete item.Description;
         }
         if (item.QuestionType === 'Code') {
           item.QuestionType = 'code';
-          item.CodeDescription = item.Description;
-          delete item.Description;
         }
       });
       setQuiz(listQuestion);
@@ -140,10 +137,14 @@ const CreateTest = ({ dispatch, location }) => {
         delete newQuiz.key;
         if (newQuiz.QuestionType === 'quiz') {
           newQuiz.QuestionType = 'MultipleChoice';
+          newQuiz.MCDescription = newQuiz.Description;
         }
         if (newQuiz.QuestionType === 'code') {
           newQuiz.QuestionType = 'Code';
+          newQuiz.CodeDescription = newQuiz.Description;
         }
+
+        delete newQuiz.Description;
         refactorQuestions.push(newQuiz);
       });
 
@@ -237,7 +238,7 @@ const CreateTest = ({ dispatch, location }) => {
                   key: newQuiz.length,
                   QuestionType: 'quiz',
                   ID: (newQuiz.length + 1).toString(),
-                  MCDescription: '',
+                  Description: '',
                   Answer: [],
                   CorrectAnswer: [],
                   CodeSample: '',
@@ -281,26 +282,26 @@ const CreateTest = ({ dispatch, location }) => {
                         if (value === 'quiz') {
                           item.QuestionType = 'quiz';
                           item.Score = 0;
-                          item.MCDescription = '';
+                          item.Description = '';
                           item.Answer = [];
                           item.CorrectAnswer = [];
                           item.CodeSample = '';
                           delete item.TestCase;
-                          delete item.CodeDescription;
+                          delete item.Description;
                           delete item.RunningTime;
                           delete item.MemoryUsage;
                         }
                         if (value === 'code') {
                           item.QuestionType = 'code';
                           item.Score = 0;
-                          item.CodeDescription = '';
+                          item.Description = '';
                           item.TestCase = [];
                           item.RunningTime = '';
                           item.MemoryUsage = '';
                           item.CodeSample = '';
                           delete item.CorrectAnswer;
                           delete item.Answer;
-                          delete item.MCDescription;
+                          delete item.Description;
                         }
                       }
                     });
@@ -346,6 +347,19 @@ const CreateTest = ({ dispatch, location }) => {
 };
 
 const RenderMiddle = ({ option, selectedQuiz, setQuiz, quiz, action }) => {
+  const [description, setDescription] = useState(
+    selectedQuiz?.Description ? selectedQuiz?.Description : selectedQuiz?.Description,
+  );
+  useEffect(() => {
+    const newQuiz = [...quiz];
+    newQuiz.forEach((item) => {
+      if (item.ID === selectedQuiz.ID) {
+        item.Description = description;
+      }
+    });
+    setQuiz(newQuiz);
+  }, [description]);
+
   const onChangeAnswer = (index, selectedQuizID) => {
     if (checkCorrectAnswer(index, selectedQuizID)) {
       const newArray = _.remove(quiz[selectedQuizID].CorrectAnswer, function (n) {
@@ -361,39 +375,21 @@ const RenderMiddle = ({ option, selectedQuiz, setQuiz, quiz, action }) => {
     }
   };
 
-  const handleMCDescriptionChange = (event) => {
-    console.log(event.target.value);
-    const newQuiz = [...quiz];
-    newQuiz.forEach((item) => {
-      if (item.ID === selectedQuiz.ID) item.MCDescription = event.target.value;
-    });
-    setQuiz(newQuiz);
-  };
-
   const checkCorrectAnswer = (id, selectedQuizID) => {
     return quiz[selectedQuizID].CorrectAnswer?.includes(id);
   };
 
-  const onChangeCodeDescription = (e) => {
-    const newQuiz = [...quiz];
-    newQuiz.forEach((item) => {
-      if (item.ID === selectedQuiz.ID) item.CodeDescription = e.target.value;
-    });
-    setQuiz(newQuiz);
-  };
   switch (selectedQuiz.QuestionType) {
     case 'quiz':
       return (
         <div className={styles.quizInfoContainer}>
-          <Card title="Preview Description" style={{ marginBottom: '20px' }}>
-            <ReactMarkdown>{selectedQuiz?.MCDescription}</ReactMarkdown>
-          </Card>
           <h3>Description</h3>
-          <Input.TextArea
-            placeholder="Use markdown and Typing your question here ..."
-            autoSize={{ minRows: 10, maxRows: 20 }}
-            value={selectedQuiz.MCDescription}
-            onChange={handleMCDescriptionChange}
+          <MDEditor
+            style={{ width: '100%' }}
+            value={selectedQuiz?.Description}
+            onChange={setDescription}
+            highlightEnable={true}
+            id={random(1000)}
           />
           <div>
             <h3>CodeSample</h3>
@@ -496,14 +492,12 @@ const RenderMiddle = ({ option, selectedQuiz, setQuiz, quiz, action }) => {
     case 'code':
       return (
         <div className={styles.codeContainer}>
-          <Card title="Preview Description" style={{ marginBottom: '20px' }}>
-            <ReactMarkdown>{selectedQuiz?.CodeDescription}</ReactMarkdown>
-          </Card>
-          <h3>Code Description</h3>
-          <Input.TextArea
-            onChange={onChangeCodeDescription}
-            value={selectedQuiz?.CodeDescription}
-            placeholder="Use markdown and Typing your description here ..."
+          <h3>Description</h3>
+          <MDEditor
+            style={{ width: '100%' }}
+            value={selectedQuiz?.Description}
+            onChange={setDescription}
+            highlightEnable={true}
           />
           <h3>Test Case</h3>
           {selectedQuiz.TestCase?.map((item, index) => {
@@ -634,11 +628,9 @@ const RenderMiddle = ({ option, selectedQuiz, setQuiz, quiz, action }) => {
                   enableSnippets: true,
                 }}
                 onChange={(value) => {
-                  console.log(value);
                   const newQuiz = [...quiz];
                   newQuiz.forEach((quiz) => {
                     if (quiz.ID === selectedQuiz.ID) {
-                      console.log(value);
                       quiz.CodeSample = value;
                     }
                   });
