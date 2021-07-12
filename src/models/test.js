@@ -8,6 +8,7 @@ import {
   updateEditedTest,
   getTestIdByCode,
   deleteTest,
+  getTestInformationById,
 } from '@/services/test';
 import { checkSession, deleteSession } from '@/services/session';
 
@@ -23,6 +24,7 @@ import { history } from 'umi';
 const TestModel = {
   namespace: 'test',
   state: {
+    testInfo: {},
     testList: [],
     testById: {},
     question: 0,
@@ -32,7 +34,9 @@ const TestModel = {
     timeINT: '',
     isDid: false,
     isOut: false,
+    isValid: true,
     loading: true,
+    permission: true,
     statusFromCode: null,
   },
   effects: {
@@ -73,85 +77,108 @@ const TestModel = {
       }
     },
     *getTestByID({ payload }, { put, call, select }) {
-      const checkSubmit = yield call(checkSubmission, payload.id);
-      const response = yield call(getTestById, payload.id);
-      console.log('1');
-      if (response.generalInformation.Again === 0 && checkSubmit) {
-        console.log('2');
+     
+      if (payload.id.toString().localeCompare(' ') == -1) {
         yield put({
-          type: 'saveIsDid',
-          payload: true,
+          type: 'saveIsValid',
+          payload: false,
         });
       } else {
-        console.log('3');
-        const check = yield call(checkSession, {
-          TestID: payload.id,
-          Timed: moment(),
-        });
+        const checkSubmit = yield call(checkSubmission, payload.id);
+        const response = yield call(getTestById, payload.id);
 
-        yield put({
-          type: 'saveTestById',
-          payload: response,
-        });
-        const answerList = [];
-        yield select((state) => {
-          state.test.testById.listQuestion.forEach((e) => {
-            var temp = [];
-            console.log(e.QuestionType);
-            if (e.QuestionType === 'MultipleChoice') temp = [];
-            else temp = '';
-            answerList.push({
-              id: e.ID,
-              data: temp,
+        console.log('Error:', response.error, response.error.localeCompare('none'));
+        if (response.error.localeCompare('none') != 1) {
+          console.log('BB');
+          if (response.generalInformation.Again === 0 && checkSubmit) {
+            yield put({
+              type: 'saveIsDid',
+              payload: true,
             });
-          });
-        });
+          } else {
+            const check = yield call(checkSession, {
+              TestID: payload.id,
+              Timed: moment(),
+            });
 
-        yield put({
-          type: 'resetAnswerReducer',
-          payload: answerList,
-        });
+            yield put({
+              type: 'saveTestById',
+              payload: response,
+            });
+            const answerList = [];
+            yield select((state) => {
+              state.test.testById.listQuestion.forEach((e) => {
+                var temp = [];
+                console.log(e.QuestionType);
+                if (e.QuestionType === 'MultipleChoice') temp = [];
+                else temp = '';
+                answerList.push({
+                  id: e.ID,
+                  data: temp,
+                });
+              });
+            });
 
-        let timeArr = response.generalInformation.TestTime.split(':');
-        let time;
+            yield put({
+              type: 'resetAnswerReducer',
+              payload: answerList,
+            });
 
-        if (check.check) {
-          let temp = moment(check.timed);
-          time = temp.add(
-            parseInt(timeArr[0] * 60) + parseInt(timeArr[1]) + parseFloat(timeArr[2] / 60),
-            'minutes',
-          );
-        } else
-          time = moment().add(
-            parseInt(timeArr[0] * 60) + parseInt(timeArr[1]) + parseFloat(timeArr[2] / 60),
-            'minutes',
-          );
+            let timeArr = response.generalInformation.TestTime.split(':');
+            let time;
 
-        if (check.check && !checkSubmit)
+            if (check.check) {
+              let temp = moment(check.timed);
+              time = temp.add(
+                parseInt(timeArr[0] * 60) + parseInt(timeArr[1]) + parseFloat(timeArr[2] / 60),
+                'minutes',
+              );
+            } else
+              time = moment().add(
+                parseInt(timeArr[0] * 60) + parseInt(timeArr[1]) + parseFloat(timeArr[2] / 60),
+                'minutes',
+              );
+
+            if (check.check && !checkSubmit)
+              yield put({
+                type: 'saveIsOut',
+                payload: true,
+              });
+            let now = moment();
+            yield put({
+              type: 'resetTime',
+              payload: time,
+            });
+
+            yield put({
+              type: 'saveStartTime',
+              payload: now,
+            });
+
+            yield put({
+              type: 'saveTimeINT',
+              payload: timeArr,
+            });
+          }
+        } else {
+          console.log('AA');
           yield put({
-            type: 'saveIsOut',
-            payload: true,
+            type: 'savePermissions',
+            payload: false,
           });
-        let now = moment();
-        yield put({
-          type: 'resetTime',
-          payload: time,
-        });
-
-        yield put({
-          type: 'saveStartTime',
-          payload: now,
-        });
-
-        yield put({
-          type: 'saveTimeINT',
-          payload: timeArr,
-        });
+        }
       }
-      console.log('4');
+
       yield put({
         type: 'saveLoading',
         payload: false,
+      });
+    },
+    *getTestInformation({ payload }, { put, call}) {
+      const response = yield call(getTestInformationById, payload);
+      yield put({
+        type: 'saveTestInfo',
+        payload: response,
       });
     },
     *createTest({ payload }, { call }) {
@@ -365,6 +392,9 @@ const TestModel = {
     saveTestById(state, { payload }) {
       return { ...state, testById: payload };
     },
+    saveTestInfo(state, { payload }) {
+      return { ...state, testInfo: payload}
+    },
     resetAnswerReducer(state, { payload }) {
       return { ...state, answer: payload };
     },
@@ -385,14 +415,19 @@ const TestModel = {
       return { ...state, timeINT: payload };
     },
     saveIsDid(state, { payload }) {
-      console.log(payload);
       return { ...state, isDid: payload };
+    },
+    saveIsValid(state, { payload }) {
+      return { ...state, isValid: payload };
     },
     saveIsOut(state, { payload }) {
       return { ...state, isOut: payload };
     },
     saveLoading(state, { payload }) {
       return { ...state, loading: payload };
+    },
+    savePermissions(state, { payload }) {
+      return { ...state, permission: payload };
     },
     resetReducer(state, { payload }) {
       return {
@@ -405,6 +440,7 @@ const TestModel = {
         timeINT: '',
         isDid: false,
         isOut: false,
+        permission: true,
       };
     },
   },

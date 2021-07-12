@@ -73,7 +73,7 @@ export function getPracticeListDetail(id) {
   });
 }
 export function getPracticeSet(set) {
-
+  console.log(Constant)
   return new Promise((resolve, reject) => {
     var options = {
       method: 'GET',
