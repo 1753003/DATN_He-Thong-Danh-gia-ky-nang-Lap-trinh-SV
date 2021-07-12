@@ -61,6 +61,36 @@ module.exports = {
     return res;
   },
 
+  async getTestGeneralInformation(testID, type, uid) {
+    let check = true;
+    var result;
+    console.log(type)
+    if (type == 'developer') {
+      const test = (await db("test").where("TestID", testID))[0];
+      if (test.Permissions == 'private')
+      {
+        console.log(uid)
+        const testIDArray = (await db("userlogin").where("UserID", uid))[0].TestID;
+        if (testIDArray.indexOf(parseInt(testID)) == -1)
+          check = false;
+      }
+    }
+    if (check) {
+      const test = (await db("test").where("TestID", testID))[0];
+      result = {
+        generalInformation: test,
+        error: 'none'
+      };
+    }
+    else 
+      result = {
+        generalInformation: {},
+        error: 'Not permission'
+      }
+    //console.log(result);
+    return result;
+  },
+
   async getTestByID(testID, type, uid) {
     let check = true;
     var result;

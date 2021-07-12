@@ -8,6 +8,7 @@ import {
   updateEditedTest,
   getTestIdByCode,
   deleteTest,
+  getTestInformationById,
 } from '@/services/test';
 import { checkSession, deleteSession } from '@/services/session';
 
@@ -23,6 +24,7 @@ import { history } from 'umi';
 const TestModel = {
   namespace: 'test',
   state: {
+    testInfo: {},
     testList: [],
     testById: {},
     question: 0,
@@ -75,8 +77,8 @@ const TestModel = {
       }
     },
     *getTestByID({ payload }, { put, call, select }) {
-      console.log(payload.id,payload.id.localeCompare(' ') )
-      if (payload.id.localeCompare(' ') == -1) {
+     
+      if (payload.id.toString().localeCompare(' ') == -1) {
         yield put({
           type: 'saveIsValid',
           payload: false,
@@ -170,6 +172,13 @@ const TestModel = {
       yield put({
         type: 'saveLoading',
         payload: false,
+      });
+    },
+    *getTestInformation({ payload }, { put, call}) {
+      const response = yield call(getTestInformationById, payload);
+      yield put({
+        type: 'saveTestInfo',
+        payload: response,
       });
     },
     *createTest({ payload }, { call }) {
@@ -382,6 +391,9 @@ const TestModel = {
     },
     saveTestById(state, { payload }) {
       return { ...state, testById: payload };
+    },
+    saveTestInfo(state, { payload }) {
+      return { ...state, testInfo: payload}
     },
     resetAnswerReducer(state, { payload }) {
       return { ...state, answer: payload };

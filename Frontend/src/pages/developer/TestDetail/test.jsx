@@ -29,36 +29,32 @@ class TestDetail extends React.Component {
     then: '',
     check: false,
     error: false,
+    start: false,
   };
 
   constructor(props) {
     super(props);
+    this.handleUnload = this.handleUnload.bind(this);
+    this.handleBack = this.handleBack.bind(this);
     let id = props.location.state?.ID;
-    
+
     const key = props.location.query.key;
 
     if (key == 'Avx') {
       const temp = props.location.query.x;
       if (temp != undefined) {
-      var ciphertext = CryptoJS.AES.encrypt("34", 'secret key 12345').toString();
-      console.log(ciphertext)
+        var ciphertext = CryptoJS.AES.encrypt('34', 'secret key 12345').toString();
+        console.log(ciphertext);
 
-      var bytes  = CryptoJS.AES.decrypt(temp, 'secret key 12345');
-      var originalText = bytes.toString(CryptoJS.enc.Utf8);
-  
-      console.log(originalText);
-      id = originalText;
+        var bytes = CryptoJS.AES.decrypt(temp, 'secret key 12345');
+        var originalText = bytes.toString(CryptoJS.enc.Utf8);
+
+        console.log(originalText);
+        id = originalText;
       }
     }
-    
-    if (id != null) {
-      this.props.dispatch({ type: 'test/getTestByID', payload: { id } });
-      this.state = { answer: [] };
-      this.handleUnload = this.handleUnload.bind(this);
-      this.handleBack = this.handleBack.bind(this);
-    } else {
-      this.state = { error: true };
-    }
+    this.state = { id: id };
+    this.props.dispatch({ type: 'test/getTestInformation', payload: id });
   }
 
   componentWillUnmount() {
@@ -108,6 +104,35 @@ class TestDetail extends React.Component {
     }, 1000);
   }
 
+  handleStart() {
+    this.setState({
+      start: true,
+    });
+    let id = this.props.location.state?.ID;
+
+    const key = this.props.location.query.key;
+
+    if (key == 'Avx') {
+      const temp = this.props.location.query.x;
+      if (temp != undefined) {
+        var ciphertext = CryptoJS.AES.encrypt('34', 'secret key 12345').toString();
+        console.log(ciphertext);
+
+        var bytes = CryptoJS.AES.decrypt(temp, 'secret key 12345');
+        var originalText = bytes.toString(CryptoJS.enc.Utf8);
+
+        console.log(originalText);
+        id = originalText;
+      }
+    }
+
+    if (id != null) {
+      this.props.dispatch({ type: 'test/getTestByID', payload: { id } });
+      this.setState({ answer: [] });
+    } else {
+      this.setState({ error: true });
+    }
+  }
   handleUnload(e) {
     var message =
       'Your test will be submit and you will not have a second chance, are you sure to leave?';
@@ -144,11 +169,11 @@ class TestDetail extends React.Component {
       return '';
     }
   };
-  
+
   getCodeSampleMC = (i) => {
     const e = i;
-    return e.replaceAll('\\n', "\n")
-  }
+    return e?.replaceAll('\\n', '\n');
+  };
 
   onChangeAnswer = (checkedValues) => {
     this.props.dispatch({
@@ -330,235 +355,298 @@ class TestDetail extends React.Component {
     });
   };
   render() {
-    const { hours, minutes, seconds, check, error } = this.state;
-    if (error)
-      return (
-        <Result
-          title="Some error!"
-          extra={
-            <Button
-              type="primary"
-              key="console"
-              onClick={() => {
-                this.reset();
-                history.push('/developer/test');
-              }}
-            >
-              {Language.pages_test_testDetail_backHome}
-            </Button>
-          }
-        />
-      );
-  
-    if (this.props.test.loading) {
-      return <Spin tip={Language.pages_test_testDetail_waitingThisTest}></Spin>;
-    }
-    if (!this.props.test.isValid) {
-      return (
-        <Result
-          title="Your link is wrong!"
-          extra={
-            <Button
-              type="primary"
-              key="console"
-              onClick={() => {
-                this.reset();
-                history.push('/developer/test');
-              }}
-            >
-              {Language.pages_test_testDetail_backHome}
-            </Button>
-          }
-        />
-      );
-    }
-    if (!this.props.test.permission) {
-      return (
-        <Result
-          title="You do not have permission to access this test"
-          extra={
-            <Button
-              type="primary"
-              key="console"
-              onClick={() => {
-                this.reset();
-                history.push('/developer/test');
-              }}
-            >
-              {Language.pages_test_testDetail_backHome}
-            </Button>
-          }
-        />
-      );
-    }
-    if (this.props.test.isDid) {
-      return (
-        <Result
-          title={Language.pages_test_testDetail_submittedThisTest}
-          extra={
-            <Button
-              type="primary"
-              key="console"
-              onClick={() => {
-                this.reset();
-                history.push('/developer/test');
-              }}
-            >
-              {Language.pages_test_testDetail_backHome}
-            </Button>
-          }
-        />
-      );
-    }
+    const { hours, minutes, seconds, check, error, start } = this.state;
 
-    if (check && this.props.test.isOut) {
-      this.submit();
-      return (
-        <Result
-          title={Language.pages_test_testDetail_timeOut_notSubmit}
-          extra={
-            <Button
-              type="primary"
-              key="console"
-              onClick={() => {
-                this.reset();
-                history.push('/developer/test');
-              }}
-            >
-              {Language.pages_test_testDetail_backHome}
-            </Button>
-          }
-        />
-      );
-    }
-    if (check) {
-      this.submit();
-      return (
-        <Result
-          title={Language.pages_test_testDetail_timeOut_submit}
-          extra={
-            <Button
-              type="primary"
-              key="console"
-              onClick={() => {
-                this.reset();
-                history.push('/developer/test');
-              }}
-            >
-              {Language.pages_test_testDetail_backHome}
-            </Button>
-          }
-        />
-      );
-    }
-    
-    return (
-      <div className={styles.body}>
-        <div>
-          <PageHeader
-            className="site-page-header"
-            title={this.getData()?.generalInformation?.TestName}
-            subTitle={this.getData()?.generalInformation?.BriefDescription}
-            onBack={() => history.goBack()}
+    if (!start) {
+      if (this.state.id == '  ')
+        return (
+          <Result
+            title="Your link is wrong!"
+            extra={
+              <Button
+                type="primary"
+                key="console"
+                onClick={() => {
+                  this.reset();
+                  history.push('/developer/test');
+                }}
+              >
+                {Language.pages_test_testDetail_backHome}
+              </Button>
+            }
           />
-          <div className={styles.countdownWrapper}>
-            {hours && (
-              <div className={styles.countdownItem}>
-                {hours}
-                <span>{Language.pages_test_testDetail_hours}</span>
-              </div>
-            )}
-            {minutes && (
-              <div className={styles.countdownItem}>
-                {minutes}
-                <span>{Language.pages_test_testDetail_minutes}</span>
-              </div>
-            )}
-            {seconds && (
-              <div className={styles.countdownItem}>
-                {seconds}
-                <span>{Language.pages_test_testDetail_seconds}</span>
-              </div>
-            )}
-          </div>
-          
-          <Row className={styles.container}>
-            <Col span={1}></Col>
-            <Col span={15} className={styles.answer}>
-              {this.getData().generalInformation == undefined ? (
-                <div className={styles.spin}>
-                  <Spin tip={Language.pages_test_testDetail_waitingATest} />
+        );
+      console.log(this.props.test.testInfo);
+      if (this.props.test.testInfo.error != undefined) {
+        if (this.props.test.testInfo.error == 'none') {
+          const test = this.props.test.testInfo.generalInformation;
+          return (
+            <>
+              <h1>{test.TestName}</h1>
+              <h2>Description: {test.Description}</h2>
+              <p><b>Time: </b>{test.TestTime}</p>
+              <p><b>Max Score: </b>{test.MaxScore}</p>
+              <p><b>Pass Score: </b>{test.PassScore}</p>
+              <br />
+              <p><b>Note: </b> If you leave during the test, time will still be counted and your work will not be saved. </p>
+              <Button type="primary"
+                onClick={() => {
+                  this.handleStart();
+                }}
+              >
+                Start
+              </Button>
+            </>
+          );
+        }        
+        return (
+          <Result
+            title="You do not have permission to access this test"
+            extra={
+              <Button
+                type="primary"
+                key="console"
+                onClick={() => {
+                  this.reset();
+                  history.push('/developer/test');
+                }}
+              >
+                {Language.pages_test_testDetail_backHome}
+              </Button>
+            }
+          />
+        );
+      } else return <Spin tip={Language.pages_test_testDetail_waitingThisTest}></Spin>;
+    } else {
+      if (error)
+        return (
+          <Result
+            title="Some error!"
+            extra={
+              <Button
+                type="primary"
+                key="console"
+                onClick={() => {
+                  this.reset();
+                  history.push('/developer/test');
+                }}
+              >
+                {Language.pages_test_testDetail_backHome}
+              </Button>
+            }
+          />
+        );
+
+      if (this.props.test.loading) {
+        return <Spin tip={Language.pages_test_testDetail_waitingThisTest}></Spin>;
+      }
+      if (!this.props.test.isValid) {
+        return (
+          <Result
+            title="Your link is wrong!"
+            extra={
+              <Button
+                type="primary"
+                key="console"
+                onClick={() => {
+                  this.reset();
+                  history.push('/developer/test');
+                }}
+              >
+                {Language.pages_test_testDetail_backHome}
+              </Button>
+            }
+          />
+        );
+      }
+      if (!this.props.test.permission) {
+        return (
+          <Result
+            title="You do not have permission to access this test"
+            extra={
+              <Button
+                type="primary"
+                key="console"
+                onClick={() => {
+                  this.reset();
+                  history.push('/developer/test');
+                }}
+              >
+                {Language.pages_test_testDetail_backHome}
+              </Button>
+            }
+          />
+        );
+      }
+      if (this.props.test.isDid) {
+        return (
+          <Result
+            title={Language.pages_test_testDetail_submittedThisTest}
+            extra={
+              <Button
+                type="primary"
+                key="console"
+                onClick={() => {
+                  this.reset();
+                  history.push('/developer/test');
+                }}
+              >
+                {Language.pages_test_testDetail_backHome}
+              </Button>
+            }
+          />
+        );
+      }
+
+      if (check && this.props.test.isOut) {
+        this.submit();
+        return (
+          <Result
+            title={Language.pages_test_testDetail_timeOut_notSubmit}
+            extra={
+              <Button
+                type="primary"
+                key="console"
+                onClick={() => {
+                  this.reset();
+                  history.push('/developer/test');
+                }}
+              >
+                {Language.pages_test_testDetail_backHome}
+              </Button>
+            }
+          />
+        );
+      }
+      if (check) {
+        this.submit();
+        return (
+          <Result
+            title={Language.pages_test_testDetail_timeOut_submit}
+            extra={
+              <Button
+                type="primary"
+                key="console"
+                onClick={() => {
+                  this.reset();
+                  history.push('/developer/test');
+                }}
+              >
+                {Language.pages_test_testDetail_backHome}
+              </Button>
+            }
+          />
+        );
+      }
+
+      return (
+        <div className={styles.body}>
+          <div>
+            <PageHeader
+              className="site-page-header"
+              title={this.getData()?.generalInformation?.TestName}
+              subTitle={this.getData()?.generalInformation?.BriefDescription}
+              onBack={() => history.goBack()}
+            />
+            <div className={styles.countdownWrapper}>
+              {hours && (
+                <div className={styles.countdownItem}>
+                  {hours}
+                  <span>{Language.pages_test_testDetail_hours}</span>
                 </div>
-              ) : (
-                <>
-                  <p>
-                    <b>
-                      <i>
-                        {Language.pages_test_testDetail_question}
-                        {this.props.test.question + 1}
-                      </i>
-                    </b>
-                  </p>
-                  <p>
-                    <b>{Language.pages_test_testDetail_score}</b> {this.getQuestion()?.Score}
-                  </p>
-                  {this.getQuestion()?.QuestionType === 'Code' ? (
-                    <>{this.returnCodeQuestion()}</>
-                  ) : (
-                    <>
-                      <p>{this.getQuestion()?.Description}</p>
-                      {this.getQuestion()?.CodeSample != null ? 
-                      
-                      <SyntaxHighlighter language="javascript" style={docco}>
-                        {this.getCodeSampleMC(this.getQuestion()?.CodeSample)}
-                      </SyntaxHighlighter>
-                      :
-                      ""}
-                      {this.returnQuizQuestion()}
-                    </>
-                  )}
-                </>
               )}
-              <div className={styles.navigation}>{this.returnNavigateQuestion()}</div>
-            </Col>
-            <Col span={1}></Col>
-            <Col span={6}>
-              <List
-                header={
-                  <p>
-                    <b>{Language.pages_test_testDetail_listQuestion}</b>
-                  </p>
-                }
-                footer={
-                  <Popconfirm
-                    title="Are you sure to submit this test"
-                    onConfirm={() => {
-                      this.submit();
-                      const args = {
-                        message: 'Submit successful!',
-                        description: 'We recorded your submission!',
-                        duration: 0,
-                      };
-                      notification.open(args);
-                      history.push('/developer/test');
-                    }}
-                    okText="Yes"
-                    cancelText="No"
-                  >
-                    <Button type="primary">{Language.pages_test_testDetail_submit}</Button>
-                  </Popconfirm>
-                }
-                bordered
-                dataSource={this.returnGridQuestion()}
-                grid={{ column: 4 }}
-                renderItem={(item) => <List.Item>{item}</List.Item>}
-              />
-            </Col>
-          </Row>
+              {minutes && (
+                <div className={styles.countdownItem}>
+                  {minutes}
+                  <span>{Language.pages_test_testDetail_minutes}</span>
+                </div>
+              )}
+              {seconds && (
+                <div className={styles.countdownItem}>
+                  {seconds}
+                  <span>{Language.pages_test_testDetail_seconds}</span>
+                </div>
+              )}
+            </div>
+
+            <Row className={styles.container}>
+              <Col span={1}></Col>
+              <Col span={15} className={styles.answer}>
+                {this.getData().generalInformation == undefined ? (
+                  <div className={styles.spin}>
+                    <Spin tip={Language.pages_test_testDetail_waitingATest} />
+                  </div>
+                ) : (
+                  <>
+                    <p>
+                      <b>
+                        <i>
+                          {Language.pages_test_testDetail_question}
+                          {this.props.test.question + 1}
+                        </i>
+                      </b>
+                    </p>
+                    <p>
+                      <b>{Language.pages_test_testDetail_score}</b> {this.getQuestion()?.Score}
+                    </p>
+                    {this.getQuestion()?.QuestionType === 'Code' ? (
+                      <>{this.returnCodeQuestion()}</>
+                    ) : (
+                      <>
+                        <p>{this.getQuestion()?.Description}</p>
+                        {this.getQuestion()?.CodeSample != null ? (
+                          <SyntaxHighlighter language="javascript" style={docco}>
+                            {this.getCodeSampleMC(this.getQuestion()?.CodeSample)}
+                          </SyntaxHighlighter>
+                        ) : (
+                          ''
+                        )}
+                        {this.returnQuizQuestion()}
+                      </>
+                    )}
+                  </>
+                )}
+                <div className={styles.navigation}>{this.returnNavigateQuestion()}</div>
+              </Col>
+              <Col span={1}></Col>
+              <Col span={6}>
+                <List
+                  header={
+                    <p>
+                      <b>{Language.pages_test_testDetail_listQuestion}</b>
+                    </p>
+                  }
+                  footer={
+                    <Popconfirm
+                      title="Are you sure to submit this test"
+                      onConfirm={() => {
+                        this.submit();
+                        const args = {
+                          message: 'Submit successful!',
+                          description: 'We recorded your submission!',
+                          duration: 0,
+                        };
+                        notification.open(args);
+                        history.push('/developer/test');
+                      }}
+                      okText="Yes"
+                      cancelText="No"
+                    >
+                      <Button type="primary">{Language.pages_test_testDetail_submit}</Button>
+                    </Popconfirm>
+                  }
+                  bordered
+                  dataSource={this.returnGridQuestion()}
+                  grid={{ column: 4 }}
+                  renderItem={(item) => <List.Item>{item}</List.Item>}
+                />
+              </Col>
+            </Row>
+          </div>
+          <div></div>
         </div>
-        <div></div>
-      </div>
-    );
+      );
+    }
   }
 }
 export default connect(({ test, judge, loading }) => ({
