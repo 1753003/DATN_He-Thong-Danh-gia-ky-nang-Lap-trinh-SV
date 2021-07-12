@@ -10,6 +10,8 @@ module.exports = function (req, res, next) {
     try {
       const decoded = jwt.verify(accessToken, 'secretkeyy');
       req.uid = decoded.uid;
+      req.type = decoded.type;
+    
       // console.log(decoded);
     } catch (err) {
         return res.status(401).json({

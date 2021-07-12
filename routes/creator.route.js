@@ -48,8 +48,7 @@ router.get('/totalUserDone', async function (req, res) {
 
 router.get('/test/:id', async function (req, res) {
    const testID = req.params.id;
-   const test = await testModel.getTestByID(testID);
-   console.log(test)
+   const test = await testModel.getTestByID(testID, req.type, req.uid);
    res.json(test);
 })
 
