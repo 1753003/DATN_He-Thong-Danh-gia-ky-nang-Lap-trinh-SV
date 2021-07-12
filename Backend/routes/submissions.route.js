@@ -80,6 +80,7 @@ router.post('/test', async function(req,res) {
 })
 
 router.get('/check/:id', async function(req, res) {
+    console.log(req.params.id)
     const response = await submisisionsModel.checkExist(req.uid, req.params.id);
     res.json(response)
 })

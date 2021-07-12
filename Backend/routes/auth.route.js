@@ -264,6 +264,7 @@ router.post("/loginGoogle", async function (req, res) {
   var accessToken = jwt.sign(
     {
       uid: uid,
+      type: user.UserType,
     },
     "secretkeyy",
     {

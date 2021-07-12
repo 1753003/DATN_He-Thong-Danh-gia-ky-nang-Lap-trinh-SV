@@ -20,7 +20,7 @@ import { history } from 'umi';
 import Language from '@/locales/index';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { docco } from 'react-syntax-highlighter/dist/esm/styles/hljs';
-
+import CryptoJS from 'crypto-js';
 class TestDetail extends React.Component {
   state = {
     hours: undefined,
@@ -33,8 +33,24 @@ class TestDetail extends React.Component {
 
   constructor(props) {
     super(props);
-    const id = props.location.state?.ID;
-    console.log(id)
+    let id = props.location.state?.ID;
+    
+    const key = props.location.query.key;
+
+    if (key == 'Avx') {
+      const temp = props.location.query.x;
+      if (temp != undefined) {
+      var ciphertext = CryptoJS.AES.encrypt("34", 'secret key 12345').toString();
+      console.log(ciphertext)
+
+      var bytes  = CryptoJS.AES.decrypt(temp, 'secret key 12345');
+      var originalText = bytes.toString(CryptoJS.enc.Utf8);
+  
+      console.log(originalText);
+      id = originalText;
+      }
+    }
+    
     if (id != null) {
       this.props.dispatch({ type: 'test/getTestByID', payload: { id } });
       this.state = { answer: [] };
@@ -333,10 +349,48 @@ class TestDetail extends React.Component {
           }
         />
       );
+  
     if (this.props.test.loading) {
       return <Spin tip={Language.pages_test_testDetail_waitingThisTest}></Spin>;
     }
-
+    if (!this.props.test.isValid) {
+      return (
+        <Result
+          title="Your link is wrong!"
+          extra={
+            <Button
+              type="primary"
+              key="console"
+              onClick={() => {
+                this.reset();
+                history.push('/developer/test');
+              }}
+            >
+              {Language.pages_test_testDetail_backHome}
+            </Button>
+          }
+        />
+      );
+    }
+    if (!this.props.test.permission) {
+      return (
+        <Result
+          title="You do not have permission to access this test"
+          extra={
+            <Button
+              type="primary"
+              key="console"
+              onClick={() => {
+                this.reset();
+                history.push('/developer/test');
+              }}
+            >
+              {Language.pages_test_testDetail_backHome}
+            </Button>
+          }
+        />
+      );
+    }
     if (this.props.test.isDid) {
       return (
         <Result
