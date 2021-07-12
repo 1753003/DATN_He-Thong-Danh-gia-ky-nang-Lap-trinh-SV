@@ -49,6 +49,7 @@ module.exports = {
         await reportModel.createReport(generalInformation.TestName, TestID[0]);
       });
   },
+
   async getTestByUID(uid) {
     var res = await db("test").where("CreatedBy", uid);
     for (const item of res) {
@@ -60,17 +61,71 @@ module.exports = {
     return res;
   },
 
-  async getTestByID(testID) {
-    const test = (await db("test").where("TestID", testID))[0];
-    const listQuestion = (
-      await db.raw(`call getQuestionList('${test.TestID}')`)
-    )[0][0];
+  async getTestGeneralInformation(testID, type, uid) {
+    let check = true;
+    var result;
+    console.log(type)
+    if (type == 'developer') {
+      const test = (await db("test").where("TestID", testID))[0];
+      if (test.Permissions == 'private')
+      {
+        console.log(uid)
+        const testIDArray = (await db("userlogin").where("UserID", uid))[0].TestID;
+        if (testIDArray.indexOf(parseInt(testID)) == -1)
+          check = false;
+      }
+    }
+    if (check) {
+      const test = (await db("test").where("TestID", testID))[0];
+      result = {
+        generalInformation: test,
+        error: 'none'
+      };
+    }
+    else 
+      result = {
+        generalInformation: {},
+        error: 'Not permission'
+      }
+    //console.log(result);
+    return result;
+  },
 
-    var result = {
-      generalInformation: test,
-      listQuestion: listQuestion,
-    };
-    console.log(result);
+  async getTestByID(testID, type, uid) {
+    let check = true;
+    var result;
+    console.log(type)
+    if (type == 'developer') {
+      const test = (await db("test").where("TestID", testID))[0];
+      console.log(test)
+      if (test.Permissions == 'private')
+      {
+        console.log(uid)
+        const testIDArray = (await db("userlogin").where("UserID", uid))[0].TestID;
+        if (testIDArray.indexOf(parseInt(testID)) == -1)
+          check = false;
+      }
+    }
+    console.log(check)
+    if (check) {
+      const test = (await db("test").where("TestID", testID))[0];
+      const listQuestion = (
+        await db.raw(`call getQuestionList('${test.TestID}')`)
+      )[0][0];
+
+      result = {
+        generalInformation: test,
+        listQuestion: listQuestion,
+        error: 'none'
+      };
+    }
+    else 
+      result = {
+        generalInformation: {},
+        listQuestion: [],
+        error: 'Not permission'
+      }
+    //console.log(result);
     return result;
   },
 

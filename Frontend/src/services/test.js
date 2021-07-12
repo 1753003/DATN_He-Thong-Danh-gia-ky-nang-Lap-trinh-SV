@@ -76,7 +76,31 @@ export function getTestById(id) {
       });
   });
 }
-
+export function getTestInformationById(id) {
+  return new Promise((resolve, reject) => {
+    var options = {
+      method: 'GET',
+      url: `${Constant.API}/api/test/information/${id}`,
+      headers: {
+        accessToken: Cookies.get('accessToken'),
+        'access-control-allow-origin': Constant.CORS,
+      },
+    };
+    axios
+      .request(options)
+      .then((response) => {
+        // handle success
+        // console.log(response.data)
+        resolve(response.data);
+      })
+      .catch((error) => {
+        // handle error
+        const message = error.response?.data.message;
+        tokenHandling(message, resolve, options);
+        reject();
+      });
+  });
+}
 export function createNewTest({ generalInformation, listQuestion, onSuccess, onFailure }) {
   return new Promise((resolve, reject) => {
     axios

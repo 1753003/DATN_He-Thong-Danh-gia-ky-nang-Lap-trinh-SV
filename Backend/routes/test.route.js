@@ -25,6 +25,12 @@ router.get('/:id', async function (req, res) {
    res.json(list);
 })
 
+router.get('/information/:id', async function (req, res) {
+   const id = req.params.id;
+   const info = await testModel.getTestGeneralInformation(id, req.type, req.uid);
+   res.json(info);
+})
+
 router.post('/check/:id', async function (req, res){
    const id = req.params.id;
    const list = await testModel.checkTest(id, req.body.listTestAnswer);
@@ -33,7 +39,6 @@ router.post('/check/:id', async function (req, res){
 router.get('/set/:name', async (req, res)=>{
    const set = req.params.name;
    const list = await testModel.getTestBySet(set, req.uid)
-   console.log(list);
    res.json(list)
 })
 router.get('/code/:code', async (req, res)=>{
