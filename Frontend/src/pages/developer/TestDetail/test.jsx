@@ -43,13 +43,10 @@ class TestDetail extends React.Component {
     if (key == 'Avx') {
       const temp = props.location.query.x;
       if (temp != undefined) {
-        var ciphertext = CryptoJS.AES.encrypt('34', 'secret key 12345').toString();
-        console.log(ciphertext);
-
         var bytes = CryptoJS.AES.decrypt(temp, 'secret key 12345');
         var originalText = bytes.toString(CryptoJS.enc.Utf8);
 
-        console.log(originalText);
+        console.log("AB  ",originalText);
         id = originalText;
       }
     }
