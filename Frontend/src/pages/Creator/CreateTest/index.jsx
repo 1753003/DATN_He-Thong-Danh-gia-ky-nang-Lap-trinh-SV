@@ -338,6 +338,7 @@ const CreateTest = ({ dispatch, location }) => {
           onClose={onClose}
           form={form}
           setInformation={setInformation}
+          action={action}
         />
       </div>
     );
@@ -655,7 +656,7 @@ const RenderMiddle = ({ option, selectedQuiz, setQuiz, quiz, action }) => {
   }
 };
 
-const DrawerForm = ({ visible, onClose, form, setInformation }) => {
+const DrawerForm = ({ visible, onClose, form, setInformation, action }) => {
   const handleFinish = (values) => {
     setInformation(values);
     onClose();
@@ -848,6 +849,24 @@ const DrawerForm = ({ visible, onClose, form, setInformation }) => {
             </Form.Item>
           </Col>
         </Row>
+        {action === 'CREATE' && (
+          <Row gutter={16}>
+            <Col span={24}>
+              <Form.Item
+                name="listEmail"
+                label="Email"
+                rules={[
+                  { required: false, message: 'Please select which student you want to send mail' },
+                ]}
+              >
+                <Select
+                  placeholder="Please select which student you want to send mail"
+                  mode="tags"
+                ></Select>
+              </Form.Item>
+            </Col>
+          </Row>
+        )}
       </Form>
     </Drawer>
   );

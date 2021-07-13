@@ -2,7 +2,6 @@
 import { defineConfig } from 'umi';
 import defaultSettings from './defaultSettings';
 import proxy from './proxy';
-import {getMenu}from '../src/locales/menu';
 const { REACT_APP_ENV } = process.env;
 export default defineConfig({
   hash: true,
@@ -96,13 +95,7 @@ export default defineConfig({
               routes: [
                 {
                   path: '/creator',
-                  redirect: '/creator/home',
-                },
-                {
-                  path: '/creator/home',
-                  name: 'Home',
-                  icon: 'home',
-                  component: './Creator/Home',
+                  redirect: '/creator/tests',
                 },
                 {
                   path: '/creator/tests',
@@ -209,7 +202,6 @@ export default defineConfig({
                     {
                       path: '/developer/test',
                       routes: [
-                        
                         {
                           path: '/developer/test/home',
                           component: './developer/test/home',
@@ -261,10 +253,10 @@ export default defineConfig({
               component: './guest/index',
             },
             {
-              name: "Introduction",
+              name: 'Introduction',
               path: '/introduction',
-              component: './guest/introduction',             
-            }
+              component: './guest/introduction',
+            },
           ],
         },
       ],
