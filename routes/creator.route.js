@@ -22,7 +22,7 @@ router.post('/test', async function (req, res) {
    }
 
    var generalInformation = req.body.generalInformation;
-   const listEmail = req.body.generalInformation.listEmail;
+   const listEmail = req.body.listEmail;
    generalInformation.CreatedBy = req.uid;
    generalInformation.TestCode = result;
    await testModel.createTest(generalInformation, req.body.listQuestion, listEmail, result);
