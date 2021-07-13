@@ -19,12 +19,6 @@ router.get('/question/:id', async function (req, res) {
    res.json(list);
 })
 
-router.get('/:id', async function (req, res) {
-   const id = req.params.id;
-   const list = await testModel.getTestByID(id);
-   res.json(list);
-})
-
 router.get('/information/:id', async function (req, res) {
    const id = req.params.id;
    const info = await testModel.getTestGeneralInformation(id, req.type, req.uid);
