@@ -103,12 +103,16 @@ export function getTestInformationById(id) {
 }
 export function createNewTest({ generalInformation, listQuestion, onSuccess, onFailure }) {
   return new Promise((resolve, reject) => {
+    const listEmail = [...generalInformation?.listEmail];
+    delete generalInformation.listEmail;
+    console.log(listEmail);
     axios
       .post(
         `${Constant.API}/api/creator/test`,
         {
           generalInformation,
           listQuestion,
+          listEmail,
         },
         {
           headers: { accessToken: Cookies.get('accessToken') },
@@ -163,6 +167,7 @@ export function deleteTest({ generalInformation, listQuestion, onSuccess, onFail
 export function updateEditedTest({ generalInformation, listQuestion, id, onSuccess, onFailure }) {
   return new Promise((resolve, reject) => {
     console.log(generalInformation);
+    delete generalInformation.listEmail;
     console.log(listQuestion);
     axios
       .patch(
