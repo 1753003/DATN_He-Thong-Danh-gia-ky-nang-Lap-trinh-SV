@@ -5,7 +5,7 @@ import { useHistory } from 'umi';
 import { UserOutlined, BookOutlined, StarOutlined } from '@ant-design/icons';
 import Collection from './Contents/Collection';
 import MyTests from './Contents/MyTests';
-import Favorite from './Contents/Favorite';
+import TestBank from './Contents/TestBank';
 import '../../../components/GlobalHeader/style.less';
 
 const Tests = ({ location }) => {
@@ -39,6 +39,8 @@ const Tests = ({ location }) => {
         return <Collection />;
       case 'tests':
         return <MyTests />;
+      case 'testBank':
+        return <TestBank />;
       default:
         return <Collection />;
     }
@@ -60,6 +62,9 @@ const Tests = ({ location }) => {
           </Menu.Item>
           <Menu.Item key="tests" icon={<StarOutlined />}>
             My Tests
+          </Menu.Item>
+          <Menu.Item key="testBank" icon={<StarOutlined />}>
+            Test Bank
           </Menu.Item>
         </Menu>
       </div>
