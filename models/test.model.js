@@ -4,7 +4,7 @@ const reportModel = require("../models/report.model");
 const { getPracticeQuestionList } = require("./question.model");
 const e = require("express");
 module.exports = {
-  async createTest(generalInformation, listQuestion) {
+  async createTest(generalInformation, listQuestion, listEmail, result) {
     await db("test")
       .insert(generalInformation)
       .then(async (TestID) => {
@@ -47,6 +47,43 @@ module.exports = {
             });
         });
         await reportModel.createReport(generalInformation.TestName, TestID[0]);
+        await db.raw(`call updatePermission('${JSON.stringify(listEmail)}', ${TestID})`);
+        var nodemailer = require("nodemailer");
+        var transporter = nodemailer.createTransport({
+          service: "gmail",
+          auth: {
+            user: "group7.17clc@gmail.com",
+            pass: "group7.17clc",
+          },
+        });
+        var CryptoJS = require("crypto-js");
+ 
+        // Encrypt
+        console.log(TestID[0].toString())
+        var ciphertext = CryptoJS.AES.encrypt(TestID[0].toString(), 'secret key 12345').toString();
+        var mailOptions;
+        for (const e of listEmail) {
+          mailOptions = {
+            from: "group7.17clc@gmail.com",
+            to: e,
+            subject: "[no-reply] New invite",
+            html: `<h2>You have a new invition to access a test</h2> 
+    <p>Here are your code to access it: <b>${result}</b> </p>
+    <p>You can access quickly by the link below:</p>
+    <p>http://localhost:8000/developer/test/questions?key=Avx&x=${ciphertext}</p>
+    <hr/>
+    <p>Best,</p>
+    <p>CodeJoy Team</p>`,
+          };
+
+          transporter.sendMail(mailOptions, function (error, info) {
+            if (error) {
+              console.log(error);
+            } else {
+              console.log("Email sent: " + info.response);
+            }
+          });
+        }
       });
   },
 
@@ -64,29 +101,27 @@ module.exports = {
   async getTestGeneralInformation(testID, type, uid) {
     let check = true;
     var result;
-    console.log(type)
-    if (type == 'developer') {
+    console.log("TYPE:", type);
+    if (type == "developer") {
       const test = (await db("test").where("TestID", testID))[0];
-      if (test.Permissions == 'private')
-      {
-        console.log(uid)
-        const testIDArray = (await db("userlogin").where("UserID", uid))[0].TestID;
-        if (testIDArray.indexOf(parseInt(testID)) == -1)
-          check = false;
+      if (test.Permissions == "private") {
+        console.log(uid);
+        const testIDArray = (await db("userlogin").where("UserID", uid))[0]
+          .TestID;
+        if (testIDArray.indexOf(parseInt(testID)) == -1) check = false;
       }
     }
     if (check) {
       const test = (await db("test").where("TestID", testID))[0];
       result = {
         generalInformation: test,
-        error: 'none'
+        error: "none",
       };
-    }
-    else 
+    } else
       result = {
         generalInformation: {},
-        error: 'Not permission'
-      }
+        error: "Not permission",
+      };
     //console.log(result);
     return result;
   },
@@ -94,19 +129,18 @@ module.exports = {
   async getTestByID(testID, type, uid) {
     let check = true;
     var result;
-    console.log(type)
-    if (type == 'developer') {
+    console.log(type);
+    if (type == "developer") {
       const test = (await db("test").where("TestID", testID))[0];
-      console.log(test)
-      if (test.Permissions == 'private')
-      {
-        console.log(uid)
-        const testIDArray = (await db("userlogin").where("UserID", uid))[0].TestID;
-        if (testIDArray.indexOf(parseInt(testID)) == -1)
-          check = false;
+      console.log(test);
+      if (test.Permissions == "private") {
+        console.log(uid);
+        const testIDArray = (await db("userlogin").where("UserID", uid))[0]
+          .TestID;
+        if (testIDArray.indexOf(parseInt(testID)) == -1) check = false;
       }
     }
-    console.log(check)
+    console.log(check);
     if (check) {
       const test = (await db("test").where("TestID", testID))[0];
       const listQuestion = (
@@ -116,15 +150,14 @@ module.exports = {
       result = {
         generalInformation: test,
         listQuestion: listQuestion,
-        error: 'none'
+        error: "none",
       };
-    }
-    else 
+    } else
       result = {
         generalInformation: {},
         listQuestion: [],
-        error: 'Not permission'
-      }
+        error: "Not permission",
+      };
     //console.log(result);
     return result;
   },

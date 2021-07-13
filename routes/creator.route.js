@@ -3,7 +3,7 @@ const router = express.Router();
 const testModel = require('../models/test.model');
 const collectionModel = require('../models/collection.model')
 const reportModel = require('../models/report.model')
-
+const CryptoJS = require('crypto-js');
 router.get('/', async function (req, res) {
    res.json('OK');
 })
@@ -22,9 +22,11 @@ router.post('/test', async function (req, res) {
    }
 
    var generalInformation = req.body.generalInformation;
+   const listEmail = req.body.generalInformation.listEmail;
    generalInformation.CreatedBy = req.uid;
    generalInformation.TestCode = result;
-   await testModel.createTest(generalInformation, req.body.listQuestion);
+   await testModel.createTest(generalInformation, req.body.listQuestion, listEmail, result);
+   
    res.json(result);
   
 })
