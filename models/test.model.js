@@ -4,50 +4,65 @@ const reportModel = require("../models/report.model");
 const { getPracticeQuestionList } = require("./question.model");
 
 module.exports = {
-  async createTest(generalInformation, listQuestion, listEmail, result) {
+  async createTest(generalInformation, listQuestion, listEmail, result, uid) {
     await db("test")
       .insert(generalInformation)
       .then(async (TestID) => {
         var questionID = [];
-        listQuestion.forEach(async (element) => {
-          await db("question")
-            .insert({
-              TestID: TestID[0],
-              QuestionType: element.QuestionType,
-              Score: element.Score,
-              PracticeID: null,
-            })
-            .then(async (result) => {
-              questionID.push(result[0]);
-              if (element.QuestionType === "MultipleChoice") {
-                console.log(element);
-                await db("multiplechoice").insert({
-                  MCDescription: element.MCDescription,
-                  Answer: JSON.stringify(element.Answer),
-                  CorrectAnswer: JSON.stringify(element.CorrectAnswer),
-                  QuestionID: result[0],
-                  MCCoding: element.CodeSample,
-                });
-              } else if (element.QuestionType === "Code") {
-                await db("coding").insert({
-                  CodeDescription: element.CodeDescription,
-                  Language_allowed: generalInformation.LanguageAllowed,
-                  RunningTime: element.RunningTime,
-                  MemoryUsage: element.MemoryUsage,
-                  TestCase: JSON.stringify(element.TestCase),
-                  QuestionID: result[0],
-                  CodeSample: element.CodeSample,
-                });
-              }
-              await db("test")
-                .update({
-                  QuestionID: JSON.stringify(questionID),
-                })
-                .where("TestID", TestID[0]);
-            });
-        });
+        var oldQuestionID = (await db("userlogin").where("UserID", uid))[0]
+          .QuestionID;
+        console.log(listQuestion);
+        for (const element of listQuestion) {
+          console.log(element.ID);
+          if (element.ID == undefined || element.ID == "undefined") {
+            await db("question")
+              .insert({
+                TestID: TestID[0],
+                QuestionType: element.QuestionType,
+                Score: element.Score,
+                PracticeID: null,
+              })
+              .then(async (result) => {
+                questionID.push(result[0]);
+                oldQuestionID.push(result[0]);
+                if (element.QuestionType === "MultipleChoice") {
+                  await db("multiplechoice").insert({
+                    MCDescription: element.MCDescription,
+                    Answer: JSON.stringify(element.Answer),
+                    CorrectAnswer: JSON.stringify(element.CorrectAnswer),
+                    QuestionID: result[0],
+                    MCCoding: element.CodeSample,
+                  });
+                } else if (element.QuestionType === "Code") {
+                  await db("coding").insert({
+                    CodeDescription: element.CodeDescription,
+                    Language_allowed: generalInformation.LanguageAllowed,
+                    RunningTime: element.RunningTime,
+                    MemoryUsage: element.MemoryUsage,
+                    TestCase: JSON.stringify(element.TestCase),
+                    QuestionID: result[0],
+                    CodeSample: element.CodeSample,
+                  });
+                }
+              });          
+          }
+          else {
+            questionID.push(element.ID)
+          }
+        }
+        await db("test")
+          .update({
+            QuestionID: JSON.stringify(questionID),
+          })
+          .where("TestID", TestID[0]);
+        console.log(oldQuestionID);
+        await db("userlogin")
+          .update({ QuestionID: JSON.stringify(oldQuestionID) })
+          .where("UserID", uid);
         await reportModel.createReport(generalInformation.TestName, TestID[0]);
-        await db.raw(`call updatePermission('${JSON.stringify(listEmail)}', ${TestID})`);
+        await db.raw(
+          `call updatePermission('${JSON.stringify(listEmail)}', ${TestID})`
+        );
         var nodemailer = require("nodemailer");
         var transporter = nodemailer.createTransport({
           service: "gmail",
@@ -57,10 +72,13 @@ module.exports = {
           },
         });
         var CryptoJS = require("crypto-js");
- 
+
         // Encrypt
-        console.log(TestID[0].toString())
-        var ciphertext = CryptoJS.AES.encrypt(TestID[0].toString(), 'secret key 12345').toString();
+        console.log(TestID[0].toString());
+        var ciphertext = CryptoJS.AES.encrypt(
+          TestID[0].toString(),
+          "secret key 12345"
+        ).toString();
         var mailOptions;
         for (const e of listEmail) {
           mailOptions = {
