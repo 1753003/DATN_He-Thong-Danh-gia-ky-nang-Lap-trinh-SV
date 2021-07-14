@@ -51,4 +51,8 @@ export default {
   'menu.editor.flow': 'Flow Editor',
   'menu.editor.mind': 'Mind Editor',
   'menu.editor.koni': 'Koni Editor',
+  'menu.Home': 'Trang chủ',
+  'menu.Tests': 'Thông tin bài kiểm tra',
+  'menu.Report': 'Báo cáo',
+  'menu.Report Detail': 'Chi tiết báo cáo',
 };

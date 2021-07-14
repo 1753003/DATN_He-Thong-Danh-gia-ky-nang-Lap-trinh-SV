@@ -19,6 +19,9 @@ import {
   ConfigProvider,
   message,
   TimePicker,
+  Modal,
+  Table,
+  Tag,
 } from 'antd';
 import {
   PlusOutlined,
@@ -31,7 +34,7 @@ import {
 import { connect } from 'umi';
 import ReactMarkdown from 'react-markdown';
 import NotFound from '@/pages/404';
-import _, { random } from 'lodash';
+import _, { random, set } from 'lodash';
 import 'brace/mode/javascript';
 import 'brace/mode/c_cpp';
 import 'brace/mode/java';
@@ -45,7 +48,7 @@ import 'brace/ext/searchbox';
 import MDEditor from '@uiw/react-md-editor';
 
 const { Option } = Select;
-const CreateTest = ({ dispatch, location }) => {
+const CreateTest = ({ dispatch, location, testBankList }) => {
   const [option, setOption] = useState('quiz');
   const [quiz, setQuiz] = useState([]);
   const [information, setInformation] = useState({});
@@ -53,6 +56,7 @@ const CreateTest = ({ dispatch, location }) => {
   const [visibleDrawer, setVisibleDrawer] = useState(false);
   const [action, setAction] = useState('CREATE');
   const [loading, setLoading] = useState(false);
+  const [visibleModal, setVisibleModal] = useState(false);
   const [form] = Form.useForm();
 
   const updateEditInformation = (response) => {
@@ -85,6 +89,10 @@ const CreateTest = ({ dispatch, location }) => {
     }
     setLoading(false);
   };
+
+  useEffect(() => {
+    dispatch({ type: 'test/fetchTestBankList' });
+  }, []);
 
   useEffect(() => {
     if (location.query.id) {
@@ -129,11 +137,8 @@ const CreateTest = ({ dispatch, location }) => {
     if (quiz.length > 0 && information.TestName) {
       setLoading(true);
       const refactorQuestions = [];
-      quiz.forEach((element) => {
-        const newQuiz = { ...element };
-        if (action === 'CREATE') {
-          delete newQuiz.ID;
-        }
+      quiz.forEach((item) => {
+        const newQuiz = { ...item };
         delete newQuiz.key;
         if (newQuiz.QuestionType === 'quiz') {
           newQuiz.QuestionType = 'MultipleChoice';
@@ -142,6 +147,10 @@ const CreateTest = ({ dispatch, location }) => {
         if (newQuiz.QuestionType === 'code') {
           newQuiz.QuestionType = 'Code';
           newQuiz.CodeDescription = newQuiz.Description;
+        }
+
+        if (typeof newQuiz.ID === 'string' && newQuiz.ID.startsWith('_')) {
+          newQuiz.ID = undefined;
         }
 
         delete newQuiz.Description;
@@ -182,11 +191,11 @@ const CreateTest = ({ dispatch, location }) => {
         payload.onFailure = updateFail;
         payload.id = location.query.id;
         delete payload.generalInformation.TestID;
-        payload.listQuestion.forEach((question) => {
-          if (typeof question.ID === 'string' && question.ID.startsWith('_')) {
-            question.ID = undefined;
-          }
-        });
+        // payload.listQuestion.forEach((question) => {
+        //   if (typeof question.ID === 'string' && question.ID.startsWith('_')) {
+        //     question.ID = undefined;
+        //   }
+        // });
         dispatch({
           type: 'test/updateTest',
           payload,
@@ -195,6 +204,54 @@ const CreateTest = ({ dispatch, location }) => {
     } else {
       message.error('Please fill in all off the information !!!');
     }
+  };
+
+  const createNewEmptyTest = () => {
+    const newQuiz = [...quiz];
+    const payload = {
+      key: newQuiz.length,
+      QuestionType: 'quiz',
+      ID: '_' + Math.random().toString(36).substr(2, 9),
+      Description: '',
+      Answer: [],
+      CorrectAnswer: [],
+      CodeSample: '',
+      Score: 0,
+    };
+
+    newQuiz.push(payload);
+    setQuiz(newQuiz);
+    setVisibleModal(false);
+    setSelectedQuiz(payload);
+  };
+
+  const onPressBankTest = (test) => {
+    const newQuiz = [...quiz];
+    const newTest = { ...test };
+    newTest.key = newQuiz.length;
+
+    if (test.QuestionType === 'MultipleChoice') {
+      newTest.QuestionType = 'quiz';
+    }
+    if (test.QuestionType === 'Code') {
+      newTest.QuestionType = 'code';
+    }
+    newQuiz.push(newTest);
+    setQuiz(newQuiz);
+    setVisibleModal(false);
+    setSelectedQuiz(newTest);
+  };
+
+  const createNewTestClick = () => {
+    setVisibleModal(true);
+  };
+
+  const handleTestBankOnClick = (record) => {
+    const payload = {
+      id: record.ID,
+      callback: (response) => onPressBankTest(response),
+    };
+    dispatch({ type: 'test/getTestBankByIdModel', payload });
   };
 
   if (loading) {
@@ -231,28 +288,7 @@ const CreateTest = ({ dispatch, location }) => {
                 </Button>
               );
             })}
-            <Button
-              onClick={() => {
-                const newQuiz = [...quiz];
-                const payload = {
-                  key: newQuiz.length,
-                  QuestionType: 'quiz',
-                  ID: (newQuiz.length + 1).toString(),
-                  Description: '',
-                  Answer: [],
-                  CorrectAnswer: [],
-                  CodeSample: '',
-                  Score: 0,
-                };
-                if (action === 'UPDATE') {
-                  payload.ID = '_' + Math.random().toString(36).substr(2, 9);
-                }
-                newQuiz.push(payload);
-                setQuiz(newQuiz);
-              }}
-              type="primary"
-              style={{ marginTop: 20 }}
-            >
+            <Button onClick={createNewTestClick} type="primary" style={{ marginTop: 20 }}>
               Create New Quiz
             </Button>
           </div>
@@ -340,11 +376,93 @@ const CreateTest = ({ dispatch, location }) => {
           setInformation={setInformation}
           action={action}
         />
+
+        <ModalCreateNewTest
+          visible={visibleModal}
+          onCancel={() => setVisibleModal(false)}
+          createNewEmptyTest={createNewEmptyTest}
+          onPressBankTest={handleTestBankOnClick}
+          testBankList={testBankList}
+        />
       </div>
     );
   } else {
     return <NotFound />;
   }
+};
+
+const ModalCreateNewTest = ({
+  visible,
+  onCancel,
+  createNewEmptyTest,
+  onPressBankTest,
+  testBankList,
+}) => {
+  const columns = [
+    {
+      title: 'ID',
+      dataIndex: 'ID',
+      key: 'ID',
+    },
+    {
+      title: 'Question Type',
+      dataIndex: 'QuestionType',
+      key: 'QuestionType',
+    },
+    {
+      title: 'Description',
+      dataIndex: 'Description',
+      key: 'Description',
+    },
+    {
+      title: 'Language Allowed',
+      dataIndex: 'Language_allowed',
+      key: 'Language_allowed',
+      render: (list) => {
+        return (
+          <div>
+            {list?.map((item) => (
+              <Tag color="magenta">{item}</Tag>
+            ))}
+          </div>
+        );
+      },
+    },
+  ];
+
+  return (
+    <Modal
+      title="Create Test"
+      visible={visible}
+      onCancel={onCancel}
+      width={'70vw'}
+      footer={[
+        <Button key="back" onClick={onCancel}>
+          Close
+        </Button>,
+
+        <Button key="create" onClick={createNewEmptyTest} type="primary">
+          Create New Plank Test
+        </Button>,
+      ]}
+    >
+      <Alert message="Click at a test to select them" type="info" showIcon />
+      <Table
+        columns={columns}
+        dataSource={testBankList}
+        // loading={loading}
+        scroll={{ y: '55vh' }}
+        rowKey="ID"
+        onRow={(record, rowIndex) => {
+          return {
+            onClick: (event) => {
+              onPressBankTest(record);
+            },
+          };
+        }}
+      />
+    </Modal>
+  );
 };
 
 const RenderMiddle = ({ option, selectedQuiz, setQuiz, quiz, action }) => {
@@ -872,6 +990,7 @@ const DrawerForm = ({ visible, onClose, form, setInformation, action }) => {
   );
 };
 
-export default connect(({ test: { testList } }) => ({
+export default connect(({ test: { testList, testBankList } }) => ({
   testList,
+  testBankList,
 }))(CreateTest);
