@@ -3,6 +3,7 @@ const router = express.Router();
 const testModel = require('../models/test.model');
 const collectionModel = require('../models/collection.model')
 const reportModel = require('../models/report.model')
+const bankModel = require('../models/bank.model')
 const CryptoJS = require('crypto-js');
 router.get('/', async function (req, res) {
    res.json('OK');
@@ -22,10 +23,10 @@ router.post('/test', async function (req, res) {
    }
 
    var generalInformation = req.body.generalInformation;
-   const listEmail = req.body.generalInformation.listEmail;
+   const listEmail = req.body.listEmail;
    generalInformation.CreatedBy = req.uid;
    generalInformation.TestCode = result;
-   await testModel.createTest(generalInformation, req.body.listQuestion, listEmail, result);
+   await testModel.createTest(generalInformation, req.body.listQuestion, listEmail, result, req.uid);
    
    res.json(result);
   
@@ -132,6 +133,21 @@ router.get('/report/user/:id', async function (req, res) {
 router.get('/report/question/:id', async function (req, res) {
    const questions = await reportModel.getQuestion (req.params.id);
    res.json(questions);
+})
+
+/*
+* Bank routes
+* =================================================================================================
+*/
+
+router.get('/bank', async function (req, res) {
+   const questions = await bankModel.getList(req.uid);
+   res.json(questions);
+})
+
+router.get('/bank/:id', async function (req, res) {
+   const question = await bankModel.getByID(req.params.id);
+   res.json(question);
 })
 
 module.exports = router;
