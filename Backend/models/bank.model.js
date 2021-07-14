@@ -7,7 +7,7 @@ module.exports = {
   },
 
   async getByID(id) {
-    return (await db.raw(`
+    let result = (await db.raw(`
         select question.ID as ID,
         QuestionType,
         Score,
@@ -20,9 +20,9 @@ module.exports = {
         Answer,
         CorrectAnswer,
         case
-            when CodeSample is not null
+            when CodeDescription is not null
             then CodeSample
-            when MCCoding is not null
+            when MCDescription is not null
             then MCCoding
         end as CodeSample,
         TestCase,
@@ -36,5 +36,10 @@ module.exports = {
         on coding.questionID = question.ID
         where question.ID = ${id};
         `))[0][0];
-  },
+    if (result.CodeSample == null)
+        result.CodeSample = "";
+    if (result.Language_allowed == null)
+        result.Language_allowed = []
+    return result;
+  }
 };
