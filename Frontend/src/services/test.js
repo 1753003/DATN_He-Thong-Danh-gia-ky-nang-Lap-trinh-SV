@@ -103,9 +103,13 @@ export function getTestInformationById(id) {
 }
 export function createNewTest({ generalInformation, listQuestion, onSuccess, onFailure }) {
   return new Promise((resolve, reject) => {
-    const listEmail = [...generalInformation?.listEmail];
-    delete generalInformation.listEmail;
-    console.log(listEmail);
+    let listEmail = [];
+    console.log(listQuestion);
+    if (generalInformation.listEmail) {
+      listEmail = [...generalInformation?.listEmail];
+      delete generalInformation.listEmail;
+    }
+
     axios
       .post(
         `${Constant.API}/api/creator/test`,
@@ -230,6 +234,56 @@ export function checkSubmission(testID) {
     var options = {
       method: 'GET',
       url: `${Constant.API}/api/submissions/check/${testID}`,
+      headers: {
+        accessToken: Cookies.get('accessToken'),
+        'access-control-allow-origin': Constant.CORS,
+      },
+    };
+    axios
+      .request(options)
+      .then((response) => {
+        // handle success
+        // console.log(response.data)
+        resolve(response.data);
+      })
+      .catch((error) => {
+        // handle error
+        const message = error.response?.data.message;
+        tokenHandling(message, resolve, options);
+        reject();
+      });
+  });
+}
+
+export function getTestBankList() {
+  return new Promise((resolve, reject) => {
+    var options = {
+      method: 'GET',
+      url: `${Constant.API}/api/creator/bank`,
+      headers: {
+        accessToken: Cookies.get('accessToken'),
+        'access-control-allow-origin': Constant.CORS,
+      },
+    };
+    axios
+      .request(options)
+      .then((response) => {
+        // handle success
+        resolve(response.data);
+      })
+      .catch((error) => {
+        // handle error
+        const message = error.response?.data.message;
+        tokenHandling(message, resolve, options);
+      });
+  });
+}
+
+export function getTestBankById(id) {
+  return new Promise((resolve, reject) => {
+    var options = {
+      method: 'GET',
+      url: `${Constant.API}/api/creator/bank/${id}`,
       headers: {
         accessToken: Cookies.get('accessToken'),
         'access-control-allow-origin': Constant.CORS,
