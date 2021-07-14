@@ -2,7 +2,7 @@ const db = require("../utils/db");
 const reportModel = require("../models/report.model");
 
 const { getPracticeQuestionList } = require("./question.model");
-const e = require("express");
+
 module.exports = {
   async createTest(generalInformation, listQuestion, listEmail, result) {
     await db("test")
