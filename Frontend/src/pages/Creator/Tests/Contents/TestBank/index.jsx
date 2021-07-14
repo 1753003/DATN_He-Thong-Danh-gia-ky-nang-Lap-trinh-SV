@@ -7,54 +7,17 @@ import { CheckCircleTwoTone, CloseCircleTwoTone, LeftOutlined } from '@ant-desig
 
 const { Search } = Input;
 
-const TestBank = ({ testList, dispatch, loading }) => {
+const TestBank = ({ testBankList, dispatch, loading }) => {
   const [list, setList] = useState([]);
   const [selectTest, setSelectTest] = useState(undefined);
 
   useEffect(() => {
-    setList([
-      {
-        ID: 1,
-        Description: 'hello',
-        Language_allowed: ['C', 'Java'],
-        QuestionType: 'Code',
-        CodeSample: 'std::cin >> 123123;',
-        MemoryUsage: '123',
-        RunningTime: '111',
-        Score: '111',
-        TestCase: [
-          {
-            Input: '123',
-            Output: '456',
-          },
-          {
-            Input: '123',
-            Output: '456',
-          },
-          {
-            Input: '123',
-            Output: '456',
-          },
-        ],
-      },
-
-      {
-        ID: 3,
-        Description: 'hello',
-        Language_allowed: ['C', 'Java'],
-        QuestionType: 'MultipleChoice',
-        Answer: ['kjasldfjaksdf', 'asldjkflaskjdf', 'asjkldflkasjdflk', 'alsdjflkasjdf'],
-        CorrectAnswer: [0, 1],
-        CodeSample: `#include <string>
-        int main(void) {
-            std::string a;
-            std::cin>>a;
-          std::cout<<(a==a?"true":"false");
-          return 0;
-        }`,
-      },
-    ]);
+    dispatch({ type: 'test/fetchTestBankList' });
   }, []);
+
+  useEffect(() => {
+    setList(testBankList);
+  }, [testBankList]);
 
   const columns = [
     {
@@ -77,10 +40,9 @@ const TestBank = ({ testList, dispatch, loading }) => {
       dataIndex: 'Language_allowed',
       key: 'Language_allowed',
       render: (list) => {
-        console.log(list);
         return (
           <div>
-            {list.map((item) => (
+            {list?.map((item) => (
               <Tag color="magenta">{item}</Tag>
             ))}
           </div>
@@ -104,19 +66,12 @@ const TestBank = ({ testList, dispatch, loading }) => {
   };
 
   const handleTestOnClick = (record) => {
-    console.log(record);
-    setSelectTest(record);
-    // history.push({
-    //   pathname: '/creator/testDetail',
-    //   query: {
-    //     id: testID,
-    //   },
-    // });
+    const payload = {
+      id: record.ID,
+      callback: (response) => setSelectTest(response),
+    };
+    dispatch({ type: 'test/getTestBankByIdModel', payload });
   };
-
-  // useEffect(() => {
-  //   dispatch({ type: 'test/fetchTestList' });
-  // }, []);
 
   if (!selectTest)
     return (
@@ -135,11 +90,11 @@ const TestBank = ({ testList, dispatch, loading }) => {
           <Table
             columns={columns}
             dataSource={list}
-            // loading={loading}
+            loading={loading}
             scroll={{ y: '55vh' }}
             onRow={(record, rowIndex) => {
               return {
-                onDoubleClick: (event) => {
+                onClick: (event) => {
                   handleTestOnClick(record);
                 },
               };
@@ -156,8 +111,6 @@ const RenderTestDetail = ({ test, onBack }) => {
   const checkCorrect = (listCorrect, index) => {
     return listCorrect.includes(index);
   };
-  console.log(test);
-  // if()
   return (
     <div className={styles.testContainer}>
       <div
@@ -248,7 +201,7 @@ const RenderTestDetail = ({ test, onBack }) => {
   );
 };
 
-export default connect(({ test: { testList }, loading }) => ({
-  testList,
-  loading: loading.effects['test/fetchTestList'],
+export default connect(({ test: { testBankList }, loading }) => ({
+  testBankList,
+  loading: loading.effects['test/fetchTestBankList'],
 }))(TestBank);

@@ -9,6 +9,8 @@ import {
   getTestIdByCode,
   deleteTest,
   getTestInformationById,
+  getTestBankList,
+  getTestBankById,
 } from '@/services/test';
 import { checkSession, deleteSession } from '@/services/session';
 
@@ -26,6 +28,7 @@ const TestModel = {
   state: {
     testInfo: {},
     testList: [],
+    testBankList: [],
     testById: {},
     question: 0,
     answer: [],
@@ -59,6 +62,13 @@ const TestModel = {
         payload: response,
       });
     },
+    *fetchTestBankList(_, { call, put }) {
+      const response = yield call(getTestBankList);
+      yield put({
+        type: 'saveTestBankList',
+        payload: response,
+      });
+    },
     *getTestByIdModel({ payload }, { call, put }) {
       try {
         const response = yield call(getTestById, payload.id);
@@ -76,8 +86,20 @@ const TestModel = {
         }
       }
     },
+    *getTestBankByIdModel({ payload }, { call, put }) {
+      try {
+        const response = yield call(getTestBankById, payload.id);
+        if (payload.callback) {
+          payload.callback(response);
+        }
+      } catch (e) {
+        console.log(e);
+        if (payload.callback) {
+          payload.callback(undefined);
+        }
+      }
+    },
     *getTestByID({ payload }, { put, call, select }) {
-     
       if (payload.id.toString().localeCompare(' ') == -1) {
         yield put({
           type: 'saveIsValid',
@@ -174,7 +196,7 @@ const TestModel = {
         payload: false,
       });
     },
-    *getTestInformation({ payload }, { put, call}) {
+    *getTestInformation({ payload }, { put, call }) {
       const response = yield call(getTestInformationById, payload);
       yield put({
         type: 'saveTestInfo',
@@ -389,11 +411,14 @@ const TestModel = {
     saveTestList(state, { payload }) {
       return { ...state, testList: [...payload] };
     },
+    saveTestBankList(state, { payload }) {
+      return { ...state, testBankList: [...payload] };
+    },
     saveTestById(state, { payload }) {
       return { ...state, testById: payload };
     },
     saveTestInfo(state, { payload }) {
-      return { ...state, testInfo: payload}
+      return { ...state, testInfo: payload };
     },
     resetAnswerReducer(state, { payload }) {
       return { ...state, answer: payload };
