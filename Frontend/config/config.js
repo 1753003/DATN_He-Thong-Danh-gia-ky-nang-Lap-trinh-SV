@@ -215,6 +215,10 @@ export default defineConfig({
                           component: './developer/test/list',
                         },
                         {
+                          path: '/developer/test/rank',
+                          component: './developer/test/ranking/index'
+                        },
+                        {
                           path: '/developer/test',
                           redirect: '/developer/test/home',
                         },

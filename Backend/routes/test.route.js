@@ -47,4 +47,8 @@ router.get('/answer/:TestID', async (req, res) => {
    const list = await testModel.getAnswer(req.params.TestID);
    res.json(list);
 })
+
+router.get('/ranking/:id', async (req, res) => {
+   res.json(await testModel.getRanking(req.params.id));
+})
 module.exports = router;

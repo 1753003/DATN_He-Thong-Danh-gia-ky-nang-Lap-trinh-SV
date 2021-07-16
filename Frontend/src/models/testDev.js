@@ -1,11 +1,10 @@
-// import { queryCurrent, query as queryUsers } from '@/services/user';
-
-import { getTestListBySet } from "@/services/testDev";
+import { getTestListBySet, getRanking } from "@/services/testDev";
 
 const TestModel = {
   namespace: 'testDev',
   state: {
     setList: [],
+    rankList: []
   },
   effects: {
     *fetchTestListBySet({payload}, { call, put }) {
@@ -20,16 +19,25 @@ const TestModel = {
         payload: response,
       });
     },
-    
+    *fetchRankList({payload}, { call, put }) {
+      console.log("model")
+      const response = yield call(getRanking, payload);
+      yield put({
+        type: 'saveRanking',
+        payload: response,
+      });
+    }
   },
   reducers: {
     saveTestList(state, { payload }) {
-      console.log("reducers")
       return { ...state, setList: [...payload] };
     },
     saveTestById(state, { payload }) {
       return { ...state, testById: payload };
     },
+    saveRanking(state, { payload }) {
+      return { ...state, rankList: payload };
+    }
   },
 };
 export default TestModel;
