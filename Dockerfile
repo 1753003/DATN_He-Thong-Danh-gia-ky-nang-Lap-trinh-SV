@@ -1,12 +1,7 @@
-FROM node:14
 
-WORKDIR /usr/src/app
+FROM nginx
 
-COPY package*.json ./
+COPY default.conf.template /etc/nginx/conf.d/default.conf.template
+COPY nginx.conf /etc/nginx/nginx.conf
 
-ENV WEB="https://codejoy-fe.herokuapp.com"
-RUN npm install
-
-COPY . .
-
-CMD [ "npm", "start" ]
+CMD /bin/bash -c "envsubst '\$PORT' < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf" && nginx -g 'daemon off;'
