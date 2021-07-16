@@ -6,8 +6,8 @@ const Constant = {
       ? 'https://codejoyfe.me'
       : 'http://localhost:5000',
   JUDGE: process.env.NODE_ENV === 'production'
-  ? 'https://codejoy-fe.herokuapp.com/'
-  : 'https://codejoy-fe.herokuapp.com/',
+  ? 'https://codejoy-fe.herokuapp.com'
+  : 'https://codejoy-fe.herokuapp.com',
 };
 
 export default Constant;
