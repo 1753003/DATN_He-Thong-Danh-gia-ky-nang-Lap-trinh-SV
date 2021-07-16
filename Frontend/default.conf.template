@@ -12,22 +12,11 @@ server {
     root /usr/share/nginx/html;
     include  /etc/nginx/mime.types;
     
-    location / {
-         # Used in conjunction with browserHistory
-        try_files $uri $uri/ /index.html;
-
-        # If you have resources, it is recommended to use https + http2 for a better experience with on-demand loading.
-        # rewrite ^/(.*)$ https://preview.pro.ant.design/$1 permanent;
-
-    }
+    
 
     location /api {
-        proxy_pass http://3.0.40.66:5000;
+        proxy_pass http://3.0.40.66:2358;
         proxy_set_header   X-Forwarded-Proto $scheme;
         proxy_set_header   Host              $http_host;
         proxy_set_header   X-Real-IP         $remote_addr;
-    }
-
-    location /judge {
-        rewrite ^/judge(.*)$ http://3.0.40.66:2358 redirect;
     }
