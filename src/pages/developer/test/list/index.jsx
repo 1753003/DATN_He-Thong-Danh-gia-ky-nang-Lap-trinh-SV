@@ -237,9 +237,10 @@ const TestSetList = ({ location, dispatch, testDev, loading }) => {
               <Card bordered size="small" hoverable style={{ marginBottom: '12px' }}>
                 <List.Item
                   onClick={() => {
+
                     history.push({
                       pathname: '/developer/test/questions',
-                      state: item,
+                      state: {id:item.ID,type:"test"},
                     });
                   }}
                   style={{

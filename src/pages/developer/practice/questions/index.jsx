@@ -62,7 +62,7 @@ const questionList = ({ location, practice, dispatch, loading }) => {
   useEffect(() => {
     dispatch({
       type: 'practice/getPracticeListDetail',
-      payload: { id: location.state.PracticeID },
+      payload: { id: location.state.id },
     });
   }, []);
 

@@ -1,7 +1,7 @@
 import firebase from '@/utils/firebase'
 
-export function updateVote(uid,pid, cid, value, status) {
-  const dbComment = firebase.firestore().collection("discussions").doc(`practice-${pid}`).collection('comments')
+export function updateVote(uid,pid, cid, value, status, type) {
+  const dbComment = firebase.firestore().collection("discussions").doc(`${type}-${pid}`).collection('comments')
   return new Promise((resolve, reject) => {
     var updates={};
     updates[`users/${uid}/react/`+cid] = status;
@@ -17,20 +17,20 @@ export function updateVote(uid,pid, cid, value, status) {
 }
 
 export async function postComment(payload) {
-  const docRef = await firebase.firestore().collection("discussions").doc(`practice-${payload.postId}`).collection('comments').add(payload.cmt);
-  await firebase.firestore().collection("discussions").doc(`practice-${payload.postId}`).get().then((docSnapshot) => {
+  const docRef = await firebase.firestore().collection("discussions").doc(`${payload.type}-${payload.postId}`).collection('comments').add(payload.cmt);
+  await firebase.firestore().collection("discussions").doc(`${payload.type}-${payload.postId}`).get().then((docSnapshot) => {
     if (!docSnapshot.exists) {
-      firebase.firestore().collection("discussions").doc(`practice-${payload.postId}`).set({root:[]})
+      firebase.firestore().collection("discussions").doc(`${payload.type}-${payload.postId}`).set({root:[]})
     } 
 });
 if (payload.parentId === "")
 {
-  firebase.firestore().collection("discussions").doc(`practice-${payload.postId}`).update({
+  firebase.firestore().collection("discussions").doc(`${payload.type}-${payload.postId}`).update({
     root: firebase.firestore.FieldValue.arrayUnion(docRef.id)
   }, { merge: true });}
 
 else
-  firebase.firestore().collection("discussions").doc(`practice-${payload.postId}`).collection("comments").doc(payload.parentId).update({
+  firebase.firestore().collection("discussions").doc(`${payload.type}-${payload.postId}`).collection("comments").doc(payload.parentId).update({
     children: firebase.firestore.FieldValue.arrayUnion(docRef.id)
   });
 }

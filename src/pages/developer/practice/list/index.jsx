@@ -239,7 +239,7 @@ const practiceList = ({ location, dispatch, practice, loading }) => {
                     search: `?listName=${encodeURIComponent(
                       decodeURIComponent(location.query.listName),
                     )}`,
-                    state: item,
+                    state: {id:item.PracticeID,type:"practice"},
                   });
                 }}
                 style={{
