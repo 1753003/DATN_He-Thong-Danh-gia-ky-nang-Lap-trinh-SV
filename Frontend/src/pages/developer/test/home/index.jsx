@@ -1,13 +1,30 @@
 import React, { useEffect, useState } from 'react';
 import styles from './style.less';
 import './style.less';
-import { Typography, Card, Input, Button, notification } from 'antd';
+import {
+  Typography,
+  Card,
+  Input,
+  Button,
+  notification,
+  List,
+  ConfigProvider,
+  Row,
+  Col,
+} from 'antd';
 import { Link } from 'umi';
 import Texty from 'rc-texty';
 import QueueAnim from 'rc-queue-anim';
 import { connect } from 'dva';
 import Language from '@/locales/index';
+import { MailOutlined } from '@ant-design/icons';
 
+const customizeRenderEmpty = () => (
+  <div style={{ textAlign: 'center' }}>
+    <MailOutlined rotate={180} style={{ fontSize: 20 }} />
+    <p>You have no invitation!</p>
+  </div>
+);
 const data = [
   {
     title: 'C Programming Set',
@@ -27,7 +44,7 @@ const data = [
   },
 ];
 
-const testHome = ({ dispatch, status }) => {
+const testHome = ({ dispatch, status, inviteList }) => {
   useEffect(() => {
     if (status === -1)
       notification.open({
@@ -65,19 +82,46 @@ const testHome = ({ dispatch, status }) => {
   return (
     <div className={styles.global}>
       <QueueAnim className="combine-wrapper">
-        <div key="input-wrapper" className="input-wrapper">
-          <Input
-            // allowClear
-            onPressEnter={handleSubmit}
-            onChange={(e) => handleChange(e)}
-            className="input"
-            size="large"
-            placeholder={Language.pages_test_home_enterPinCode}
-          ></Input>
-          <Button onClick={handleSubmit} block size="large" className="button">
-            {Language.pages_test_home_join}
-          </Button>
-        </div>
+        <Row className="row-wrapper">
+          <Col span={12} key="input-wrapper" className="input-wrapper">
+            <Input
+              // allowClear
+              onPressEnter={handleSubmit}
+              onChange={(e) => handleChange(e)}
+              className="input"
+              size="large"
+              placeholder={Language.pages_test_home_enterPinCode}
+            ></Input>
+            <Button onClick={handleSubmit} block size="large" className="button">
+              {Language.pages_test_home_join}
+            </Button>
+          </Col>
+          <Col
+            span={12}
+            key="invite-list"
+            styles={{ boxShadow: '0 1px 2px rgba(24, 144, 255, .4)' }}
+          >
+            <Typography.Title level={2}>
+              <Texty>Invite List:</Texty>
+            </Typography.Title>
+            <ConfigProvider renderEmpty={customizeRenderEmpty}>
+              <List
+                className="invite-list"
+                dataSource={inviteList}
+                renderItem={(item) => (
+                  <Card className="invite-card">
+                    <List.Item key={item.id}
+                    onClick={()=>{
+                      console.log("click")
+                    }}>
+                      <List.Item.Meta title={item.testName} description={`from ${item.author}`} />
+                    </List.Item>
+                  </Card>
+                )}
+              />{' '}
+            </ConfigProvider>
+          </Col>
+        </Row>
       </QueueAnim>
       <div>
         <Typography.Title className={styles.topic}>
@@ -100,6 +144,7 @@ const testHome = ({ dispatch, status }) => {
   );
 };
 
-export default connect(({ test }) => ({
+export default connect(({ test, user }) => ({
+  inviteList: user.inviteList,
   status: test.statusFromCode,
 }))(testHome);

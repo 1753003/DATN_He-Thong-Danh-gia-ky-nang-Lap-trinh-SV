@@ -1,4 +1,4 @@
-import { query as queryUsers } from '@/services/user';
+import { query as queryUsers, queryInviteList } from '@/services/user';
 import firebase from '@/utils/firebase'
 const UserModel = {
   namespace: 'user',
@@ -7,6 +7,7 @@ const UserModel = {
     currentUser: {
       react: {}
     },
+    inviteList:[],
   },
   effects: {
     *fetch(_, { call, put }) {
@@ -16,8 +17,15 @@ const UserModel = {
         payload: response,
       });
     },
-    
+    *fetchInviteList(_, { call, put }) {
+      
+    },
     *fetchCurrent({payload}, { call, put }) {
+      const inviteList = yield call(queryInviteList);
+      yield put({
+        type: 'saveInviteList',
+        payload: inviteList,
+      });
       const uid = payload
       const totalNotiCount = firebase.database().ref(`users/${uid}/totalNotiCount`)
       const unReadCount = firebase.database().ref(`users/${uid}/unreadCount`)
@@ -65,6 +73,9 @@ const UserModel = {
     }
   },
   reducers: {
+    saveInviteList(state, action) {
+      return { ...state, inviteList: action.payload || [] };
+    },
     saveCurrentUser(state, action) {
       return { ...state, currentUser: action.payload || {react:{}} };
     },
