@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { Button, Space } from 'antd';
 import firebase from '@/utils/firebase';
 
-const ReplyEditor = ({ location, pid, dispatch, handleDiscard }) => {
+const ReplyEditor = ({ type, id, pid, dispatch, handleDiscard }) => {
   const [value, setValue] = useState('');
   const handleReply = () => {
     let cmt = {
@@ -19,10 +19,10 @@ const ReplyEditor = ({ location, pid, dispatch, handleDiscard }) => {
     if (typeof pid !== 'undefined') {
       parentId = pid;
     }
-    let postId = location.state.PracticeID;
+    let postId = id;
     dispatch({
       type: 'discussion/postComment',
-      payload: { cmt, parentId, postId },
+      payload: { cmt, parentId, postId, type:type },
     });
     if (handleDiscard) handleDiscard();
   };

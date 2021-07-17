@@ -15,7 +15,7 @@ const customizeRenderEmpty = () => (
     <p>Oops, seem like a bit silent here. Let make some noise!</p>
   </div>
 );
-const CommentList = ({ data, dispatch, location }) => {
+const CommentList = ({ data, dispatch, id, type }) => {
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     setTimeout(() => {
@@ -23,12 +23,13 @@ const CommentList = ({ data, dispatch, location }) => {
     }, 1000);
   }, []);
   const handleClick = (cid, react, value) => {
-    let postId = location.state.PracticeID;
+    let postId = id;
     const payload = {
       postId: postId,
       commentId: cid,
       value: value,
       status: react,
+      type: type
     };
 
     if (dispatch)
@@ -60,7 +61,8 @@ const CommentList = ({ data, dispatch, location }) => {
             actions={[
               showReplyTo && (
                 <ReplyEditor
-                  location={location}
+                type={type}
+                  id={id}
                   pid={data.id}
                   handleDiscard={handleDiscard}
                 ></ReplyEditor>

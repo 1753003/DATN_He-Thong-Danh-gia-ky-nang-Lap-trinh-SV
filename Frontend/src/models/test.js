@@ -52,7 +52,7 @@ const TestModel = {
       if (response !== -1)
         history.push({
           pathname: '/developer/test/questions',
-          state: { ID: response },
+          state: { id: response, type :"undefined" },
         });
     },
     *fetchTestList(_, { call, put }) {
