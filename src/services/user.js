@@ -1,55 +1,14 @@
 import Constant from '@/utils/constants';
-import request from '@/utils/request';
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import jwt from 'jwt-decode'
 import tokenHandling from './tokenHandling';
-export async function query() {
-  return request(`${Constant.API}/api/users`);
-}
-export async function queryCurrent() {
-  return request(`${Constant.API}/api/currentUser`);
-}
-export async function queryNotices() {
-  return null;
+export async function getUid() {
+  const token = Cookies.get('accessToken');
+  const user = jwt(token);
+  return user.uid;
 }
 export function queryInviteList(id) {
-  // return [
-  //   {
-  //     testName:"Multiple Variables",
-  //     testID: 1,
-  //     author: "Mr.A"
-  //   },
-  //   {
-  //     testName:"Multhahahhaaiple Variables",
-  //     testID: 2,
-  //     author: "Mr.A"
-  //   },
-  //   {
-  //     testName:"i dunno Variables",
-  //     testID: 3,
-  //     author: "Mr.A"
-  //   },
-  //   {
-  //     testName:"you're tirght Variables",
-  //     testID: 4,
-  //     author: "Mr.A"
-  //   },
-  //   {
-  //     testName:"DOntkey Variables",
-  //     testID: 5,
-  //     author: "Mr.A"
-  //   },
-  //   {
-  //     testName:"Nerve Variables",
-  //     testID: 6,
-  //     author: "Mr.A"
-  //   },
-  //   {
-  //     testName:"Random Variables",
-  //     testID: 7,
-  //     author: "Mr.A"
-  //   },
-  // ]
   return new Promise((resolve, reject) => {
     var options = {
       method: 'GET',

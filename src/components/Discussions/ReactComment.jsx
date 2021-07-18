@@ -6,7 +6,7 @@ import { LikeTwoTone, DislikeTwoTone } from '@ant-design/icons';
 const ReactComment = ({ data, id, reactArray, handleClick }) => {
   const [init, setInit] = useState(false);
   const [local, setLocal] = useState({
-    react: typeof reactArray !== 'undefined' ? reactArray[id] : 0,
+    react: typeof reactArray !== 'undefined' ? reactArray!==null?reactArray[id]:0: 0,
     vote: data,
   });
 

@@ -20,7 +20,6 @@ const DiscussionTab = ({ location, discussion, dispatch }) => {
           }
 
     setInit(true);
-    console.log("location",location)
     let id = location.state.id;
     let type = location.state.type;
     const rootRef = firebase.firestore().collection('discussions').doc(`${type}-${id}`);
