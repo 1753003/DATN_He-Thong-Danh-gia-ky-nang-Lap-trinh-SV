@@ -73,17 +73,17 @@ const BasicLayout = (props) => {
   }, []);
   const getCurrentUserFirebase = () =>{
     
-    const userRef = firebase.database().ref(`users/${props.uid}`)
+    // const userRef = firebase.database().ref(`users/${props.uid}`)
     // console.log("uid", userRef)
-    userRef.off()
-    userRef.on('value', (snapshot)=>{
-      if (dispatch) {
-        dispatch({
-          type: 'user/fetchCurrent',
-          payload: props.uid
-        });
-      }
-    })
+    // userRef.off()
+    if (dispatch) {
+      dispatch({
+        type: 'user/fetchCurrent',
+        payload: props.uid
+      });
+    }
+    // userRef.on('value', (snapshot)=>{
+    // })
   }
   /** Init variables */
 
