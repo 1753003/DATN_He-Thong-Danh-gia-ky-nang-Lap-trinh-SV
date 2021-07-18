@@ -1,9 +1,12 @@
 import { query as queryUsers, queryInviteList } from '@/services/user';
 import firebase from '@/utils/firebase'
+import Cookies from 'js-cookie';
+import jwt from 'jwt-decode'
+
 const UserModel = {
   namespace: 'user',
   state: {
-    uid:"zcwVw4Rjp7b0lRmVZQt6ZXmspql1", //need get this each time user load page
+    uid:"", //need get this each time user load page
     currentUser: {
       react: {}
     },
@@ -11,14 +14,13 @@ const UserModel = {
   },
   effects: {
     *fetch(_, { call, put }) {
-      const response = yield call(queryUsers);
+      const token = Cookies.get('accessToken');
+      const user = jwt(token);
+      console.log(user.uid)
       yield put({
-        type: 'save',
-        payload: response,
+        type: 'saveUid',
+        payload: user.uid,
       });
-    },
-    *fetchInviteList(_, { call, put }) {
-      
     },
     *fetchCurrent({payload}, { call, put }) {
       const inviteList = yield call(queryInviteList);
@@ -27,6 +29,7 @@ const UserModel = {
         payload: inviteList,
       });
       const uid = payload
+      console.log("in",uid)
       const totalNotiCount = firebase.database().ref(`users/${uid}/totalNotiCount`)
       const unReadCount = firebase.database().ref(`users/${uid}/unreadCount`)
       const reactRef = firebase.database().ref(`users/${uid}/react`)
@@ -75,6 +78,9 @@ const UserModel = {
   reducers: {
     saveInviteList(state, action) {
       return { ...state, inviteList: action.payload || [] };
+    },
+    saveUid(state, action) {
+      return { ...state, uid: action.payload || "" };
     },
     saveCurrentUser(state, action) {
       return { ...state, currentUser: action.payload || {react:{}} };
