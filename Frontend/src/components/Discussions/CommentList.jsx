@@ -6,7 +6,7 @@ import PageLoading from '../PageLoading';
 import ReplyEditor from './ReplyEditor';
 import moment from 'moment';
 import './style.less';
-import ReactComment from './ReactComment';
+// import ReactComment from './ReactComment';
 import { SmileOutlined } from '@ant-design/icons';
 
 const customizeRenderEmpty = () => (
@@ -53,9 +53,9 @@ const CommentList = ({ data, dispatch, id, type }) => {
 
     return (
       <Row gutter={24}>
-        <Col className="vote" span={1}>
+        {/* <Col className="vote" span={1}>
           <ReactComment data={data.vote} id={data.id} handleClick={handleClick}></ReactComment>
-        </Col>
+        </Col> */}
         <Col span={20}>
           <Comment
             actions={[
@@ -88,13 +88,13 @@ const CommentList = ({ data, dispatch, id, type }) => {
                 return (
                   <Row gutter={24} key={key}>
                     <Divider></Divider>
-                    <Col className="vote" span={1}>
+                    {/* <Col className="vote" span={1}>
                       <ReactComment
                         data={subitem.vote}
                         id={subitem.id}
                         handleClick={handleClick}
                       ></ReactComment>
-                    </Col>
+                    </Col> */}
                     <Col span={20}>
                       <Comment
                         author={`${subitem.author}

@@ -1,5 +1,5 @@
 import { getUid, queryInviteList } from '@/services/user';
-import firebase from '@/utils/firebase'
+// import firebase from '@/utils/firebase'
 
 
 const UserModel = {
@@ -24,25 +24,26 @@ const UserModel = {
         type: 'saveInviteList',
         payload: inviteList,
       });
-      const uid = userID
-      const reactRef = firebase.database().ref(`users/${uid}/react`)
+      // const uid = userID
+      // const reactRef = firebase.database().ref(`users/${uid}/react`)
       
-      const react = yield call(()=>{ return new Promise((resolve, reject)=>{
-          reactRef.on('value', (snapshot)=>{
-            resolve(snapshot.val())
-          })
-        })
-      })
+      // const react = yield call(()=>{ return new Promise((resolve, reject)=>{
+      //     reactRef.on('value', (snapshot)=>{
+      //       console.log(snapshot.val())
+      //       resolve(snapshot.val())
+      //     })
+      //   })
+      // })
       
 
-        const currentUser = {
-          react: react
-        }
-        // console.log(currentUser)
-        yield put({
-          type:'saveCurrentUser',
-          payload: currentUser
-        })
+        // const currentUser = {
+        //   react: react
+        // }
+        // // console.log(currentUser)
+        // yield put({
+        //   type:'saveCurrentUser',
+        //   payload: currentUser
+        // })
     }
   },
   reducers: {
