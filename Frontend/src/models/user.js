@@ -1,7 +1,6 @@
-import { query as queryUsers, queryInviteList } from '@/services/user';
+import { getUid, queryInviteList } from '@/services/user';
 import firebase from '@/utils/firebase'
-import Cookies from 'js-cookie';
-import jwt from 'jwt-decode'
+
 
 const UserModel = {
   namespace: 'user',
@@ -13,59 +12,30 @@ const UserModel = {
     inviteList:[],
   },
   effects: {
-    *fetch(_, { call, put }) {
-      const token = Cookies.get('accessToken');
-      const user = jwt(token);
-      console.log(user.uid)
+    *fetchCurrent(_, { call, put }) {
+
+      const userID = yield call(getUid);
       yield put({
         type: 'saveUid',
-        payload: user.uid,
+        payload: userID,
       });
-    },
-    *fetchCurrent({payload}, { call, put }) {
       const inviteList = yield call(queryInviteList);
       yield put({
         type: 'saveInviteList',
         payload: inviteList,
       });
-      const uid = payload
-      console.log("in",uid)
-      const totalNotiCount = firebase.database().ref(`users/${uid}/totalNotiCount`)
-      const unReadCount = firebase.database().ref(`users/${uid}/unreadCount`)
+      const uid = userID
       const reactRef = firebase.database().ref(`users/${uid}/react`)
-      const notiCount = yield call(()=>{ return new Promise((resolve, reject)=>{
-          totalNotiCount.on('value', (snapshot)=>{
-            resolve(snapshot.val())
-          })
-        })
-      })
-      const unread = yield call(()=>{ return new Promise((resolve, reject)=>{
-          unReadCount.on('value', (snapshot)=>{
-            resolve(snapshot.val())
-          })
-        })
-      })
+      
       const react = yield call(()=>{ return new Promise((resolve, reject)=>{
           reactRef.on('value', (snapshot)=>{
             resolve(snapshot.val())
           })
         })
       })
-      //   const getData = yield call(()=>{
-      //     return new Promise((resolve, reject)=>{
-      //     Promise.all([notiCount, react, unread]).then(values => {
-      //       // console.log(values);
-      //       resolve(values)
-      //     }).catch(reason => {
-      //       console.log(reason)
-      //     });
-          
-      //   }) 
-      // })
+      
 
         const currentUser = {
-          totalNotiCount: notiCount,
-          unreadCount: unread,
           react: react
         }
         // console.log(currentUser)
@@ -88,22 +58,7 @@ const UserModel = {
     editCurrentUserReact(state,{payload}) {
       return { ...state, currentUser: {react:{...state.currentUser.react, payload}} };
     },
-    changeNotifyCount(
-      state = {
-        currentUser: {
-          react:{}
-        },
-      },
-      action,
-    ) {
-      return {
-        ...state,
-        currentUser: {
-          ...state.currentUser,
-          notifyCount: action.payload.totalCount,
-        },
-      };
-    },
+    
   },
 };
 export default UserModel;
