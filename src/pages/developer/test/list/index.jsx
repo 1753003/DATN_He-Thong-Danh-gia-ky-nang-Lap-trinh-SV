@@ -271,8 +271,21 @@ const TestSetList = ({ location, dispatch, testDev, loading }) => {
                       </div>
                     }
                   />
+                  <Button size="large" style={{ width: '100px', marginRight: '10px' }} onClick = {() => {
+                    history.push({
+                      pathname: `/developer/test/rank`,
+                      state: item.ID
+                    });
+                  }}>
+                      Ranking
+                    </Button>
                   {item.SubmissionID != null && (
-                    <Button size="large" style={{ width: '100px' }}>
+                    <Button size="large" style={{ width: '100px' }} onClick={() => {
+                      history.push({
+                        pathname: '/developer/test/questions',
+                        state: item,
+                      });
+                    }}>
                       {Language.pages_practice_list_solved}
                     </Button>
                   )}
@@ -281,6 +294,12 @@ const TestSetList = ({ location, dispatch, testDev, loading }) => {
                       size="large"
                       style={{ background: '#3ebae0', border: '2px solid #3ebae0', width: '100px' }}
                       type="primary"
+                      onClick={() => {
+                        history.push({
+                          pathname: '/developer/test/questions',
+                          state: item,
+                        });
+                      }}
                     >
                       {' '}
                       {Language.pages_search_start}{' '}

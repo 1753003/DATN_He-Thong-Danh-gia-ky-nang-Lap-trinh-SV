@@ -1,7 +1,6 @@
 import Constant from '@/utils/constants';
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import jwt from 'jwt-decode'
 import tokenHandling from './tokenHandling';
 export async function getUid() {
   const token = Cookies.get('accessToken');
