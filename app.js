@@ -9,7 +9,8 @@ app.use(express.json());
 
 app.use(morgan('dev'));
 //const WEB = process.env.WEB || 'http://3.0.40.66:8000';
-const WEB = 'https://codejoyfe.me'
+//const WEB = 'https://codejoyfe.me'
+const WEB = 'http://localhost:8000'
 app.use(cors({ credentials: true, origin: WEB}));
 app.use(cookieParser()); 
 // const csrfProtection = csrf({

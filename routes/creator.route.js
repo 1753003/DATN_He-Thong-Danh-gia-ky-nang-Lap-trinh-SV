@@ -9,6 +9,53 @@ router.get('/', async function (req, res) {
    res.json('OK');
 })
 
+
+
+async function writeNewNotification(id, notiDescription, type) {
+   var firebase_realtime = require('firebase');
+   // require("firebase/database");
+   var config = {
+      apiKey: "AIzaSyC_FKi-svb2idZpvqsfPFWASeHUS60O9eU",
+      authDomain: "devcheckpro.firebaseapp.com",
+      projectId: "devcheckpro",
+      storageBucket: "devcheckpro.appspot.com",
+      messagingSenderId: "594608048066",
+      appId: "1:594608048066:web:fe4fadd828cdc36181f85b",
+      measurementId: "G-44GFLD429W"
+   };
+
+   firebase_realtime.initializeApp(config);
+    let unreadCount, totalNotiCount;
+    var ref = firebase_realtime.database().ref('users/' + id);
+    ref.get()
+    .then((snapshot) => {
+        if (snapshot.exists())
+        {
+            console.log(snapshot.val());
+            unreadCount = snapshot.val().unreadCount + 1;
+            totalNotiCount = snapshot.val().totalNotiCount + 1;
+        }
+        else {
+            unreadCount = 1;
+            totalNotiCount = 1;
+        }
+    }) 
+    .then(() => {
+        firebase_realtime.database().ref('users/'+id).update({unreadCount: unreadCount, totalNotiCount: totalNotiCount});
+        firebase_realtime.database().ref('users/'+id+'/notifications').push({
+            description: notiDescription,
+            datetime: Date.now(),
+            read: false,
+            type: type
+        })
+    })
+    //
+    //ref.on('value', (snapshot) => {
+    //    console.log(snapshot.val());
+    //})
+}
+
+
 /*
 * Test routes
 * =================================================================================================
@@ -27,7 +74,7 @@ router.post('/test', async function (req, res) {
    generalInformation.CreatedBy = req.uid;
    generalInformation.TestCode = result;
    await testModel.createTest(generalInformation, req.body.listQuestion, listEmail, result, req.uid);
-   
+   writeNewNotification(req.uid, 'You have a new test invitation.', 'Notification')
    res.json(result);
   
 })
