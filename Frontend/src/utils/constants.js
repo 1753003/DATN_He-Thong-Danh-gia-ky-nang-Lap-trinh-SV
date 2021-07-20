@@ -1,13 +1,13 @@
 const Constant = {
   CORS:
-    process.env.NODE_ENV === 'production' ? 'http://3.0.40.66:8000' : 'http://localhost:8000',
+    process.env.NODE_ENV === 'production' ? 'https://codejoyfe.me' : 'http://localhost:8000',
   API:
     process.env.NODE_ENV === 'production'
-      ? 'http://3.0.40.66:8000'
+      ? 'https://be.codejoyfe.me'
       : 'http://localhost:5000',
   JUDGE: process.env.NODE_ENV === 'production'
-  ? 'http://3.0.40.66:2358'
-  : 'http://3.0.40.66:2358',
+  ? 'https://codejoy-fe.herokuapp.com'
+  : 'https://codejoy-fe.herokuapp.com',
 };
 
 export default Constant;

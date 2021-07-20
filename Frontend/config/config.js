@@ -22,7 +22,9 @@ export default defineConfig({
   dynamicImport: {
     loading: '@/components/PageLoading/index',
   },
-
+  exportStatic:{
+    
+  },
   targets: {
     ie: 11,
   },

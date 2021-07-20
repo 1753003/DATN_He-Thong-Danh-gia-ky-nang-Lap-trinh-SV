@@ -6,63 +6,81 @@ import { LikeTwoTone, DislikeTwoTone } from '@ant-design/icons';
 const ReactComment = ({ data, id, reactArray, handleClick }) => {
   const [init, setInit] = useState(false);
   const [local, setLocal] = useState({
-    react: typeof reactArray !== 'undefined' ? reactArray[id] : 0,
+    react: typeof reactArray !== 'undefined' ? reactArray!==null?reactArray[id]:0: 0,
     vote: data,
   });
 
   useEffect(() => {
     setInit(true);
   }, []);
-  useEffect(() => {
-    if (init) {
-      handleClick(id, local.react, local.vote);
-    }
-  }, [local]);
+  // useEffect(() => {
+  //   if (init) {
+  //     handleClick(id, local.react, local.vote);
+  //   }
+  // }, [local]);
   const handleUpvoted = () => {
+    let tempReact = local.react;
+    let tempVote = local.vote;
+
     try {
       if (local.react === 1) {
-        setLocal({
-          react: 0,
-          vote: local.vote - 1,
-        });
+        // setLocal({
+        //   react: 0,
+        //   vote: local.vote - 1,
+        // });
+        tempReact = 0;
+        tempVote = local.vote -1
       } else if (local.react === -1) {
-        setLocal({
-          react: 1,
-          vote: local.vote + 2,
-        });
+        // setLocal({
+        //   react: 1,
+        //   vote: local.vote + 2,
+        // });
+        tempReact = 1;
+        tempVote = local.vote +2
       } else {
         // setReact(1)
         // setVote(vote=>vote+1)
-        setLocal({
-          react: 1,
-          vote: local.vote + 1,
-        });
+        // setLocal({
+        //   react: 1,
+        //   vote: local.vote + 1,
+        // });
+        tempReact = 1;
+        tempVote = local.vote +1
       }
+      handleClick(id, tempReact, tempVote)
     } catch (error) {
     } finally {
-      // handleClick(id, local.react, local.vote)
     }
   };
   const handleDownvoted = () => {
+    let tempReact = local.react;
+    let tempVote = local.vote;
     try {
       if (local.react === -1) {
-        setLocal({
-          react: 0,
-          vote: local.vote + 1,
-        });
+        // setLocal({
+        //   react: 0,
+        //   vote: local.vote + 1,
+        // });
+        tempReact = 0;
+        tempVote = local.vote +1
       } else if (local.react === 1) {
-        setLocal({
-          react: -1,
-          vote: local.vote - 2,
-        });
+        // setLocal({
+        //   react: -1,
+        //   vote: local.vote - 2,
+        // });
+        tempReact = -1;
+        tempVote = local.vote -2
       } else {
         // setReact(1)
         // setVote(vote=>vote+1)
-        setLocal({
-          react: -1,
-          vote: local.vote - 1,
-        });
+        // setLocal({
+        //   react: -1,
+        //   vote: local.vote - 1,
+        // });
+        tempReact = -1;
+        tempVote = local.vote -1
       }
+      handleClick(id, tempReact, tempVote)
     } catch (error) {
     } finally {
     }

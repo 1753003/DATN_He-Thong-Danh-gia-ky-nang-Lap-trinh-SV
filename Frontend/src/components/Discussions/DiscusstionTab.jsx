@@ -4,12 +4,25 @@ import CommentList from './CommentList';
 import ReplyEditor from './ReplyEditor';
 import firebase from '@/utils/firebase';
 
+
 const DiscussionTab = ({ location, discussion, dispatch }) => {
   const [init, setInit] = useState(false);
   useEffect(() => {
+    if (dispatch)
+            {dispatch({
+              type: 'discussion/setDiscussion',
+              payload: [],
+            });
+            dispatch({
+              type: 'discussion/setRootComments',
+              payload: [],
+            });
+          }
+
     setInit(true);
-    let id = location.state.PracticeID;
-    const rootRef = firebase.firestore().collection('discussions').doc(`practice-${id}`);
+    let id = location.state.id;
+    let type = location.state.type;
+    const rootRef = firebase.firestore().collection('discussions').doc(`${type}-${id}`);
     rootRef.onSnapshot((doc) => {
       if (doc.data()) {
         let comments = doc.data().root;
@@ -24,19 +37,19 @@ const DiscussionTab = ({ location, discussion, dispatch }) => {
 
   useEffect(() => {
     if (init) {
-      let id = location.state.PracticeID;
+      let id = location.state.id;
 
       const commentRef = firebase
         .firestore()
         .collection('discussions')
-        .doc(`practice-${id}`)
+        .doc(`${location.state.type}-${id}`)
         .collection('comments')
         .orderBy('vote', 'desc')
         .orderBy('time', 'desc')
         .onSnapshot((querySnapshot) => {
           let comments = [];
           let subComments = [];
-          console.log('flag');
+          // console.log('flag');
           querySnapshot.forEach((doc) => {
             let temp = doc.data();
             temp.id = doc.id;
@@ -66,8 +79,8 @@ const DiscussionTab = ({ location, discussion, dispatch }) => {
 
   return (
     <div>
-      <ReplyEditor location={location}></ReplyEditor>
-      <CommentList location={location} loading={false}></CommentList>
+      <ReplyEditor id={location.state.id} type={location.state.type}></ReplyEditor>
+      <CommentList id={location.state.id} type={location.state.type} loading={false}></CommentList>
     </div>
   );
 };

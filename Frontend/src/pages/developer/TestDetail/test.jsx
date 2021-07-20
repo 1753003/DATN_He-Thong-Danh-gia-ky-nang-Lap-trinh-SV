@@ -5,7 +5,7 @@ import {
   Col,
   Button,
   List,
-  Checkbox,
+  Tabs,
   Spin,
   PageHeader,
   Result,
@@ -21,6 +21,9 @@ import Language from '@/locales/index';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { docco } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import CryptoJS from 'crypto-js';
+import DiscusstionTab from '@/components/Discussions/DiscusstionTab';
+
+const { TabPane } = Tabs;
 class TestDetail extends React.Component {
   state = {
     hours: undefined,
@@ -36,7 +39,7 @@ class TestDetail extends React.Component {
     super(props);
     this.handleUnload = this.handleUnload.bind(this);
     this.handleBack = this.handleBack.bind(this);
-    let id = props.location.state?.ID;
+    let id = props.location.state?.id;
 
     const key = props.location.query.key;
 
@@ -105,7 +108,7 @@ class TestDetail extends React.Component {
     this.setState({
       start: true,
     });
-    let id = this.props.location.state?.ID;
+    let id = this.props.location.state?.id;
 
     const key = this.props.location.query.key;
 
@@ -203,7 +206,7 @@ class TestDetail extends React.Component {
     });
     this.props.dispatch({
       type: 'test/removeSession',
-      payload: this.props.location.state.ID,
+      payload: this.props.location.state.id,
     });
   }
 
@@ -378,7 +381,10 @@ class TestDetail extends React.Component {
         if (this.props.test.testInfo.error == 'none') {
           const test = this.props.test.testInfo.generalInformation;
           return (
-            <>
+
+            <Tabs className="custom" type="card" size="large" >
+          <TabPane tab="Information" key="1">
+          <>
               <h1>{test.TestName}</h1>
               <h2>Description: {test.Description}</h2>
               <p><b>Time: </b>{test.TestTime}</p>
@@ -394,8 +400,14 @@ class TestDetail extends React.Component {
                 Start
               </Button>
             </>
+          </TabPane>
+          {this.props.location.state.type!=="undefined"&&<TabPane tab="Discussions" key="2">
+                <DiscusstionTab location = {this.props.location}></DiscusstionTab>
+          </TabPane>}
+        </Tabs>
+            
           );
-        }        
+        }
         return (
           <Result
             title="You do not have permission to access this test"

@@ -1,11 +1,31 @@
 import Constant from '@/utils/constants';
-import request from '@/utils/request';
-export async function query() {
-  return request(`${Constant.API}/api/users`);
+import axios from 'axios';
+import Cookies from 'js-cookie';
+import tokenHandling from './tokenHandling';
+export async function getUid() {
+  const token = Cookies.get('accessToken');
+  const user = jwt(token);
+  return user.uid;
 }
-export async function queryCurrent() {
-  return request(`${Constant.API}/api/currentUser`);
-}
-export async function queryNotices() {
-  return null;
+export function queryInviteList(id) {
+  return new Promise((resolve, reject) => {
+    var options = {
+      method: 'GET',
+      withCredentials: true,
+      url: `${Constant.API}/api/developer/invite`,
+      headers: {
+        'access-control-allow-origin': Constant.CORS,
+        accessToken: Cookies.get('accessToken'),
+      },
+    };
+    axios
+      .request(options)
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        const message = error.response.data.message;
+        tokenHandling(message, resolve, options);
+      });
+  });
 }
