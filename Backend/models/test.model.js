@@ -382,4 +382,12 @@ module.exports = {
 
     return result;
   },
+  async getRanking(testID) {
+    return (await db.raw(`select submissions.TestID, CorrectPercent, DoingTime, Score, submissions.CreatedAt, UserName 
+    from submissions 
+    inner join userlogin
+    on UserID = DevID
+    where submissions.TestID = ${testID}
+    order by Score DESC, DoingTime ASC;`))[0]
+  }
 };
