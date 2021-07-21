@@ -107,12 +107,6 @@ module.exports = {
 
   async getTestByUID(uid) {
     var res = await db("test").where("CreatedBy", uid);
-    for (const item of res) {
-      var num = await db.raw(
-        `select count(*) as count from submissions where TestID = ${item.TestID}`
-      );
-      item.TotalDone = num[0][0].count;
-    }
     return res;
   },
 

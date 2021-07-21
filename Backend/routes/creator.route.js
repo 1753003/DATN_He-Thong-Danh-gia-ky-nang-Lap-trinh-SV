@@ -173,8 +173,12 @@ router.get('/report/summary/:id', async function (req, res) {
 
 router.get('/report/user/:id', async function (req, res) {
    const users = await reportModel.getUser (req.params.id);
-   
+   console.log(users)
    res.json(users);
+})
+
+router.post('/report/user/:id', async function (req, res) {
+   res.json(await reportModel.getUserDetail (req.params.id, req.body.username))
 })
 
 router.get('/report/question/:id', async function (req, res) {

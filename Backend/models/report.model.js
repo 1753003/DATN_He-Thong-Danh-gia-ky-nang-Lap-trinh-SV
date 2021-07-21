@@ -26,7 +26,7 @@ module.exports = {
                                          where TestID = ${testID}
                                         `)
     )[0][0].numOfUsers;
-    console.log(testID)
+    console.log(testID);
     const numOfQuestion = (
       await db.raw(`select QuestionID
                                              from test
@@ -54,92 +54,14 @@ module.exports = {
     return summary;
   },
   async getUser(reportID) {
-    const testID = (await db("report").where("ID", reportID))[0].TestID;
-
-    const submission = await db("submissions").where("TestID", testID);
-    const test = (await db("test").where("TestID", testID))[0];
-    const listQuestionID = test.QuestionID;
-    const listQuestion = [];
-    for (const item of listQuestionID) {
-      const question = (await db("question").where("ID", item))[0];
-      var res = {};
-      res.ID = question.ID;
-      res.QuestionType = question.QuestionType;
-      res.Score = question.Score;
-      if (question.QuestionType == "MultipleChoice") {
-        const multipleQuestion = (
-          await db("multiplechoice").where("QuestionID", question.ID)
-        )[0];
-        res.Description = multipleQuestion.MCDescription;
-        res.Answer = multipleQuestion.Answer;
-        res.CorrectAnswer = multipleQuestion.CorrectAnswer;
-      } else if (question.QuestionType == "Code") {
-        const codeQuestion = (
-          await db("coding").where("QuestionID", question.ID)
-        )[0];
-        res.Description = codeQuestion.CodeDescription;
-        res.Language_allowed = codeQuestion.Language_allowed;
-        res.RunningTime = codeQuestion.RunningTime;
-        res.MemoryUsage = codeQuestion.MemoryUsage;
-        res.TestCase = codeQuestion.TestCase;
-      }
-      listQuestion.push(res);
-    }
-    //console.log(listQuestion);
-    //console.log(listQuestion)
-    var result = [];
-    for (const item of submission) {
-      var temp = {};
-      var listQuestionUser = [];
-      for (const e of listQuestion) {
-        var questionUser = {};
-        questionUser.Question = e.Description;
-        questionUser.Type = e.QuestionType;
-        console.log(e);
-        if (questionUser.Type == "Code") {
-          const answer = (
-            await db("answercoding").where({
-              QuestionID: e.ID,
-              SubmissionID: item.SubmissionID,
-            })
-          )[0];
-          //console.log(answer);
-          if (answer != undefined) {
-            questionUser.Answered = answer.OutputTestcase;
-            questionUser.RunningTime = answer.RunningTime;
-          }
-        } else if (questionUser.Type == "MultipleChoice") {
-          const answer = (
-            await db("answermultiplechoice").where({
-              QuestionID: e.ID,
-              SubmissionID: item.SubmissionID,
-            })
-          )[0];
-          if (answer != undefined) {
-            questionUser.Answered = [];
-            for (let choice of answer.Choice)
-              questionUser.Answered.push(e.Answer[choice]);
-
-            questionUser.RunningTime = "--";
-          }
-        }
-        listQuestionUser.push(questionUser);
-      }
-
-      const userName = (await db("userlogin").where("UserID", item.DevID))[0]
-        .UserName;
-      temp = item;
-      temp.userName = userName;
-      temp.Unanswered = listQuestion.length - temp.AnsweredNumber;
-      temp.ListQuestion = listQuestionUser;
-      result.push(temp);
-    }
-
-    result.sort(function compare(a, b) {
-      if (a.Score < b.Score) return 1;
-      if (a.Score > b.Score) return -1;
-      return 0;
-    });
+    var result = (
+      await db.raw(`select submissions.*, userlogin.UserName
+                    from submissions, report, userlogin
+                    where submissions.TestID = report.TestID 
+                    and report.ID = ${reportID} 
+                    and userlogin.UserID = submissions.DevID
+                    order by Score DESC`)
+    )[0];
 
     var rank = 1;
     for (i = 0; i < result.length; i++) {
@@ -149,14 +71,33 @@ module.exports = {
     }
     return result;
   },
+  async getUserDetail(reportID, userName) {
+    const testID = (
+      await db.raw(`select test.*
+    from test, report
+    where test.TestID = report.TestID and report.ID = ${reportID}`)
+    )[0][0].TestID;
+    
+    const a = (await db.raw(`call getUserDetailReport(${testID}, '${userName}', 'MC')`))[0][0];
+    const b = (await db.raw(`call getUserDetailReport(${testID}, '${userName}', 'Code')`))[0][0];
+    
+    for (let e of b) {
+      for (let i of e.StudentOutput) {
+        i = Buffer.from(i, 'base64').toString();
+      }
+      e.StudentCodeScript = Buffer.from(e.StudentCodeScript, 'base64').toString();    
+    }
+
+    return a.concat(b);
+  },
   async getQuestion(testID) {
     console.log("TestID: ", testID);
-    const templist = (await db("test").where("TestID", testID))[0].QuestionID
+    const templist = (await db("test").where("TestID", testID))[0].QuestionID;
     let result = [];
     const submission = await db("submissions").where("TestID", testID);
     const list = [];
     for (const i of templist) {
-      list.push((await db('question').where("ID", i))[0])
+      list.push((await db("question").where("ID", i))[0]);
     }
     for (item of list) {
       let NumberUserAnswer = [];
@@ -185,13 +126,14 @@ module.exports = {
             Answered.push(item.Answer[a]);
           }
 
-          const user = (await db('userlogin').where('UserID', e.DevID))[0].UserName;
+          const user = (await db("userlogin").where("UserID", e.DevID))[0]
+            .UserName;
           ListUser.push({
             User: user,
             Answered: Answered,
           });
         }
-        item.NumberUserAnswer= NumberUserAnswer;
+        item.NumberUserAnswer = NumberUserAnswer;
       } else {
         console.log(item.ID, e.SubmissionID);
         const question = (await db("coding").where("QuestionID", item.ID))[0];
@@ -205,12 +147,12 @@ module.exports = {
           MemoryUsage: question.MemoryUsage,
           RunningTime: question.RunningTime,
         };
-        
+
         let tcPassNumber = [];
         for (let tc of question.TestCase) {
-            tcPassNumber.push(0)
+          tcPassNumber.push(0);
         }
-        for (const e of submission) { 
+        for (const e of submission) {
           const answer = (
             await db("answercoding").where({
               QuestionID: item.ID,
@@ -218,13 +160,13 @@ module.exports = {
             })
           )[0];
 
-          const user = (await db('userlogin').where('UserID', e.DevID))[0].UserName;
-          
+          const user = (await db("userlogin").where("UserID", e.DevID))[0]
+            .UserName;
+
           for (let tc of answer.TestCasePassed) {
-              tcPassNumber[tc]++
+            tcPassNumber[tc]++;
           }
 
-          
           ListUser.push({
             TestCasePassed: answer.TestCasePassed,
             DescriptionCode: answer.DescriptionCode,
@@ -249,9 +191,9 @@ module.exports = {
     return result;
   },
   async updateReport(testID, percentPass, percentSuccess) {
-    await db('report').where('TestID', testID).update({
+    await db("report").where("TestID", testID).update({
       PercentSuccess: percentSuccess,
-      PercentPass: percentPass
-    })
-  }
+      PercentPass: percentPass,
+    });
+  },
 };
