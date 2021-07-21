@@ -37,6 +37,7 @@ module.exports = {
       .then(async (SubmissionID) => {
         const ID = SubmissionID[0];
         for (item of submission.ListAnswer) {
+          console.log(item.Type)
           if (item.Type === "MultipleChoice") {
             await db("answermultiplechoice").insert({
               SubmissionID: ID,

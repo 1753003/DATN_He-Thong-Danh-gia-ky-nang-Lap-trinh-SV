@@ -13,12 +13,12 @@ const UserModel = {
   },
   effects: {
     *fetchCurrent(_, { call, put }) {
-
+      /*
       const userID = yield call(getUid);
       yield put({
         type: 'saveUid',
         payload: userID,
-      });
+      });*/
       const inviteList = yield call(queryInviteList);
       yield put({
         type: 'saveInviteList',

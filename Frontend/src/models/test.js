@@ -278,7 +278,7 @@ const TestModel = {
           let lang_id = 54; //54 C++ 71 python
           code = code.replace(/(^")|("$)/g, '');
           code = u_btoa(code);
-
+          
           if (data.answer[count].data !== '') numAnswer++;
           for (var tc of e.TestCase) {
             // console.log(tc.Input[0])
