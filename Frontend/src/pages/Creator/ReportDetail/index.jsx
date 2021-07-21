@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import styles from './index.less';
-import Summary from './Cotents/Summary';
-import Users from './Cotents/Users';
-import Questions from './Cotents/Questions';
-import Feedback from './Cotents/Feedback';
+import Summary from './Contents/Summary';
+import Users from './Contents/Users';
+import Questions from './Contents/Questions';
 import { connect } from 'umi';
 import { Menu } from 'antd';
 import PageLoading from '@/pages/dashboard/analysis/components/PageLoading';
@@ -36,10 +35,18 @@ const ReportDetail = ({ summaryReport, location, dispatch, loading, summaryUser 
             }}
             selectedKeys={menuKey}
           >
-            <Menu.Item key="summary">Summary</Menu.Item>
-            <Menu.Item key="users">Users</Menu.Item>
-            <Menu.Item key="questions">Questions</Menu.Item>
-            <Menu.Item key="feedback">Feedback</Menu.Item>
+            <Menu.Item key="summary" style={{ color: menuKey === 'summary' ? '#00F3FA' : 'white' }}>
+              Summary
+            </Menu.Item>
+            <Menu.Item key="users" style={{ color: menuKey === 'users' ? '#00F3FA' : 'white' }}>
+              Users
+            </Menu.Item>
+            <Menu.Item
+              key="questions"
+              style={{ color: menuKey === 'questions' ? '#00F3FA' : 'white' }}
+            >
+              Questions
+            </Menu.Item>
           </Menu>
         </div>
       </div>

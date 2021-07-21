@@ -5,6 +5,7 @@ import {
   getSummaryUser,
   getSummaryQuestion,
 } from '@/services/report';
+import { message } from 'antd';
 
 const ReportModel = {
   namespace: 'report',
@@ -29,12 +30,16 @@ const ReportModel = {
       });
     },
     *getSummaryUserById({ payload }, { call, put }) {
-      const response = yield call(getSummaryUser, payload.id);
-      console.log(response);
-      yield put({
-        type: 'saveSummaryUser',
-        payload: response,
-      });
+      try {
+        const response = yield call(getSummaryUser, payload.id);
+        console.log(response);
+        yield put({
+          type: 'saveSummaryUser',
+          payload: response,
+        });
+      } catch (e) {
+        message.error('Something Wrong Happened, Please try Again later !!!');
+      }
     },
     *getSummaryQuestionById({ payload }, { call, put }) {
       console.log('ehllo');

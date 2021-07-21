@@ -91,7 +91,7 @@ const TestBank = ({ testBankList, dispatch, loading }) => {
             columns={columns}
             dataSource={list}
             loading={loading}
-            scroll={{ y: '55vh' }}
+            scroll={{ y: '60vh' }}
             onRow={(record, rowIndex) => {
               return {
                 onClick: (event) => {
