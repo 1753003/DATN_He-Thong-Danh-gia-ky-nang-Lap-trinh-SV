@@ -4,9 +4,10 @@ import { Table, Modal, Progress, Typography, Divider } from 'antd';
 import '../../../../../components/GlobalHeader/style.less';
 
 const Users = ({ summaryUser }) => {
+  console.log(summaryUser);
   const [visible, setVisible] = useState(false);
-  const [currentSelect, setCurrentSelect] = useState(null);
-  console.log(currentSelect)
+  const [currentSelect, setCurrentSelect] = useState(undefined);
+  console.log(currentSelect);
   const columns = [
     {
       title: 'Name',
@@ -65,22 +66,10 @@ const Users = ({ summaryUser }) => {
     },
   ];
 
-  return (
-    <div className={`${styles.container} custom`}>
-      <Table
-        dataSource={summaryUser}
-        columns={columns}
-        onRow={(record, rowIndex) => {
-          return {
-            onDoubleClick: (event) => {
-              setCurrentSelect(record);
-              setVisible(true);
-            }, // double click row
-          };
-        }}
-      />
-      <Modal
-        title={`${currentSelect?.UserName}`}
+  const renderInfo = () => {
+    return (
+      <div
+        title={`${currentSelect?.userName}`}
         className="custom"
         visible={visible}
         onCancel={() => setVisible(false)}
@@ -133,7 +122,28 @@ const Users = ({ summaryUser }) => {
           columns={userCollumns}
           scroll={{ y: '40vh' }}
         />
-      </Modal>
+      </div>
+    );
+  };
+
+  return (
+    <div className={`${styles.container} custom`}>
+      {currentSelect ? (
+        renderInfo()
+      ) : (
+        <Table
+          dataSource={summaryUser}
+          columns={columns}
+          onRow={(record, rowIndex) => {
+            return {
+              onDoubleClick: (event) => {
+                setCurrentSelect(record);
+                // setVisible(true);
+              }, // double click row
+            };
+          }}
+        />
+      )}
     </div>
   );
 };

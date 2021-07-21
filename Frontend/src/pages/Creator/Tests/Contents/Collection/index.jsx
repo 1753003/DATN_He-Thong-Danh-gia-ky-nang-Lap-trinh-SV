@@ -135,7 +135,7 @@ const Collection = ({ collectionList, dispatch, loading }) => {
         <Table
           columns={columns}
           dataSource={list}
-          scroll={{ y: '50vh' }}
+          scroll={{ y: '60vh' }}
           loading={loading}
           onRow={(record, rowIndex) => {
             return {
