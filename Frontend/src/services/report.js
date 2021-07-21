@@ -21,8 +21,9 @@ export function getReportList() {
       })
       .catch((error) => {
         // handle error
-        const message = error.response.data.message;
+        const message = error.response?.data.message;
         tokenHandling(message, resolve, options);
+        reject();
       });
   });
 }
@@ -47,8 +48,9 @@ export function getSummaryReport(id) {
       })
       .catch((error) => {
         // handle error
-        const message = error.response.data.message;
+        const message = error.response?.data.message;
         tokenHandling(message, resolve, options);
+        reject();
       });
   });
 }
@@ -72,8 +74,9 @@ export function getSummaryUser(id) {
       })
       .catch((error) => {
         // handle error
-        const message = error.response.data.message;
+        const message = error.response?.data.message;
         tokenHandling(message, resolve, options);
+        reject();
       });
   });
 }
@@ -99,6 +102,7 @@ export function getSummaryQuestion(id) {
         // handle error
         const message = error.response?.data.message;
         tokenHandling(message, resolve, options);
+        reject();
       });
   });
 }

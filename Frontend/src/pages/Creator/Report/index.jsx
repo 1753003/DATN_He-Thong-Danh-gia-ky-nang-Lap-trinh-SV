@@ -52,7 +52,7 @@ const Report = ({ reportList, dispatch, loading }) => {
         loading={loading}
         dataSource={list}
         columns={columns}
-        scroll={{ y: '55vh' }}
+        scroll={{ y: '70vh' }}
         onRow={(record, rowIndex) => {
           return {
             onClick: (event) => {
