@@ -18,7 +18,7 @@ export function getCollectionList() {
       .request(options)
       .then((response) => {
         // handle success
-        resolve(response.data);
+        resolve(response?.data);
       })
       .catch((error) => {
         // handle error
@@ -43,11 +43,11 @@ export function getCollectionById(id) {
       .then((response) => {
         // handle success
         // console.log(response.data)
-        resolve(response.data);
+        resolve(response?.data);
       })
       .catch((error) => {
         // handle error
-        const message = error.response.data.message;
+        const message = error.response?.data.message;
         tokenHandling(message, resolve, options);
       });
   });
@@ -72,11 +72,11 @@ export function addTestToCollection({ testID, collectionID }) {
       .then((response) => {
         // handle success
         // console.log(response.data)
-        resolve(response.data);
+        resolve(response?.data);
       })
       .catch((error) => {
         // handle error
-        const message = error.response.data.message;
+        const message = error.response?.data.message;
         tokenHandling(message, resolve, options);
       });
   });
@@ -102,7 +102,7 @@ export function createNewCollection({ CollectionName, CollectionDescription, Cov
       .then((response) => {
         // handle success
         // console.log(response.data)
-        resolve(response.data);
+        resolve(response?.data);
       })
       .catch((error) => {
         // handle error
@@ -140,7 +140,7 @@ export function editCollection({
       .then((response) => {
         // handle success
         // console.log(response.data)
-        resolve(response.data);
+        resolve(response?.data);
       })
       .catch((error) => {
         // handle error
@@ -168,11 +168,11 @@ export function removeTestFromCollection({ testID, collectionID }) {
       .request(options)
       .then((response) => {
         // handle success
-        resolve(response.data);
+        resolve(response?.data);
       })
       .catch((error) => {
         // handle error
-        const message = error.response.data.message;
+        const message = error.response?.data.message;
         tokenHandling(message, resolve, options);
       });
   });
@@ -193,11 +193,11 @@ export function deleteCollection({ CollectionID }) {
       .request(options)
       .then((response) => {
         // handle success
-        resolve(response.data);
+        resolve(response?.data);
       })
       .catch((error) => {
         // handle error
-        const message = error.response.data.message;
+        const message = error.response?.data.message;
         tokenHandling(message, resolve, options);
       });
   });

@@ -138,7 +138,6 @@ const Users = ({ summaryUser }) => {
             return {
               onDoubleClick: (event) => {
                 setCurrentSelect(record);
-                // setVisible(true);
               }, // double click row
             };
           }}
