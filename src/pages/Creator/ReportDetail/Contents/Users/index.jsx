@@ -11,8 +11,8 @@ const Users = ({ summaryUser }) => {
   const columns = [
     {
       title: 'Name',
-      dataIndex: 'userName',
-      key: 'userName',
+      dataIndex: 'UserName',
+      key: 'UserName',
     },
     {
       title: 'Rank',
@@ -28,9 +28,9 @@ const Users = ({ summaryUser }) => {
       sorter: (a, b) => a.CorrectPercent - b.CorrectPercent,
     },
     {
-      title: 'Unanswered',
-      dataIndex: 'Unanswered',
-      key: 'Unanswered',
+      title: 'Answerd',
+      dataIndex: 'AnsweredNumber',
+      key:'AnsweredNumber',
       defaultSortOrder: 'ascend',
       sorter: (a, b) => a.Unanswered - b.Unanswered,
     },

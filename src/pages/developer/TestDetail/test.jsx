@@ -383,14 +383,19 @@ class TestDetail extends React.Component {
           return (
 
             <Tabs className="custom" type="card" size="large" >
-          <TabPane tab="Information" key="1">
+          <TabPane tab="Information" key="1" className={styles.tabInfo}>
           <>
-              <h1>{test.TestName}</h1>
-              <h2>Description: {test.Description}</h2>
+          <PageHeader
+              className="site-page-header"
+              title={test.TestName}
+              subTitle={test.Description}
+              onBack={() => history.goBack()}
+            />
+              <div className = {styles.tabInfoContent}>
               <p><b>Time: </b>{test.TestTime}</p>
               <p><b>Max Score: </b>{test.MaxScore}</p>
               <p><b>Pass Score: </b>{test.PassScore}</p>
-              <br />
+              <hr />
               <p><b>Note: </b> If you leave during the test, time will still be counted and your work will not be saved. </p>
               <Button type="primary"
                 onClick={() => {
@@ -399,6 +404,7 @@ class TestDetail extends React.Component {
               >
                 Start
               </Button>
+              </div>
             </>
           </TabPane>
           {this.props.location.state.type!=="undefined"&&<TabPane tab="Discussions" key="2">
@@ -551,12 +557,6 @@ class TestDetail extends React.Component {
       return (
         <div className={styles.body}>
           <div>
-            <PageHeader
-              className="site-page-header"
-              title={this.getData()?.generalInformation?.TestName}
-              subTitle={this.getData()?.generalInformation?.BriefDescription}
-              onBack={() => history.goBack()}
-            />
             <div className={styles.countdownWrapper}>
               {hours && (
                 <div className={styles.countdownItem}>
