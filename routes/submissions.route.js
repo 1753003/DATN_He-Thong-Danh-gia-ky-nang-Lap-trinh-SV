@@ -92,4 +92,6 @@ router.get('/multiplechoice/:id', async function(req, res) {
     const response = await submisisionsModel.getAnswerMultipleChoiceSubmission(req.params.id);
     res.json(response)
 })
+
+
 module.exports = router;
