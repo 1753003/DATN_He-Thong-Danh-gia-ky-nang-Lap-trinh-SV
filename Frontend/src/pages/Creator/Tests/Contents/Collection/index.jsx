@@ -1,29 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Card,
   Button,
   Table,
   Input,
   Modal,
-  Form,
   Upload,
   Image,
-  Dropdown,
-  Menu,
   message,
 } from 'antd';
 import { useHistory, connect } from 'umi';
 import styles from './index.less';
 import {
-  MoreOutlined,
   InboxOutlined,
-  FolderOpenOutlined,
   EditOutlined,
   DeleteOutlined,
 } from '@ant-design/icons';
-import { set } from 'js-cookie';
 const { Search } = Input;
 const { Dragger } = Upload;
+
 import _ from 'lodash';
 
 const Collection = ({ collectionList, dispatch, loading }) => {
@@ -110,7 +104,7 @@ const Collection = ({ collectionList, dispatch, loading }) => {
 
   const handleCollectionOnClick = (collectionID) => {
     history.push({
-      pathname: '/creator/collectionDetail',
+      pathname: '/creator/tests/collectionDetail',
       query: {
         id: collectionID,
       },

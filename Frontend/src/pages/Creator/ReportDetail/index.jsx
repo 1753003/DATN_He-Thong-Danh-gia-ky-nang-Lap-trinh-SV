@@ -51,18 +51,23 @@ const ReportDetail = ({ summaryReport, location, dispatch, loading, summaryUser 
         </div>
       </div>
       <div className={styles.body}>
-        <RenderBody menuKey={menuKey} summaryReport={summaryReport} summaryUser={summaryUser} />
+        <RenderBody
+          menuKey={menuKey}
+          summaryReport={summaryReport}
+          summaryUser={summaryUser}
+          location={location}
+        />
       </div>
     </div>
   );
 };
 
-const RenderBody = ({ menuKey, summaryReport, summaryUser }) => {
+const RenderBody = ({ menuKey, summaryReport, summaryUser, location }) => {
   switch (menuKey) {
     case 'summary':
       return <Summary summaryReport={summaryReport} />;
     case 'users':
-      return <Users summaryUser={summaryUser} />;
+      return <Users summaryUser={summaryUser} reportID={location.query?.id} />;
     case 'questions':
       return <Questions summaryReport={summaryReport} id={location.query?.id} />;
     default:

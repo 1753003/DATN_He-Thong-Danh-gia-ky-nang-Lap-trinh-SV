@@ -34,7 +34,7 @@ const TestDetail = ({ dispatch, location }) => {
 
   const handleEditClick = () => {
     history.push({
-      pathname: '/creator/createTest',
+      pathname: '/creator/tests/editTest',
       query: {
         id: location.query.id,
       },

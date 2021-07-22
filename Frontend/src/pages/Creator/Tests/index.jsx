@@ -11,12 +11,11 @@ import '../../../components/GlobalHeader/style.less';
 const Tests = ({ location }) => {
   const history = useHistory();
   const { query } = location;
-  const [menuKey, setMenuKey] = useState('collection');
 
   useEffect(() => {
     if (!query.menuKey) {
       history.push({
-        pathname: '/creator/tests',
+        pathname: '/creator/tests/home',
         query: {
           menuKey: 'collection',
         },
@@ -26,7 +25,7 @@ const Tests = ({ location }) => {
 
   const handleClick = (e) => {
     history.push({
-      pathname: '/creator/tests',
+      pathname: '/creator/tests/home',
       query: {
         menuKey: e.key,
       },
