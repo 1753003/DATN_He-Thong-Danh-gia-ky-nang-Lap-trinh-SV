@@ -4,6 +4,7 @@ import {
   getSummaryReport,
   getSummaryUser,
   getSummaryQuestion,
+  getUserReport,
 } from '@/services/report';
 import { message } from 'antd';
 
@@ -37,6 +38,14 @@ const ReportModel = {
           type: 'saveSummaryUser',
           payload: response,
         });
+      } catch (e) {
+        message.error('Something Wrong Happened, Please try Again later !!!');
+      }
+    },
+    *getUserReport({ payload }, { call }) {
+      try {
+        const response = yield call(getUserReport, payload);
+        payload.onSuccess(response);
       } catch (e) {
         message.error('Something Wrong Happened, Please try Again later !!!');
       }

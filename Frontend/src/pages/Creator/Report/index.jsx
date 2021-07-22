@@ -58,7 +58,7 @@ const Report = ({ reportList, dispatch, loading }) => {
             onClick: (event) => {
               console.log(record);
               history.push({
-                pathname: '/creator/reportDetail',
+                pathname: '/creator/report/detail',
                 query: {
                   id: record.ID,
                 },

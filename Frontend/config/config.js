@@ -22,9 +22,7 @@ export default defineConfig({
   dynamicImport: {
     loading: '@/components/PageLoading/index',
   },
-  exportStatic:{
-    
-  },
+  exportStatic: {},
   targets: {
     ie: 11,
   },
@@ -103,41 +101,79 @@ export default defineConfig({
                   path: '/creator/tests',
                   name: 'Tests',
                   icon: 'UnorderedListOutlined',
-                  component: './Creator/Tests',
-                },
-                {
-                  path: '/creator/collectionDetail',
-                  name: 'Home',
-                  icon: 'home',
-                  hideInMenu: true,
-                  component: './Creator/CollectionDetail',
-                },
-                {
-                  path: '/creator/testDetail',
-                  name: 'Home',
-                  icon: 'home',
-                  hideInMenu: true,
-                  component: './Creator/TestDetail',
-                },
-                {
-                  path: '/creator/createTest',
-                  name: 'Home',
-                  icon: 'home',
-                  hideInMenu: true,
-                  component: './Creator/CreateTest',
+                  routes: [
+                    {
+                      path: '/creator/tests',
+                      redirect: '/creator/tests/home',
+                    },
+                    {
+                      path: '/creator/tests/home',
+                      name: 'Test Home',
+                      icon: 'home',
+                      hideInMenu: true,
+                      component: './Creator/Tests',
+                    },
+                    {
+                      path: '/creator/tests/testDetail',
+                      name: 'Test Detail',
+                      icon: 'home',
+                      hideInMenu: true,
+                      component: './Creator/TestDetail',
+                    },
+                    {
+                      path: '/creator/tests/createTest',
+                      name: 'Create Test',
+                      icon: 'home',
+                      hideInMenu: true,
+                      component: './Creator/CreateTest',
+                    },
+                    {
+                      path: '/creator/tests/editTest',
+                      name: 'Edit Test',
+                      icon: 'home',
+                      hideInMenu: true,
+                      component: './Creator/CreateTest',
+                    },
+                    {
+                      path: '/creator/tests/collectionDetail',
+                      name: 'Collection Detail',
+                      icon: 'home',
+                      hideInMenu: true,
+                      component: './Creator/CollectionDetail',
+                    },
+                  ],
                 },
                 {
                   path: '/creator/report',
                   name: 'Report',
                   icon: 'PicLeftOutlined',
-                  component: './Creator/Report',
-                },
-                {
-                  path: '/creator/reportDetail',
-                  name: 'Report Detail',
-                  hideInMenu: true,
-                  icon: 'PicLeftOutlined',
-                  component: './Creator/ReportDetail',
+                  routes: [
+                    {
+                      path: '/creator/report',
+                      redirect: '/creator/report/home',
+                    },
+                    {
+                      path: '/creator/report/home',
+                      name: 'Report',
+                      icon: 'PicLeftOutlined',
+                      hideInMenu: true,
+                      component: './Creator/Report',
+                    },
+                    {
+                      path: '/creator/report/detail',
+                      name: 'Report Detail',
+                      hideInMenu: true,
+                      icon: 'PicLeftOutlined',
+                      component: './Creator/ReportDetail',
+                    },
+                    {
+                      path: '/creator/report/user',
+                      name: 'User Report',
+                      hideInMenu: true,
+                      icon: 'PicLeftOutlined',
+                      component: './Creator/UserReport',
+                    },
+                  ],
                 },
                 {
                   component: './404',
@@ -218,7 +254,7 @@ export default defineConfig({
                         },
                         {
                           path: '/developer/test/rank',
-                          component: './developer/test/ranking/index'
+                          component: './developer/test/ranking/index',
                         },
                         {
                           path: '/developer/test',
