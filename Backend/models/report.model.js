@@ -196,4 +196,40 @@ module.exports = {
       PercentPass: percentPass,
     });
   },
+  async compareCoding(reportID, username) {
+    const list = (await db.raw(`select answercoding.DescriptionCode
+                                      ,userlogin.UserName
+                  from answercoding, report, submissions, userlogin
+                  where userlogin.UserID = submissions.DevID
+                  and report.ID = ${reportID}
+                  and report.TestID = submissions.TestID
+                  and answercoding.SubmissionID = submissions.SubmissionID`))[0];
+    let temp = {};
+    let count = 0;
+    let index = 0;
+    list.forEach(e => {
+      e.DescriptionCode = Buffer.from(e.DescriptionCode, 'base64').toString();
+      
+      if (e.UserName == username) {
+        temp = e;
+        index = count;
+      }
+      count++;
+    })
+    list.splice(index, 1)
+    console.log(temp)
+    var similarity = require('string-cosine-similarity')
+    
+    list.forEach(e => {
+      try {
+      e.SimilarityPercent = similarity(temp.DescriptionCode, e.DescriptionCode)
+      }
+      catch(error) {
+        console.log(error)
+        console.log(e)
+      }
+    })
+    
+    return list;
+  }
 };
