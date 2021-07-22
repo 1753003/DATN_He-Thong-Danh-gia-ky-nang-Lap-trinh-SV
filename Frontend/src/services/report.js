@@ -28,6 +28,34 @@ export function getReportList() {
   });
 }
 
+export function getUserReport({ reportID, username }) {
+  console.log(reportID);
+  console.log(username);
+  return new Promise((resolve, reject) => {
+    axios
+      .post(
+        `${Constant.API}/api/creator/report/user/${reportID}`,
+        {
+          username,
+        },
+        {
+          headers: { accessToken: Cookies.get('accessToken') },
+          'access-control-allow-origin': Constant.CORS,
+        },
+      )
+      .then((response) => {
+        // handle success
+        console.log(response.data);
+        resolve(response.data);
+      })
+      .catch((error) => {
+        // handle error
+        console.log(error);
+        reject();
+      });
+  });
+}
+
 export function getSummaryReport(id) {
   console.log(id);
   return new Promise((resolve, reject) => {
