@@ -21,15 +21,6 @@ const auth = require('./middleware/authDeveloper.mdw');
 app.get('/', function(req, res) {
     res.json("Running...");
 })
-app.post('/compare/', async function (req, res) {
-    var similarity = require('string-cosine-similarity')
- 
-    var string1 = req.body.text1;
-
-    var string2 = req.body.text2;
- 
-    res.json(similarity(string1, string2)) // 0.9302605094190635
- })
 
 app.use('/api/auth', require('./routes/auth.route'));
 app.use('/api/token', auth, require('./routes/token.route'))

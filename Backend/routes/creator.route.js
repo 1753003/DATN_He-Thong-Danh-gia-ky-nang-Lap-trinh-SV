@@ -186,6 +186,9 @@ router.get('/report/question/:id', async function (req, res) {
    res.json(questions);
 })
 
+router.post('/report/compare/:id', async function (req, res) {
+   res.json(await reportModel.compareCoding(req.params.id, req.body.username));
+})
 /*
 * Bank routes
 * =================================================================================================
