@@ -173,6 +173,13 @@ export default defineConfig({
                       icon: 'PicLeftOutlined',
                       component: './Creator/UserReport',
                     },
+                    {
+                      path: '/creator/report/user/compareCode',
+                      name: 'Code Compare',
+                      icon: 'PicLeftOutlined',
+                      hideInMenu: true,
+                      component: './Creator/CodeCompare',
+                    },
                   ],
                 },
                 {

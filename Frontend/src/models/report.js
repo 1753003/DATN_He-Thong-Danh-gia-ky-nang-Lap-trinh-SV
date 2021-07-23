@@ -5,6 +5,7 @@ import {
   getSummaryUser,
   getSummaryQuestion,
   getUserReport,
+  getUserCodeCompare,
 } from '@/services/report';
 import { message } from 'antd';
 
@@ -45,6 +46,14 @@ const ReportModel = {
     *getUserReport({ payload }, { call }) {
       try {
         const response = yield call(getUserReport, payload);
+        payload.onSuccess(response);
+      } catch (e) {
+        message.error('Something Wrong Happened, Please try Again later !!!');
+      }
+    },
+    *getUserCodeCompare({ payload }, { call }) {
+      try {
+        const response = yield call(getUserCodeCompare, payload);
         payload.onSuccess(response);
       } catch (e) {
         message.error('Something Wrong Happened, Please try Again later !!!');

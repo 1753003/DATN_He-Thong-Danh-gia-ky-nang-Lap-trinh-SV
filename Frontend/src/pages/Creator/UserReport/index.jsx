@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Progress, Typography, Divider, Alert } from 'antd';
+import { Table, Progress, Typography, Divider, Alert, Button } from 'antd';
 import { connect, useHistory } from 'umi';
 import styles from './styles.less';
 import MDEditor from '@uiw/react-md-editor';
@@ -49,6 +49,16 @@ const UserReport = ({ summaryUser, location, dispatch }) => {
     });
   };
 
+  const onClickCompareCode = () => {
+    history.push({
+      pathname: '/creator/report/user/compareCode',
+      query: {
+        reportID: location.query.reportID,
+        userName: location.query.userName,
+      },
+    });
+  };
+
   useEffect(() => {
     summaryUser?.forEach((item) => {
       if (item.UserName === decodeURIComponent(location.query.userName)) {
@@ -70,11 +80,15 @@ const UserReport = ({ summaryUser, location, dispatch }) => {
     },
   ];
   return currentTest ? (
-    <RenderTestDetail test={currentTest} onBack={() => setCurrentTest(undefined)} />
+    <RenderTestDetail
+      test={currentTest}
+      onBack={() => setCurrentTest(undefined)}
+      onClickCompareCode={onClickCompareCode}
+    />
   ) : (
     <PageHeaderWrapper
       onBack={() => history.goBack()}
-      title={currentUser?.userName}
+      title={decodeURIComponent(location.query.userName)}
       className={`${styles.container} custom`}
     >
       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
@@ -123,7 +137,7 @@ const UserReport = ({ summaryUser, location, dispatch }) => {
         columns={userColumns}
         onRow={(record, rowIndex) => {
           return {
-            onDoubleClick: (event) => {
+            onClick: (event) => {
               onClickQuestion(record);
             }, // double click row
           };
@@ -133,16 +147,28 @@ const UserReport = ({ summaryUser, location, dispatch }) => {
   );
 };
 
-const RenderTestDetail = ({ test, onBack }) => {
+const RenderTestDetail = ({ test, onBack, onClickCompareCode }) => {
   console.log(test);
   const checkCorrect = (listCorrect, index) => {
     return listCorrect.includes(index);
+  };
+
+  const renderExtra = () => {
+    if (test.QuestionType === 'Code') {
+      return [
+        <Button key="1" type="primary" onClick={onClickCompareCode}>
+          Compare With Other Code Submissions
+        </Button>,
+      ];
+    }
+    return [];
   };
   return (
     <PageHeaderWrapper
       onBack={onBack}
       className={`${styles.container} custom`}
       title={`${test.ID}-${test.QuestionType}`}
+      extra={renderExtra()}
     >
       <Alert message="Question information" type="info" showIcon />
       <br />
