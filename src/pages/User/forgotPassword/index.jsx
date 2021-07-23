@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'dva';
 import { Row, Col, Input, Form, Button, Alert } from 'antd';
+import Language from '@/locales/index';
 
 const FormItem = Form.Item;
 
@@ -25,7 +26,7 @@ class forgotPassword extends React.Component {
                     (this.props.forgotPassword.status !== "OK" ?
                     <Alert type="error" message={this.props.forgotPassword.message} showIcon></Alert>
                     : 
-                    <Alert type="success" message="We have sent an email to you, check it." showIcon />
+                    <Alert type="success" message={Language.pages_forgotPw_weHaveSent} showIcon />
                     )}
 
                     <Form onFinish={this.onFinish}>
@@ -35,11 +36,11 @@ class forgotPassword extends React.Component {
                            rules={[{ required: true, message: 'Please enter your email' },
                                    { type: 'email', message: 'The input is not valid E-mail!'}]}
                         >
-                            <Input placeholder="Enter your email" ></Input>
+                            <Input placeholder={Language.pages_registerCreator_enterEmail} ></Input>
                         </Form.Item>
                         <Form.Item>
                             <Button type="primary" htmlType="submit">  
-                                Get new password
+                                {Language.pages_forgotPw_getNew}
                             </Button>
                         </Form.Item>
                     </Form>

@@ -5,6 +5,7 @@ import { connect, SelectLang, history } from 'umi';
 import Avatar from './AvatarDropdown';
 import HeaderSearch from '../HeaderSearch';
 import styles from './index.less';
+import Language from '@/locales/index';
 
 const GlobalHeaderRight = (props) => {
   const { theme, layout, dispatch } = props;
@@ -51,7 +52,7 @@ const GlobalHeaderRight = (props) => {
           
         }}
       />
-      <Tooltip title="Help">
+      <Tooltip title={Language.help}>
         <a
           style={{
             color: 'inherit',
