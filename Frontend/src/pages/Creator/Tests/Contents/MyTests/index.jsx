@@ -22,7 +22,7 @@ const MyTests = ({ testList, dispatch, loading }) => {
 
   const handleEditClick = (TestID) => {
     history.push({
-      pathname: '/creator/createTest',
+      pathname: '/creator/tests/createTest',
       query: {
         id: TestID,
       },
@@ -106,13 +106,13 @@ const MyTests = ({ testList, dispatch, loading }) => {
 
   const buttonModalOnClick = () => {
     history.push({
-      pathname: '/creator/createTest',
+      pathname: '/creator/tests/createTest',
     });
   };
 
   const handleTestOnClick = (testID) => {
     history.push({
-      pathname: '/creator/testDetail',
+      pathname: '/creator/tests/testDetail',
       query: {
         id: testID,
       },
@@ -143,7 +143,7 @@ const MyTests = ({ testList, dispatch, loading }) => {
           columns={columns}
           dataSource={list}
           loading={loading}
-          scroll={{ y: '55vh' }}
+          scroll={{ y: '60vh' }}
           onRow={(record, rowIndex) => {
             return {
               onDoubleClick: (event) => {

@@ -5,10 +5,11 @@ import { DeleteOutlined, MoreOutlined } from '@ant-design/icons';
 import { connect, useHistory } from 'umi';
 import '../../../components/GlobalHeader/style.less';
 import _ from 'lodash';
+import PageLoading from '@/pages/dashboard/analysis/components/PageLoading';
 
 const { Search } = Input;
 
-const CollectionDetail = ({ location, collection, dispatch, testList }) => {
+const CollectionDetail = ({ location, collection, dispatch, testList, loading }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [testAddList, setTestAddList] = useState(false);
   const history = useHistory();
@@ -47,7 +48,9 @@ const CollectionDetail = ({ location, collection, dispatch, testList }) => {
     });
   };
 
-  return (
+  return loading ? (
+    <PageLoading />
+  ) : (
     <div className={`${styles.container} custom`}>
       <div className={styles.header}>
         <div className={styles.headerLeft}>
@@ -245,7 +248,8 @@ const AddTestModal = ({
   );
 };
 
-export default connect(({ collection: { collectionById }, test: { testList } }) => ({
+export default connect(({ collection: { collectionById }, test: { testList }, loading }) => ({
   collection: collectionById,
   testList,
+  loading: loading.effects['collection/getCollectionByIdModel'],
 }))(CollectionDetail);

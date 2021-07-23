@@ -4,7 +4,10 @@ import {
   getSummaryReport,
   getSummaryUser,
   getSummaryQuestion,
+  getUserReport,
+  getUserCodeCompare,
 } from '@/services/report';
+import { message } from 'antd';
 
 const ReportModel = {
   namespace: 'report',
@@ -29,12 +32,32 @@ const ReportModel = {
       });
     },
     *getSummaryUserById({ payload }, { call, put }) {
-      const response = yield call(getSummaryUser, payload.id);
-      console.log(response);
-      yield put({
-        type: 'saveSummaryUser',
-        payload: response,
-      });
+      try {
+        const response = yield call(getSummaryUser, payload.id);
+        console.log(response);
+        yield put({
+          type: 'saveSummaryUser',
+          payload: response,
+        });
+      } catch (e) {
+        message.error('Something Wrong Happened, Please try Again later !!!');
+      }
+    },
+    *getUserReport({ payload }, { call }) {
+      try {
+        const response = yield call(getUserReport, payload);
+        payload.onSuccess(response);
+      } catch (e) {
+        message.error('Something Wrong Happened, Please try Again later !!!');
+      }
+    },
+    *getUserCodeCompare({ payload }, { call }) {
+      try {
+        const response = yield call(getUserCodeCompare, payload);
+        payload.onSuccess(response);
+      } catch (e) {
+        message.error('Something Wrong Happened, Please try Again later !!!');
+      }
     },
     *getSummaryQuestionById({ payload }, { call, put }) {
       console.log('ehllo');

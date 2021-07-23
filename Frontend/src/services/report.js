@@ -21,8 +21,63 @@ export function getReportList() {
       })
       .catch((error) => {
         // handle error
-        const message = error.response.data.message;
+        const message = error.response?.data.message;
         tokenHandling(message, resolve, options);
+        reject();
+      });
+  });
+}
+
+export function getUserReport({ reportID, username }) {
+  console.log(reportID);
+  console.log(username);
+  return new Promise((resolve, reject) => {
+    axios
+      .post(
+        `${Constant.API}/api/creator/report/user/${reportID}`,
+        {
+          username,
+        },
+        {
+          headers: { accessToken: Cookies.get('accessToken') },
+          'access-control-allow-origin': Constant.CORS,
+        },
+      )
+      .then((response) => {
+        // handle success
+        console.log(response.data);
+        resolve(response.data);
+      })
+      .catch((error) => {
+        // handle error
+        console.log(error);
+        reject();
+      });
+  });
+}
+
+export function getUserCodeCompare({ reportID, username }) {
+  return new Promise((resolve, reject) => {
+    axios
+      .post(
+        `${Constant.API}/api/creator/report/compare/${reportID}`,
+        {
+          username,
+        },
+        {
+          headers: { accessToken: Cookies.get('accessToken') },
+          'access-control-allow-origin': Constant.CORS,
+        },
+      )
+      .then((response) => {
+        // handle success
+        console.log(response.data);
+        resolve(response.data);
+      })
+      .catch((error) => {
+        // handle error
+        console.log(error);
+        reject();
       });
   });
 }
@@ -47,8 +102,9 @@ export function getSummaryReport(id) {
       })
       .catch((error) => {
         // handle error
-        const message = error.response.data.message;
+        const message = error.response?.data.message;
         tokenHandling(message, resolve, options);
+        reject();
       });
   });
 }
@@ -72,8 +128,9 @@ export function getSummaryUser(id) {
       })
       .catch((error) => {
         // handle error
-        const message = error.response.data.message;
+        const message = error.response?.data.message;
         tokenHandling(message, resolve, options);
+        reject();
       });
   });
 }
@@ -99,6 +156,7 @@ export function getSummaryQuestion(id) {
         // handle error
         const message = error.response?.data.message;
         tokenHandling(message, resolve, options);
+        reject();
       });
   });
 }

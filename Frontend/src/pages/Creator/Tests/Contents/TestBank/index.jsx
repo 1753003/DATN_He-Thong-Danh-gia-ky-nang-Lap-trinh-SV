@@ -91,7 +91,7 @@ const TestBank = ({ testBankList, dispatch, loading }) => {
             columns={columns}
             dataSource={list}
             loading={loading}
-            scroll={{ y: '55vh' }}
+            scroll={{ y: '60vh' }}
             onRow={(record, rowIndex) => {
               return {
                 onClick: (event) => {
@@ -123,10 +123,12 @@ const RenderTestDetail = ({ test, onBack }) => {
         onClick={onBack}
       >
         <LeftOutlined />
-        <h3 style={{ justifySelf: 'center', paddingTop: 8 }}>Back</h3>
+        <h3
+          style={{ justifySelf: 'center', paddingTop: 8, paddingRight: 16 }}
+        >{`${test.ID}-${test.QuestionType}`}</h3>
       </div>
 
-      <Card className={styles.questionContainer} title={`${test.ID}-${test.QuestionType}`}>
+      <Card className={styles.questionContainer}>
         <div className={styles.question}>{test.Question}</div>
         <b>Description: </b>
         <MDEditor.Markdown className="problem" source={test.Description}></MDEditor.Markdown>

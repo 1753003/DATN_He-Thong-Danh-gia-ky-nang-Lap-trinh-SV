@@ -12,7 +12,7 @@ import {
   Row,
   Col,
 } from 'antd';
-import { Link } from 'umi';
+import { Link, history } from 'umi';
 import Texty from 'rc-texty';
 import QueueAnim from 'rc-queue-anim';
 import { connect } from 'dva';
@@ -57,6 +57,7 @@ const testHome = ({ dispatch, status, inviteList }) => {
       payload: null,
     });
   }, [status]);
+
   const [value, setValue] = useState('');
   const handleChange = (e) => {
     setValue(e.target.value);
@@ -112,7 +113,11 @@ const testHome = ({ dispatch, status, inviteList }) => {
                   <Card className="invite-card">
                     <List.Item key={item.id}
                     onClick={()=>{
-                      console.log("click")
+                      console.log(item.id)
+                      history.push({
+                        pathname: '/developer/test/questions',
+                        state: {id:item.id,type:"test"},
+                      })
                     }}>
                       <List.Item.Meta title={item.testName} description={`from ${item.author}`} />
                     </List.Item>
