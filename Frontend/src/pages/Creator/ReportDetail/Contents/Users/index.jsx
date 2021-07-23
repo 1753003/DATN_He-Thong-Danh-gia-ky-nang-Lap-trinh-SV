@@ -49,7 +49,7 @@ const Users = ({ summaryUser, reportID }) => {
         columns={columns}
         onRow={(record, rowIndex) => {
           return {
-            onDoubleClick: (event) => {
+            onClick: (event) => {
               console.log(record);
               history.push({
                 pathname: '/creator/report/user',
