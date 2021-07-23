@@ -8,9 +8,9 @@ const app = express();
 app.use(express.json());
 
 app.use(morgan('dev'));
-//const WEB = process.env.WEB || 'http://3.0.40.66:8000';
-//const WEB = 'https://codejoyfe.me'
-const WEB = 'http://localhost:8000'
+const WEB = process.env.NODE_ENV === "production"
+    ? "https://codejoyfe.me"
+    : "http://localhost:8000";
 app.use(cors({ credentials: true, origin: WEB}));
 app.use(cookieParser()); 
 // const csrfProtection = csrf({
@@ -24,7 +24,7 @@ app.get('/', function(req, res) {
 
 app.use('/api/auth', require('./routes/auth.route'));
 app.use('/api/token', auth, require('./routes/token.route'))
-app.use('/api/creator',  require('./routes/creator.route'))
+app.use('/api/creator', auth, require('./routes/creator.route'))
 app.use('/api/practice', auth, require('./routes/practice.route'))
 app.use('/api/test', auth, require('./routes/test.route'))
 app.use('/api/submissions', auth, require('./routes/submissions.route'))

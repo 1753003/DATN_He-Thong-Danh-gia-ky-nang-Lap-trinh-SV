@@ -24,7 +24,7 @@ export function queryInviteList(id) {
         resolve(response.data);
       })
       .catch((error) => {
-        const message = error.response.data.message;
+        const message = error.response?.data.message;
         tokenHandling(message, resolve, options);
       });
   });
