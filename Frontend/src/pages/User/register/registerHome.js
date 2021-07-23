@@ -1,6 +1,7 @@
 import React from 'react';
 import { Row, Col, Button } from 'antd';
-import { history } from 'umi'
+import { history } from 'umi';
+import Language from '@/locales/index';
 class RegisterHomepage extends React.Component {
     render() {
         return (
@@ -12,18 +13,18 @@ class RegisterHomepage extends React.Component {
                             fontSize: '35px',
                             marginBottom: '20px'
 
-                        }}>Sign up</div>
+                        }}>{Language.pages_registerHome_signUp}</div>
                         <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
                             <Col span={12}>
                                 <div style={{
                                     fontSize: '20px',
                                     fontWeight: 'bold'
-                                }}>For Creators</div>
+                                }}>{Language.pages_registerHome_forCreators}</div>
                                 <div style={{
                                     marginTop: '10px',
                                     fontSize: '18px'
                                 }}>
-                                    We are the innovative technical platform to identify developers with the right skills
+                                    {Language.pages_registerHome_weAre}
                                 </div>
                                 <Button type="primary" 
                                         size="large"
@@ -37,25 +38,25 @@ class RegisterHomepage extends React.Component {
                                         onClick = {() => {
                                            history.push('/user/register/creator') 
                                         }}>
-                                        Sign up & Create
+                                        {Language.pages_registerHome_signUp} & {Language.pages_registerHome_create}
                                 </Button>
                                 <div style={{
                                     marginTop: '20px',
                                     fontSize: '18px'
                                 }}>
-                                    Already have an account? <a href="/user/login">Login</a>
+                                    {Language.pages_registerHome_alreadyHaveAcc} <a href="/user/login">{Language.home_login}</a>
                                 </div>
                             </Col>
                             <Col span={12}>
                                 <div style={{
                                     fontSize: '20px',
                                     fontWeight: 'bold'
-                                }}>For Devlopers</div>
+                                }}>{Language.pages_registerHome_forDevelopers}</div>
                                 <div style={{
                                     marginTop: '10px',
                                     fontSize: '18px'
                                 }}>
-                                    Join our community practice coding skills, doing tests.
+                                    {Language.pages_registerHome_joinOur}
                                 </div>
                                 <Button type="primary" 
                                         size="large"
@@ -70,13 +71,13 @@ class RegisterHomepage extends React.Component {
                                            history.push('/user/register/developer') 
                                         }}
                                         >
-                                            Sign up & Code
+                                            {Language.pages_registerHome_signUp} & Code
                                 </Button>
                                 <div style={{
                                     marginTop: '20px',
                                     fontSize: '18px'
                                 }}>
-                                    Already sign up? <a href="user/login">Login now</a>
+                                    {Language.pages_registerHome_alreadySignUp} <a href="user/login">{Language.home_login} {Language.pages_registerHome_now}</a>
                                 </div>
                             </Col>
                             
