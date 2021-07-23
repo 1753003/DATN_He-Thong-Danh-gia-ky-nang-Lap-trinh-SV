@@ -223,6 +223,8 @@ module.exports = {
     list.forEach(e => {
       try {
       e.SimilarityPercent = similarity(temp.DescriptionCode, e.DescriptionCode)
+      if (e.SimilarityPercent == null) 
+        e.SimilarityPercent = 0;
       }
       catch(error) {
         console.log(error)
