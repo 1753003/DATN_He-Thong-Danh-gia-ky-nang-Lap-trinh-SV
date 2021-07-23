@@ -77,15 +77,22 @@ module.exports = {
     from test, report
     where test.TestID = report.TestID and report.ID = ${reportID}`)
     )[0][0].TestID;
-    
-    const a = (await db.raw(`call getUserDetailReport(${testID}, '${userName}', 'MC')`))[0][0];
-    const b = (await db.raw(`call getUserDetailReport(${testID}, '${userName}', 'Code')`))[0][0];
-    
+
+    const a = (
+      await db.raw(`call getUserDetailReport(${testID}, '${userName}', 'MC')`)
+    )[0][0];
+    const b = (
+      await db.raw(`call getUserDetailReport(${testID}, '${userName}', 'Code')`)
+    )[0][0];
+
     for (let e of b) {
       for (let i of e.StudentOutput) {
-        i = Buffer.from(i, 'base64').toString();
+        i = Buffer.from(i, "base64").toString();
       }
-      e.StudentCodeScript = Buffer.from(e.StudentCodeScript, 'base64').toString();    
+      e.StudentCodeScript = Buffer.from(
+        e.StudentCodeScript,
+        "base64"
+      ).toString();
     }
 
     return a.concat(b);
@@ -197,41 +204,44 @@ module.exports = {
     });
   },
   async compareCoding(reportID, username) {
-    const list = (await db.raw(`select answercoding.DescriptionCode
+    const list = (
+      await db.raw(`select answercoding.DescriptionCode
                                       ,userlogin.UserName
                   from answercoding, report, submissions, userlogin
                   where userlogin.UserID = submissions.DevID
                   and report.ID = ${reportID}
                   and report.TestID = submissions.TestID
-                  and answercoding.SubmissionID = submissions.SubmissionID`))[0];
+                  and answercoding.SubmissionID = submissions.SubmissionID`)
+    )[0];
     let temp = {};
     let count = 0;
     let index = 0;
-    list.forEach(e => {
-      e.DescriptionCode = Buffer.from(e.DescriptionCode, 'base64').toString();
-      
+    list.forEach((e) => {
+      e.DescriptionCode = Buffer.from(e.DescriptionCode, "base64").toString();
+
       if (e.UserName == username) {
         temp = e;
         index = count;
       }
       count++;
-    })
-    list.splice(index, 1)
-    console.log(temp)
-    var similarity = require('string-cosine-similarity')
-    
-    list.forEach(e => {
+    });
+    list.splice(index, 1);
+    console.log(temp);
+    var similarity = require("string-cosine-similarity");
+
+    list.forEach((e) => {
       try {
-      e.SimilarityPercent = similarity(temp.DescriptionCode, e.DescriptionCode)
-      if (e.SimilarityPercent == null) 
-        e.SimilarityPercent = 0;
+        e.SimilarityPercent = similarity(
+          temp.DescriptionCode,
+          e.DescriptionCode
+        );
+        if (!e.SimilarityPercent) e.SimilarityPercent = 0;
+      } catch (error) {
+        console.log(error);
+        console.log(e);
       }
-      catch(error) {
-        console.log(error)
-        console.log(e)
-      }
-    })
-    
+    });
+
     return list;
-  }
+  },
 };
