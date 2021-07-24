@@ -99,7 +99,8 @@
     "react-syntax-highlighter": "^15.4.3",
     "react-youtube": "^7.13.1",
     "umi": "^3.2.14",
-    "umi-request": "^1.0.8"
+    "umi-request": "^1.0.8",
+    "xlsx": "^0.17.0"
   },
   "devDependencies": {
     "@ant-design/pro-cli": "^1.0.28",
