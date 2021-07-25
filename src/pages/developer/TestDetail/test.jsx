@@ -54,6 +54,7 @@ class TestDetail extends React.Component {
       }
     }
     this.state = { id: id };
+    console.log("ID:" ,id)
     this.props.dispatch({ type: 'test/getTestInformation', payload: id });
   }
 
