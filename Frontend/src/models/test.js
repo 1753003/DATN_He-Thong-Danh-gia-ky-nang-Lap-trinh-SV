@@ -197,7 +197,7 @@ const TestModel = {
       });
     },
     *getTestInformation({ payload }, { put, call }) {
-      const response = yield call(getTestInformationById, payload);
+      const response = yield call(getTestInformationById, payload);  
       yield put({
         type: 'saveTestInfo',
         payload: response,

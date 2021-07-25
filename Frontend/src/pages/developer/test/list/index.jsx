@@ -291,7 +291,7 @@ const TestSetList = ({ location, dispatch, testDev, loading }) => {
                       onClick={() => {
                         history.push({
                           pathname: '/developer/test/questions',
-                          state: item,
+                          state: {id:item.ID,type:"test"},
                         });
                       }}
                     >
