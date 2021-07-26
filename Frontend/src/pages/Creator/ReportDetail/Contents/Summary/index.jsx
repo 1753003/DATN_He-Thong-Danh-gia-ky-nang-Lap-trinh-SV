@@ -9,8 +9,9 @@ import {
   DownloadOutlined,
   QuestionCircleOutlined,
 } from '@ant-design/icons';
+import { exportToCSV } from '@/components/ExportCSV';
 
-const Summary = ({ summaryReport }) => {
+const Summary = ({ summaryReport, summaryUser }) => {
   return (
     <div className={styles.container}>
       <div className={styles.analysis}>
@@ -80,7 +81,14 @@ const Summary = ({ summaryReport }) => {
             </div>
           </div>
         </div>
-        <div className={styles.getReport}>
+        <div
+          className={styles.getReport}
+          onClick={() => {
+            if (summaryUser && summaryReport) {
+              exportToCSV(summaryUser, summaryReport);
+            }
+          }}
+        >
           <div className={styles.getReportTitle}>Get your report here</div>
           <DownloadOutlined style={{ fontSize: 100 }} />
         </div>

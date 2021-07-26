@@ -8,7 +8,6 @@ import { Menu } from 'antd';
 import PageLoading from '@/pages/dashboard/analysis/components/PageLoading';
 
 const ReportDetail = ({ summaryReport, location, dispatch, loading, summaryUser }) => {
-  console.log(summaryReport);
   useEffect(() => {
     if (location.query?.id) {
       const payload = {
@@ -65,13 +64,13 @@ const ReportDetail = ({ summaryReport, location, dispatch, loading, summaryUser 
 const RenderBody = ({ menuKey, summaryReport, summaryUser, location }) => {
   switch (menuKey) {
     case 'summary':
-      return <Summary summaryReport={summaryReport} />;
+      return <Summary summaryReport={summaryReport} summaryUser={summaryUser} />;
     case 'users':
       return <Users summaryUser={summaryUser} reportID={location.query?.id} />;
     case 'questions':
       return <Questions summaryReport={summaryReport} id={location.query?.id} />;
     default:
-      return <Summary summaryReport={summaryReport} />;
+      return <Summary summaryReport={summaryReport} summaryUser={summaryUser} />;
   }
 };
 
