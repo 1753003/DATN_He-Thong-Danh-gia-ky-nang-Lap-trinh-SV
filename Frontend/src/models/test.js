@@ -11,6 +11,8 @@ import {
   getTestInformationById,
   getTestBankList,
   getTestBankById,
+  inviteUserByEmail,
+  getInvitedEmail,
 } from '@/services/test';
 import { checkSession, deleteSession } from '@/services/session';
 
@@ -52,7 +54,7 @@ const TestModel = {
       if (response !== -1)
         history.push({
           pathname: '/developer/test/questions',
-          state: { id: response, type :"undefined" },
+          state: { id: response, type: 'undefined' },
         });
     },
     *fetchTestList(_, { call, put }) {
@@ -197,7 +199,7 @@ const TestModel = {
       });
     },
     *getTestInformation({ payload }, { put, call }) {
-      const response = yield call(getTestInformationById, payload);  
+      const response = yield call(getTestInformationById, payload);
       yield put({
         type: 'saveTestInfo',
         payload: response,
@@ -208,6 +210,23 @@ const TestModel = {
         yield call(createNewTest, payload);
       } catch (e) {
         console.log(e);
+      }
+    },
+    *inviteUser({ payload }, { call }) {
+      try {
+        yield call(inviteUserByEmail, payload);
+        payload?.onSuccess();
+      } catch (e) {
+        payload?.onFail();
+      }
+    },
+    *getInvitedEmailList({ payload }, { call }) {
+      try {
+        const response = yield call(getInvitedEmail, payload);
+        console.log(response);
+        payload?.onSuccess(response);
+      } catch (e) {
+        payload?.onFail();
       }
     },
     *deleteTest({ payload }, { call }) {
@@ -278,7 +297,7 @@ const TestModel = {
           let lang_id = 54; //54 C++ 71 python
           code = code.replace(/(^")|("$)/g, '');
           code = u_btoa(code);
-          
+
           if (data.answer[count].data !== '') numAnswer++;
           for (var tc of e.TestCase) {
             // console.log(tc.Input[0])

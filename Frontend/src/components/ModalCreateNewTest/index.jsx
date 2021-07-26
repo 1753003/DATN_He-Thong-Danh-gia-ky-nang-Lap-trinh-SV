@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Alert, Modal, Table, Tag } from 'antd';
 
 export const ModalCreateNewTest = ({
@@ -9,6 +9,9 @@ export const ModalCreateNewTest = ({
   testBankList,
 }) => {
   const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    setLoading(false);
+  });
   const columns = [
     {
       title: 'ID',
