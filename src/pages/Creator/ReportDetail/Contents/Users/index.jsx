@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styles from './index.less';
-import { Table, Modal, Progress, Typography, Divider } from 'antd';
-import '../../../../../components/GlobalHeader/style.less';
+import { Table } from 'antd';
+import '@/components/GlobalHeader/style.less';
 import { useHistory } from 'umi';
 
 const Users = ({ summaryUser, reportID }) => {
-  console.log('Hello', reportID);
   const history = useHistory();
   const columns = [
     {
