@@ -91,9 +91,13 @@ router.get('/test', async function (req, res) {
    res.json(listTest);
 })
 
-router.get('/totalUserDone', async function (req, res) {
-   const uid = req.uid;
-   return await testModel.getTotalUserDone(); 
+router.get('/test/listInvite/:id', async (req, res) => {
+   res.json(await testModel.getListInvite(req.params.id))
+})
+
+router.patch('/test/listInvite/:id', async (req, res) => {
+   await testModel.updateListInvite(req.params.id, req.body.listEmail);
+   res.json("OK");
 })
 
 router.get('/test/:id', async function (req, res) {
@@ -106,6 +110,8 @@ router.patch('/test/:id', async function (req, res) {
    await testModel.updateTest(req.body, req.params.id);
    res.json("OK")
 })
+
+
 /*
 * Collection routes
 * =================================================================================================
