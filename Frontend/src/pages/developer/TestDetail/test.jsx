@@ -49,7 +49,7 @@ class TestDetail extends React.Component {
         var bytes = CryptoJS.AES.decrypt(temp, 'secret key 12345');
         var originalText = bytes.toString(CryptoJS.enc.Utf8);
 
-        console.log("AB  ",originalText);
+       
         id = originalText;
       }
     }

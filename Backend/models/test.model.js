@@ -44,10 +44,9 @@ module.exports = {
                     CodeSample: element.CodeSample,
                   });
                 }
-              });          
-          }
-          else {
-            questionID.push(element.ID)
+              });
+          } else {
+            questionID.push(element.ID);
           }
         }
         await db("test")
@@ -85,10 +84,10 @@ module.exports = {
             from: "group7.17clc@gmail.com",
             to: e,
             subject: "[no-reply] New invite",
-            html: `<h2>You have a new invition to access a test</h2> 
+            html: `<h2>You have a new invitation to access a test</h2> 
     <p>Here are your code to access it: <b>${result}</b> </p>
     <p>You can access quickly by the link below:</p>
-    <p>http://localhost:8000/developer/test/questions?key=Avx&x=${ciphertext}</p>
+    <p>codejoyfe.me/developer/test/questions?key=Avx&x=${ciphertext}</p>
     <hr/>
     <p>Best,</p>
     <p>CodeJoy Team</p>`,
@@ -377,11 +376,66 @@ module.exports = {
     return result;
   },
   async getRanking(testID) {
-    return (await db.raw(`select submissions.TestID, CorrectPercent, DoingTime, Score, submissions.CreatedAt, UserName 
+    return (
+      await db.raw(`select submissions.TestID, CorrectPercent, DoingTime, Score, submissions.CreatedAt, UserName 
     from submissions 
     inner join userlogin
     on UserID = DevID
     where submissions.TestID = ${testID}
-    order by Score DESC, DoingTime ASC;`))[0]
-  }
+    order by Score DESC, DoingTime ASC;`)
+    )[0];
+  },
+  async getListInvite(testID) {
+    const result = (await db("test").where("TestID", testID))[0].listUser;
+    if (!result) return [];
+    return result;
+  },
+  async updateListInvite(testID, listEmail) {
+    const temp = (await db("test").where("TestID", testID))[0];
+    const oldList = temp.listUser;
+    const finalList = listEmail.filter(x => !oldList.includes(x));
+    await db.raw(
+      `call updatePermission('${JSON.stringify(finalList)}', ${testID})`
+    );
+    
+   
+    var nodemailer = require("nodemailer");
+    var transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: "group7.17clc@gmail.com",
+        pass: "group7.17clc",
+      },
+    });
+    var CryptoJS = require("crypto-js");
+
+    // Encrypt
+    var ciphertext = CryptoJS.AES.encrypt(
+      testID.toString(),
+      "secret key 12345"
+    ).toString();
+    var mailOptions;
+    for (const e of finalList) {
+      mailOptions = {
+        from: "group7.17clc@gmail.com",
+        to: e,
+        subject: "[no-reply] New invite",
+        html: `<h2>You have a new invitation to access a test</h2> 
+    <p>Here are your code to access it: <b>${temp.TestCode}</b> </p>
+    <p>You can access quickly by the link below:</p>
+    <p>codejoyfe.me/developer/test/questions?key=Avx&x=${ciphertext}</p>
+    <hr/>
+    <p>Best,</p>
+    <p>CodeJoy Team</p>`,
+      };
+
+      transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+          console.log(error);
+        } else {
+          console.log("Email sent: " + info.response);
+        }
+      });
+    }
+  },
 };
