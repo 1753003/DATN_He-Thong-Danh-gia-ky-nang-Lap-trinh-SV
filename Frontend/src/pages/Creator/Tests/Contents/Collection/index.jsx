@@ -1,20 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Button,
-  Table,
-  Input,
-  Modal,
-  Upload,
-  Image,
-  message,
-} from 'antd';
+import { Button, Table, Input, Modal, Upload, Image, message } from 'antd';
 import { useHistory, connect } from 'umi';
 import styles from './index.less';
-import {
-  InboxOutlined,
-  EditOutlined,
-  DeleteOutlined,
-} from '@ant-design/icons';
+import { InboxOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
 const { Search } = Input;
 const { Dragger } = Upload;
 
@@ -41,7 +29,10 @@ const Collection = ({ collectionList, dispatch, loading }) => {
       type: 'collection/deleteCollectionModel',
       payload: {
         CollectionID,
-        onSuccess: () => message.success('Delete Collection Successfully !!!'),
+        onSuccess: () => {
+          message.success('Delete Collection Successfully !!!');
+          dispatch({ type: 'collection/fetchCollection' });
+        },
         onFail: () => message.error('Fail to delete collection !!!'),
       },
     });
@@ -158,7 +149,6 @@ const CreateCollectionModal = ({ visible, handleCancel, dispatch, currentCollect
 
   useEffect(() => {
     if (!_.isNil(currentCollection)) {
-      console.log(currentCollection);
       setAction('EDIT');
       setTitle(currentCollection.CollectionName);
       setDescription(currentCollection.CollectionDescription);
@@ -174,7 +164,10 @@ const CreateCollectionModal = ({ visible, handleCancel, dispatch, currentCollect
           CollectionName: title,
           CollectionDescription: description,
           CoverImage: imageUrl,
-          onSuccess: () => message.success('Create Collection Successfully !!!'),
+          onSuccess: () => {
+            message.success('Create Collection Successfully !!!');
+            dispatch({ type: 'collection/fetchCollection' });
+          },
           onFail: () => message.error('Fail to create collection !!!'),
         },
       });
@@ -186,7 +179,10 @@ const CreateCollectionModal = ({ visible, handleCancel, dispatch, currentCollect
           CollectionName: title,
           CollectionDescription: description,
           CoverImage: imageUrl,
-          onSuccess: () => message.success('Create Collection Successfully !!!'),
+          onSuccess: () => {
+            message.success('Create Collection Successfully !!!');
+            dispatch({ type: 'collection/fetchCollection' });
+          },
           onFail: () => message.error('Fail to create collection !!!'),
         },
       });
