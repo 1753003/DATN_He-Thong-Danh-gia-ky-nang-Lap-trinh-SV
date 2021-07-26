@@ -138,6 +138,54 @@ export function createNewTest({ generalInformation, listQuestion, onSuccess, onF
   });
 }
 
+export function inviteUserByEmail({ testID, listEmail }) {
+  return new Promise((resolve, reject) => {
+    axios
+      .patch(
+        `${Constant.API}/api/creator/test/listInvite/${testID}`,
+        {
+          listEmail,
+        },
+        {
+          headers: { accessToken: Cookies.get('accessToken') },
+          'access-control-allow-origin': Constant.CORS,
+        },
+      )
+      .then((response) => {
+        // handle success
+        resolve(response.data);
+      })
+      .catch((error) => {
+        // handle error
+        reject();
+      });
+  });
+}
+
+export function getInvitedEmail({ testID }) {
+  return new Promise((resolve, reject) => {
+    var options = {
+      method: 'GET',
+      url: `${Constant.API}/api/creator/test/listInvite/${testID}`,
+      headers: {
+        accessToken: Cookies.get('accessToken'),
+        'access-control-allow-origin': Constant.CORS,
+      },
+    };
+    axios
+      .request(options)
+      .then((response) => {
+        // handle success
+        resolve(response.data);
+      })
+      .catch((error) => {
+        // handle error
+        console.log(error);
+        reject();
+      });
+  });
+}
+
 export function deleteTest({ generalInformation, listQuestion, onSuccess, onFailure }) {
   return new Promise((resolve, reject) => {
     resolve();

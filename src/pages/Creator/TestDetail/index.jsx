@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import styles from './index.less';
-import { Button, Typography, Card } from 'antd';
-import { CheckCircleTwoTone, CloseCircleTwoTone } from '@ant-design/icons';
+import { Button, Modal, Upload, Select, message, List } from 'antd';
+import { CheckCircleTwoTone, CloseCircleTwoTone, UploadOutlined } from '@ant-design/icons';
 import { connect, useHistory } from 'umi';
 import { PageLoading } from '@ant-design/pro-layout';
-import ReactMarkdown from 'react-markdown';
 import NotFound from '@/pages/404';
 import MDEditor from '@uiw/react-md-editor';
+import _ from 'lodash';
+import * as XLSX from 'xlsx';
+import '@/components/GlobalHeader/style.less';
 
 const TestDetail = ({ dispatch, location }) => {
   const history = useHistory();
@@ -15,11 +17,16 @@ const TestDetail = ({ dispatch, location }) => {
     listQuestion: [],
   });
   const [loading, setLoading] = useState(false);
+  const [visibleModal, setVisibleModal] = useState(false);
+  const [listInvitedEmail, setListInvitedEmail] = useState([]);
 
   const setTestInformation = (testObject) => {
-    console.log(testObject);
     setTest(testObject);
     setLoading(false);
+  };
+
+  const closeModal = () => {
+    setVisibleModal(false);
   };
 
   useEffect(() => {
@@ -28,6 +35,18 @@ const TestDetail = ({ dispatch, location }) => {
       dispatch({
         type: 'test/getTestByIdModel',
         payload: { id: location.query.id, callback: setTestInformation },
+      });
+      dispatch({
+        type: 'test/getInvitedEmailList',
+        payload: {
+          testID: location.query.id,
+          onSuccess: (data) => {
+            setListInvitedEmail(data);
+          },
+          onFail: () => {
+            message.error('Cannot load invited email list, something wrong happened !!!');
+          },
+        },
       });
     }
   }, [location]);
@@ -93,6 +112,9 @@ const TestDetail = ({ dispatch, location }) => {
             <Button type="primary" onClick={handleEditClick}>
               Edit
             </Button>
+            <Button type="primary" onClick={() => setVisibleModal(true)} style={{ marginLeft: 10 }}>
+              Invite
+            </Button>
           </div>
         </div>
 
@@ -100,6 +122,14 @@ const TestDetail = ({ dispatch, location }) => {
           <h3>Questions</h3>
           <Question list={test?.listQuestion} />
         </div>
+        <InviteModal
+          isModalVisible={visibleModal}
+          testID={location.query?.id}
+          closeModal={closeModal}
+          dispatch={dispatch}
+          listInvitedList={listInvitedEmail}
+          setListInvitedEmail={setListInvitedEmail}
+        />
       </div>
     );
 
@@ -114,7 +144,7 @@ const Question = ({ list }) => {
   };
   return list?.map((item) => {
     return (
-      <div className={styles.questionContainer}>
+      <div className={styles.questionContainer} key={item.ID}>
         <div className={styles.questionHead}>
           {item.ID}-{item.QuestionType}
         </div>
@@ -190,6 +220,163 @@ const Question = ({ list }) => {
       </div>
     );
   });
+};
+
+const InviteModal = ({
+  isModalVisible,
+  closeModal,
+  dispatch,
+  listInvitedList,
+  testID,
+  setListInvitedEmail,
+}) => {
+  const [listEmail, setListEmail] = useState([]);
+  const [uploading, setUploading] = useState(false);
+  const [fileList, setFileList] = useState([]);
+  const [sendLoading, setSendLoading] = useState(false);
+  const readFileContent = (file) => {
+    const reader = new FileReader();
+    return new Promise((resolve, reject) => {
+      reader.onload = (event) => {
+        try {
+          const bstr = event.target.result;
+          const wb = XLSX.read(bstr, { type: 'binary' });
+          const wsname = wb.SheetNames[0];
+          const ws = wb.Sheets[wsname];
+          resolve(ws);
+        } catch (error) {
+          reject('You must upload xlxs file !!!');
+        }
+      };
+      reader.onerror = (error) => reject('Something wrong happened !!!!');
+      reader.readAsBinaryString(file);
+    });
+  };
+
+  const sendInvite = () => {
+    setSendLoading(true);
+
+    dispatch({
+      type: 'test/inviteUser',
+      payload: {
+        testID,
+        listEmail: _.difference(listEmail, listInvitedList),
+        onSuccess: () => {
+          message.success('Send invite successfully !!!');
+          setSendLoading(false);
+          dispatch({
+            type: 'test/getInvitedEmailList',
+            payload: {
+              testID,
+              onSuccess: (data) => {
+                setListInvitedEmail(data);
+              },
+              onFail: () => {
+                // message.error('Cannot load invited email list, something wrong happened !!!');
+              },
+            },
+          });
+          closeModal();
+          setListEmail([]);
+          setFileList([]);
+        },
+        onFail: () => {
+          message.error('Cannot send invite, something wrong happened !!!');
+          setSendLoading(false);
+          closeModal();
+          setListEmail([]);
+          setFileList([]);
+        },
+      },
+    });
+  };
+
+  const handleUpload = () => {
+    const newListEmail = [];
+    setUploading(true);
+    readFileContent(fileList[0])
+      .then((content) => {
+        Object.values(content).forEach((item) => {
+          if (typeof item === 'object' && item.h) {
+            newListEmail.push(item.h);
+          }
+        });
+        setListEmail(_.union(listEmail, newListEmail));
+        setFileList([]);
+        setUploading(false);
+      })
+      .catch((error) => {
+        message.error(error);
+        setFileList([]);
+        setUploading(false);
+      });
+  };
+
+  const handleChange = (value) => {
+    setListEmail(_.uniq(value));
+  };
+
+  const props = {
+    onRemove: (file) => {
+      setFileList([]);
+    },
+    beforeUpload: (file) => {
+      setFileList([file]);
+    },
+    fileList,
+  };
+  return (
+    <Modal
+      title="Invite User By Email"
+      visible={isModalVisible}
+      okText="Send invite"
+      onOk={sendInvite}
+      onCancel={closeModal}
+      confirmLoading={sendLoading}
+      width={1000}
+    >
+      <div className={`custom`}>
+        <div style={{ width: '100%', marginBottom: 10 }}>
+          <Select
+            placeholder="Please select which student you want to send mail"
+            mode="tags"
+            onChange={handleChange}
+            style={{ width: '100%' }}
+            value={listEmail}
+            open={false}
+          >
+            {listEmail.map((email) => {
+              return <Option key={email}>{email}</Option>;
+            })}
+          </Select>
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-start' }}>
+          <Upload {...props} maxCount={1}>
+            <Button icon={<UploadOutlined />} style={{ marginRight: 12 }}>
+              Select Excel File
+            </Button>
+          </Upload>
+          <Button
+            type="primary"
+            onClick={handleUpload}
+            disabled={fileList.length === 0}
+            loading={uploading}
+          >
+            {uploading ? 'Uploading' : 'Start Upload'}
+          </Button>
+        </div>
+        <div style={{ marginTop: 20, maxHeight: 500, overflowY: 'scroll' }}>
+          <List
+            size="small"
+            header={<b>Invited list</b>}
+            bordered
+            dataSource={listInvitedList}
+            renderItem={(item) => <List.Item>{item}</List.Item>}
+          />
+        </div>
+      </div>
+    </Modal>
+  );
 };
 
 export default connect(({ test: { testById } }) => ({

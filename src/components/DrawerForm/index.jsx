@@ -281,26 +281,29 @@ export const DrawerForm = ({ visible, onClose, form, setInformation, action }) =
                 <Select
                   placeholder="Please select which student you want to send mail"
                   mode="tags"
+                  open={false}
                 ></Select>
               </Form.Item>
             </Col>
           </Row>
         )}
-        <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-start' }}>
-          <Upload {...props} maxCount={1}>
-            <Button icon={<UploadOutlined />} style={{ marginRight: 12 }}>
-              Select Excel File
+        {action === 'CREATE' && (
+          <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-start' }}>
+            <Upload {...props} maxCount={1}>
+              <Button icon={<UploadOutlined />} style={{ marginRight: 12 }}>
+                Select Excel File
+              </Button>
+            </Upload>
+            <Button
+              type="primary"
+              onClick={handleUpload}
+              disabled={fileList.length === 0}
+              loading={uploading}
+            >
+              {uploading ? 'Uploading' : 'Start Upload'}
             </Button>
-          </Upload>
-          <Button
-            type="primary"
-            onClick={handleUpload}
-            disabled={fileList.length === 0}
-            loading={uploading}
-          >
-            {uploading ? 'Uploading' : 'Start Upload'}
-          </Button>
-        </div>
+          </div>
+        )}
       </Form>
     </Drawer>
   );
