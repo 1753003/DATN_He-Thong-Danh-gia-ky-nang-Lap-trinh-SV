@@ -37,6 +37,7 @@ const { TextArea, Search } = Input;
 class CodeEditor extends Component {
   constructor(props) {
     super(props);
+    console.log(this.props)
     let temp = 'c_cpp';
     if (this.props.language[0] === 'Java') temp = 'java';
     else if (this.props.language[0] === 'Javascript') temp = 'javascript';

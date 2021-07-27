@@ -23,14 +23,35 @@ class Header extends React.Component {
         
       }
       else if (e.key === 'home') history.push('/')
+      else if (e.key === 'join') {
+        if (localStorage.getItem('antd-pro-authority') == '["developer"]')
+          history.push('/developer')
+        else
+        history.push('/creator')
+      }
     };
-
-    
   
     isLogin = localStorage.getItem('currentUser');
     render() {
       const { current } = this.state;
       return (
+        this.isLogin ? 
+        <Menu
+          onClick={this.handleClick}
+          selectedKeys={[current]}
+          mode="horizontal"
+          className={styles.menu}
+        >
+          <Menu.Item key="home">{Language.home_home}</Menu.Item>
+          <Menu.Item key="introduce">{Language.home_introduce}</Menu.Item>
+          <Menu.Item key="join">{Language.home_join}</Menu.Item> 
+          {this.isLogin ? (
+            <Menu.Item key="signout">{Language.home_signOut}</Menu.Item>
+          ) : (
+            <Menu.Item key="signup">{Language.home_login}</Menu.Item>
+          )}
+        </Menu>
+        :
         <Menu
           onClick={this.handleClick}
           selectedKeys={[current]}
@@ -44,7 +65,8 @@ class Header extends React.Component {
           ) : (
             <Menu.Item key="signup">{Language.home_login}</Menu.Item>
           )}
-        </Menu> 
+        </Menu>
+     
       );
     }
   }
@@ -56,7 +78,7 @@ export default class Introduction extends React.Component {
     };
     render() {
         return (
-            <>
+            <div style={{ backgroundColor: 'black', color: 'white'}}>
                 <div style={{ overflow: 'hidden', backgroundColor: 'white' }}>
                     <div
                     className="header"
@@ -104,7 +126,7 @@ export default class Introduction extends React.Component {
                         </Col>
                     </Row>
                 </div>
-            </>
+            </div>
         )
     }
 }

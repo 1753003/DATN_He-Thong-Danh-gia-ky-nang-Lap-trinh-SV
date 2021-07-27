@@ -10,6 +10,7 @@ import AceEditor from 'react-ace';
 import 'brace/theme/tomorrow';
 import ReactMarkdown from 'react-markdown';
 import SyntaxHighlighter from 'react-syntax-highlighter';
+import MDEditor from '@uiw/react-md-editor';
 import { docco } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 const { TabPane } = Tabs;
 const AlertComponent = (alertMessage, alertDescription, alertType) => (
@@ -144,9 +145,9 @@ class Coding extends Component {
 
     return (
       <>
-        <div className="problem" style={{ whiteSpace: 'pre-line' }}>
-          {this.getDescription(this.props.description)}
-        </div>
+       
+          <MDEditor.Markdown source={this.props.description.replaceAll('\\n', '\n')} />
+        
         {this.props.codeSample == null ? (
           ''
         ) : (
@@ -159,7 +160,7 @@ class Coding extends Component {
           <CodeEditor
             testCases={this.props.testCases}
             getCode={(value) => this.props.getCode(value)}
-            codeDefault={this.props.codeDefault}
+            codeDefault={this.props.codeSample}
             language={this.props.language}
             checkCustom={(value) => this.setCustom(value)}
           ></CodeEditor>

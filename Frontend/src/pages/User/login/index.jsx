@@ -163,13 +163,6 @@ const Login = (props) => {
              
             })}
           />
-          <Tabs.TabPane
-            key="mobile"
-            tab={intl.formatMessage({
-              id: 'pages.login.phoneLogin.tab',
-              
-            })}
-          />
         </Tabs>
 
         {status === 'error' && loginType === 'account' && !submitting && (
@@ -260,7 +253,6 @@ const Login = (props) => {
         <FormattedMessage id="pages.login.loginWith" defaultMessage="Login with" />
         <FacebookOutlined className={styles.icon} onClick = {()=>{loginFacebook()}} />
         <GoogleOutlined className={styles.icon} onClick = {() => {loginGoogle()}} />
-        <GithubOutlined className={styles.icon} />
       </Space>
     </div>
   );
