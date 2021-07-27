@@ -29,6 +29,7 @@ module.exports = {
             res.RunningTime = codeQuestion.RunningTime;
             res.MemoryUsage = codeQuestion.MemoryUsage;
             res.TestCase = codeQuestion.TestCase;
+            res.CodeSample = codeQuestion.CodeSample?codeQuestion.CodeSample:"helllo";
         }
         listDetail.push(res);
     }
