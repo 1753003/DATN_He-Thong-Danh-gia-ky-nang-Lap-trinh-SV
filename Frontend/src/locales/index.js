@@ -16,6 +16,8 @@ if (getLocale() === 'vi-VN') Language = {
     'home_teacher': 'Bạn là giảng viên ?',
     'home_join': 'Tham gia ngay',
 
+    'help': 'Hỗ trợ',
+
     'header_notifications': 'Thông Báo',
     'header_readAll': 'Đọc tất cả',
     'header_loadMore': 'Tải thêm',
@@ -115,7 +117,38 @@ if (getLocale() === 'vi-VN') Language = {
     'pages_guest_introduction_ourStory_1': 'Chúng tôi - những sinh viên năm cuối nung nấu trong mình ý tưởng về một sản phẩm có thể giúp đỡ người mới học lập trình một cách đơn giản và nhanh chóng.',
     'pages_guest_introduction_ourStory_2': 'Codejoy muốn trở thành một nền tảng dành cho việc thực hành lập trình, chia sẻ kiến thức về lập trình và cung cấp những bài kiểm tra chất lượng cho các nhà tuyển dụng.',
     'pages_guest_introduction_ourTeam': 'Các thành viên của chúng tôi',
-    'pages_guest_introduction_ourTeam_1': 'DevCheck luôn chào đón những người cùng chí hướng tham gia và trở thành một phần của DevCheck.',
+    'pages_guest_introduction_ourTeam_1': 'CodeJoy luôn chào đón những người cùng chí hướng tham gia và trở thành một phần của CodeJoy.',
+
+    'pages_registerHome_signUp': 'Đăng kí',
+    'pages_registerHome_forCreators': 'Dành cho người sáng tạo',
+    'pages_registerHome_forDevelopers': 'Dành cho lập trình viên',
+    'pages_registerHome_create': 'Khởi tạo',
+    'pages_registerHome_weAre': 'Chúng tôi là nền tảng kỹ thuật sáng tạo để xác định các nhà phát triển có kỹ năng phù hợp ',
+    'pages_registerHome_joinOur': 'Tham gia cộng đồng của chúng tôi để thực hành kỹ năng lập trình',
+    'pages_registerHome_alreadyHaveAcc': 'Đã có tài khoản?',
+    'pages_registerHome_alreadySignUp': 'Đã đăng kí?',
+    'pages_registerHome_now': 'bây giờ',
+
+    'pages_registerCreator_startNow': 'Bắt đầu bây giờ',
+    'pages_registerCreator_codeJoy': 'Bạn có thể làm gì với tài khoản sáng tạo của bạn trên CodeJoy?',
+    'pages_registerCreator_build': 'Xây dựng các bài kiểm tra mới không giới hạn hàng ngày',
+    'pages_registerCreator_review': 'Xem lại kết quả và tải xuống báo cáo ngay lập tức',
+    'pages_registerCreator_access': 'Tiếp cận bộ phận hỗ trợ khách hàng 24 giờ một ngày',
+    'pages_registerCreator_get': 'Hỗ trợ 4 ngôn ngữ lập trình',
+    'pages_registerCreator_password': 'Mật khẩu',
+    'pages_registerCreator_confirmPw': 'Xác nhận mật khẩu',
+    'pages_registerCreator_workplace': 'Nơi làm việc',
+    'pages_registerCreator_enterEmail': 'Nhập vào email',
+    'pages_registerCreator_enterWorkplace': 'Nhập vào nơi làm việc',
+    'pages_registerCreator_weSent': 'Chúng tôi đã gửi một email chứa liên kết xác nhận đến email bạn đã đăng ký, vui lòng xác nhận ',
+    'pages_registerCreator_back': 'Trở về trang đăng nhập',
+    'pages_registerCreator_haveNot': 'Không nhận được email?',
+    'pages_registerCreator_resent': 'Gửi lại email',
+    'pages_registerCreator_codeJoy2': 'Bạn có thể làm gì với tài khoản lập trình viên của bạn trên CodeJoy?',
+
+    'pages_forgotPw_getNew': 'Lấy mật khẩu mới',
+    'pages_forgotPw_weHaveSent': 'Chúng tôi đã gửi một email cho bạn, hãy kiểm tra nó',
+
 };
 else Language = {
     'home_home': 'Home',
@@ -132,6 +165,8 @@ else Language = {
     'home_student': 'Are you student ?',
     'home_teacher': 'Are you teacher ?',
     'home_join': 'Join now',
+
+    'help': 'Help',
 
     'header_notifications': 'Notifications',
     'header_readAll': 'Read All',
@@ -226,13 +261,44 @@ else Language = {
 
     'pages_guest_introduction_getStarted': ' Get Started ',
     'pages_guest_introduction_aboutUs': 'About Us',
-    'pages_guest_introduction_aboutUs_1': 'DevCheck is a platform for testing programming capabilities. We provide hundreds of tests, practices in different languages such as C++, Java ...',
+    'pages_guest_introduction_aboutUs_1': 'CodeJoy is a platform for testing programming capabilities. We provide hundreds of tests, practices in different languages such as C++, Java ...',
     'pages_guest_introduction_aboutUs_2': 'Helping technology companies minimize the process of finding quality programmers for projects.',
     'pages_guest_introduction_ourStory': 'Our Story',
     'pages_guest_introduction_ourStory_1': 'We - 4th year students always have the idea of a product that can help beginners learn to code easily and quickly access the industry.',
-    'pages_guest_introduction_ourStory_2': 'DevCheck wants to become a platform for coding practice, sharing programming knowledge and providing input quality tests for employers all over Vietnam.',
+    'pages_guest_introduction_ourStory_2': 'CodeJoy wants to become a platform for coding practice, sharing programming knowledge and providing input quality tests for employers all over Vietnam.',
     'pages_guest_introduction_ourTeam': 'Our Team',
-    'pages_guest_introduction_ourTeam_1': 'DevCheck always welcomes those who have the same idea, enthusiasm, passion to join and become a part of DevCheck.',
+    'pages_guest_introduction_ourTeam_1': 'CodeJoy always welcomes those who have the same idea, enthusiasm, passion to join and become a part of CodeJoy.',
+
+    'pages_registerHome_signUp': 'Sign up',
+    'pages_registerHome_forCreators': 'For Creators',
+    'pages_registerHome_forDevelopers': 'For Developers',
+    'pages_registerHome_create': 'Create',
+    'pages_registerHome_weAre': 'We are the innovative technical platform to identify developers with the right skills',
+    'pages_registerHome_joinOur': 'Join our community practice coding skills, doing tests',
+    'pages_registerHome_alreadyHaveAcc': 'Already have an account?',
+    'pages_registerHome_alreadySignUp': 'Already sign up?',
+    'pages_registerHome_now': 'now',
+
+    'pages_registerCreator_startNow': 'Start now',
+    'pages_registerCreator_codeJoy': 'What can you do with your CodeJoy creator account?',
+    'pages_registerCreator_build': 'Build new tests for unlimited daily',
+    'pages_registerCreator_review': 'Review results and download reports instantly',
+    'pages_registerCreator_access': 'Access customer support 24 hours a day',
+    'pages_registerCreator_get': 'Get support for 4 programming languages',
+    'pages_registerCreator_password': 'Password',
+    'pages_registerCreator_confirmPw': 'Confirm password',
+    'pages_registerCreator_workplace': 'Workplace',
+    'pages_registerCreator_enterEmail': 'Please enter email',
+    'pages_registerCreator_enterWorkplace': 'Please enter workplace',
+    'pages_registerCreator_weSent': 'We have sent an email containing the confirm link to the email you registered, please confirm',
+    'pages_registerCreator_back': 'Back to login',
+    'pages_registerCreator_haveNot': 'Have not received email?',
+    'pages_registerCreator_resent': 'Resent email',
+    'pages_registerCreator_codeJoy2': 'What can you do with your CodeJoy developer account?',
+
+    'pages_forgotPw_getNew': 'Get new password',
+    'pages_forgotPw_weHaveSent': 'We have sent an email to you, check it',
+
 };
 
 export default Language;

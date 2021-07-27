@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Button,
   Drawer,
@@ -11,10 +11,17 @@ import {
   InputNumber,
   DatePicker,
   TimePicker,
+  message,
+  Upload,
 } from 'antd';
 import moment from 'moment';
+import { UploadOutlined } from '@ant-design/icons';
+import * as XLSX from 'xlsx';
+import _ from 'lodash';
 
 export const DrawerForm = ({ visible, onClose, form, setInformation, action }) => {
+  const [fileList, setFileList] = useState([]);
+  const [uploading, setUploading] = useState(false);
   const handleFinish = (values) => {
     setInformation(values);
     onClose();
@@ -23,6 +30,60 @@ export const DrawerForm = ({ visible, onClose, form, setInformation, action }) =
     if (!form) return;
     form.submit();
   };
+
+  const readFileContent = (file) => {
+    const reader = new FileReader();
+    return new Promise((resolve, reject) => {
+      reader.onload = (event) => {
+        try {
+          const bstr = event.target.result;
+          const wb = XLSX.read(bstr, { type: 'binary' });
+          const wsname = wb.SheetNames[0];
+          const ws = wb.Sheets[wsname];
+          resolve(ws);
+        } catch (error) {
+          reject('You must upload xlxs file !!!');
+        }
+      };
+      reader.onerror = (error) => reject('Something wrong happened !!!!');
+      reader.readAsBinaryString(file);
+    });
+  };
+
+  const props = {
+    onRemove: (file) => {
+      setFileList([]);
+    },
+    beforeUpload: (file) => {
+      setFileList([file]);
+    },
+    fileList,
+  };
+
+  const handleUpload = () => {
+    const listEmail = [];
+    setUploading(true);
+    readFileContent(fileList[0])
+      .then((content) => {
+        Object.values(content).forEach((item) => {
+          if (typeof item === 'object' && item.h) {
+            listEmail.push(item.h);
+          }
+        });
+        const oldList = form.getFieldValue('listEmail') || [];
+        form.setFieldsValue({
+          listEmail: _.union(oldList, listEmail),
+        });
+        setFileList([]);
+        setUploading(false);
+      })
+      .catch((error) => {
+        message.error(error);
+        setFileList([]);
+        setUploading(false);
+      });
+  };
+
   return (
     <Drawer
       title="TEST INFORMATION"
@@ -220,10 +281,28 @@ export const DrawerForm = ({ visible, onClose, form, setInformation, action }) =
                 <Select
                   placeholder="Please select which student you want to send mail"
                   mode="tags"
+                  open={false}
                 ></Select>
               </Form.Item>
             </Col>
           </Row>
+        )}
+        {action === 'CREATE' && (
+          <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-start' }}>
+            <Upload {...props} maxCount={1}>
+              <Button icon={<UploadOutlined />} style={{ marginRight: 12 }}>
+                Select Excel File
+              </Button>
+            </Upload>
+            <Button
+              type="primary"
+              onClick={handleUpload}
+              disabled={fileList.length === 0}
+              loading={uploading}
+            >
+              {uploading ? 'Uploading' : 'Start Upload'}
+            </Button>
+          </div>
         )}
       </Form>
     </Drawer>

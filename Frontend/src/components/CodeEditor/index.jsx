@@ -3,6 +3,7 @@ import styles from './style.less';
 import AceEditor from 'react-ace';
 import Animate from 'rc-animate';
 import 'brace/ext/searchbox';
+import Language from '@/locales/index';
 // import 'ace-builds/src-min-noconflict/ext-options';
 // import 'ace-builds/src-min-noconflict/ext-keybinding_menu';
 // import 'ace-builds/src-min-noconflict/ext-prompt';
@@ -213,7 +214,7 @@ class CodeEditor extends Component {
             Find
           </Button>
 
-          <Tooltip title="Help">
+          <Tooltip title={Language.help}>
             <a
               style={{
                 color: 'inherit',

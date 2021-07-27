@@ -3,6 +3,7 @@ import {Row, Col, Form, Input, Select, Button, Alert, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { connect } from 'dva';
 import { Redirect, history } from 'umi';
+import Language from '@/locales/index';
 
 const { Option } = Select;
 class registerCreator extends React.Component {
@@ -58,15 +59,15 @@ class registerCreator extends React.Component {
                     <Col span={11}>
                         <div style = {{fontSize: '35px',                                     
                                        marginBottom: '20px',
-                                       fontWeight: 'bolder'}}>Start now</div>
+                                       fontWeight: 'bolder'}}>{Language.pages_registerCreator_startNow}</div>
                         <div style = {{fontSize: '20px', 
                                        marginBottom: '20px',
-                                       fontWeight: 'bold'}}>What can you do with your DevCheck creator account?</div>
+                                       fontWeight: 'bold'}}>{Language.pages_registerCreator_codeJoy}</div>
                         <ul style = {{fontSize: '18px'}}>
-                            <li>Build new tests for unlimited daily </li>
-                            <li>Review results and download reports instantly</li>
-                            <li>Access customer support 24 hours a day</li>
-                            <li>Get support for 4 programming languages</li>
+                            <li>{Language.pages_registerCreator_build}</li>
+                            <li>{Language.pages_registerCreator_review}</li>
+                            <li>{Language.pages_registerCreator_access}</li>
+                            <li>{Language.pages_registerCreator_get}</li>
                         </ul>
                     </Col>
                     <Col span={12}>
@@ -91,18 +92,18 @@ class registerCreator extends React.Component {
                                 rules={[{ required: true, message: 'Please enter your email' },
                                         { type: 'email', message: 'The input is not valid E-mail!'}]}
                                 >
-                                <Input placeholder="Please enter email" />
+                                <Input placeholder={Language.pages_registerCreator_enterEmail} />
                                 </Form.Item>
                             </Col>
                             <Col span={12}>
                                 <Form.Item
                                 name="name"
-                                label="Name"
+                                label={Language.pages_profile_name}
                                 rules={[{ required: true, message: 'Please enter full name' }]}
                                 >
                                 <Input
                                     style={{ width: '100%' }}
-                                    placeholder="Please enter full name"
+                                    placeholder={Language.pages_profile_edit_name}
                                 />
                                 </Form.Item>
                             </Col>
@@ -111,7 +112,7 @@ class registerCreator extends React.Component {
                             <Col span={12}>
                                 <Form.Item
                                 name="password"
-                                label="Password"
+                                label={Language.pages_registerCreator_password}
                                 rules={[{ required: true, message: 'Please select your password' }]}
                                 hasFeedback
                                 >
@@ -121,7 +122,7 @@ class registerCreator extends React.Component {
                             <Col span={12}>
                                 <Form.Item
                                 name="confirm"
-                                label="Confirm Password"
+                                label={Language.pages_registerCreator_confirmPw}
                                 dependencies={['password']}
                                 hasFeedback
                                 rules={[
@@ -146,7 +147,7 @@ class registerCreator extends React.Component {
                             <Col span={12}>
                                 <Form.Item
                                 name="company"
-                                label="Workplace"
+                                label={Language.pages_registerCreator_workplace}
                                 rules={[
                                     {
                                     required: true,
@@ -154,13 +155,13 @@ class registerCreator extends React.Component {
                                     },
                                 ]}
                                 >
-                                <Input placeholder="Please enter workplace" />
+                                <Input placeholder={Language.pages_registerCreator_enterWorkplace} />
                                 </Form.Item>
                             </Col>
                             </Row>
                             <Form.Item>
                                 <Button type="primary" htmlType="submit">  
-                                Sign up
+                                {Language.pages_registerHome_signUp}
                                 </Button>
                             </Form.Item>
                         </Form>                  
@@ -170,11 +171,11 @@ class registerCreator extends React.Component {
                             (
                                 <div>                               
                                     <Alert message={this.props.userRegister.codeMessage} type="error" />                                     
-                                    <h3>We have sent an email containing the confirm link to the email you registered, please confirm</h3>
+                                    <h3>{Language.pages_registerCreator_weSent}</h3>
                                     <Button type="Primary" onClick={()=>{this.onFinishConfirm()}}>
-                                        Back to login
+                                        {Language.pages_registerCreator_back}
                                     </Button>
-                                    <p><i>Haven't received email? </i><a>Resent email</a></p>
+                                    <p><i>{Language.pages_registerCreator_haveNot}</i><a>{Language.pages_registerCreator_resent}</a></p>
                                 </div>
                             )
                             :

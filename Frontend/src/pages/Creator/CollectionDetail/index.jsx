@@ -41,7 +41,7 @@ const CollectionDetail = ({ location, collection, dispatch, testList, loading })
 
   const handleTestOnClick = (testID) => {
     history.push({
-      pathname: '/creator/testDetail',
+      pathname: '/creator/tests/testDetail',
       query: {
         id: testID,
       },
@@ -135,25 +135,32 @@ const Test = ({ list, collectionID, dispatch, handleTestOnClick }) => {
       renderItem={(item) => (
         <List.Item>
           <Skeleton avatar title={false} loading={item.loading} active>
-            <div
-              className={styles.testInfoContainer}
-              onClick={() => handleTestOnClick(item.TestID)}
-            >
+            <div className={styles.testInfoContainer}>
               <div className={styles.questions}>{item.TotalQuestion} questions</div>
               <img src={item.TestImage} className={styles.collectionImg} />
               <div className={styles.infoContainer}>
                 <h3 className={styles.title}>{item.TestName}</h3>
                 <div className={styles.testMoreInfo}>
-                  <div className={styles.MoreOutlined}>
-                    <MoreOutlined style={{ fontSize: '22px' }} />
-                  </div>
-                  <div style={{ flexDirection: 'row', display: 'flex' }}>
+                  <div
+                    style={{
+                      flexDirection: 'row',
+                      display: 'flex',
+                    }}
+                  >
                     <Button
                       className={styles.description}
                       style={{ width: 'auto' }}
                       onClick={() => handleRemoveTest(item.TestID)}
                     >
                       <DeleteOutlined /> Delete from the collection
+                    </Button>
+                    <Button
+                      className={styles.description}
+                      style={{ width: 'auto', marginLeft: 10 }}
+                      onClick={() => handleTestOnClick(item.TestID)}
+                      type="primary"
+                    >
+                      View Detail
                     </Button>
                   </div>
                 </div>

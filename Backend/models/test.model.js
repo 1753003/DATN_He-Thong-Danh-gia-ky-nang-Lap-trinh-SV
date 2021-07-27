@@ -392,13 +392,11 @@ module.exports = {
   },
   async updateListInvite(testID, listEmail) {
     const temp = (await db("test").where("TestID", testID))[0];
-    const oldList = temp.listUser;
-    const finalList = listEmail.filter(x => !oldList.includes(x));
+    const oldList = temp.listUser || [];
+    const finalList = listEmail.filter((x) => !oldList.includes(x));
     await db.raw(
       `call updatePermission('${JSON.stringify(finalList)}', ${testID})`
     );
-    
-   
     var nodemailer = require("nodemailer");
     var transporter = nodemailer.createTransport({
       service: "gmail",
