@@ -1,7 +1,6 @@
 upstream loadbalancer {
   least_conn;
   server 3.0.40.66:3000;
-  server 3.0.40.66:5000;
 }
 server {
     listen $PORT default_server;
