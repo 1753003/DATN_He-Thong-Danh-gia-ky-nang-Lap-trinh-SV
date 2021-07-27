@@ -1,10 +1,11 @@
 const express = require("express");
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
-
+var compression = require('compression')
 var cors = require("cors");
 
 const app = express();
+app.use(compression())
 app.use(express.json());
 app.disable("x-powered-by");
 app.use(morgan("dev"));
