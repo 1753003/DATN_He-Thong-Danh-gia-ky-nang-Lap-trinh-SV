@@ -1,5 +1,5 @@
 
-FROM nginx
+FROM jerrybendy/nginx-http2
 
 COPY default.conf.template /etc/nginx/conf.d/default.conf.template
 COPY nginx.conf /etc/nginx/nginx.conf
