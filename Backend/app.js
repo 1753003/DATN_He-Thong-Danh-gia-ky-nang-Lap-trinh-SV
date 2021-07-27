@@ -6,7 +6,7 @@ var cors = require("cors");
 
 const app = express();
 app.use(express.json());
-
+app.disable("x-powered-by");
 app.use(morgan("dev"));
 const WEB =
   process.env.NODE_ENV === "production"
