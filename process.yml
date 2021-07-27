@@ -1,0 +1,21 @@
+apps:
+  - script: 'npm'
+    args: 'start'
+    exec_mode: 'fork'
+    name: 'codejoy0'
+    watch: true
+    watch_delay: 1000
+    ignore_watch: ['node_modules']
+    env:
+      PORT: 3000
+      NODE_ENV: production
+  - script: 'npm'
+    args: 'start'
+    exec_mode: 'fork'
+    name: 'codejoy1'
+    watch: true
+    watch_delay: 1000
+    ignore_watch: ['node_modules']
+    env:
+      PORT: 5000
+      NODE_ENV: production
