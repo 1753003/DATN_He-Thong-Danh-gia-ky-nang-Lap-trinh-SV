@@ -21,7 +21,7 @@ app.use(cookieParser());
 const auth = require("./middleware/authDeveloper.mdw");
 
 app.get("/", function (req, res) {
-  res.json("Running...");
+  res.json("Running....");
 });
 
 app.use("/api/auth", require("./routes/auth.route"));
