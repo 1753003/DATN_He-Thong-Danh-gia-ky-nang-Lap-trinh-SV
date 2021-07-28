@@ -1,7 +1,7 @@
 @import '~antd/es/style/themes/default.less';
 
 .container {
-  height: calc(100vh - 48px - 92px - 20px);
+  height: calc(100vh - 48px - 92px - 20px - 40px);
   margin-top: 20px;
   overflow-y: scroll;
 
@@ -18,7 +18,7 @@
     padding-right: 30px;
   }
   .searchBar {
-    width: 30%;
+    width: 475px;
     margin-top: 20px;
   }
   .modal {
@@ -60,4 +60,12 @@
 .testContainer {
   height: calc(100vh - 48px - 92px);
   overflow-y: scroll;
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+    .searchBar {
+      width: 90%;
+    }
+  }
 }

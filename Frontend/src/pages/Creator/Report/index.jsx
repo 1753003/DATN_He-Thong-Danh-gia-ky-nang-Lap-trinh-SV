@@ -45,7 +45,7 @@ const Report = ({ reportList, dispatch, loading }) => {
       <Search
         placeholder="input search text"
         enterButton
-        style={{ marginBottom: 20, width: '30%' }}
+        className={styles.searchBar}
         onSearch={onSearch}
       />
       <Table
