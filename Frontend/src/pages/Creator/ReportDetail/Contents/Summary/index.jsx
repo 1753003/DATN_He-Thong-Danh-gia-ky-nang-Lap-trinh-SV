@@ -10,6 +10,7 @@ import {
   QuestionCircleOutlined,
 } from '@ant-design/icons';
 import { exportToCSV } from '@/components/ExportCSV';
+import Constants from '@/utils/constants';
 
 const Summary = ({ summaryReport, summaryUser }) => {
   return (
@@ -52,9 +53,12 @@ const Summary = ({ summaryReport, summaryUser }) => {
           </div>
         </div>
         <div className={styles.info}>
-          <div className={styles.infoPicture}>
-            <FileTextTwoTone twoToneColor="#63b1f6" style={{ fontSize: 200 }} />
-          </div>
+          {window.innerWidth > Constants.MIN_SCREEN_WIDTH && (
+            <div className={styles.infoPicture}>
+              <FileTextTwoTone twoToneColor="#63b1f6" style={{ fontSize: 200 }} />
+            </div>
+          )}
+
           <div className={styles.infoContainer}>
             <div className={styles.detailInfo}>
               <div style={{ fontSize: 17 }}>Users</div>
@@ -107,7 +111,11 @@ const Summary = ({ summaryReport, summaryUser }) => {
             </div>
           }
           // bordered={false}
-          style={{ width: '70vw', marginRight: '20px' }}
+          style={{
+            width: window.innerWidth < Constants.MIN_SCREEN_WIDTH ? '100%' : '70vw',
+            marginRight: 20,
+            marginBottom: window.innerWidth < Constants.MIN_SCREEN_WIDTH ? 20 : 0,
+          }}
         >
           {summaryReport?.DifficultQuestion?.map((item) => {
             return (
@@ -133,7 +141,7 @@ const Summary = ({ summaryReport, summaryUser }) => {
             </div>
           }
           bordered={false}
-          style={{ width: '30vw' }}
+          style={{ width: window.innerWidth < Constants.MIN_SCREEN_WIDTH ? '100%' : '30vw' }}
         >
           {summaryReport?.listNotFinish?.map((item) => {
             return (

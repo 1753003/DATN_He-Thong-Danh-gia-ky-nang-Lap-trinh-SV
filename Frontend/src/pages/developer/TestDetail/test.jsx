@@ -22,7 +22,7 @@ import SyntaxHighlighter from 'react-syntax-highlighter';
 import { docco } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import CryptoJS from 'crypto-js';
 import DiscusstionTab from '@/components/Discussions/DiscusstionTab';
-
+import MDEditor from '@uiw/react-md-editor';
 const { TabPane } = Tabs;
 class TestDetail extends React.Component {
   state = {
@@ -337,6 +337,7 @@ class TestDetail extends React.Component {
       testCases={this.getQuestion()?.TestCase}
       language={this.getQuestion()?.Language_allowed}
       codeSample={this.getQuestion()?.CodeSample}
+      codeDefault={this.getQuestion()?.CodeSample}
       getCode={(value) => {
         this.props.dispatch({
           type: 'test/updateAnswer',
@@ -603,7 +604,8 @@ class TestDetail extends React.Component {
                       <>{this.returnCodeQuestion()}</>
                     ) : (
                       <>
-                        <p>{this.getQuestion()?.Description}</p>
+                        <MDEditor.Markdown source={this.getQuestion()?.Description} />
+                        
                         {this.getQuestion()?.CodeSample != null ? (
                           <SyntaxHighlighter language="javascript" style={docco}>
                             {this.getCodeSampleMC(this.getQuestion()?.CodeSample)}

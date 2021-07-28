@@ -1,10 +1,7 @@
 import React, { Component, useState, useRef } from 'react';
 import { Row, Col, Button, Menu, Anchor, Card } from 'antd';
-import { CaretDownOutlined } from '@ant-design/icons';
 import { history } from 'umi';
 import styles from './index.less';
-import TweenOne from 'rc-tween-one';
-import { OverPack } from 'rc-scroll-anim';
 import Cookies from 'js-cookie';
 import AnchorLink from 'react-anchor-link-smooth-scroll';
 import Language from '@/locales/index';
@@ -25,12 +22,35 @@ class Header extends React.Component {
       
     }
     else if (e.key === 'introduce') history.push('/introduction')
+    else if (e.key === 'join') {
+      if (localStorage.getItem('antd-pro-authority') == '["developer"]')
+        history.push('/developer')
+      else
+      history.push('/creator')
+    }
   };
 
   isLogin = localStorage.getItem('currentUser');
   render() {
     const { current } = this.state;
     return (
+      this.isLogin ? 
+      <Menu
+        onClick={this.handleClick}
+        selectedKeys={[current]}
+        mode="horizontal"
+        className={styles.menu}
+      >
+        <Menu.Item key="home">{Language.home_home}</Menu.Item>
+        <Menu.Item key="introduce">{Language.home_introduce}</Menu.Item>
+        <Menu.Item key="join">{Language.home_join}</Menu.Item> 
+        {this.isLogin ? (
+          <Menu.Item key="signout">{Language.home_signOut}</Menu.Item>
+        ) : (
+          <Menu.Item key="signup">{Language.home_login}</Menu.Item>
+        )}
+      </Menu>
+      :
       <Menu
         onClick={this.handleClick}
         selectedKeys={[current]}
@@ -45,6 +65,7 @@ class Header extends React.Component {
           <Menu.Item key="signup">{Language.home_login}</Menu.Item>
         )}
       </Menu>
+   
     );
   }
 }
@@ -147,39 +168,7 @@ const Content = () => {
               </Row>
             </div>
           </div>
-          <div id="p3" key="2" className={styles.page}>
-            <div className={styles.three}>
-              <Row className = {styles.navigationContent}>
-                <Col span={12} className = {styles.navigationContentDeveloper}>
-                  <div className = {styles.wallpaper}>
-                    <img src="https://firebasestorage.googleapis.com/v0/b/devcheckpro.appspot.com/o/GuestPage%2Fdev-login.png?alt=media&token=282a2155-07e1-457e-abb1-bb424f80766a" alt="" width="80%" height="80%"/>
-                  </div>
-                  <Row className = {styles.text}>
-                    <div className = {styles.cardTitle}>{Language.home_student}</div>
-                    <Button onClick = {() => {history.push('/developer/practice')}}
-                            type="primary"
-                    >
-                      {Language.home_join}
-                    </Button>
-                  </Row>
-                </Col>
-                <Col span={12} className = {styles.navigationContentDeveloper}>
-                  <div className = {styles.wallpaper}>
-                    <img src="https://firebasestorage.googleapis.com/v0/b/devcheckpro.appspot.com/o/GuestPage%2Fcreator-login.jpg?alt=media&token=b47214d7-09be-4796-a4f7-cc641e67313b" alt="" width="80%" height="80%"/>
-                  </div>
-                  <Row className = {styles.text}>
-                  <div className = {styles.cardTitle}>{Language.home_teacher}</div>
-                    <Button onClick = {() => {history.push('/creator')}}
-                            type="primary"
-                    >
-                      {Language.home_join}
-                    </Button>
-                  </Row>
-                </Col>
-              </Row>
-            </div>
-          </div>
-          <div className={styles.thumbs}>
+         <div className={styles.thumbs}>
             <AnchorLink
               href="#p1"
               onClick={() => {
@@ -202,17 +191,7 @@ const Content = () => {
                 style={page == 1 ? { backgroundColor: 'white' } : null}
               ></div>
             </AnchorLink>
-            <AnchorLink
-              href="#p3"
-              onClick={() => {
-                setPage(2);
-              }}
-            >
-              <div
-                className={styles.thumb}
-                style={page == 2 ? { backgroundColor: 'white' } : null}
-              ></div>
-            </AnchorLink>
+            
           </div>
         </div>
       </div>

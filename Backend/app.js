@@ -1,10 +1,11 @@
 const express = require("express");
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
-
+var compression = require('compression')
 var cors = require("cors");
 
 const app = express();
+app.use(compression())
 app.use(express.json());
 app.disable("x-powered-by");
 app.use(morgan("dev"));
@@ -20,14 +21,14 @@ app.use(cookieParser());
 const auth = require("./middleware/authDeveloper.mdw");
 
 app.get("/", function (req, res) {
-  res.json("Running...");
+  res.json("Running....");
 });
 
 app.use("/api/auth", require("./routes/auth.route"));
 app.use("/api/token", auth, require("./routes/token.route"));
 app.use("/api/creator", auth, require("./routes/creator.route"));
 app.use("/api/practice", auth, require("./routes/practice.route"));
-app.use("/api/test", auth, require("./routes/test.route"));
+app.use("/api/test", require("./routes/test.route"));
 app.use("/api/submissions", auth, require("./routes/submissions.route"));
 app.use("/api/search", auth, require("./routes/search.route"));
 app.use("/api/developer", auth, require("./routes/developer.route"));

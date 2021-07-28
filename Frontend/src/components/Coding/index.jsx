@@ -153,7 +153,6 @@ class Coding extends Component {
       }
 
     //if isSubmit
-
     return (
       <>
         <MDEditor.Markdown className="problem" source={this.props.description}></MDEditor.Markdown>

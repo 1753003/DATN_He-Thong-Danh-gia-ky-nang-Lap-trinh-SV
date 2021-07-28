@@ -43,7 +43,7 @@ class CodeEditor extends Component {
     if (this.props.practice.listDetail.generalInformation.PracticeSet === 'JavaScript')
       temp = 'javascript';
     this.state = {
-      codeVal: '',
+      codeVal: this.props.practice.listDetail.listQuestion[0].CodeSample,
       customVal: '',
       isSubmitBatch: false,
       showCustom: false,
