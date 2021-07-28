@@ -1,16 +1,41 @@
 import React, { useEffect, useState } from 'react';
 import styles from './styles.less';
-import { Menu } from 'antd';
+import { Menu, Drawer, Button } from 'antd';
 import { useHistory } from 'umi';
-import { UserOutlined, BookOutlined, StarOutlined } from '@ant-design/icons';
+import {
+  UserOutlined,
+  BookOutlined,
+  StarOutlined,
+  MenuUnfoldOutlined,
+  MenuFoldOutlined,
+} from '@ant-design/icons';
 import Collection from './Contents/Collection';
 import MyTests from './Contents/MyTests';
 import TestBank from './Contents/TestBank';
-import '../../../components/GlobalHeader/style.less';
+import '@/components/GlobalHeader/style.less';
+import Constants from '@/utils/constants';
 
 const Tests = ({ location }) => {
   const history = useHistory();
   const { query } = location;
+  const [toggle, setToggle] = useState(false);
+  const [menuDrawerVisibility, setMenuDrawerVisibility] = useState(false);
+
+  const resize = () => {
+    requestAnimationFrame(() => {
+      if (window.innerWidth === screen.width) {
+        setToggle(false);
+      }
+    });
+  };
+
+  const toggleCollapsed = () => {
+    setToggle(!toggle);
+  };
+
+  const onClose = () => {
+    setMenuDrawerVisibility(false);
+  };
 
   useEffect(() => {
     if (!query.menuKey) {
@@ -21,6 +46,8 @@ const Tests = ({ location }) => {
         },
       });
     }
+    window.addEventListener('resize', resize);
+    resize();
   }, []);
 
   const handleClick = (e) => {
@@ -45,29 +72,77 @@ const Tests = ({ location }) => {
     }
   };
 
+  const renderMenu = (theme) => {
+    return (
+      <Menu
+        onClick={handleClick}
+        selectedKeys={query.menuKey}
+        defaultChecked="collection"
+        className={styles.menu}
+        inlineCollapsed={window.innerWidth > Constants.MIN_SCREEN_WIDTH ? toggle : false}
+        mode="inline"
+        theme={theme}
+      >
+        <Menu.Item key="collection" icon={<BookOutlined />}>
+          Collections
+        </Menu.Item>
+        <Menu.Item key="tests" icon={<StarOutlined />}>
+          My Tests
+        </Menu.Item>
+        <Menu.Item key="testBank" icon={<StarOutlined />}>
+          Test Bank
+        </Menu.Item>
+      </Menu>
+    );
+  };
+
   return (
     <div className={`${styles.container} custom`}>
-      <div className={styles.left}>
-        <Menu
-          onClick={handleClick}
-          selectedKeys={query.menuKey}
-          defaultChecked="collection"
-          className={styles.menu}
-          mode="inline"
-          theme="dark"
-        >
-          <Menu.Item key="collection" icon={<BookOutlined />}>
-            Collections
-          </Menu.Item>
-          <Menu.Item key="tests" icon={<StarOutlined />}>
-            My Tests
-          </Menu.Item>
-          <Menu.Item key="testBank" icon={<StarOutlined />}>
-            Test Bank
-          </Menu.Item>
-        </Menu>
+      <div
+        className={styles.left}
+        style={{
+          width:
+            // eslint-disable-next-line no-nested-ternary
+            window.innerWidth > Constants.MIN_SCREEN_WIDTH ? (toggle ? '2%' : '15%') : '0px',
+          // eslint-disable-next-line no-nested-ternary
+          minWidth: window.innerWidth > Constants.MIN_SCREEN_WIDTH ? (toggle ? 55 : 205) : 0,
+        }}
+      >
+        {window.innerWidth > Constants.MIN_SCREEN_WIDTH ? (
+          renderMenu('dark')
+        ) : (
+          <Drawer
+            title="Menu"
+            placement="left"
+            closable={false}
+            onClose={onClose}
+            bodyStyle={{ padding: 0 }}
+            visible={menuDrawerVisibility}
+          >
+            {renderMenu('light')}
+          </Drawer>
+        )}
       </div>
-      <div className={styles.right}>
+      <div
+        className={styles.right}
+        style={{
+          width: toggle || window.innerWidth < Constants.MIN_SCREEN_WIDTH ? '98%' : '85%',
+          paddingLeft: 20,
+          paddingTop: window.innerWidth < Constants.MIN_SCREEN_WIDTH && 0,
+        }}
+      >
+        <Button
+          type="primary"
+          onClick={
+            window.innerWidth > Constants.MIN_SCREEN_WIDTH
+              ? toggleCollapsed
+              : () => setMenuDrawerVisibility(true)
+          }
+          style={{ marginTop: 16 }}
+          size="small"
+        >
+          {React.createElement(toggle ? MenuUnfoldOutlined : MenuFoldOutlined)}
+        </Button>
         <RightContent />
       </div>
     </div>

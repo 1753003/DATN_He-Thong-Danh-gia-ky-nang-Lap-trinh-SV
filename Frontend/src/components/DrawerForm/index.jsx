@@ -18,6 +18,7 @@ import moment from 'moment';
 import { UploadOutlined } from '@ant-design/icons';
 import * as XLSX from 'xlsx';
 import _ from 'lodash';
+import Constants from '@/utils/constants';
 
 export const DrawerForm = ({ visible, onClose, form, setInformation, action }) => {
   const [fileList, setFileList] = useState([]);
@@ -87,7 +88,7 @@ export const DrawerForm = ({ visible, onClose, form, setInformation, action }) =
   return (
     <Drawer
       title="TEST INFORMATION"
-      width={720}
+      width={window.innerWidth > Constants.MIN_SCREEN_WIDTH ? 720 : window.innerWidth}
       onClose={onClose}
       visible={visible}
       bodyStyle={{ paddingBottom: 80 }}

@@ -5,6 +5,7 @@ import styles from './index.less';
 import { InboxOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
 const { Search } = Input;
 const { Dragger } = Upload;
+import Constants from '@/utils/constants';
 
 import _ from 'lodash';
 

@@ -1,6 +1,8 @@
 @import '~antd/es/style/themes/default.less';
 
 .container {
+  height: calc(100vh - 48px - 92px);
+  overflow: scroll;
   .header {
     display: flex;
     justify-content: space-between;
@@ -113,4 +115,19 @@
   margin-top: 20px;
   padding: 20px;
   border: 1px solid black;
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+    .content {
+      flex-direction: column-reverse;
+      .testContainer {
+        width: 100%;
+      }
+      .description {
+        width: 100%;
+        margin-bottom: 20px;
+      }
+    }
+  }
 }

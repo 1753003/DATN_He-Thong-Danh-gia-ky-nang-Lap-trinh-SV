@@ -81,3 +81,27 @@
     display: flex;
   }
 }
+
+@media screen and (max-width: 768px) {
+  .container {
+    height: auto;
+    .analysis {
+      flex-direction: column;
+      height: auto;
+      .chart {
+        width: 100%;
+        margin-bottom: 20px;
+      }
+      .info {
+        width: 100%;
+        margin-bottom: 20px;
+      }
+      .getReport {
+        width: 100%;
+      }
+    }
+    .detail {
+      flex-direction: column;
+    }
+  }
+}

@@ -6,6 +6,7 @@ import { connect, useHistory } from 'umi';
 import '../../../components/GlobalHeader/style.less';
 import _ from 'lodash';
 import PageLoading from '@/pages/dashboard/analysis/components/PageLoading';
+import Constants from '@/utils/constants';
 
 const { Search } = Input;
 
@@ -91,7 +92,7 @@ const CollectionDetail = ({ location, collection, dispatch, testList, loading })
           </div>
         </div>
         <div className={styles.description}>
-          <Card title="Description" bordered={false}>
+          <Card title="Description" bordered={false} style={{ width: '100%' }}>
             {collection.CollectionDescription}
           </Card>
         </div>
@@ -131,7 +132,7 @@ const Test = ({ list, collectionID, dispatch, handleTestOnClick }) => {
     <List
       itemLayout="horizontal"
       dataSource={list}
-      style={{ height: '380px', overflow: 'scroll' }}
+      style={{ height: 500, overflow: 'scroll' }}
       renderItem={(item) => (
         <List.Item>
           <Skeleton avatar title={false} loading={item.loading} active>
@@ -152,7 +153,10 @@ const Test = ({ list, collectionID, dispatch, handleTestOnClick }) => {
                       style={{ width: 'auto' }}
                       onClick={() => handleRemoveTest(item.TestID)}
                     >
-                      <DeleteOutlined /> Delete from the collection
+                      <DeleteOutlined />
+                      {window.innerWidth < Constants.MIN_SCREEN_WIDTH
+                        ? null
+                        : `${' '}Delete from the collection`}
                     </Button>
                     <Button
                       className={styles.description}

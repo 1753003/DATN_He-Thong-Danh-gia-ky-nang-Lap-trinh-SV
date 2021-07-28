@@ -2,10 +2,9 @@
 
 .container {
   display: flex;
-  padding: 20px;
   height: calc(100vh - 48px - 92px);
-
-  // background-color: white;
+  padding: 20px;
+  overflow: scroll;
   .left {
     width: 30%;
     background-color: white;
@@ -13,11 +12,10 @@
       padding: 20px 10px 10px 20px;
       font-weight: 500;
       font-size: 20px;
-
     }
     .editContainer {
       display: flex;
-     
+
       padding: 0px 20px;
     }
     img {
@@ -30,31 +28,27 @@
   .right {
     width: 70%;
     margin-left: 20px;
-    overflow: scroll;
-    height: 100%;
-    // background-color: white;
     .questionContainer {
-      background-color: white;
       margin-bottom: 20px;
       padding: 20px;
+      background-color: white;
       .question {
         font-weight: bold;
       }
       .mark {
-        width: 100%;
         display: flex;
         justify-content: flex-end;
+        width: 100%;
       }
       .multipleChoiceContainer {
-        background-color: #011831;
-        color: white;
-        font-weight: bold;
-        padding: 20px;
-        padding-bottom: 10px;
         display: flex;
         justify-content: space-between;
+        padding: 20px;
+        padding-bottom: 10px;
+        color: white;
+        font-weight: bold;
+        background-color: #011831;
         border-bottom: 1px solid gray;
-        
       }
     }
   }
@@ -68,16 +62,42 @@
   .listGroup {
     display: flex;
     justify-content: space-between;
-    background-color: #f1f1f1;
     padding: 10px;
+    background-color: #f1f1f1;
     border: 1px solid white;
   }
 }
 
 .modalTitle {
-  background-color: #ececec;
+  margin-bottom: 0px;
   padding: 10px;
+  background-color: #ececec;
   border: 1px solid white;
   border-bottom: none;
-  margin-bottom: 0px;
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    height: auto;
+    overflow: scroll;
+    .left {
+      width: 100%;
+      margin-bottom: 20px;
+      padding-bottom: 20px;
+    }
+    .right {
+      width: 100%;
+      margin-left: 0px;
+    }
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .container {
+    .right {
+      height: 100%;
+      overflow: scroll;
+    }
+  }
 }
