@@ -1,20 +1,21 @@
 import firebase from '@/utils/firebase'
 
-// export function updateVote(uid,pid, cid, value, status, type) {
-//   const dbComment = firebase.firestore().collection("discussions").doc(`${type}-${pid}`).collection('comments')
-//   return new Promise((resolve, reject) => {
-//     var updates={};
-//     updates[`users/${uid}/react/`+cid] = status;
-//     firebase.database().ref().update(updates)
-//     dbComment.doc(cid).update({vote : value})
-//     .then(() => {
-//       resolve()
-//     })
-//     .catch((error) => {
-//         console.error("Error writing document: ", error);
-//     });
-//   });
-// }
+export function updateVote(uid,pid, cid, value, status, type) {
+  console.log("vote",uid,pid, cid, value, status, type)
+  const dbComment = firebase.firestore().collection("discussions").doc(`${type}-${pid}`).collection('comments')
+  return new Promise((resolve, reject) => {
+    var updates={};
+    updates[`users/${uid}/react/`+cid] = status;
+    firebase.database().ref().update(updates)
+    dbComment.doc(cid).update({vote : value})
+    .then(() => {
+      resolve()
+    })
+    .catch((error) => {
+        console.error("Error writing document: ", error);
+    });
+  });
+}
 
 export async function postComment(payload) {
   const docRef = await firebase.firestore().collection("discussions").doc(`${payload.type}-${payload.postId}`).collection('comments').add(payload.cmt);
