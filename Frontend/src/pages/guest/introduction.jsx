@@ -5,7 +5,7 @@ import styles from './introduce.less';
 import Language from '@/locales/index';
 import Cookies from 'js-cookie';
 import { history } from 'umi';
-
+const { SubMenu } = Menu;
 class Header extends React.Component {
     state = {
       current: 'introduce',
@@ -44,9 +44,12 @@ class Header extends React.Component {
         >
           <Menu.Item key="home">{Language.home_home}</Menu.Item>
           <Menu.Item key="introduce">{Language.home_introduce}</Menu.Item>
-          <Menu.Item key="join">{Language.home_join}</Menu.Item> 
+          <Menu.Item key="join" style={{color: 'pink', fontWeight: 'bold'}}>{Language.home_letstart}</Menu.Item> 
           {this.isLogin ? (
+            <SubMenu title={Language.home_welcome.concat(" ").concat(localStorage.getItem('currentUser'))}>
             <Menu.Item key="signout">{Language.home_signOut}</Menu.Item>
+          </SubMenu>
+            
           ) : (
             <Menu.Item key="signup">{Language.home_login}</Menu.Item>
           )}

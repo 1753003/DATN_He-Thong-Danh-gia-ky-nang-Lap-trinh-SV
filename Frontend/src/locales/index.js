@@ -15,7 +15,9 @@ if (getLocale() === 'vi-VN') Language = {
     'home_student': 'Bạn là sinh viên ?',
     'home_teacher': 'Bạn là giảng viên ?',
     'home_join': 'Tham gia ngay',
-
+    'home_letstart': 'Bắt đầu ngay',
+    'home_welcome': "Chào mừng",
+    
     'help': 'Hỗ trợ',
 
     'header_notifications': 'Thông Báo',
@@ -165,7 +167,8 @@ else Language = {
     'home_student': 'Are you student ?',
     'home_teacher': 'Are you teacher ?',
     'home_join': 'Join now',
-
+    'home_letstart': "Let's start",
+    'home_welcome': "Welcome",
     'help': 'Help',
 
     'header_notifications': 'Notifications',
