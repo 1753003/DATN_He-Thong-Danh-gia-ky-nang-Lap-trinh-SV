@@ -1,6 +1,9 @@
 import { getPracticeListDetail, getSubmissionList, getPracticeSet, submitMultipleChoice, getSubmissionDetailInfo } from '@/services/practice'
-
-
+function delay(timeout = 300){
+  return new Promise(resolve => {
+    setTimeout(resolve, timeout);
+  });
+}
 const Model = {
   namespace: 'practice',
   state: {
@@ -16,6 +19,7 @@ const Model = {
   },
   effects: {
     *getSubmissionDetail({ payload }, { call, put,select }){
+      yield call(delay);
       let data = null
 
       if(payload.submission.SubmissionType ==="Coding")
@@ -29,7 +33,6 @@ const Model = {
       })
     },
     *submitAnswerMultipleChoice({ payload }, { call, put,select }){
-
       const data = yield submitMultipleChoice(payload)
       yield put({
         type:'saveMultipleChoiceResponse',
@@ -37,6 +40,7 @@ const Model = {
       })
     },
     *getPracticeSetList({ payload }, { call, put,select }){
+      yield call(delay, 600);
       const data = yield getPracticeSet(payload.listName)
       payload.callback(data);
       payload.callback1(data);
@@ -48,6 +52,7 @@ const Model = {
       })
     },
     *getSubmissionList({ payload }, { call, put }) {
+      yield call(delay);
       let pid = payload
       const listSubmission = yield getSubmissionList(pid)
 
@@ -57,6 +62,7 @@ const Model = {
       })
     },
     *getPracticeListDetail({ payload }, { call, put }) {
+      yield call(delay);
       const listDetail = yield getPracticeListDetail(payload.id)
 
       yield put({
@@ -90,7 +96,6 @@ const Model = {
     },
   },
   reducers: {
-
     setListDetail(state, { payload }) {
       return { ...state, listDetail: payload.listDetail };
     },

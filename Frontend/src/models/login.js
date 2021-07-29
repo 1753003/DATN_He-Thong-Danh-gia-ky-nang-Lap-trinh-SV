@@ -3,7 +3,6 @@ import { history } from 'umi';
 import { Login, LoginWithFacebook, LoginWithGoogle } from '@/services/login';
 import { setAuthority } from '@/utils/authority';
 import { getPageQuery } from '@/utils/utils';
-import { message } from 'antd';
 import Cookies from 'js-cookie';
 
 const Model = {
@@ -31,7 +30,6 @@ const Model = {
         Cookies.set('refreshToken', response.message.refreshToken, {expires: 7});
         const urlParams = new URL(window.location.href);
         const params = getPageQuery();
-        message.success('🎉 🎉 🎉  OKELA！');
         let { redirect } = params;
 
         if (redirect) {
@@ -84,7 +82,6 @@ const Model = {
       if (response.status === 'OK') {
         const urlParams = new URL(window.location.href);
         const params = getPageQuery();
-        message.success('🎉 🎉 🎉  OKELA！');
         let { redirect } = params;
 
         console.log(response)
@@ -129,7 +126,6 @@ const Model = {
        
         const urlParams = new URL(window.location.href);
         const params = getPageQuery();
-        message.success('🎉 🎉 🎉  OKELA！');
         let { redirect } = params;
 
         if (redirect) {
@@ -165,7 +161,7 @@ const Model = {
     },
     logout() {       
         localStorage.removeItem('currentUser');
-        localStorage.removeItem('antd-pro-authority');
+        localStorage.removeItem('codejoy-authority');
         var d = new Date();
         d.setTime(d.getTime() - 1);
         var expires = "expires="+ d.toUTCString();

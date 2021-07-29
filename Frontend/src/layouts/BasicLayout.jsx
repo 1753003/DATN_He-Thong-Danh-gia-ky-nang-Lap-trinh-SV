@@ -3,7 +3,7 @@
  *
  * @see You can view component api by: https://github.com/ant-design/ant-design-pro-layout
  */
-import ProLayout, { DefaultFooter, SettingDrawer } from '@ant-design/pro-layout';
+import ProLayout, { DefaultFooter } from '@ant-design/pro-layout';
 import React, { useEffect, useMemo, useRef } from 'react';
 import { Link, useIntl, connect, history } from 'umi';
 import { GithubOutlined } from '@ant-design/icons';
@@ -13,7 +13,6 @@ import RightContent from '@/components/GlobalHeader/RightContent';
 import { getMatchMenu } from '@umijs/route-utils';
 import logo from '../assets/banner.png';
 import './layout.less';
-import firebase from '@/utils/firebase'
 const noMatch = (
   <Result
     status={403}
@@ -107,7 +106,6 @@ const BasicLayout = (props) => {
   const { formatMessage } = useIntl();
   settings.title = '';
   const url = window.location.href;
-  const isWelcome = (url.includes('/developer/welcome') ? true : false)
 
   return (
     <>
@@ -139,7 +137,6 @@ const BasicLayout = (props) => {
           ...routers,
         ]}
         itemRender={(route, params, routes, paths) => {
-          const first = routes.indexOf(route) === 0;
           return (
             <span>{route.breadcrumbName}</span>
           );
@@ -162,15 +159,6 @@ const BasicLayout = (props) => {
           {children}
         </Authorized>
       </ProLayout>
-      {/* <SettingDrawer
-        settings={settings}
-        onSettingChange={(config) =>
-          dispatch({
-            type: 'settings/changeSetting',
-            payload: config,
-          })
-        }
-      /> */}
     </>
   );
 

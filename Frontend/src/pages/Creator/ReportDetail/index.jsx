@@ -5,7 +5,7 @@ import Users from './Contents/Users';
 import Questions from './Contents/Questions';
 import { connect } from 'umi';
 import { Menu } from 'antd';
-import PageLoading from '@/pages/dashboard/analysis/components/PageLoading';
+import PageLoading from '@/components/PageLoading';
 
 const ReportDetail = ({ summaryReport, location, dispatch, loading, summaryUser }) => {
   useEffect(() => {

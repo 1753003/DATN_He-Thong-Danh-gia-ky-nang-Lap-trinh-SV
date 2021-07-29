@@ -24,7 +24,7 @@ class Header extends React.Component {
       }
       else if (e.key === 'home') history.push('/')
       else if (e.key === 'join') {
-        if (localStorage.getItem('antd-pro-authority') == '["developer"]')
+        if (localStorage.getItem('codejoy-authority') == '["developer"]')
           history.push('/developer')
         else
         history.push('/creator')

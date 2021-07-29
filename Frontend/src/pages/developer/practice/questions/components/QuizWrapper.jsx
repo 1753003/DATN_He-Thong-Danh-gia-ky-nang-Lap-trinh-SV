@@ -14,6 +14,7 @@ import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { connect } from 'dva';
 import PageLoading from '@/components/PageLoading';
 import styles from './style.less';
+import MDEditor from '@uiw/react-md-editor';
 
 const { confirm, warning } = Modal;
 const CheckboxGroup = Checkbox.Group;
@@ -93,7 +94,7 @@ const QuizWrapper = ({ pLength, pid, submitResponse, dispatch, data, loading }) 
   const handleSubmit = () => {
     if (Object.keys(userChoice).length===0)
     warning({
-      title: 'Dont leave your practice blank.',
+      title: "Don't leave your practice blank.",
     });
     else if (data && data.listQuestion.length > Object.keys(userChoice).length)
       confirm({
@@ -124,7 +125,7 @@ const QuizWrapper = ({ pLength, pid, submitResponse, dispatch, data, loading }) 
     <Row gutter={32}>
       <Col span={18} className={styles.question}>
         <Divider orientation="left">{`Question ${currentQuestionID + 1}.`}</Divider>
-        <p>{data?.listQuestion[currentQuestionID].Description}</p>
+        <MDEditor.Markdown source={data?.listQuestion[currentQuestionID].Description} />
         <Divider></Divider>
         <CheckboxGroup
           className={styles.checkboxGroup}

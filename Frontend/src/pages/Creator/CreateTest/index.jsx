@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styles from './index.less';
 import moment from 'moment';
-import { PageLoading } from '@ant-design/pro-layout';
+import PageLoading from '@/components/PageLoading';
 import { Button, Select, Form, InputNumber, message } from 'antd';
 import { PlusOutlined, QuestionOutlined, DollarCircleOutlined } from '@ant-design/icons';
 import { connect } from 'umi';

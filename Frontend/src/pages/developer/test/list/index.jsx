@@ -4,6 +4,7 @@ import { history, Link } from 'umi';
 import { connect } from 'dva';
 import './style.less';
 import Language from '@/locales/index';
+import PageLoading from '@/components/PageLoading';
 
 const { Title } = Typography;
 
@@ -221,8 +222,7 @@ const TestSetList = ({ location, dispatch, testDev, loading }) => {
       />
       <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
         <Col className="gutter-row" span={18}>
-          <List
-            loading={loading}
+          {loading?<PageLoading/>:<List
             className="custom"
             style={{ margin: '30px 0px 10px 10px' }}
             itemLayout="horizontal"
@@ -302,7 +302,7 @@ const TestSetList = ({ location, dispatch, testDev, loading }) => {
                 </List.Item>
               </Card>
             )}
-          />
+          />}
         </Col>
         <Col className="gutter-row" span={6} style={{ margin: '30px 0px 10px 0px' }}>
           <Title level={4}>{Language.pages_practice_list_status}</Title>
