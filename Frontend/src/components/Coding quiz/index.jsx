@@ -160,7 +160,8 @@ class Coding extends Component {
           <CodeEditor
             testCases={this.props.testCases}
             getCode={(value) => this.props.getCode(value)}
-            codeDefault={this.props.codeSample}
+            codeDefault={this.props.codeDefault}
+            codeSample= {this.props.codeSample}
             language={this.props.language}
             checkCustom={(value) => this.setCustom(value)}
           ></CodeEditor>

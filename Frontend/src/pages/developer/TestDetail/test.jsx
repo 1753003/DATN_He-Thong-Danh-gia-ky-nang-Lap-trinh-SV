@@ -161,10 +161,12 @@ class TestDetail extends React.Component {
     }
   };
 
-  getCodeAnswer = () => {
+  getCodeAnswer = (code) => {
     const { answer, question } = this.props.test;
     try {
-      if (answer[question].data === [] || answer[question] === undefined) return '';
+      if (answer[question].data === [] || answer[question].data === undefined) {
+        return ''
+      }
       return answer[question].data;
     } catch (e) {
       return '';
@@ -337,7 +339,7 @@ class TestDetail extends React.Component {
       testCases={this.getQuestion()?.TestCase}
       language={this.getQuestion()?.Language_allowed}
       codeSample={this.getQuestion()?.CodeSample}
-      codeDefault={this.getQuestion()?.CodeSample}
+      codeDefault={this.getCodeAnswer(this.getQuestion()?.CodeSample)}
       getCode={(value) => {
         this.props.dispatch({
           type: 'test/updateAnswer',
