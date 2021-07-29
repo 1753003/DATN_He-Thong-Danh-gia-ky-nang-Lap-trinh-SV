@@ -5,6 +5,9 @@ import styles from './index.less';
 import Cookies from 'js-cookie';
 import AnchorLink from 'react-anchor-link-smooth-scroll';
 import Language from '@/locales/index';
+
+const { SubMenu } = Menu;
+
 class Header extends React.Component {
   state = {
     current: 'home',
@@ -43,9 +46,12 @@ class Header extends React.Component {
       >
         <Menu.Item key="home">{Language.home_home}</Menu.Item>
         <Menu.Item key="introduce">{Language.home_introduce}</Menu.Item>
-        <Menu.Item key="join">{Language.home_join}</Menu.Item> 
+        <Menu.Item key="join" style={{color: 'pink', fontWeight: 'bold'}}>{Language.home_letstart}</Menu.Item> 
         {this.isLogin ? (
+          <SubMenu title={Language.home_welcome.concat(" ").concat(localStorage.getItem('currentUser'))}>
           <Menu.Item key="signout">{Language.home_signOut}</Menu.Item>
+        </SubMenu>
+          
         ) : (
           <Menu.Item key="signup">{Language.home_login}</Menu.Item>
         )}
@@ -203,15 +209,15 @@ class Home extends React.Component {
   render() {
     return (
       <div style={{ overflow: 'hidden', backgroundColor: 'black' }}>
+    
         <div
           className="header"
           style={{
             position: 'fixed',
             zIndex: 1,
-            left: 0,
-            right: 0,
             display: 'flex',
             justifyContent: 'center',
+            width: '100%',
           }}
         >
           <Header />
