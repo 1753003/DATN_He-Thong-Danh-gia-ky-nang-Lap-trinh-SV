@@ -7,14 +7,14 @@ export default function tokenHandling(status, resolve, options) {
   const refreshToken = Cookies.get('refreshToken');
   if (status == 'Access token not found.') {
     localStorage.removeItem('currentUser');
-    localStorage.removeItem('antd-pro-authority');
+    localStorage.removeItem('codejoy-authority');
     Cookies.remove('accessToken');
     Cookies.remove('refreshToken');
     window.location.href = '/user/login?errorCode=1';
   }
   if (status == 'Refresh token not found.') {
     localStorage.removeItem('currentUser');
-    localStorage.removeItem('antd-pro-authority');
+    localStorage.removeItem('codejoy-authority');
     Cookies.remove('accessToken');
     Cookies.remove('refreshToken');
     window.location.href = '/user/login?errorCode=2';
@@ -62,7 +62,7 @@ export default function tokenHandling(status, resolve, options) {
             });
         } else if (response.data.message == 'Wrong refresh token') {
           localStorage.removeItem('currentUser');
-          localStorage.removeItem('antd-pro-authority');
+          localStorage.removeItem('codejoy-authority');
           Cookies.remove('accessToken');
           Cookies.remove('refreshToken');
           window.location.href = '/user/login?errorCode=3';

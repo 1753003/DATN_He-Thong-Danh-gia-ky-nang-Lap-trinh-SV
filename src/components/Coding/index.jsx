@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import './custom.less';
 import { CheckCircleTwoTone, CloseCircleTwoTone } from '@ant-design/icons';
 import styles from './style.less';
 import { Divider, Tabs, Alert } from 'antd';
@@ -10,7 +10,7 @@ import PageLoading from '@/components/PageLoading';
 import { u_atob } from '@/utils/string';
 import AceEditor from 'react-ace';
 import 'brace/theme/tomorrow';
-
+import Expand from 'react-expand-animated';
 const { TabPane } = Tabs;
 
 const AlertComponent = (alertMessage, alertDescription, alertType) => (
@@ -38,14 +38,24 @@ const editor = (value) => {
   );
 };
 const Testcases = (result) => {
+    if (result === null){
+      result = [
+        {
+          expected_output: ":)",
+          stdout:":)",
+          compile_output:":)",
+          stdin:":)"
+        }
+      ]
+    }
   return (
-    <Tabs tabPosition="left">
+    <Tabs className={styles.resultTab} tabPosition="top">
       {' '}
       {result.map((res, i) => {
         let title = result.length > 1 ? 'Test Case ' + (i + 1) : 'Example Test Case';
         return (
           <TabPane
-            className={styles.testCase}
+          className="result-tabpane"
             tab={
               <span>
                 {res.expected_output == res.stdout ? (
@@ -149,7 +159,7 @@ class Coding extends Component {
         //  testcases
         finalResult = this.props.judge.result.submissions;
 
-        console.log(finalResult);
+        // console.log(finalResult);
       }
 
     //if isSubmit
@@ -159,17 +169,21 @@ class Coding extends Component {
         <Divider></Divider>
         <div className="code-editor">
           <CodeEditor></CodeEditor>
-          {this.props.loading ? (
-            <PageLoading></PageLoading>
-          ) : (
-            (this.props.practice.isRun || this.props.practice.isSubmit) && (
-              <div>
-                {AlertComponent(alertMessage, alertDescription, alertType)}
-                <Divider orientation="left">Test Case</Divider>
-                {Testcases(finalResult)}
-              </div>
-            )
-          )}
+          {this.props.loading && <PageLoading />}
+          <Expand
+          
+            open={
+              this.props.judge.result!==null && (this.props.practice.isRun || this.props.practice.isSubmit)
+            }
+            duration={600}
+            transitions={['height', 'opacity', 'background']}
+          >
+            <div style={{paddingLeft:"5px",paddingRight:"5px"}}>
+              {this.props.judge.result!==null &&AlertComponent(alertMessage, alertDescription, alertType)}
+              <Divider orientation="left">Test Case</Divider>
+              {Testcases(finalResult)}
+            </div>
+          </Expand>
         </div>
       </>
     );

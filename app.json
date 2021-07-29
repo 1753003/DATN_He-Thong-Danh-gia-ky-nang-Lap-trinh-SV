@@ -1,7 +1,7 @@
 {
   "name": "heroku-docker-nginx-codejoy",
-  "description": "Codejoy deploy nginx heroku container",
+  "description": "Codejoy enjoy coding ",
   "repository": "https://github.com/1753003/DATN_He-Thong-Danh-gia-ky-nang-Lap-trinh-SV",
-  "keywords": ["nginx", "docker", "proxy"],
+  "keywords": ["codejoy", "code", "development"],
   "stack": "container"
 }

@@ -3,7 +3,7 @@ import styles from './index.less';
 import { Button, Modal, Upload, Select, message, List } from 'antd';
 import { CheckCircleTwoTone, CloseCircleTwoTone, UploadOutlined } from '@ant-design/icons';
 import { connect, useHistory } from 'umi';
-import { PageLoading } from '@ant-design/pro-layout';
+import PageLoading from '@/components/PageLoading';
 import NotFound from '@/pages/404';
 import MDEditor from '@uiw/react-md-editor';
 import _ from 'lodash';

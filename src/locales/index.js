@@ -1,4 +1,4 @@
-import { getLocale, getAllLocales } from 'umi';
+import { getLocale } from 'umi';
 var Language;
 if (getLocale() === 'vi-VN') Language = {
     'home_home': 'Trang chủ',
