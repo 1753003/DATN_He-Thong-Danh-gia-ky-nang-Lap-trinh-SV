@@ -1,5 +1,5 @@
 import { getUid, queryInviteList } from '@/services/user';
-// import firebase from '@/utils/firebase'
+import firebase from '@/utils/firebase'
 
 
 const UserModel = {

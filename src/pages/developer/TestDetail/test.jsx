@@ -6,7 +6,6 @@ import {
   Button,
   List,
   Tabs,
-  Spin,
   PageHeader,
   Result,
   Popconfirm,
@@ -23,6 +22,7 @@ import { docco } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import CryptoJS from 'crypto-js';
 import DiscusstionTab from '@/components/Discussions/DiscusstionTab';
 import MDEditor from '@uiw/react-md-editor';
+import PageLoading from '@/components/PageLoading';
 const { TabPane } = Tabs;
 class TestDetail extends React.Component {
   state = {
@@ -435,7 +435,7 @@ class TestDetail extends React.Component {
             }
           />
         );
-      } else return <Spin tip={Language.pages_test_testDetail_waitingThisTest}></Spin>;
+      } else return <PageLoading tip={Language.pages_test_testDetail_waitingThisTest}/>;
     } else {
       if (error)
         return (
@@ -457,7 +457,7 @@ class TestDetail extends React.Component {
         );
 
       if (this.props.test.loading) {
-        return <Spin tip={Language.pages_test_testDetail_waitingThisTest}></Spin>;
+        return <PageLoading tip={Language.pages_test_testDetail_waitingThisTest}></PageLoading>;
       }
       if (!this.props.test.isValid) {
         return (
@@ -587,7 +587,7 @@ class TestDetail extends React.Component {
               <Col span={15} className={styles.answer}>
                 {this.getData().generalInformation == undefined ? (
                   <div className={styles.spin}>
-                    <Spin tip={Language.pages_test_testDetail_waitingATest} />
+                    <PageLoading tip={Language.pages_test_testDetail_waitingATest} />
                   </div>
                 ) : (
                   <>

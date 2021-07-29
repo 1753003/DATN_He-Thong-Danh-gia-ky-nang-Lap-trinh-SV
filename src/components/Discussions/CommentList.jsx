@@ -5,6 +5,7 @@ import MDEditor from '@uiw/react-md-editor';
 import PageLoading from '../PageLoading';
 import ReplyEditor from './ReplyEditor';
 import moment from 'moment';
+import Expand from 'react-expand-animated';
 import './style.less';
 // import ReactComment from './ReactComment';
 import { SmileOutlined } from '@ant-design/icons';
@@ -20,7 +21,7 @@ const CommentList = ({ data, dispatch, id, type }) => {
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
-    }, 1000);
+    }, 2000);
   }, []);
   const handleClick = (cid, react, value) => {
     let postId = id;
@@ -29,7 +30,7 @@ const CommentList = ({ data, dispatch, id, type }) => {
       commentId: cid,
       value: value,
       status: react,
-      type: type
+      type: type,
     };
 
     if (dispatch)
@@ -40,7 +41,7 @@ const CommentList = ({ data, dispatch, id, type }) => {
   };
   const ParentComment = ({ data, handleClick }) => {
     const [showReplyTo, setShowReplyTo] = useState(false);
-    const [viewReply, setViewReply] = useState(true);
+    const [viewReply, setViewReply] = useState(false);
     const replyComment = () => {
       setShowReplyTo(true);
     };
@@ -61,7 +62,7 @@ const CommentList = ({ data, dispatch, id, type }) => {
             actions={[
               showReplyTo && (
                 <ReplyEditor
-                type={type}
+                  type={type}
                   id={id}
                   pid={data.id}
                   handleDiscard={handleDiscard}
@@ -83,8 +84,12 @@ const CommentList = ({ data, dispatch, id, type }) => {
             avatar={<Avatar src={data.authorURL} alt={data.author} />}
             content={<MDEditor.Markdown source={data.content} />}
           >
-            {viewReply &&
-              data.children.map((subitem, key) => {
+            <Expand
+              open={viewReply}
+              duration={600}
+              transitions={['height', 'opacity', 'background']}
+            >
+              {data.children.map((subitem, key) => {
                 return (
                   <Row gutter={24} key={key}>
                     <Divider></Divider>
@@ -106,37 +111,41 @@ const CommentList = ({ data, dispatch, id, type }) => {
                   </Row>
                 );
               })}
+            </Expand>
           </Comment>
         </Col>
       </Row>
     );
   };
 
-  return loading ? (
-    <PageLoading />
-  ) : (
-    <ConfigProvider renderEmpty={customizeRenderEmpty}>
-      <List
-        itemLayout="vertical"
-        size="large"
-        pagination={
-          data.length > 0
-            ? {
-                pageSize: 3,
-                onChange: (page) => {
-                  console.log(page);
-                },
-              }
-            : null
-        }
-        dataSource={data}
-        renderItem={(item) => (
-          <List.Item key={item.id}>
-            <ParentComment handleClick={handleClick} data={item}></ParentComment>
-          </List.Item>
-        )}
-      />
-    </ConfigProvider>
+  return (
+    <>
+      {loading && <PageLoading />}
+      <Expand open={!loading} duration={600} transitions={['height', 'opacity', 'background']}>
+        <ConfigProvider renderEmpty={customizeRenderEmpty}>
+          <List
+            itemLayout="vertical"
+            size="large"
+            pagination={
+              data.length > 0
+                ? {
+                    pageSize: 3,
+                    onChange: (page) => {
+                      console.log(page);
+                    },
+                  }
+                : null
+            }
+            dataSource={data}
+            renderItem={(item) => (
+              <List.Item key={item.id}>
+                <ParentComment handleClick={handleClick} data={item}></ParentComment>
+              </List.Item>
+            )}
+          />
+        </ConfigProvider>
+      </Expand>
+    </>
   );
 };
 

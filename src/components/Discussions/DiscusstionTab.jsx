@@ -2,22 +2,28 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'umi';
 import CommentList from './CommentList';
 import ReplyEditor from './ReplyEditor';
+import Expand from 'react-expand-animated';
 import firebase from '@/utils/firebase';
 
-
 const DiscussionTab = ({ location, discussion, dispatch }) => {
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 200);
+  }, []);
   const [init, setInit] = useState(false);
   useEffect(() => {
-    if (dispatch)
-            {dispatch({
-              type: 'discussion/setDiscussion',
-              payload: [],
-            });
-            dispatch({
-              type: 'discussion/setRootComments',
-              payload: [],
-            });
-          }
+    if (dispatch) {
+      dispatch({
+        type: 'discussion/setDiscussion',
+        payload: [],
+      });
+      dispatch({
+        type: 'discussion/setRootComments',
+        payload: [],
+      });
+    }
 
     setInit(true);
     let id = location.state.id;
@@ -78,9 +84,15 @@ const DiscussionTab = ({ location, discussion, dispatch }) => {
   }, [discussion.rootComments]);
 
   return (
-    <div>
-      <ReplyEditor id={location.state.id} type={location.state.type}></ReplyEditor>
-      <CommentList id={location.state.id} type={location.state.type} loading={false}></CommentList>
+    <div style={{minHeight:"200px"}}>
+      <Expand open={!loading} duration={400} transitions={['height', 'opacity', 'background']}>
+        <ReplyEditor id={location.state.id} type={location.state.type}></ReplyEditor>
+        <CommentList
+          id={location.state.id}
+          type={location.state.type}
+          loading={false}
+        ></CommentList>
+      </Expand>
     </div>
   );
 };

@@ -2,13 +2,16 @@
 // https://umijs.org/plugin/umi-plugin-react.html#dynamicimport
 import { Spin } from 'antd';
 // import Icon, { LoadingOutlined } from '@ant-design/icons';
-// import './style.less'
+import './style.less'
 
 import React from 'react';
-import { BoxLoading } from 'react-loadingg';
+import BoxLoading from 'react-loadingg/lib/BoxLoading';
 
-const PageLoading = () => {
-  return <BoxLoading size="large" color="#09abb4"/>;
+const PageLoading = ({tip}) => {
+  return <div className="page-loading-container">
+  <BoxLoading size="large" color="#09abb4"/>
+  <p className="page-loading-tip">{tip}</p>
+  </div>
 };
 Spin.setDefaultIndicator(PageLoading);
 
