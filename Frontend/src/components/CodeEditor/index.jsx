@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import styles from './style.less';
 import AceEditor from 'react-ace';
-import Animate from 'rc-animate';
 import 'brace/ext/searchbox';
 import Language from '@/locales/index';
+import Expand from 'react-expand-animated';
 // import 'ace-builds/src-min-noconflict/ext-options';
 // import 'ace-builds/src-min-noconflict/ext-keybinding_menu';
 // import 'ace-builds/src-min-noconflict/ext-prompt';
@@ -97,6 +97,7 @@ class CodeEditor extends Component {
       resolve();
     });
   handleRun = () => {
+    console.log(this.props.loading)
     if (this.state.codeVal == '') {
       notification.error({
         message: 'Hey Listen!',
@@ -252,6 +253,7 @@ class CodeEditor extends Component {
         <div className={styles.footer}>
           <Space className={styles.footer}>
             <Button
+              disabled={this.props.loading}
               size="large"
               className={styles.runBtn}
               type="primary"
@@ -261,6 +263,7 @@ class CodeEditor extends Component {
               Run Code
             </Button>
             <Button
+            disabled={this.props.loading}
               size="large"
               className={styles.submitBtn}
               type="primary"
@@ -268,17 +271,15 @@ class CodeEditor extends Component {
             >
               Submit
             </Button>
-            <Checkbox onChange={this.handleCheckBoxChange.bind(this)}>Custom Input</Checkbox>
+            <Checkbox
+            disabled={this.props.loading}
+            onChange={this.handleCheckBoxChange.bind(this)}>Custom Input</Checkbox>
           </Space>
-          <Animate
-            component=""
-            showProp="showCustom"
-            transitionName="fade"
-            transitionAppear
-            transitionEnter
-            transitionLeave
+          <Expand
+            open={this.state.showCustom}
+            duration={500}
+            transitions = {["height", "opacity", "background"]}
           >
-            {this.state.showCustom ? (
               <TextArea
                 className={styles.customInput}
                 allowClear
@@ -286,16 +287,16 @@ class CodeEditor extends Component {
                 placeholder="Put your custom input here."
                 autoSize={{ minRows: 3, maxRows: 5 }}
               />
-            ) : null}
-          </Animate>
+          </Expand>
         </div>
       </div>
     );
   }
 }
 
-export default connect(({ practice, judge }) => ({
+export default connect(({ practice, judge, loading }) => ({
   practice,
   judge,
+  loading: loading.effects['judge/sendCode'] || loading.effects['judge/sendCodeBatch'],
   testCases: practice.listDetail?.listQuestion[0].TestCase,
 }))(CodeEditor);

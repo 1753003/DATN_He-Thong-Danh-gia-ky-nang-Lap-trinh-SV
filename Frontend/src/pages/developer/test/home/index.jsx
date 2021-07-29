@@ -79,7 +79,7 @@ const testHome = ({ dispatch, status, inviteList }) => {
       });
     else return;
   };
-
+  
   return (
     <div className={styles.global}>
       <QueueAnim className="combine-wrapper">

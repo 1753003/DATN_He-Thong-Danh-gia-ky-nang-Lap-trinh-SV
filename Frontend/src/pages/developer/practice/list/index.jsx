@@ -24,8 +24,13 @@ const practiceList = ({ location, dispatch, practice, loading }) => {
   useEffect(() => {
     dispatch({
       type: 'practice/getPracticeSetList',
-      payload: { listName: encodeURIComponent(location.query.listName), callback: setList,
-      callback1: setList1, callback2: setList2, callback3: setList3  },
+      payload: {
+        listName: encodeURIComponent(location.query.listName),
+        callback: setList,
+        callback1: setList1,
+        callback2: setList2,
+        callback3: setList3,
+      },
     });
   }, []);
   const routes = [
@@ -212,7 +217,7 @@ const practiceList = ({ location, dispatch, practice, loading }) => {
   ) : (
     <div className="body">
       <PageHeader
-        className="site-page-header"
+        className="practice-list-page-header"
         breadcrumb={{ routes, itemRender }}
         title={decodeURIComponent(location.query.listName)}
         subTitle=""
@@ -229,6 +234,7 @@ const practiceList = ({ location, dispatch, practice, loading }) => {
               },
               pageSize: 6,
             }}
+
             dataSource={list}
             renderItem={(item) => (
               <Card bordered size="small" hoverable style={{ marginBottom:"12px"}}>

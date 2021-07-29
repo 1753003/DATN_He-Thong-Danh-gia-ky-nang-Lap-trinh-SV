@@ -5,7 +5,7 @@ import { DeleteOutlined, MoreOutlined } from '@ant-design/icons';
 import { connect, useHistory } from 'umi';
 import '../../../components/GlobalHeader/style.less';
 import _ from 'lodash';
-import PageLoading from '@/pages/dashboard/analysis/components/PageLoading';
+import PageLoading from '@/components/PageLoading';
 import Constants from '@/utils/constants';
 
 const { Search } = Input;

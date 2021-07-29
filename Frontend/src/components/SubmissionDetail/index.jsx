@@ -18,7 +18,7 @@ import {
 } from 'antd';
 import 'brace/theme/kuroir';
 import { connect } from 'dva';
-import PageLoading from '@/pages/dashboard/analysis/components/PageLoading';
+import PageLoading from '@/components/PageLoading';
 import { u_atob } from '@/utils/string';
 import moment from 'moment';
 const { TabPane } = Tabs;
@@ -116,9 +116,7 @@ const SubmissionDetail = ({ dispatch, data, listQuestion, loading }) => {
 
   return (
     <>
-      {loading ? (
-        <PageLoading></PageLoading>
-      ) : (
+      {(
         <div>
           <PageHeader
             className="submission-page-header"
@@ -170,7 +168,7 @@ const SubmissionDetail = ({ dispatch, data, listQuestion, loading }) => {
                     console.log(choice)
                     temp.push(item.Answer[choice]);
                   })
-                console.log(data);
+                // console.log(data);
                 return (
                   <div key={i}>
                     <h3 style={data.data[i]?.status === 1 ? { color: 'green' } : { color: 'red' }}>
