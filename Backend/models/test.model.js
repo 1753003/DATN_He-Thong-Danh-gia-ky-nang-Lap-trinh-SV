@@ -235,7 +235,9 @@ module.exports = {
     return await db("test").where("TestCode", code);
   },
   async getTestBySet(set, uid) {
+    console.log(uid, set)
     const list = (await db.raw(`call getTestSet ('${uid}', '${set}')`))[0][0];
+   
     return list;
   },
   async updateTest(test, testID) {

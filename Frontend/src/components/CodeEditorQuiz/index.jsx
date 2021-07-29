@@ -41,8 +41,14 @@ class CodeEditor extends Component {
     let temp = 'c_cpp';
     if (this.props.language[0] === 'Java') temp = 'java';
     else if (this.props.language[0] === 'Javascript') temp = 'javascript';
+
+    let temp2;
+    if (!this.props.codeDefault)
+      temp2 = this.props.codeSample
+    else
+      temp2 = this.props.codeDefault
     this.state = {
-      codeVal: this.props.codeDefault === [] ? '' : this.props.codeDefault,
+      codeVal: this.props.codeDefault === [] ? '' : temp2,
       customVal: '',
       isSubmitBatch: false,
       showCustom: false,
