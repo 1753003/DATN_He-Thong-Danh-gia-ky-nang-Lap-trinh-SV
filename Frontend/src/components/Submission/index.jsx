@@ -46,7 +46,7 @@ const Submission = ({ dispatch, practice, loading }) => {
             <SubmissionDetail></SubmissionDetail>
           ) : (
             <ConfigProvider renderEmpty={customizeRenderEmpty}>
-              <Table loading={{spinning:loading,indicator:<PageLoading/>, delay:300}} dataSource={data}>
+              <Table loading={{spinning:loading,indicator:<PageLoading/>}} dataSource={data}>
                 <Column title="" dataIndex="key" key="no" />
                 <Column
                   title="RESULT"

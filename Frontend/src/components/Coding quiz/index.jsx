@@ -7,8 +7,8 @@ import CodeEditor from '../CodeEditorQuiz';
 import PageLoading from '@/components/PageLoading';
 import { u_atob } from '@/utils/string';
 import AceEditor from 'react-ace';
+import Expand from 'react-expand-animated';
 import 'brace/theme/tomorrow';
-import ReactMarkdown from 'react-markdown';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import MDEditor from '@uiw/react-md-editor';
 import { docco } from 'react-syntax-highlighter/dist/esm/styles/hljs';
@@ -113,7 +113,6 @@ class Coding extends Component {
     if (this.props.judge.result)
       if (this.props.practice.isRun) {
         //if isRun
-        console.log(this.props.judge.result?.expected_output);
         finalResult = [
           {
             compile_output: this.props.judge.result?.compile_output,
@@ -165,11 +164,18 @@ class Coding extends Component {
             language={this.props.language}
             checkCustom={(value) => this.setCustom(value)}
           ></CodeEditor>
-          {this.props.loading ? (
+          {this.props.loading && (
             <PageLoading></PageLoading>
-          ) : (
-            (this.props.practice.isRun || this.props.practice.isSubmit) && (
-              <div>
+          )} 
+          <Expand
+          
+          open={
+            this.props.judge.result!==null
+          }
+          duration={600}
+          transitions={['height', 'opacity', 'background']}
+        >
+              <div style={{paddingLeft:"5px",paddingRight:"5px", minHeight:"300px"}}>
                 {this.state.custom != false
                   ? AlertComponent(alertMessage, alertDescription, alertType)
                   : ''}
@@ -181,7 +187,7 @@ class Coding extends Component {
                 {Testcases(finalResult, this.state.custom)}
               </div>
             )
-          )}
+          </Expand>
         </div>
       </>
     );

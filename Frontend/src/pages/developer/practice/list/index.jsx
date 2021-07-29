@@ -5,6 +5,7 @@ import { connect } from 'dva';
 import PageLoading from '@/components/PageLoading';
 import './style.less';
 import Language from '@/locales/index';
+import Expand from 'react-expand-animated';
 
 const { Title } = Typography;
 
@@ -212,10 +213,8 @@ const practiceList = ({ location, dispatch, practice, loading }) => {
     setList2(list2);
     setList3(list3);
   }
-  return loading ? (
-    <PageLoading></PageLoading>
-  ) : (
-    <div className="body">
+  return <>
+    {<div className="body">
       <PageHeader
         className="practice-list-page-header"
         breadcrumb={{ routes, itemRender }}
@@ -223,8 +222,15 @@ const practiceList = ({ location, dispatch, practice, loading }) => {
         subTitle=""
       />
       <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
-        <Col className="gutter-row" span={18}>
+
+        <Col className="list-col" span={18}>
+        {<Expand
+        open={!loading}
+          duration={500}
+          transitions={['opacity', 'background']}
+        >
           <List
+          loading={{spinning:loading,indicator:<PageLoading/>}}
             className="custom"
             style={{ margin: '30px 0px 10px 10px' }}
             itemLayout="horizontal"
@@ -282,8 +288,9 @@ const practiceList = ({ location, dispatch, practice, loading }) => {
               </List.Item></Card>
             )}
           />
-        </Col>
-        <Col className="gutter-row" span={6} style={{ margin: '30px 0px 10px 0px' }}>
+        </Expand>
+        }</Col>
+        <Col className="filter-col" span={6} style={{ margin: '30px 0px 10px 0px' }}>
           <Title level={4}>{Language.pages_practice_list_status}</Title>
           <Checkbox onChange={onChange} value="Solved">
             {Language.pages_practice_list_solved}
@@ -317,8 +324,8 @@ const practiceList = ({ location, dispatch, practice, loading }) => {
           <Divider />
         </Col>
       </Row>
-    </div>
-  );
+    </div>}
+</>
 };
 
 export default connect(({ practice, loading }) => ({

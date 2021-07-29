@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styles from './style.less';
 import AceEditor from 'react-ace';
-import Animate from 'rc-animate';
+import Expand from 'react-expand-animated';
 import 'brace/ext/searchbox';
 // import 'ace-builds/src-min-noconflict/ext-options';
 // import 'ace-builds/src-min-noconflict/ext-keybinding_menu';
@@ -32,12 +32,11 @@ import { QuestionCircleOutlined, CaretRightOutlined, SearchOutlined } from '@ant
 // const IconFont = createFromIconfontCN({
 //   scriptUrl: '//at.alicdn.com/t/font_2449607_3tn2o8mjobx.js',
 // });
-const { TextArea, Search } = Input;
+const { TextArea } = Input;
 
 class CodeEditor extends Component {
   constructor(props) {
     super(props);
-    console.log(this.props)
     let temp = 'c_cpp';
     if (this.props.language[0] === 'Java') temp = 'java';
     else if (this.props.language[0] === 'Javascript') temp = 'javascript';
@@ -102,7 +101,10 @@ class CodeEditor extends Component {
       resolve();
     });
   handleRun = () => {
-    if (this.state.codeVal == '') {
+    if (this.state.codeVal===null || this.state.codeVal == '') {
+      this.setState({
+        codeVal: "",
+      });
       notification.error({
         message: 'Hey Listen!',
         description: 'Dont leave your code blank',
@@ -111,7 +113,6 @@ class CodeEditor extends Component {
       });
       return;
     }
-    console.log(this.state.showCustom);
     this.props.checkCustom(!this.state.showCustom);
     this.handleSendCode(this.props.testCases[0].Input[0], this.props.testCases[0].Output[0]);
   };
@@ -240,6 +241,7 @@ class CodeEditor extends Component {
         <div className={styles.footer}>
           <Space className={styles.footer}>
             <Button
+            disabled={this.props.judgeLoading}
               size="large"
               className={styles.runBtn}
               type="primary"
@@ -249,17 +251,15 @@ class CodeEditor extends Component {
               Run Code
             </Button>
 
-            <Checkbox onChange={this.handleCheckBoxChange.bind(this)}>Custom Input</Checkbox>
+            <Checkbox
+            disabled={this.props.judgeLoading}
+            onChange={this.handleCheckBoxChange.bind(this)}>Custom Input</Checkbox>
           </Space>
-          <Animate
-            component=""
-            showProp="showCustom"
-            transitionName="fade"
-            transitionAppear
-            transitionEnter
-            transitionLeave
+          <Expand
+            open={this.state.showCustom}
+            duration={500}
+            transitions = {["height", "opacity", "background"]}
           >
-            {this.state.showCustom ? (
               <TextArea
                 className={styles.customInput}
                 allowClear
@@ -267,15 +267,15 @@ class CodeEditor extends Component {
                 placeholder="Put your custom input here."
                 autoSize={{ minRows: 3, maxRows: 5 }}
               />
-            ) : null}
-          </Animate>
+          </Expand>
         </div>
       </div>
     );
   }
 }
 
-export default connect(({ practice, judge }) => ({
+export default connect(({ practice, judge, loading }) => ({
   practice,
   judge,
+  judgeLoading: loading.effects['judge/sendCode'] || loading.effects['judge/sendCodeBatch'],
 }))(CodeEditor);

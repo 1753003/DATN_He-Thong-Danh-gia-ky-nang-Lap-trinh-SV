@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'dva';
 import { PageHeader, Table } from 'antd'
+import PageLoading from '@/components/PageLoading';
 class Ranking extends React.Component {
     constructor(props) {
         super(props);
@@ -56,12 +57,12 @@ class Ranking extends React.Component {
         return (
             <>
                 <PageHeader
-                    className="site-page-header"
+                    className="ranking-page-header"
                     title="Ranking"
                     subTitle="Test ABC"
                     onBack={() => history.goBack()}
                     />
-                <Table style= {{width:'100%'}}columns={this.getColumns()} dataSource={this.getData()} />
+                <Table loading={{spinning:this.props.loading,indicator:<PageLoading/>}} style= {{width:'100%'}}columns={this.getColumns()} dataSource={this.getData()} />
             </>
         )
     }
