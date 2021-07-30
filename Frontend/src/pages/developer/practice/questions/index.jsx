@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './style.less';
-import { PageHeader, Tabs, Row, Col, Typography } from 'antd';
+import { PageHeader, Tabs, Row, Col, Typography, notification, Button, Tooltip } from 'antd';
 import { Link } from 'umi';
 import { connect } from 'dva';
 import PageLoading from '@/components/PageLoading';
@@ -9,11 +9,38 @@ import AsyncQuizWrapper from './components/AsyncQuizWrapper';
 import AsyncSubmission from './components/AsyncSubmission';
 import AsyncCoding from '@/components/AsyncCoding/AsyncCoding';
 import AsyncDiscussionTab from './components/AsyncDiscussionTab';
+import Expand from 'react-expand-animated';
 
 const { TabPane } = Tabs;
 
-const questionList = ({ location, practice, dispatch, loading }) => {
+const questionList = ({ location, practice, dispatch, loading, judge }) => {
   const [tabChange, onTabChange] = useState(false);
+  const [fullscreen, setFullscreen] = useState(false);
+  const [editorValue, changeEditorValue] = useState(practice.listDetail?.listQuestion[0].CodeSample);
+  const routes = [
+    {
+      key: 'Developer',
+      path: '/developer',
+      breadcrumbName: 'Developer',
+    },
+    {
+      key: 'Practice',
+      path: '/developer/practice',
+      breadcrumbName: 'Practice',
+    },
+    {
+      key: 'List',
+      path: `/developer/practice/list?listName=${encodeURIComponent(
+        decodeURIComponent(location.state.listName),
+      )}`,
+      breadcrumbName: decodeURIComponent(location.state.listName),
+    },
+    {
+      key: 'Practice',
+      path: '',
+      breadcrumbName: practice.listDetail?.generalInformation?.PracticeName,
+    },
+  ];
   useEffect(() => {
     dispatch({
       type: 'practice/saveSubmissionList',
@@ -34,37 +61,33 @@ const questionList = ({ location, practice, dispatch, loading }) => {
       payload: null,
     });
   }, []);
-  // console.log(practice)
-  const routes = [
-    {
-      key: 'Developer',
-      path: '/developer',
-      breadcrumbName: 'Developer',
-    },
-    {
-      key: 'Practice',
-      path: '/developer/practice',
-      breadcrumbName: 'Practice',
-    },
-    {
-      key: 'List',
-      path: `/developer/practice/list?listName=${encodeURIComponent(
-        decodeURIComponent(location.query.listName),
-      )}`,
-      breadcrumbName: decodeURIComponent(location.query.listName),
-    },
-    {
-      key: 'Practice',
-      path: '',
-      breadcrumbName: practice.listDetail?.generalInformation?.PracticeName,
-    },
-  ];
+  useEffect(() => {
+    let temp = practice?.listDetail?.listQuestion[0].CodeSample;
+    changeEditorValue(temp);
+  }, [loading]);
+
   useEffect(() => {
     dispatch({
       type: 'practice/getPracticeListDetail',
       payload: { id: location.state.id },
     });
   }, []);
+  const handleFullscreen = (value) =>{
+    const isMobile = window.matchMedia("only screen and (max-width: 760px)").matches;
+      if (!isMobile )
+      setFullscreen(!fullscreen);
+      else {
+        if(fullscreen)
+          setFullscreen(!fullscreen);
+        else
+      {notification.open({
+        description: 'Full Screen Mode only work well in bigger screen. Considering use Landscape Tablet, Laptop or PC!',
+        className: 'code-notification',
+        type: 'warning',
+      });
+      return;}
+    }
+  }
 
   function itemRender(route, params, routes, paths) {
     const last = routes.indexOf(route) === routes.length - 1;
@@ -81,6 +104,17 @@ const questionList = ({ location, practice, dispatch, loading }) => {
     <PageLoading></PageLoading>
   ) : (
     <div>
+      {<Expand
+      open={fullscreen}
+      duration={600}
+      transitions={['height', 'opacity', 'background']} className="fullscreen"
+      > <div style={{margin:"32px"}}>
+
+        <AsyncCoding editorValue={editorValue} changeEditorValue={changeEditorValue}  fullscreen={true} handleFullscreen={handleFullscreen}/>
+      </div>
+      </Expand>}{<Expand open={!fullscreen}
+                duration={600}
+                transitions={['height', 'opacity', 'background']} className="not-fullscreen">
       <PageHeader
         className="site-page-header"
         breadcrumb={{ routes, itemRender }}
@@ -104,7 +138,7 @@ const questionList = ({ location, practice, dispatch, loading }) => {
           >
             <TabPane tab={Language.pages_practice_questions_problem} key="1" style={{minHeight:"320px"}}>
               {practice.listDetail?.generalInformation.QuestionID.length < 2 ? (
-                <AsyncCoding></AsyncCoding>
+                <AsyncCoding editorValue={editorValue} changeEditorValue={changeEditorValue} fullscreen={false} handleFullscreen={handleFullscreen}></AsyncCoding>
               ) : (
                 <AsyncQuizWrapper data={practice.listDetail}></AsyncQuizWrapper>
               )}
@@ -147,12 +181,14 @@ const questionList = ({ location, practice, dispatch, loading }) => {
           </Row>
         </Col>
       </Row>
-    </div>
+    
+      </Expand>}
+      </div>
   );
 };
 
 export default connect(({ practice, loading, judge }) => ({
-  judge: judge.state,
+  judge,
   loading: loading.effects['practice/getPracticeListDetail'],
   practice: practice,
 }))(questionList);

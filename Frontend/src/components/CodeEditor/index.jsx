@@ -28,7 +28,7 @@ import { Button, Checkbox, Input, notification, Select, Space, Tooltip} from 'an
 import { connect } from 'dva';
 import { u_btoa } from '@/utils/string';
 import '../Coding/style.less';
-import { QuestionCircleOutlined, CaretRightOutlined, SearchOutlined } from '@ant-design/icons';
+import { QuestionCircleOutlined, CaretRightOutlined, SearchOutlined, FullscreenOutlined, FullscreenExitOutlined } from '@ant-design/icons';
 
 // const IconFont = createFromIconfontCN({
 //   scriptUrl: '//at.alicdn.com/t/font_2449607_3tn2o8mjobx.js',
@@ -43,7 +43,6 @@ class CodeEditor extends Component {
     if (this.props.practice.listDetail.generalInformation.PracticeSet === 'JavaScript')
       temp = 'javascript';
     this.state = {
-      codeVal: this.props.practice.listDetail.listQuestion[0].CodeSample,
       customVal: '',
       isSubmitBatch: false,
       showCustom: false,
@@ -61,9 +60,7 @@ class CodeEditor extends Component {
     });
   };
   handleCodeEditorChange = (val) => {
-    this.setState({
-      codeVal: val,
-    });
+    this.props.handleEditorValue(val)
   };
   handleCustomValChange = (e) => {
     this.setState({
@@ -72,14 +69,13 @@ class CodeEditor extends Component {
   };
   handleSendCode = (input, expected_output) =>
     new Promise((resolve, reject) => {
-      let code = this.state.codeVal;
+      let code = this.props.editorValue;
       let lang_id = 54; //54 C++ 71 python
       if (this.state.mode === 'java') lang_id = 62;
       if (this.state.mode === 'javascript') lang_id = 63;
       if (this.state.customInput == false) input = input;
       else if (this.state.customVal == '') input = input;
       else input = this.state.customVal;
-      // code = JSON.stringify(this.state.codeVal);
       code = code.replace(/(^")|("$)/g, '');
       code = u_btoa(code);
 
@@ -97,11 +93,11 @@ class CodeEditor extends Component {
       resolve();
     });
   handleRun = () => {
-    console.log(this.props.loading)
-    if (this.state.codeVal == '') {
+    console.log(this.props.editorValue, this.editorRef)
+    if (this.props.editorValue === "") {
       notification.error({
         message: 'Hey Listen!',
-        description: 'Dont leave your code blank',
+        description: 'Edit the code before run',
         className: 'code-notification',
         type: 'error',
       });
@@ -111,10 +107,10 @@ class CodeEditor extends Component {
     this.handleSendCode(this.props.testCases[0].Input[0], this.props.testCases[0].Output[0]);
   };
   handleSubmit = () => {
-    if (this.state.codeVal == '') {
+    if (this.props.editorValue == '') {
       notification.open({
         message: 'Hey Listen!',
-        description: 'Dont leave your code blank',
+        description: 'Edit the code before run',
         className: 'code-notification',
         type: 'error',
       });
@@ -125,7 +121,7 @@ class CodeEditor extends Component {
     });
     let batch_Submission = [];
 
-    let code = this.state.codeVal;
+    let code = this.props.editorValue;
     let lang_id = 54; //54 C++ 71 python
     if (this.state.mode === 'java') lang_id = 62;
     if (this.state.mode === 'javascript') lang_id = 63;
@@ -228,16 +224,24 @@ class CodeEditor extends Component {
               <QuestionCircleOutlined />
             </a>
           </Tooltip>
+          {<Tooltip placement={this.props.fullscreen?"left":"top"} className={styles.fullscreenBtn} title={this.props.fullscreen?"Exit Full Screen":"Fullscreen Mode"}
+          >
+          <Button style={{    top: "6px",
+            right: "0",
+            marginRight: "30px"}} type="primary" icon={this.props.fullscreen?<FullscreenExitOutlined/>: <FullscreenOutlined/>}
+          onClick={()=>{this.props.handleFullscreen()}}
+          />
+          </Tooltip>}
         </Space>
         <AceEditor
           ref={this.editorRef}
           tabSize={this.state.tabSize}
           style={{ whiteSpace: 'pre-wrap', border: 'solid #dcdcdc 1px' }}
           width="100%"
-          height="400px"
+          height={this.props.fullscreen?"560px":"386px"}
           showPrintMargin={false}
           showGutter
-          value={this.state.codeVal}
+          value={this.props.editorValue}
           mode={this.state.mode}
           theme={this.state.theme}
           fontSize={this.state.fontSize}
@@ -285,7 +289,8 @@ class CodeEditor extends Component {
                 allowClear
                 onChange={this.handleCustomValChange.bind(this)}
                 placeholder="Put your custom input here."
-                autoSize={{ minRows: 3, maxRows: 5 }}
+                // autoSize={{ minRows: 3 }}
+                row={4}
               />
           </Expand>
         </div>

@@ -248,10 +248,9 @@ const practiceList = ({ location, dispatch, practice, loading }) => {
                 onClick={() => {
                   history.push({
                     pathname: '/developer/practice/questions',
-                    search: `?listName=${encodeURIComponent(
+                    state: {id:item.PracticeID,type:"practice", listName:encodeURIComponent(
                       decodeURIComponent(location.query.listName),
-                    )}`,
-                    state: {id:item.PracticeID,type:"practice"},
+                    )},
                   });
                 }}
                 style={{
