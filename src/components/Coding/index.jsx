@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './custom.less';
 import { CheckCircleTwoTone, CloseCircleTwoTone } from '@ant-design/icons';
 import styles from './style.less';
-import { Divider, Tabs, Alert } from 'antd';
+import { Divider, Tabs, Alert, Row, Col, Button, Typography } from 'antd';
 import MDEditor from '@uiw/react-md-editor';
 import { connect } from 'dva';
 import CodeEditor from '../CodeEditor';
@@ -22,7 +22,6 @@ const AlertComponent = (alertMessage, alertDescription, alertType) => (
     showIcon
   ></Alert>
 );
-
 const editor = (value) => {
   return (
     <AceEditor
@@ -99,12 +98,31 @@ const Testcases = (result) => {
   );
 };
 class Coding extends Component {
-  state = {
-    alertType: 'error',
-    alertMessage: '',
-    alertDescription: '',
-  };
-
+  constructor(props){
+    super(props);
+    this.state = {
+      alertType: 'error',
+      alertMessage: '',
+      alertDescription: '',
+      collapse: false,
+      colLayout: this.props.fullscreen?{
+        description: 6,
+        code: 18
+      }:{
+        description: 24,
+        code: 24
+      },
+      editorValue:this.props.editorValue,
+    };
+  }
+  handleEditorValue = (val) =>{
+    this.props.changeEditorValue(val)
+  }
+  handleCollapse = () =>{
+    this.setState({
+      collapse:!this.state.collapse
+    })
+  }
   render() {
     let alertMessage = '';
     let alertDescription = '';
@@ -164,12 +182,17 @@ class Coding extends Component {
 
     //if isSubmit
     return (
-      <>
+      <Row className="coding-wrapper" gutter={48}>
+        <Col span = {this.state.colLayout.description}>
+          {this.props.fullscreen&&<Typography.Title className="problem-title" level={3}>Problem</Typography.Title>}
         <MDEditor.Markdown className="problem" source={this.props.description}></MDEditor.Markdown>
         <Divider></Divider>
+        </Col>
+        <Col span={this.state.colLayout.code}>
+
         <div className="code-editor">
-          <CodeEditor></CodeEditor>
-          {this.props.loading && <PageLoading />}
+          <CodeEditor editorValue={this.props.editorValue} handleEditorValue={this.handleEditorValue} fullscreen={this.props.fullscreen} handleFullscreen = {this.props.handleFullscreen}></CodeEditor>
+          {this.props.loading && <PageLoading tip="Processing... Please wait a moment." />}
           <Expand
           
             open={
@@ -185,7 +208,8 @@ class Coding extends Component {
             </div>
           </Expand>
         </div>
-      </>
+        </Col>
+      </Row>
     );
   }
 }

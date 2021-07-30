@@ -1,38 +1,131 @@
 @import '~antd/es/style/themes/default.less';
-.container{
+
+.container {
   padding-left: 5px;
   padding-right: 5px;
   border-radius: 5px;
-  .header{
+
+  .header {
     width: 100%;
     padding-top: 5px;
     padding-bottom: 5px;
   }
-  .footer{
+
+  .footer {
     padding-top: 5px;
     padding-bottom: 5px;
-    .runBtn{
+
+    .runBtn {
       background-color: #0675f3;
+      &:hover, &:active{
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(11, 120, 245, 0.4);
+      }
     }
-    .submitBtn{
+
+    .submitBtn {
       background-color: #28a745;
+      &:hover, &:active{
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(39, 218, 128, 0.4);
+      }
     }
-  
-    .customInput{
+
+    .customInput {
       width: 100%;
       background-color: #f7fbff;
     }
   }
-  
+
 }
 
 
 
-.selectBtn{
-  @media only screen and (min-width: @screen-md){
+.selectBtn {
+  @media only screen and (min-width: @screen-md) {
     width: 120px;
   }
-  @media only screen and (max-width: @screen-sm){
+
+  @media only screen and (max-width: @screen-sm) {
     width: 48px;
   }
+}
+
+.fullscreenBtn {
+  // base style
+  z-index: 1;
+  position: absolute;
+  display: inline-block;
+  border: none;
+
+  //
+  @keyframes TransitioningBackground {
+    0% {
+      background-position: 1% 0%;
+    }
+
+    50% {
+      background-position: 99% 100%;
+    }
+
+    100% {
+      background-position: 1% 0%;
+    }
+  }
+
+  // for shine & gradient effects to work
+  // position: relative;
+  overflow: hidden;
+  // for background color shift
+  background-image: (linear-gradient(270deg, #71abee, #5ed0df));
+  background-size: 400% 400%;
+  animation: TransitioningBackground 15s ease infinite;
+  // to ease the button growth on hover
+  transition: 0.7s;
+
+  // psuedo-element shine animation left side
+  &::before {
+    content: '';
+    display: block;
+    position: absolute;
+    background: rgba(255, 255, 255, 0.5);
+    width: 60px;
+    height: 100%;
+    top: 0;
+    left: 0;
+    filter: blur(30px);
+    transform: translateX(-100px) skewX(-15deg);
+  }
+
+  // psuedo-element shine animation right side
+  &::after {
+    content: '';
+    display: block;
+    position: absolute;
+    background: rgba(255, 255, 255, 0.2);
+    width: 30px;
+    height: 100%;
+    top: 0;
+    left: 0;
+    filter: blur(5px);
+    transform: translateX(-100px) skewX(-15deg);
+  }
+
+  // grow button and change background gradient on hover
+  &:hover {
+    background-image: (linear-gradient(to left, #5ca6e7, #f183db));
+    transform: scale(1.4);
+    cursor: pointer;
+
+    // psuedo-elements for right- and left-side shine animations
+    &::before,
+    &::after {
+      transform: translateX(300px) skewX(-15deg);
+      transition: 0.7s;
+    }
+  }
+}
+
+.customInput {
+  background-color: whitesmoke;
 }
