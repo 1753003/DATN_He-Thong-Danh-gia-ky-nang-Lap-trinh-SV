@@ -83,7 +83,7 @@ const testHome = ({ dispatch, status, inviteList }) => {
   return (
     <div className={styles.global}>
       <QueueAnim className="combine-wrapper">
-        <Row className="row-wrapper">
+        <Row gutter={32} className="row-wrapper">
           <Col span={12} key="input-wrapper" className="input-wrapper">
             <Input
               // allowClear
@@ -103,7 +103,7 @@ const testHome = ({ dispatch, status, inviteList }) => {
             styles={{ boxShadow: '0 1px 2px rgba(24, 144, 255, .4)' }}
           >
             <Typography.Title level={2}>
-              <Texty>Invite List:</Texty>
+              <Texty>Invitations List:</Texty>
             </Typography.Title>
             <ConfigProvider renderEmpty={customizeRenderEmpty}>
               <List

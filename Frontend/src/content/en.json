@@ -4,8 +4,8 @@
     "_login": "Login",
 
     "login_accountLogin": "Account Login",
-    "login_username": "Username: admin or user",
-    "login_password": "Password: ant.design",
+    "login_username": "Your email",
+    "login_password": "Password",
     "login_phoneLogin": "Phone Login",
     "login_phone": "Phone Number",
     "login_verificationCode": "Verification Code",

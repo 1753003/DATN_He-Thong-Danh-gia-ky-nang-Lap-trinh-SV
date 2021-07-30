@@ -8,7 +8,7 @@ class CheckLoginLayout extends React.Component {
  
   render() {
     const { children } = this.props; 
-    console.log(this.props);
+    // console.log(this.props);
     const isLogin = localStorage.getItem('currentUser');
     if (isLogin) {
       return <Redirect to={`/`} />;

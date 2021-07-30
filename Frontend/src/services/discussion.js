@@ -1,7 +1,7 @@
 import firebase from '@/utils/firebase'
 
 export function updateVote(uid,pid, cid, value, status, type) {
-  console.log("vote",uid,pid, cid, value, status, type)
+  // console.log("vote",uid,pid, cid, value, status, type)
   const dbComment = firebase.firestore().collection("discussions").doc(`${type}-${pid}`).collection('comments')
   return new Promise((resolve, reject) => {
     var updates={};

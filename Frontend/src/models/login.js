@@ -23,7 +23,7 @@ const Model = {
             type: 'account'
           },
         }); // Login successfully
-        console.log(response);
+        // console.log(response);
         localStorage.setItem('currentUser',payload.email);
         //Save token into cookie
         Cookies.set('accessToken', response.message.accessToken, {expires: 7});
@@ -84,7 +84,7 @@ const Model = {
         const params = getPageQuery();
         let { redirect } = params;
 
-        console.log(response)
+        // console.log(response)
         if (redirect) {
           const redirectUrlParams = new URL(redirect);
 
@@ -108,7 +108,7 @@ const Model = {
     },
     *loginGoogle({ payload }, { call, put }) {
       const response = yield call(LoginWithGoogle, payload);    
-      console.log(response)
+      // console.log(response)
       if (response.status === 'OK') {
         yield put({
           type: 'changeLoginStatus',

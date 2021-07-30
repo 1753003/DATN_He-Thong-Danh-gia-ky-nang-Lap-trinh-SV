@@ -102,14 +102,14 @@ const questionList = ({ location, practice, dispatch, loading }) => {
               });
             }}
           >
-            <TabPane tab={Language.pages_practice_questions_problem} key="1">
+            <TabPane tab={Language.pages_practice_questions_problem} key="1" style={{minHeight:"320px"}}>
               {practice.listDetail?.generalInformation.QuestionID.length < 2 ? (
                 <AsyncCoding></AsyncCoding>
               ) : (
                 <AsyncQuizWrapper data={practice.listDetail}></AsyncQuizWrapper>
               )}
             </TabPane>
-            <TabPane tab={Language.pages_practice_questions_submission} key="2">
+            <TabPane tab={Language.pages_practice_questions_submission} key="2" style={{minHeight:"320px"}}>
               <AsyncSubmission></AsyncSubmission>
             </TabPane>
             <TabPane tab={Language.pages_practice_questions_discussion} key="3">

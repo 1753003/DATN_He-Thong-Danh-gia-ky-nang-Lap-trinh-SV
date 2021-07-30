@@ -84,7 +84,7 @@ const DiscussionTab = ({ location, discussion, dispatch }) => {
   }, [discussion.rootComments]);
 
   return (
-    <div style={{minHeight:"200px"}}>
+    <div style={{minHeight:"320px"}}>
       <Expand open={!loading} duration={400} transitions={['height', 'opacity', 'background']}>
         <ReplyEditor id={location.state.id} type={location.state.type}></ReplyEditor>
         <CommentList
