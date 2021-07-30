@@ -1,8 +1,5 @@
-import { stringify } from 'querystring';
-import { history } from 'umi';
+
 import { createSubmission, createSubmissionBatch, getSubmission, getSubmissionBatch } from '@/services/judge0'
-import { setAuthority } from '@/utils/authority';
-import { getPageQuery } from '@/utils/utils';
 import { saveSubmissionCoding } from '@/services/practice';
 
 const Model = {
@@ -12,6 +9,7 @@ const Model = {
     token: null,
     result: null,
     savetoDb: null,
+    codeVal:""
   },
   effects: {
     *sendCode({ payload }, { call, put }) {
@@ -109,6 +107,10 @@ const Model = {
     },
     setDone(state) {
       return { ...state, isDone:!state.isDone };
+    },
+    setCodeValue(state, payload) {
+      console.log("set", payload)
+      return { ...state, codeVal:payload.payload };
     },
     setResult(state, { payload}) {
       return { ...state, result: payload };
