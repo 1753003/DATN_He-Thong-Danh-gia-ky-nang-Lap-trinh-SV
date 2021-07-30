@@ -44,16 +44,16 @@ class Header extends React.Component {
         mode="horizontal"
         className={styles.menu}
       >
-        <Menu.Item key="home">{Language.home_home}</Menu.Item>
-        <Menu.Item key="introduce">{Language.home_introduce}</Menu.Item>
-        <Menu.Item key="join" style={{color: 'pink', fontWeight: 'bold'}}>{Language.home_letstart}</Menu.Item> 
+        <Menu.Item key="home" style={{textShadow: "#467ab8 0px 0px 1px,   #467ab8 0px 0px 1px,   #467ab8 0px 0px 1px, #467ab8 0px 0px 1px,   #467ab8 0px 0px 1px,   #467ab8 0px 0px 1px"}}>{Language.home_home}</Menu.Item>
+        <Menu.Item style={{textShadow: "#000 0px 0px 1px,   #000 0px 0px 1px,   #000 0px 0px 1px, #000 0px 0px 1px,   #000 0px 0px 1px,   #000 0px 0px 1px"}} key="introduce">{Language.home_introduce}</Menu.Item>
+        <Menu.Item key="join" style={{color: 'pink', fontWeight: 'bold', }}>{Language.home_letstart}</Menu.Item> 
         {this.isLogin ? (
-          <SubMenu title={Language.home_welcome.concat(" ").concat(localStorage.getItem('currentUser'))}>
+          <SubMenu style={{textShadow: "#000 0px 0px 1px,   #000 0px 0px 1px,   #000 0px 0px 1px, #000 0px 0px 1px,   #000 0px 0px 1px,   #000 0px 0px 1px"}} title={Language.home_welcome.concat(", ").concat(localStorage.getItem('currentUser'))}>
           <Menu.Item key="signout">{Language.home_signOut}</Menu.Item>
         </SubMenu>
           
         ) : (
-          <Menu.Item key="signup">{Language.home_login}</Menu.Item>
+          <Menu.Item key="signup" style={{textShadow: "#467ab8 0px 0px 1px,   #467ab8 0px 0px 1px,   #467ab8 0px 0px 1px, #467ab8 0px 0px 1px,   #467ab8 0px 0px 1px,   #467ab8 0px 0px 1px"}}>{Language.home_login}</Menu.Item>
         )}
       </Menu>
       :
@@ -63,12 +63,12 @@ class Header extends React.Component {
         mode="horizontal"
         className={styles.menu}
       >
-        <Menu.Item key="home">{Language.home_home}</Menu.Item>
-        <Menu.Item key="introduce">{Language.home_introduce}</Menu.Item>
+        <Menu.Item key="home" style={{textShadow: "#467ab8 0px 0px 1px,   #467ab8 0px 0px 1px,   #467ab8 0px 0px 1px, #467ab8 0px 0px 1px,   #467ab8 0px 0px 1px,   #467ab8 0px 0px 1px"}}>{Language.home_home}</Menu.Item>
+        <Menu.Item key="introduce" style={{textShadow: "#467ab8 0px 0px 1px,   #467ab8 0px 0px 1px,   #467ab8 0px 0px 1px, #467ab8 0px 0px 1px,   #467ab8 0px 0px 1px,   #467ab8 0px 0px 1px"}}>{Language.home_introduce}</Menu.Item>
         {this.isLogin ? (
-          <Menu.Item key="signout">{Language.home_signOut}</Menu.Item>
+          <Menu.Item key="signout" style={{textShadow: "#467ab8 0px 0px 1px,   #467ab8 0px 0px 1px,   #467ab8 0px 0px 1px, #467ab8 0px 0px 1px,   #467ab8 0px 0px 1px,   #467ab8 0px 0px 1px"}}>{Language.home_signOut}</Menu.Item>
         ) : (
-          <Menu.Item key="signup">{Language.home_login}</Menu.Item>
+          <Menu.Item key="signup" style={{textShadow: "#467ab8 0px 0px 1px,   #467ab8 0px 0px 1px,   #467ab8 0px 0px 1px, #467ab8 0px 0px 1px,   #467ab8 0px 0px 1px,   #467ab8 0px 0px 1px"}}>{Language.home_login}</Menu.Item>
         )}
       </Menu>
    
@@ -115,7 +115,7 @@ const Content = () => {
                   <div className={styles.specialSubTitle}>
                     {Language.home_environment}
                   </div>
-                  <Row gutter={64} style={{ marginTop: '40px' }}>
+                  <Row gutter={24} style={{ marginTop: '32px' }}>
                     <Col span={12}>
                       <div className={styles.card}>
                         <div className={styles.cardIcon}>
@@ -139,7 +139,7 @@ const Content = () => {
                       </div>
                     </Col>
                   </Row>
-                  <Row gutter={64} style={{ marginTop: '40px' }}>
+                  <Row gutter={24} style={{ marginTop: '24px' }}>
                     <Col span={12}>
                       <div className={styles.card}>
                         <div className={styles.cardIcon}>
@@ -164,7 +164,7 @@ const Content = () => {
                     </Col>
                   </Row>
                 </Col>
-                <Col span={12}>
+                <Col span={12} style ={{maxWidth:"45%", display:"flex", alignItems:"center"}}>
                   <div className={styles.perspectiveWrapper}>
                     <div className={styles.container}>
                       <img src="https://firebasestorage.googleapis.com/v0/b/devcheckpro.appspot.com/o/GuestPage%2Fezgif.com-gif-maker.gif?alt=media&token=1bff5b70-4bd8-4cb4-a3c1-721947a3b9d7" alt=""/> 

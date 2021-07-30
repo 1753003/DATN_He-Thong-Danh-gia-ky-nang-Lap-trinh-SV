@@ -2,10 +2,10 @@ export default {
   'pages.layouts.userLayout.title':
     'Codejoy will be your best choice!',
   'pages.login.accountLogin.tab': 'Account Login',
-  'pages.login.accountLogin.errorMessage': 'Incorrect username/password（admin/ant.design)',
-  'pages.login.username.placeholder': 'Username: admin or user',
+  'pages.login.accountLogin.errorMessage': 'Incorrect email or password',
+  'pages.login.username.placeholder': 'Your email',
   'pages.login.username.required': 'Please input your username!',
-  'pages.login.password.placeholder': 'Password: ant.design',
+  'pages.login.password.placeholder': 'Password',
   'pages.login.password.required': 'Please input your password!',
   'pages.login.phoneLogin.tab': 'Phone Login',
   'pages.login.phoneLogin.errorMessage': 'Verification Code Error',

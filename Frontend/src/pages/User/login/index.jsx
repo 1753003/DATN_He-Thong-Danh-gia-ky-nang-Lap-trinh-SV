@@ -1,39 +1,19 @@
 import {
   LockOutlined,
-  MailOutlined,
-  MobileOutlined,
   UserOutlined,
   FacebookOutlined,
   GoogleOutlined,
-  GithubOutlined
 } from '@ant-design/icons';
 
 import firebase from '@/utils/firebase'
 
-import { Alert, Space, Tabs } from 'antd';
+import { Alert, Space, Tabs, Button } from 'antd';
 import React, { useState } from 'react';
-import ProForm, { ProFormCaptcha, ProFormCheckbox, ProFormText } from '@ant-design/pro-form';
+import ProForm, { ProFormText } from '@ant-design/pro-form';
 import { useIntl, connect, FormattedMessage } from 'umi';
-import { getFakeCaptcha } from '@/services/login';
 import styles from './index.less';
 import Language from '@/locales/index';
 
-// const firebaseConfig = {
-//   apiKey: "AIzaSyC_FKi-svb2idZpvqsfPFWASeHUS60O9eU",
-//   authDomain: "devcheckpro.firebaseapp.com",
-//   projectId: "devcheckpro",
-//   storageBucket: "devcheckpro.appspot.com",
-//   messagingSenderId: "594608048066",
-//   appId: "1:594608048066:web:fe4fadd828cdc36181f85b",
-//   measurementId: "G-44GFLD429W"
-// };
-
-// Initialize Firebase
-// try {
-//   firebase.initializeApp(firebaseConfig);
-// } catch(e) {
-
-// }
 const LoginMessage = ({ content }) => (
   <Alert
     style={{
@@ -141,13 +121,9 @@ const Login = (props) => {
           autoLogin: true,
         }}
         submitter={{
-          render: (_, dom) => dom.pop(),
-          submitButtonProps: {
-            loading: submitting,
-            size: 'large',
-            style: {
-              width: '100%',
-            },
+          render: (props, dom) => {
+            // console.log(props)
+            return [<Button loading={submitting} block type="primary" key="submit" onClick={() =>props.form?.submit()}>Login</Button>]
           },
         }}
         onFinish={(values) => {
@@ -160,7 +136,6 @@ const Login = (props) => {
             key="account"
             tab={intl.formatMessage({
               id: 'pages.login.accountLogin.tab',
-             
             })}
           />
         </Tabs>
@@ -228,16 +203,16 @@ const Login = (props) => {
             marginBottom: 24,
           }}
         >
-          <ProFormCheckbox noStyle name="autoLogin">
+          {/* <ProFormCheckbox noStyle name="autoLogin">
             <FormattedMessage id="pages.login.rememberMe" defaultMessage="Remember me" />
-          </ProFormCheckbox>
+          </ProFormCheckbox> */}
           <a
             style={{
-              float: 'right',
+              float: 'left',
             }}
             href="/user/forgotPassword"
           >
-            <FormattedMessage id="pages.login.forgotPassword" defaultMessage="Forgot password?" />
+            <FormattedMessage id="pages.login.forgotPassword" defaultMessage="Forgot password" />
           </a>
           <a
             style={{

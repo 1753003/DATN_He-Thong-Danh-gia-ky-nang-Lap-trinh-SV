@@ -10,7 +10,7 @@ import BoxLoading from 'react-loadingg/lib/BoxLoading';
 const PageLoading = ({tip}) => {
   return <div className="page-loading-container">
   <BoxLoading size="large" color="#09abb4"/>
-  <p className="page-loading-tip">{tip}</p>
+  {typeof(tip)!=="undefined"&&tip!==""&&<p className="page-loading-tip">{tip}</p>}
   </div>
 };
 Spin.setDefaultIndicator(PageLoading);

@@ -120,7 +120,7 @@ const QuizWrapper = ({ pLength, pid, submitResponse, dispatch, data, loading }) 
     }
   };
   return loading ? (
-    <PageLoading />
+    <PageLoading style={{minHeight:"320px"}}/>
   ) : submitResponse == null ? (
     <Row gutter={32}>
       <Col span={18} className={styles.question}>

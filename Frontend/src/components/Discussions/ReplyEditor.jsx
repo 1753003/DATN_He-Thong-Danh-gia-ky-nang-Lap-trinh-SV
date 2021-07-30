@@ -8,6 +8,9 @@ import './reply.less'
 const ReplyEditor = ({ type, id, pid, dispatch, handleDiscard }) => {
   const [value, setValue] = useState('');
   const handleReply = () => {
+    if(value === ""){
+      return
+    }
     let cmt = {
       author: localStorage.getItem('currentUser'),
       avatarURL: '',

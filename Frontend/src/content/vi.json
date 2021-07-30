@@ -4,8 +4,8 @@
     "_login": "Đăng nhập",
 
     "login_accountLogin": "Đăng nhập bằng email",
-    "login_username": "Username: admin or user",
-    "login_password": "Password: ant.design",
+    "login_username": "Email của bạn",
+    "login_password": "Mật khẩu",
     "login_phoneLogin": "Đăng nhập bằng số điện thoại",
     "login_phone": "Số điện thoại",
     "login_verificationCode": "Mã xác nhận",

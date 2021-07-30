@@ -42,16 +42,16 @@ class Header extends React.Component {
           mode="horizontal"
           className={styles.menu}
         >
-          <Menu.Item key="home">{Language.home_home}</Menu.Item>
+          <Menu.Item key="home" style={{textShadow: "#467ab8 0px 0px 1px,   #467ab8 0px 0px 1px,   #467ab8 0px 0px 1px, #467ab8 0px 0px 1px,   #467ab8 0px 0px 1px,   #467ab8 0px 0px 1px"}}>{Language.home_home}</Menu.Item>
           <Menu.Item key="introduce">{Language.home_introduce}</Menu.Item>
           <Menu.Item key="join" style={{color: 'pink', fontWeight: 'bold'}}>{Language.home_letstart}</Menu.Item> 
           {this.isLogin ? (
-            <SubMenu title={Language.home_welcome.concat(" ").concat(localStorage.getItem('currentUser'))}>
-            <Menu.Item key="signout">{Language.home_signOut}</Menu.Item>
+            <SubMenu style={{textShadow: "#467ab8 0px 0px 1px,   #467ab8 0px 0px 1px,   #467ab8 0px 0px 1px, #467ab8 0px 0px 1px,   #467ab8 0px 0px 1px,   #467ab8 0px 0px 1px"}} title={Language.home_welcome.concat(", ").concat(localStorage.getItem('currentUser'))}>
+            <Menu.Item key="signout" >{Language.home_signOut}</Menu.Item>
           </SubMenu>
             
           ) : (
-            <Menu.Item key="signup">{Language.home_login}</Menu.Item>
+            <Menu.Item key="signup" style={{textShadow: "#467ab8 0px 0px 1px,   #467ab8 0px 0px 1px,   #467ab8 0px 0px 1px, #467ab8 0px 0px 1px,   #467ab8 0px 0px 1px,   #467ab8 0px 0px 1px"}}>{Language.home_login}</Menu.Item>
           )}
         </Menu>
         :
@@ -61,12 +61,12 @@ class Header extends React.Component {
           mode="horizontal"
           className={styles.menu}
         >
-          <Menu.Item key="home">{Language.home_home}</Menu.Item>
+          <Menu.Item key="home" style={{textShadow: "#467ab8 0px 0px 1px,   #467ab8 0px 0px 1px,   #467ab8 0px 0px 1px, #467ab8 0px 0px 1px,   #467ab8 0px 0px 1px,   #467ab8 0px 0px 1px"}}>{Language.home_home}</Menu.Item>
           <Menu.Item key="introduce">{Language.home_introduce}</Menu.Item>
           {this.isLogin ? (
-            <Menu.Item key="signout">{Language.home_signOut}</Menu.Item>
+            <Menu.Item key="signout" style={{textShadow: "#467ab8 0px 0px 1px,   #467ab8 0px 0px 1px,   #467ab8 0px 0px 1px, #467ab8 0px 0px 1px,   #467ab8 0px 0px 1px,   #467ab8 0px 0px 1px"}}>{Language.home_signOut}</Menu.Item>
           ) : (
-            <Menu.Item key="signup">{Language.home_login}</Menu.Item>
+            <Menu.Item key="signup" style={{textShadow: "#467ab8 0px 0px 1px,   #467ab8 0px 0px 1px,   #467ab8 0px 0px 1px, #467ab8 0px 0px 1px,   #467ab8 0px 0px 1px,   #467ab8 0px 0px 1px"}}>{Language.home_login}</Menu.Item>
           )}
         </Menu>
      
