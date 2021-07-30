@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'umi';
-import { Avatar, Comment, ConfigProvider, List, Col, Row, Divider } from 'antd';
+import { Avatar, Comment, ConfigProvider, List, Col, Row, Divider, Space } from 'antd';
 import MDEditor from '@uiw/react-md-editor';
 import PageLoading from '../PageLoading';
 import ReplyEditor from './ReplyEditor';
@@ -8,7 +8,7 @@ import moment from 'moment';
 import Expand from 'react-expand-animated';
 import './style.less';
 // import ReactComment from './ReactComment';
-import { SmileOutlined } from '@ant-design/icons';
+import { CaretDownOutlined, CaretUpOutlined, EditOutlined, SmileOutlined } from '@ant-design/icons';
 
 const customizeRenderEmpty = () => (
   <div style={{ textAlign: 'center' }}>
@@ -58,26 +58,31 @@ const CommentList = ({ data, dispatch, id, type }) => {
           <ReactComment data={data.vote} id={data.id} handleClick={handleClick}></ReactComment>
         </Col> */}
         <Col span={20}>
-          <Comment
+          <Comment style={{padding:"-12px"}}
             actions={[
-              showReplyTo && (
-                <ReplyEditor
-                  type={type}
-                  id={id}
-                  pid={data.id}
-                  handleDiscard={handleDiscard}
-                ></ReplyEditor>
-              ),
-              !showReplyTo && (
-                <span key="comment-nested-reply-to" onClick={() => replyComment(data.id)}>
-                  Reply To
-                </span>
-              ),
-              data.children.length > 0 ? (
-                <span onClick={() => handleViewReply()}>
+              <Space>
+                {data.children.length > 0 ? (
+                <span   onClick={() => handleViewReply()}>
+                  
+                  {viewReply ? <CaretUpOutlined>Hide Reply</CaretUpOutlined> : <CaretDownOutlined>View Reply</CaretDownOutlined>}
                   {viewReply ? 'Hide Reply' : 'View Reply'}
                 </span>
-              ) : null,
+              ) : null}
+              {!showReplyTo && (
+                <span  key="comment-nested-reply-to" onClick={() => replyComment(data.id)}>
+                  <EditOutlined></EditOutlined>
+                  {'Reply To'}
+                </span>
+              )}
+              </Space>
+              ,
+              <Expand className="comment-reply"
+                open={showReplyTo}
+                duration={600}
+                transitions={['height', 'opacity', 'background']}
+              >
+                <ReplyEditor  type={type} id={id} pid={data.id} handleDiscard={handleDiscard} />
+              </Expand>,
             ]}
             author={`${data.author}
         ${moment(data.time.toDate()).locale('en').format('MMMM Do YYYY, h:mm:ss a')}`}

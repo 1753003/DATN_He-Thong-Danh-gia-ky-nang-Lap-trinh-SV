@@ -23,7 +23,7 @@ const renderAuthorize = (Authorized) => (currentAuthority) => {
   } else {
     CURRENT = 'NULL';
   }
-  console.log(CURRENT);
+  // console.log(CURRENT);
   return Authorized;
 };
 

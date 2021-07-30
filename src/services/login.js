@@ -8,7 +8,7 @@ export function Login(params) {
       .post(`${Constant.API}/api/auth/login`, params)
       .then((response) => {
         // handle success
-        console.log(response.data);
+        // console.log(response.data);
         resolve(response.data);
       })
       .catch((error) => {
@@ -33,7 +33,7 @@ export function LoginWithFacebook(params) {
 }
 
 export function LoginWithGoogle(params) {
-  console.log(params);
+  // console.log(params);
   return new Promise((resolve, reject) => {
     axios
       .post(`${Constant.API}/api/auth/loginGoogle`, params)
