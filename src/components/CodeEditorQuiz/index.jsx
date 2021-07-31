@@ -23,11 +23,17 @@ import 'brace/ext/language_tools';
 // import "ace-builds/src-noconflict/snippets/javascript"
 // import 'ace-builds/src-min-noconflict/ext-language_tools';
 
-import { Button, Checkbox, Input, notification, Select, Space , Tooltip} from 'antd';
+import { Button, Checkbox, Input, notification, Select, Space, Tooltip } from 'antd';
 import { connect } from 'dva';
 import { u_btoa } from '@/utils/string';
 import '../Coding/style.less';
-import { QuestionCircleOutlined, CaretRightOutlined, SearchOutlined, FullscreenOutlined, FullscreenExitOutlined } from '@ant-design/icons';
+import {
+  QuestionCircleOutlined,
+  CaretRightOutlined,
+  SearchOutlined,
+  FullscreenOutlined,
+  FullscreenExitOutlined,
+} from '@ant-design/icons';
 
 // const IconFont = createFromIconfontCN({
 //   scriptUrl: '//at.alicdn.com/t/font_2449607_3tn2o8mjobx.js',
@@ -42,10 +48,8 @@ class CodeEditor extends Component {
     else if (this.props.language[0] === 'Javascript') temp = 'javascript';
 
     let temp2;
-    if (!this.props.codeDefault)
-      temp2 = this.props.codeSample
-    else
-      temp2 = this.props.codeDefault
+    if (!this.props.codeDefault) temp2 = this.props.codeSample;
+    else temp2 = this.props.codeDefault;
     this.state = {
       codeVal: this.props.codeDefault === [] ? '' : temp2,
       customVal: '',
@@ -101,9 +105,9 @@ class CodeEditor extends Component {
       resolve();
     });
   handleRun = () => {
-    if (this.state.codeVal===null || this.state.codeVal == '') {
+    if (this.state.codeVal === null || this.state.codeVal == '') {
       this.setState({
-        codeVal: "",
+        codeVal: '',
       });
       notification.error({
         message: 'Hey Listen!',
@@ -114,7 +118,7 @@ class CodeEditor extends Component {
       return;
     }
     this.props.checkCustom(!this.state.showCustom);
-    this.handleSendCode(this.props.testCases[0].Input[0], this.props.testCases[0].Output[0]);
+    this.handleSendCode(this.props.testCases[0]?.Input[0], this.props.testCases[0]?.Output[0]);
   };
 
   handleThemeChange = (value) => {
@@ -216,16 +220,30 @@ class CodeEditor extends Component {
               <QuestionCircleOutlined />
             </a>
           </Tooltip>
-          
-     
-          
+
+          {
+            <Tooltip
+              placement={this.props.fullscreen ? 'left' : 'top'}
+              className={styles.fullscreenBtn}
+              title={this.props.fullscreen ? 'Exit Full Screen' : 'Fullscreen Mode'}
+            >
+              <Button
+                style={{ }}
+                type="primary"
+                icon={this.props.fullscreen ? <FullscreenExitOutlined /> : <FullscreenOutlined />}
+                onClick={() => {
+                  this.props.handleFullscreen();
+                }}
+              />
+            </Tooltip>
+          }
         </Space>
         <AceEditor
           ref={this.editorRef}
           tabSize={this.state.tabSize}
           style={{ whiteSpace: 'pre-wrap', border: 'solid #dcdcdc 1px' }}
           width="100%"
-          height={this.props.fullscreen?"560px":"386px"}
+          height={this.props.fullscreen ? '560px' : '386px'}
           showPrintMargin={false}
           showGutter
           value={this.state.codeVal}
@@ -244,7 +262,7 @@ class CodeEditor extends Component {
         <div className={styles.footer}>
           <Space className={styles.footer}>
             <Button
-            disabled={this.props.judgeLoading}
+              disabled={this.props.judgeLoading}
               size="large"
               className={styles.runBtn}
               type="primary"
@@ -255,21 +273,24 @@ class CodeEditor extends Component {
             </Button>
 
             <Checkbox
-            disabled={this.props.judgeLoading}
-            onChange={this.handleCheckBoxChange.bind(this)}>Custom Input</Checkbox>
+              disabled={this.props.judgeLoading}
+              onChange={this.handleCheckBoxChange.bind(this)}
+            >
+              Custom Input
+            </Checkbox>
           </Space>
           <Expand
             open={this.state.showCustom}
             duration={500}
-            transitions = {["height", "opacity", "background"]}
+            transitions={['height', 'opacity', 'background']}
           >
-              <TextArea
-                className={styles.customInput}
-                allowClear
-                onChange={this.handleCustomValChange.bind(this)}
-                placeholder="Put your custom input here."
-                row={4}
-              />
+            <TextArea
+              className={styles.customInput}
+              allowClear
+              onChange={this.handleCustomValChange.bind(this)}
+              placeholder="Put your custom input here."
+              row={4}
+            />
           </Expand>
         </div>
       </div>

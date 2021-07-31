@@ -107,6 +107,8 @@ if (getLocale() === 'vi-VN') Language = {
     'pages_test_testDetail_yes': 'Đồng ý',
     'pages_test_testDetail_no': 'Không',
     'pages_test_testDetail_submit': 'Nộp bài',
+    'pages_test_showQuestion': 'Hiển thị thông tin câu hỏi',
+    'pages_test_hideQuestion': "Ẩn thông tin câu hỏi",
 
     'pages_search_searchResult': 'Kết quả tìm kiếm',
     'pages_search_start': 'Bắt đầu',
@@ -258,6 +260,8 @@ else Language = {
     'pages_test_testDetail_submitSure': 'Are you sure to submit this test',
     'pages_test_testDetail_yes': 'Yes',
     'pages_test_testDetail_no': 'No',
+    'pages_test_showQuestion': "Show more question's information",
+    'pages_test_hideQuestion': "Hide question's information",
 
     'pages_search_searchResult': 'Search result',
     'pages_search_start': 'Start',

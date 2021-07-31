@@ -63,27 +63,18 @@ class SearchResult extends React.Component {
                       onClick={() => {
                         item.IsPractice
                           ? history.push({
-                            pathname: '/developer/practice/questions',
-                            search: `?listName=${encodeURIComponent(
-                              decodeURIComponent(item._Set + " Programming Set"),
-                            )}`,
-                            state: {
-                              BriefDescription: item.BriefDescription,
-                              DifficultLevel: item.DifficultLevel,
-                              ID: null,
-                              PercentSuccess: item.PercentSuccess,
-                              PracticeID: item.ID,
-                              PracticeName: item.Name,
-                              PracticeSet: item._Set,
-                              PracticeType: item.Type,
-                              Score: item.Score,
-                              SubmissionID: null
-                            },
-                          })
+                              pathname: '/developer/practice/questions',
+                              state: {
+                                id: item.ID,
+                                type: 'practice',
+                                listName: item._Set.concat(" Programming Set")
+                                
+                              },
+                            })
                           : history.push({
-                            pathname: '/developer/test/questions',
-                            state: { ID: item.ID },
-                          })
+                              pathname: '/developer/test/questions',
+                              state: { id: item.ID, name: item.Name, type:"test" },
+                            });
                       }}
                       style={{
                         // backgroundColor: 'white',
