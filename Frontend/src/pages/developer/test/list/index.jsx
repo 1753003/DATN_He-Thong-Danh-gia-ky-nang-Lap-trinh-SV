@@ -268,7 +268,7 @@ const TestSetList = ({ location, dispatch, testDev, loading }) => {
                   <Button size="large" style={{ width: '100px', marginRight: '10px' }} onClick = {() => {
                     history.push({
                       pathname: `/developer/test/rank`,
-                      state: item.ID
+                      state: {ID: item.ID, name: item.Name}
                     });
                   }}>
                       Ranking
