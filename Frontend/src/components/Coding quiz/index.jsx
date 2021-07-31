@@ -144,19 +144,10 @@ class Coding extends Component {
 
     return (
       <>
-       
-          <MDEditor.Markdown source={this.props.description.replaceAll('\\n', '\n')} />
-        
-        {this.props.codeSample == null ? (
-          ''
-        ) : (
-          <SyntaxHighlighter language="c" style={docco}>
-            {this.props.codeSample.replaceAll('\\n', '\n')}
-          </SyntaxHighlighter>
-        )}
         <Divider></Divider>
         <div className="code-editor">
           <CodeEditor
+            handleFullscreen={this.props.handleFullscreen}
             testCases={this.props.testCases}
             getCode={(value) => this.props.getCode(value)}
             codeDefault={this.props.codeDefault}

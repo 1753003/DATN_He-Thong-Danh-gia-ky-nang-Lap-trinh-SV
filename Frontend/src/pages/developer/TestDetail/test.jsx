@@ -10,6 +10,7 @@ import {
   Result,
   Popconfirm,
   notification,
+  Tooltip,
 } from 'antd';
 import { connect } from 'dva';
 import moment from 'moment';
@@ -23,7 +24,10 @@ import CryptoJS from 'crypto-js';
 import DiscusstionTab from '@/components/Discussions/DiscusstionTab';
 import MDEditor from '@uiw/react-md-editor';
 import PageLoading from '@/components/PageLoading';
+import { CaretDownOutlined, CaretUpOutlined } from '@ant-design/icons';
+
 const { TabPane } = Tabs;
+
 class TestDetail extends React.Component {
   state = {
     hours: undefined,
@@ -33,6 +37,8 @@ class TestDetail extends React.Component {
     check: false,
     error: false,
     start: false,
+    fullScreen: false,
+    showQuestion: false,
   };
 
   constructor(props) {
@@ -49,12 +55,11 @@ class TestDetail extends React.Component {
         var bytes = CryptoJS.AES.decrypt(temp, 'secret key 12345');
         var originalText = bytes.toString(CryptoJS.enc.Utf8);
 
-       
         id = originalText;
       }
     }
     this.state = { id: id };
-    console.log("ID:" ,id)
+    console.log('ID:', id);
     this.props.dispatch({ type: 'test/getTestInformation', payload: id });
   }
 
@@ -165,7 +170,7 @@ class TestDetail extends React.Component {
     const { answer, question } = this.props.test;
     try {
       if (answer[question].data === [] || answer[question].data === undefined) {
-        return ''
+        return '';
       }
       return answer[question].data;
     } catch (e) {
@@ -332,6 +337,16 @@ class TestDetail extends React.Component {
       );
   };
 
+  handleFullscreen = () => {
+    if (!this.state.fullScreen)
+      this.setState({
+        fullScreen: true,
+      });
+    else
+      this.setState({
+        fullScreen: false,
+      });
+  };
   returnCodeQuestion = () => (
     <Coding
       key={this.getQuestion()?.ID}
@@ -340,6 +355,10 @@ class TestDetail extends React.Component {
       language={this.getQuestion()?.Language_allowed}
       codeSample={this.getQuestion()?.CodeSample}
       codeDefault={this.getCodeAnswer(this.getQuestion()?.CodeSample)}
+      handleFullscreen={() => {
+        this.handleFullscreen();
+      }}
+      isFullScreen={this.state.fullScreen}
       getCode={(value) => {
         this.props.dispatch({
           type: 'test/updateAnswer',
@@ -380,42 +399,54 @@ class TestDetail extends React.Component {
             }
           />
         );
-      console.log(this.props.test.testInfo);
       if (this.props.test.testInfo.error != undefined) {
         if (this.props.test.testInfo.error == 'none') {
           const test = this.props.test.testInfo.generalInformation;
           return (
-
-            <Tabs className="custom" type="card" size="large" >
-          <TabPane tab="Information" key="1" className={styles.tabInfo}>
-          <>
-          <PageHeader
-              className="site-page-header"
-              title={test.TestName}
-              subTitle={test.Description}
-              onBack={() => history.goBack()}
-            />
-              <div className = {styles.tabInfoContent}>
-              <p><b>Time: </b>{test.TestTime}</p>
-              <p><b>Max Score: </b>{test.MaxScore}</p>
-              <p><b>Pass Score: </b>{test.PassScore}</p>
-              <hr />
-              <p><b>Note: </b> If you leave during the test, time will still be counted and your work will not be saved. </p>
-              <Button type="primary"
-                onClick={() => {
-                  this.handleStart();
-                }}
-              >
-                Start
-              </Button>
-              </div>
-            </>
-          </TabPane>
-          {this.props.location.state.type!=="undefined"&&<TabPane tab="Discussions" key="2">
-                <DiscusstionTab location = {this.props.location}></DiscusstionTab>
-          </TabPane>}
-        </Tabs>
-            
+            <Tabs className="custom" type="card" size="large">
+              <TabPane tab="Information" key="1" className={styles.tabInfo}>
+                <>
+                  <PageHeader
+                    className="site-page-header"
+                    title={test.TestName}
+                    subTitle={test.Description}
+                    onBack={() => history.goBack()}
+                  />
+                  <div className={styles.tabInfoContent}>
+                    <p>
+                      <b>Time: </b>
+                      {test.TestTime}
+                    </p>
+                    <p>
+                      <b>Max Score: </b>
+                      {test.MaxScore}
+                    </p>
+                    <p>
+                      <b>Pass Score: </b>
+                      {test.PassScore}
+                    </p>
+                    <hr />
+                    <p>
+                      <b>Note: </b> If you leave during the test, time will still be counted and
+                      your work will not be saved.{' '}
+                    </p>
+                    <Button
+                      type="primary"
+                      onClick={() => {
+                        this.handleStart();
+                      }}
+                    >
+                      Start
+                    </Button>
+                  </div>
+                </>
+              </TabPane>
+              {this.props.location.state.type !== 'undefined' && (
+                <TabPane tab="Discussions" key="2">
+                  <DiscusstionTab location={this.props.location}></DiscusstionTab>
+                </TabPane>
+              )}
+            </Tabs>
           );
         }
         return (
@@ -435,7 +466,7 @@ class TestDetail extends React.Component {
             }
           />
         );
-      } else return <PageLoading tip={Language.pages_test_testDetail_waitingThisTest}/>;
+      } else return <PageLoading tip={Language.pages_test_testDetail_waitingThisTest} />;
     } else {
       if (error)
         return (
@@ -581,81 +612,138 @@ class TestDetail extends React.Component {
                 </div>
               )}
             </div>
-
-            <Row className={styles.container}>
-              <Col span={1}></Col>
-              <Col span={15} className={styles.answer}>
-                {this.getData().generalInformation == undefined ? (
-                  <div className={styles.spin}>
-                    <PageLoading tip={Language.pages_test_testDetail_waitingATest} />
-                  </div>
-                ) : (
-                  <>
-                    <p>
-                      <b>
-                        <i>
+            {!this.state.fullScreen ? (
+              <Row className={styles.container}>
+                <Col span={1}></Col>
+                <Col span={15} className={styles.answer}>
+                  {this.getData().generalInformation == undefined ? (
+                    <div className={styles.spin}>
+                      <PageLoading tip={Language.pages_test_testDetail_waitingATest} />
+                    </div>
+                  ) : (
+                    <>
+                      <p>
+                        <b>
+                          <i>
+                            {Language.pages_test_testDetail_question}
+                            {this.props.test.question + 1}
+                          </i>
+                        </b>
+                      </p>
+                      <p>
+                        <b>{Language.pages_test_testDetail_score}</b> {this.getQuestion()?.Score}
+                      </p>
+                      <MDEditor.Markdown source={this.getQuestion()?.Description} />
+                      {this.getQuestion()?.CodeSample != null ? (
+                        <SyntaxHighlighter language="javascript" style={docco}>
+                          {this.getCodeSampleMC(this.getQuestion()?.CodeSample)}
+                        </SyntaxHighlighter>
+                      ) : (
+                        ''
+                      )}
+                      {this.getQuestion()?.QuestionType === 'Code' ? (
+                        <>{this.returnCodeQuestion()}</>
+                      ) : (
+                        <>{this.returnQuizQuestion()}</>
+                      )}
+                    </>
+                  )}
+                  <div className={styles.navigation}>{this.returnNavigateQuestion()}</div>
+                </Col>
+                <Col span={1}></Col>
+                <Col span={6}>
+                  <List
+                    header={
+                      <p>
+                        <b>{Language.pages_test_testDetail_listQuestion}</b>
+                      </p>
+                    }
+                    footer={
+                      <Popconfirm
+                        title="Are you sure to submit this test"
+                        onConfirm={() => {
+                          this.submit();
+                          const args = {
+                            message: 'Submit successful!',
+                            description: 'We recorded your submission!',
+                            duration: 0,
+                          };
+                          notification.open(args);
+                          history.push('/developer/test');
+                        }}
+                        okText="Yes"
+                        cancelText="No"
+                      >
+                        <Button type="primary">{Language.pages_test_testDetail_submit}</Button>
+                      </Popconfirm>
+                    }
+                    bordered
+                    dataSource={this.returnGridQuestion()}
+                    grid={{ column: 4 }}
+                    renderItem={(item) => <List.Item>{item}</List.Item>}
+                  />
+                </Col>
+              </Row>
+            ) : (
+              <>
+                <div>
+                  {this.getData().generalInformation == undefined ? (
+                    <div className={styles.spin}>
+                      <PageLoading tip={Language.pages_test_testDetail_waitingATest} />
+                    </div>
+                  ) : (
+                    <>
+                      <Tooltip
+                        title={
+                          !this.state.showQuestion
+                            ? Language.pages_test_showQuestion
+                            : Language.pages_test_hideQuestion
+                        }
+                      >
+                        <Button
+                          type="primary"
+                          icon={
+                            !this.state.showQuestion ? <CaretDownOutlined /> : <CaretUpOutlined />
+                          }
+                          style = {{marginLeft: '10px'}}
+                          onClick={() => {
+                            this.setState({
+                              showQuestion: !this.state.showQuestion,
+                            });
+                          }}
+                        >
                           {Language.pages_test_testDetail_question}
                           {this.props.test.question + 1}
-                        </i>
-                      </b>
-                    </p>
-                    <p>
-                      <b>{Language.pages_test_testDetail_score}</b> {this.getQuestion()?.Score}
-                    </p>
-                    {this.getQuestion()?.QuestionType === 'Code' ? (
-                      <>{this.returnCodeQuestion()}</>
-                    ) : (
-                      <>
-                        <MDEditor.Markdown source={this.getQuestion()?.Description} />
-                        
-                        {this.getQuestion()?.CodeSample != null ? (
-                          <SyntaxHighlighter language="javascript" style={docco}>
-                            {this.getCodeSampleMC(this.getQuestion()?.CodeSample)}
-                          </SyntaxHighlighter>
-                        ) : (
-                          ''
-                        )}
-                        {this.returnQuizQuestion()}
-                      </>
-                    )}
-                  </>
-                )}
-                <div className={styles.navigation}>{this.returnNavigateQuestion()}</div>
-              </Col>
-              <Col span={1}></Col>
-              <Col span={6}>
-                <List
-                  header={
-                    <p>
-                      <b>{Language.pages_test_testDetail_listQuestion}</b>
-                    </p>
-                  }
-                  footer={
-                    <Popconfirm
-                      title="Are you sure to submit this test"
-                      onConfirm={() => {
-                        this.submit();
-                        const args = {
-                          message: 'Submit successful!',
-                          description: 'We recorded your submission!',
-                          duration: 0,
-                        };
-                        notification.open(args);
-                        history.push('/developer/test');
-                      }}
-                      okText="Yes"
-                      cancelText="No"
-                    >
-                      <Button type="primary">{Language.pages_test_testDetail_submit}</Button>
-                    </Popconfirm>
-                  }
-                  bordered
-                  dataSource={this.returnGridQuestion()}
-                  grid={{ column: 4 }}
-                  renderItem={(item) => <List.Item>{item}</List.Item>}
-                />
-              </Col>
-            </Row>
+                        </Button>
+                      </Tooltip>
+                      {!this.state.showQuestion ? (
+                        ''
+                      ) : (
+                        <div className={styles.collapseQuestion}>
+                          <p>
+                            <b>{Language.pages_test_testDetail_score}</b>{' '}
+                            {this.getQuestion()?.Score}
+                          </p>
+                          <MDEditor.Markdown source={this.getQuestion()?.Description} />
+                          {this.getQuestion()?.CodeSample != null ? (
+                            <SyntaxHighlighter language="javascript" style={docco}>
+                              {this.getCodeSampleMC(this.getQuestion()?.CodeSample)}
+                            </SyntaxHighlighter>
+                          ) : (
+                            ''
+                          )}
+                        </div>
+                      )}
+                      {this.getQuestion()?.QuestionType === 'Code' ? (
+                        <>{this.returnCodeQuestion()}</>
+                      ) : (
+                        <>{this.returnQuizQuestion()}</>
+                      )}
+                    </>
+                  )}
+                </div>
+              </>
+            )}
           </div>
           <div></div>
         </div>
