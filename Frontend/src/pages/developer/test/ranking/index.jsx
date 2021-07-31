@@ -2,10 +2,11 @@ import React from 'react';
 import { connect } from 'dva';
 import { PageHeader, Table } from 'antd'
 import PageLoading from '@/components/PageLoading';
+import moment from 'moment';
 class Ranking extends React.Component {
     constructor(props) {
         super(props);
-        let id = props.location.state;
+        let id = props.location.state.ID;
         console.log(props.location.state)
         this.props.dispatch({
             type: 'testDev/fetchRankList',
@@ -47,7 +48,12 @@ class Ranking extends React.Component {
             },
             {
                 title: 'Date',
-                dataIndex: 'CreatedAt'
+                dataIndex: 'CreatedAt',
+                render: date => (
+                    <p>
+                        {moment(date).format("hh:mm:ss DD/MM/YYYY")}
+                    </p>
+                )
             },
         ]
     }
@@ -59,7 +65,7 @@ class Ranking extends React.Component {
                 <PageHeader
                     className="ranking-page-header"
                     title="Ranking"
-                    subTitle="Test ABC"
+                    subTitle={this.props.location.state.name}
                     onBack={() => history.goBack()}
                     />
                 <Table loading={{spinning:this.props.loading,indicator:<PageLoading/>}} style= {{width:'100%'}}columns={this.getColumns()} dataSource={this.getData()} />
