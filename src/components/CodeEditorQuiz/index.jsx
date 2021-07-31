@@ -27,7 +27,7 @@ import { Button, Checkbox, Input, notification, Select, Space , Tooltip} from 'a
 import { connect } from 'dva';
 import { u_btoa } from '@/utils/string';
 import '../Coding/style.less';
-import { QuestionCircleOutlined, CaretRightOutlined, SearchOutlined } from '@ant-design/icons';
+import { QuestionCircleOutlined, CaretRightOutlined, SearchOutlined, FullscreenOutlined, FullscreenExitOutlined } from '@ant-design/icons';
 
 // const IconFont = createFromIconfontCN({
 //   scriptUrl: '//at.alicdn.com/t/font_2449607_3tn2o8mjobx.js',
@@ -107,7 +107,7 @@ class CodeEditor extends Component {
       });
       notification.error({
         message: 'Hey Listen!',
-        description: 'Dont leave your code blank',
+        description: 'Edit the code before run',
         className: 'code-notification',
         type: 'error',
       });
@@ -216,13 +216,16 @@ class CodeEditor extends Component {
               <QuestionCircleOutlined />
             </a>
           </Tooltip>
+          
+     
+          
         </Space>
         <AceEditor
           ref={this.editorRef}
           tabSize={this.state.tabSize}
           style={{ whiteSpace: 'pre-wrap', border: 'solid #dcdcdc 1px' }}
           width="100%"
-          height="400px"
+          height={this.props.fullscreen?"560px":"386px"}
           showPrintMargin={false}
           showGutter
           value={this.state.codeVal}
@@ -265,7 +268,7 @@ class CodeEditor extends Component {
                 allowClear
                 onChange={this.handleCustomValChange.bind(this)}
                 placeholder="Put your custom input here."
-                autoSize={{ minRows: 3, maxRows: 5 }}
+                row={4}
               />
           </Expand>
         </div>
