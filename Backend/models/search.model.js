@@ -8,12 +8,12 @@ module.exports = {
         var isSubmission;
         if (item.IsPratice)
           isSubmission = (await db.raw(`select SubmissionID 
-                                          from Submissions 
+                                          from submissions 
                                           where PracticeID = '${item.ID}'
                                                 and DevID = '${uid}'`))[0]
         else
           isSubmission = (await db.raw(`select SubmissionID 
-                                        from Submissions 
+                                        from submissions 
                                         where TestID = '${item.ID}'
                                               and DevID = '${uid}'`))[0];
         console.log(isSubmission.length)

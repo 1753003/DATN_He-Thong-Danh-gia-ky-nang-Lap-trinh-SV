@@ -8,6 +8,7 @@
     width: 100%;
     padding-top: 5px;
     padding-bottom: 5px;
+    position: relative;
   }
   .footer{
     padding-top: 5px;
@@ -47,10 +48,11 @@
 .fullscreenBtn {
   // base style
   z-index: 1;
-  position: absolute;
   display: inline-block;
   border: none;
-
+  position: absolute;
+  right: 0;
+  top: 0;
   //
   @keyframes TransitioningBackground {
     0% {
@@ -85,7 +87,7 @@
     width: 60px;
     height: 100%;
     top: 0;
-    left: 0;
+    right: 0;
     filter: blur(30px);
     transform: translateX(-100px) skewX(-15deg);
   }

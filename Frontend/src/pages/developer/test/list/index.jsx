@@ -268,7 +268,7 @@ const TestSetList = ({ location, dispatch, testDev, loading }) => {
                   <Button size="large" style={{ width: '100px', marginRight: '10px' }} onClick = {() => {
                     history.push({
                       pathname: `/developer/test/rank`,
-                      state: {ID: item.ID, name: item.Name}
+                      state: {id: item.ID, type:"test", name: item.Name}
                     });
                   }}>
                       Ranking
@@ -277,7 +277,7 @@ const TestSetList = ({ location, dispatch, testDev, loading }) => {
                     <Button size="large" style={{ width: '100px' }}onClick={() => {
                       history.push({
                         pathname: '/developer/test/questions',
-                        state: {id:item.ID,type:"test"},
+                        state: {id:item.ID,type:"test", name: item.Name},
                       });
                     }}>
                       {Language.pages_practice_list_solved}
