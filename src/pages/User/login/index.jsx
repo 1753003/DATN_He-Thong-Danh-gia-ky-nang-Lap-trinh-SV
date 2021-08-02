@@ -123,7 +123,7 @@ const Login = (props) => {
         submitter={{
           render: (props, dom) => {
             // console.log(props)
-            return [<Button loading={submitting} block type="primary" key="submit" onClick={() =>props.form?.submit()}>Login</Button>]
+            return [<Button loading={submitting} block type="primary" key="submit" onClick={() =>props.form?.submit()}>{Language.home_login}</Button>]
           },
         }}
         onFinish={(values) => {

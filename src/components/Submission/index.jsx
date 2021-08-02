@@ -4,6 +4,7 @@ import { connect } from 'dva';
 import SubmissionDetail from '../SubmissionDetail';
 import { SmileOutlined } from '@ant-design/icons';
 import PageLoading from '../PageLoading';
+import Language from '@/locales/index';
 const { Column } = Table;
 
 let data = [];
@@ -11,7 +12,7 @@ let data = [];
 const customizeRenderEmpty = () => (
   <div style={{ textAlign: 'center' }}>
     <SmileOutlined style={{ fontSize: 20 }} />
-    <p>No Submissions Found. Let do some practice!</p>
+    <p>{Language.noSubmission}</p>
   </div>
 );
 
@@ -49,7 +50,7 @@ const Submission = ({ dispatch, practice, loading }) => {
               <Table loading={{spinning:loading,indicator:<PageLoading/>}} dataSource={data}>
                 <Column title="" dataIndex="key" key="no" />
                 <Column
-                  title="RESULT"
+                  title={Language.result}
                   key="result"
                   render={(text, record) => (
                     <>
@@ -59,15 +60,15 @@ const Submission = ({ dispatch, practice, loading }) => {
                     </>
                   )}
                 />
-                <Column title="SCORE" dataIndex="Score" key="score" />
-                <Column title="TYPE" dataIndex="SubmissionType" key="type" />
+                <Column title={Language.score} dataIndex="Score" key="score" />
+                <Column title={Language.type} dataIndex="SubmissionType" key="type" />
                 {/* <Column title="TIME" dataIndex="DoingTime" key="time" /> */}
                 <Column
                   title=""
                   key="action"
                   render={(text, record) => (
                     <Space size="middle">
-                      <a onClick={() => handleOnclick(record)}>View Details</a>
+                      <a onClick={() => handleOnclick(record)}>{Language.viewDetails}</a>
                     </Space>
                   )}
                 />
