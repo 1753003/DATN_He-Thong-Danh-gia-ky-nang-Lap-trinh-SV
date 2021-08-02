@@ -6,6 +6,7 @@ import PageLoading from '../PageLoading';
 import ReplyEditor from './ReplyEditor';
 import moment from 'moment';
 import Expand from 'react-expand-animated';
+import Language from '@/locales/index';
 import './style.less';
 // import ReactComment from './ReactComment';
 import { CaretDownOutlined, CaretUpOutlined, EditOutlined, SmileOutlined } from '@ant-design/icons';
@@ -13,7 +14,7 @@ import { CaretDownOutlined, CaretUpOutlined, EditOutlined, SmileOutlined } from 
 const customizeRenderEmpty = () => (
   <div style={{ textAlign: 'center' }}>
     <SmileOutlined rotate={180} style={{ fontSize: 20 }} />
-    <p>Oops, seem like a bit silent here. Let make some noise!</p>
+    <p>{Language.oops}</p>
   </div>
 );
 const CommentList = ({ data, dispatch, id, type }) => {
@@ -64,14 +65,14 @@ const CommentList = ({ data, dispatch, id, type }) => {
                 {data.children.length > 0 ? (
                 <span   onClick={() => handleViewReply()}>
                   
-                  {viewReply ? <CaretUpOutlined>Hide Reply</CaretUpOutlined> : <CaretDownOutlined>View Reply</CaretDownOutlined>}
-                  {viewReply ? 'Hide Reply' : 'View Reply'}
+                  {viewReply ? <CaretUpOutlined>{Language.hideReply}</CaretUpOutlined> : <CaretDownOutlined>{Language.viewReply}</CaretDownOutlined>}
+                  {viewReply ? `${Language.hideReply}` : `${Language.viewReply}`}
                 </span>
               ) : null}
               {!showReplyTo && (
                 <span  key="comment-nested-reply-to" onClick={() => replyComment(data.id)}>
                   <EditOutlined></EditOutlined>
-                  {'Reply To'}
+                  {Language.reply}
                 </span>
               )}
               </Space>
