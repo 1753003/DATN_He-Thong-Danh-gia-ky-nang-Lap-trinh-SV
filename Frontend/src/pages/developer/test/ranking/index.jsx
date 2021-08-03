@@ -1,12 +1,14 @@
 import React from 'react';
 import { connect } from 'dva';
+import { history } from 'umi';
 import { PageHeader, Table } from 'antd'
 import PageLoading from '@/components/PageLoading';
 import moment from 'moment';
+import Language from '@/locales/index';
 class Ranking extends React.Component {
     constructor(props) {
         super(props);
-        let id = props.location.state.ID;
+        let id = props.location.state.id;
         console.log(props.location.state)
         this.props.dispatch({
             type: 'testDev/fetchRankList',
@@ -27,27 +29,27 @@ class Ranking extends React.Component {
     getColumns = () => {
         return [
             {
-                title: 'No',
+                title: `${Language.ranking_no}`,
                 dataIndex: 'key'
             },
             {
-                title: 'Username',
+                title: `${Language.ranking_username}`,
                 dataIndex: 'UserName',
             },
             {
-                title: 'Doing Time',
+                title: `${Language.ranking_doingTime}`,
                 dataIndex: 'DoingTime'
             },
             {
-                title: 'Score',
+                title: `${Language.ranking_score}`,
                 dataIndex: 'Score'
             },  
             {
-                title: 'Correct Percent (%)',
+                title: `${Language.ranking_correctPer}`,
                 dataIndex: 'CorrectPercent'
             },
             {
-                title: 'Date',
+                title: `${Language.ranking_date}`,
                 dataIndex: 'CreatedAt',
                 render: date => (
                     <p>
@@ -64,7 +66,7 @@ class Ranking extends React.Component {
             <>
                 <PageHeader
                     className="ranking-page-header"
-                    title="Ranking"
+                    title={Language.pages_test_ranking}
                     subTitle={this.props.location.state.name}
                     onBack={() => history.goBack()}
                     />

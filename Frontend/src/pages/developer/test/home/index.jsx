@@ -22,7 +22,7 @@ import { MailOutlined } from '@ant-design/icons';
 const customizeRenderEmpty = () => (
   <div style={{ textAlign: 'center' }}>
     <MailOutlined rotate={180} style={{ fontSize: 20 }} />
-    <p>You have no invitation!</p>
+    <p>{Language.pages_test_noInvite}</p>
   </div>
 );
 const data = [
@@ -48,7 +48,7 @@ const testHome = ({ dispatch, status, inviteList }) => {
   useEffect(() => {
     if (status === -1)
       notification.open({
-        description: 'Your have enter wrong PIN code!',
+        description: `${Language.pages_test_wrongCode}`,
         className: 'code-notification',
         type: 'error',
       });
@@ -65,7 +65,7 @@ const testHome = ({ dispatch, status, inviteList }) => {
   const handleSubmit = (e) => {
     if (value === '')
       notification.open({
-        description: 'Your have not enter PIN code!',
+        description: `${Language.pages_test_noCode}`,
         type: 'warning',
       });
     dispatch({
@@ -103,7 +103,7 @@ const testHome = ({ dispatch, status, inviteList }) => {
             styles={{ boxShadow: '0 1px 2px rgba(24, 144, 255, .4)' }}
           >
             <Typography.Title level={2}>
-              <Texty>Invitations List:</Texty>
+              <Texty>{Language.pages_test_inviteList}</Texty>
             </Typography.Title>
             <ConfigProvider renderEmpty={customizeRenderEmpty}>
               <List
