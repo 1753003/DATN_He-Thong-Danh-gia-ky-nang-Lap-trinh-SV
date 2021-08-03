@@ -1,6 +1,8 @@
 import { getLocale } from 'umi';
 var Language;
 if (getLocale() === 'vi-VN') Language = {
+    'welcome': 'Chào mừng đến với CodeJoy',
+
     'home_home': 'Trang chủ',
     'home_introduce': 'Giới thiệu',
     'home_signOut': 'Đăng xuất',
@@ -85,6 +87,11 @@ if (getLocale() === 'vi-VN') Language = {
     'pages_practice_questions_author': 'Tác giả',
     'pages_practice_questions_difficulty': 'Độ khó',
     'pages_practice_questions_maxScore': 'Điểm tối đa',
+    'pages_practice_notFinish': 'Bạn đã không hoàn thành hết câu hỏi',
+    'pages_practice_submitted': 'Bài luyện tập đã được nộp thành công',
+    'pages_practice_receive': "Chúng tôi đã nhận và xử lý bài nộp của bạn. Bạn có thể xem thông tin gửi chi tiết của mình trong tab 'Submission' ",
+    'pages_practice_contact': 'Nếu bạn có bất cứ điều gì muốn góp ý với chúng tôi, bạn có thể liên hệ theo địa chỉ codejoy@codejoy.com ',
+    'pages_practice_blank': 'Vui lòng không để trống bài làm',
 
     'pages_test_home_enterPinCode': 'NHẬP VÀO MÃ PIN CỦA BẠN',
     'pages_test_home_join': 'THAM GIA',
@@ -109,6 +116,11 @@ if (getLocale() === 'vi-VN') Language = {
     'pages_test_testDetail_submit': 'Nộp bài',
     'pages_test_showQuestion': 'Hiển thị thông tin câu hỏi',
     'pages_test_hideQuestion': "Ẩn thông tin câu hỏi",
+    'pages_test_wrongCode': 'Bạn đã nhập sai mã PIN!',
+    'pages_test_noCode': 'Vui lòng nhập mã PIN!',
+    'pages_test_inviteList': 'Danh sách lời mời',
+    'pages_test_noInvite': 'Bạn không có lời mời nào!',
+    'pages_test_ranking': 'Xếp hạng',
 
     'pages_search_searchResult': 'Kết quả tìm kiếm',
     'pages_search_start': 'Bắt đầu',
@@ -175,8 +187,17 @@ if (getLocale() === 'vi-VN') Language = {
     'sd_submittedAns': 'Câu trả lời đã nộp',
     'sd_yourAns': 'Câu trả lời của bạn:',
     'sd_correctPer': 'Phần trăm chính xác',
+
+    'ranking_date': 'Ngày',
+    'ranking_correctPer': 'Phần trăm chính xác (%)',
+    'ranking_doingTime': 'Thời gian làm bài',
+    'ranking_username': 'Tài khoản',
+    'ranking_no': 'STT',
+    'ranking_score': 'Điểm',
 };
 else Language = {
+    'welcome': 'Welcome to CodeJoy',
+
     'home_home': 'Home',
     'home_introduce': 'Introduce',
     'home_signOut': 'Sign out',
@@ -260,6 +281,11 @@ else Language = {
     'pages_practice_questions_author': 'Author',
     'pages_practice_questions_difficulty': 'Difficulty',
     'pages_practice_questions_maxScore': 'Max score',
+    'pages_practice_notFinish': 'You have not finished all question',
+    'pages_practice_submitted': 'Practice submitted successfully',
+    'pages_practice_receive': "We have received and processed your submission. You can view your detail submission in 'Submission' Tab",
+    'pages_practice_contact': 'If you have anything to tell us, you can feel free to contact at codejoy@codejoy.com',
+    'page_practice_blank': 'Do not leave your practice blank',
 
     'pages_test_home_enterPinCode': 'ENTER YOUR PIN CODE',
     'pages_test_home_join': 'JOIN',
@@ -284,6 +310,11 @@ else Language = {
     'pages_test_testDetail_no': 'No',
     'pages_test_showQuestion': "Show more question's information",
     'pages_test_hideQuestion': "Hide question's information",
+    'pages_test_wrongCode': 'You have entered wrong PIN code!',
+    'pages_test_noCode': 'Please enter PIN code!',
+    'pages_test_inviteList': 'Invitations List',
+    'pages_test_noInvite': 'You have no invitation!',
+    'pages_test_ranking': 'Ranking',
 
     'pages_search_searchResult': 'Search result',
     'pages_search_start': 'Start',
@@ -350,6 +381,13 @@ else Language = {
     'sd_submittedAns': 'Submitted answer',
     'sd_yourAns': 'Your answer:',
     'sd_correctPer': 'Correct percent',
+
+    'ranking_date': 'Date',
+    'ranking_correctPer': 'Correct Percent (%)',
+    'ranking_doingTime': 'Doing Time',
+    'ranking_username': 'Username',
+    'ranking_no': 'No',
+    'ranking_score': 'Score',
 };
 
 export default Language;

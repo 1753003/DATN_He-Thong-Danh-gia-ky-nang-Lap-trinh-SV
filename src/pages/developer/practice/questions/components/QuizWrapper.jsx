@@ -15,6 +15,7 @@ import { connect } from 'dva';
 import PageLoading from '@/components/PageLoading';
 import styles from './style.less';
 import MDEditor from '@uiw/react-md-editor';
+import Language from '@/locales/index';
 
 const { confirm, warning } = Modal;
 const CheckboxGroup = Checkbox.Group;
@@ -36,7 +37,7 @@ const QuestionGrid = ({ list, onSelectedGrid, handleSubmit }) => {
       })}
     </div>
       <Button type="primary" block onClick={() => handleSubmit()}>
-        Submit
+        {Language.pages_test_testDetail_submit}
       </Button>
       </div>
   );
@@ -94,14 +95,14 @@ const QuizWrapper = ({ pLength, pid, submitResponse, dispatch, data, loading }) 
   const handleSubmit = () => {
     if (Object.keys(userChoice).length===0)
     warning({
-      title: "Don't leave your practice blank.",
+      title: `${Language.pages_practice_blank}`,
     });
     else if (data && data.listQuestion.length > Object.keys(userChoice).length)
-      confirm({
-        title: 'You have not finished all question.',
+      Modal.confirm({
+        title: `${Language.pages_practice_notFinish}`,
         icon: <ExclamationCircleOutlined />,
-        content: 'Do you want to Submit?',
-        okText: 'Submit',
+        content: `${Language.pages_test_testDetail_submitSure}`,
+        okText: `${Language.pages_test_testDetail_submit}`,
         onOk() {
           dispatch({
             type: 'practice/submitAnswerMultipleChoice',
@@ -136,7 +137,7 @@ const QuizWrapper = ({ pLength, pid, submitResponse, dispatch, data, loading }) 
         <Divider></Divider>
         <Space>
           <Button disabled={backState} type="primary" onClick={() => onBack()}>
-            Back
+            {Language.pages_test_testDetail_back}
           </Button>
           <Select className={styles.list} onChange={onSelectedGrid} value={currentQuestionID}>
             {data?.listQuestion.map((item, i) => {
@@ -144,7 +145,7 @@ const QuizWrapper = ({ pLength, pid, submitResponse, dispatch, data, loading }) 
             })}
           </Select>
           <Button disabled={nextState} type="primary" onClick={() => onNext()}>
-            Next
+            {Language.pages_test_testDetail_next}
           </Button>
         </Space>
       </Col>
@@ -158,7 +159,7 @@ const QuizWrapper = ({ pLength, pid, submitResponse, dispatch, data, loading }) 
     </Row>
   ) : (
     <div>
-      <h2>Practice submitted successfully. </h2>
+      <h2>{Language.pages_practice_submitted}</h2>
       <h3
         style={
           submitResponse.filter(function(e) {
@@ -168,10 +169,9 @@ const QuizWrapper = ({ pLength, pid, submitResponse, dispatch, data, loading }) 
         return e > 0}).length} / ${data.listQuestion.length} correct questions`}</h3>
       <Divider></Divider>
       <p>
-        We have received and processed your submission. You can view your detail submission in
-        "Submission" Tab
+        {Language.pages_practice_receive}
       </p>
-      <p>If you have anything to tell us, you can feel free to contact at codejoy@codejoy.com</p>
+      <p>{Language.pages_practice_contact}</p>
     </div>
   );
 };
