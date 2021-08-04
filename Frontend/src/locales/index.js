@@ -65,7 +65,7 @@ if (getLocale() === 'vi-VN') Language = {
     'pages_welcome_hiDev': 'Xin chào lập trình viên',
     'pages_welcome_whatToDoing': 'Bạn dự định làm gì ?',
     'pages_welcome_testSet': 'Bài kiểm tra đang chờ bạn',
-    'pages_welcome_practice': "Thực hành",
+    'pages_welcome_practice': "Luyện tập",
     'pages_welcome_test': 'Kiểm tra',
 
     'pages_practice_title': 'Có chí thì nên',
@@ -124,6 +124,10 @@ if (getLocale() === 'vi-VN') Language = {
 
     'pages_search_searchResult': 'Kết quả tìm kiếm',
     'pages_search_start': 'Bắt đầu',
+    'pages_search_about': 'Khoảng',
+    'pages_search_result': 'kết quả (s)',
+    'pages_search_noResult': 'Chúng tôi không tìm thấy kết quả nào.',
+    'pages_search_maybe': 'Bạn nên thử tìm kiếm với từ khóa khác',
 
     'pages_guest_introduction_getStarted': 'Bắt đầu',
     'pages_guest_introduction_aboutUs': 'Về chúng tôi',
@@ -194,6 +198,23 @@ if (getLocale() === 'vi-VN') Language = {
     'ranking_username': 'Tài khoản',
     'ranking_no': 'STT',
     'ranking_score': 'Điểm',
+
+    'test_info': 'Thông tin',
+    'test_diss': 'Bàn luận',
+    'test_wrongLink': 'Đường dẫn sai!',
+    'test_time': 'Thời gian: ',
+    'test_maxScore': 'Điểm tối đa: ',
+    'test_passScore': 'Điểm cần đạt: ',
+    'test_note': 'Chú ý: ',
+    'test_ifU': 'Nếu bạn rời đi trong khi kiểm tra, thời gian sẽ vẫn được tính và bài làm của bạn sẽ không được lưu ',
+    'test_start': 'Bắt đầu',
+    'test_noPermission': 'Bạn không có quyền truy cập bài kiểm tra này',
+    'test_error': 'Có lỗi!',
+    'test_sure': 'Bạn chắc chắn muốn nộp bài kiểm tra này?',
+    'test_success': 'Nộp bài thành công!',
+    'test_record': 'Chúng tôi đã ghi nhận bài nộp của bạn!',
+    'test_yes': 'Đồng ý',
+    'test_no': 'Không',
 };
 else Language = {
     'welcome': 'Welcome to CodeJoy',
@@ -318,6 +339,10 @@ else Language = {
 
     'pages_search_searchResult': 'Search result',
     'pages_search_start': 'Start',
+    'pages_search_about': 'About',
+    'pages_search_result': 'result(s)',
+    'pages_search_noResult': 'Hmm, we are not getting any results.',
+    'pages_search_maybe': 'Maybe you should try another search',
 
     'pages_guest_introduction_getStarted': ' Get Started ',
     'pages_guest_introduction_aboutUs': 'About Us',
@@ -388,6 +413,24 @@ else Language = {
     'ranking_username': 'Username',
     'ranking_no': 'No',
     'ranking_score': 'Score',
+
+    'test_info': 'Information',
+    'test_diss': 'Discussion',
+    'test_wrongLink': 'Your link is wrong!',
+    'test_time': 'Time: ',
+    'test_maxScore': 'Max Score: ',
+    'test_passScore': 'Pass Score: ',
+    'test_note': 'Note: ',
+    'test_ifU': 'If you leave during the test, time will still be counted and your work will not be saved.',
+    'test_start': 'Start',
+    'test_noPermission': 'You do not have permission to access this test',
+    'test_error': 'Some error!',
+    'test_sure': 'Are you sure to submit this test?',
+    'test_success': 'Submit successful!',
+    'test_record': 'We recorded your submission!',
+    'test_yes': 'Yes',
+    'test_no': 'No',
+
 };
 
 export default Language;

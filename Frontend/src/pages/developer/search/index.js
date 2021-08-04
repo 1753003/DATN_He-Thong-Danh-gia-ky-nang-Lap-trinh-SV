@@ -21,8 +21,8 @@ const customizeRenderEmpty = () => (
   <div style={{ textAlign: 'center' }}>
     <SearchOutlined style={{ fontSize: '64px' }} />
     <p>
-      Hmm, we're not getting any results.
-      <br /> Maybe you should try another search
+      {Language.pages_search_noResult}
+      <br /> {Language.pages_search_maybe}
     </p>
   </div>
 );
@@ -38,7 +38,7 @@ class SearchResult extends React.Component {
             {Language.pages_search_searchResult} "{this.props.search.keyword}"
           </Typography.Title>
           <Typography.Text type="secondary">
-            About {this.props.search.filterList.length} result(s)
+            {Language.pages_search_about} {this.props.search.filterList.length} {Language.pages_search_result}
           </Typography.Text>
         </div>
         <Divider></Divider>
@@ -123,9 +123,9 @@ class SearchResult extends React.Component {
                           </Tag>
                           <br />
                           {item.IsPractice ? (
-                            <Tag color="#467ab8">Practice</Tag>
+                            <Tag color="#467ab8">{Language.pages_welcome_practice}</Tag>
                           ) : (
-                            <Tag color="#27a3c8">Test</Tag>
+                            <Tag color="#27a3c8">{Language.pages_welcome_test}</Tag>
                           )}
                         </Col>
                         <Col>

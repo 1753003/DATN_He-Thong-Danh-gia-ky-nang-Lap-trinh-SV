@@ -141,7 +141,7 @@ class TestDetail extends React.Component {
   }
   handleUnload(e) {
     var message =
-      'Your test will be submit and you will not have a second chance, are you sure to leave?';
+      `${Language.pages_test_testDetail_testWillBeSubmit}`;
 
     (e || window.event).returnValue = message; //Gecko + IE
     return message;
@@ -384,7 +384,7 @@ class TestDetail extends React.Component {
       if (this.state.id == '  ')
         return (
           <Result
-            title="Your link is wrong!"
+            title={Language.wrongLink}
             extra={
               <Button
                 type="primary"
@@ -404,7 +404,7 @@ class TestDetail extends React.Component {
           const test = this.props.test.testInfo.generalInformation;
           return (
             <Tabs className="custom" type="card" size="large">
-              <TabPane tab="Information" key="1" className={styles.tabInfo}>
+              <TabPane tab={Language.test_info} key="1" className={styles.tabInfo}>
                 <>
                   <PageHeader
                     className="site-page-header"
@@ -414,21 +414,20 @@ class TestDetail extends React.Component {
                   />
                   <div className={styles.tabInfoContent}>
                     <p>
-                      <b>Time: </b>
+                      <b>{Language.test_time}</b>
                       {test.TestTime}
                     </p>
                     <p>
-                      <b>Max Score: </b>
+                      <b>{Language.test_maxScore}</b>
                       {test.MaxScore}
                     </p>
                     <p>
-                      <b>Pass Score: </b>
+                      <b>{Language.test_passScore}</b>
                       {test.PassScore}
                     </p>
                     <hr />
                     <p>
-                      <b>Note: </b> If you leave during the test, time will still be counted and
-                      your work will not be saved.{' '}
+                      <b>{Language.test_note}</b> {Language.test_ifU}{' '}
                     </p>
                     <Button
                       type="primary"
@@ -436,13 +435,13 @@ class TestDetail extends React.Component {
                         this.handleStart();
                       }}
                     >
-                      Start
+                      {Language.test_start}
                     </Button>
                   </div>
                 </>
               </TabPane>
               {this.props.location.state.type !== 'undefined' && (
-                <TabPane tab="Discussions" key="2">
+                <TabPane tab={Language.test_diss} key="2">
                   <DiscusstionTab location={this.props.location}></DiscusstionTab>
                 </TabPane>
               )}
@@ -451,7 +450,7 @@ class TestDetail extends React.Component {
         }
         return (
           <Result
-            title="You do not have permission to access this test"
+            title={Language.test_noPermission}
             extra={
               <Button
                 type="primary"
@@ -471,7 +470,7 @@ class TestDetail extends React.Component {
       if (error)
         return (
           <Result
-            title="Some error!"
+            title={Language.test_error}
             extra={
               <Button
                 type="primary"
@@ -493,7 +492,7 @@ class TestDetail extends React.Component {
       if (!this.props.test.isValid) {
         return (
           <Result
-            title="Your link is wrong!"
+            title={Language.test_wrongLink}
             extra={
               <Button
                 type="primary"
@@ -512,7 +511,7 @@ class TestDetail extends React.Component {
       if (!this.props.test.permission) {
         return (
           <Result
-            title="You do not have permission to access this test"
+            title={Language.test_noPermission}
             extra={
               <Button
                 type="primary"
@@ -660,19 +659,19 @@ class TestDetail extends React.Component {
                     }
                     footer={
                       <Popconfirm
-                        title="Are you sure to submit this test"
+                        title={Language.test_sure}
                         onConfirm={() => {
                           this.submit();
                           const args = {
-                            message: 'Submit successful!',
-                            description: 'We recorded your submission!',
+                            message: `${Language.test_success}`,
+                            description: `${Language.test_record}`,
                             duration: 0,
                           };
                           notification.open(args);
                           history.push('/developer/test');
                         }}
-                        okText="Yes"
-                        cancelText="No"
+                        okText={Language.test_yes}
+                        cancelText={Language.test_no}
                       >
                         <Button type="primary">{Language.pages_test_testDetail_submit}</Button>
                       </Popconfirm>
