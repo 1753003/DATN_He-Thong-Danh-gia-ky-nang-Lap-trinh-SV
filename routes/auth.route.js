@@ -30,7 +30,7 @@ router.post("/signup", async function (req, res) {
     .createUserWithEmailAndPassword(req.body.email, req.body.password)
     .then(async (userCredential) => {
       // Signed in
-      console.log('ABC')
+      console.log("ABC");
       var user = userCredential.user;
       user
         .sendEmailVerification()
@@ -68,13 +68,13 @@ router.post("/signup", async function (req, res) {
     })
     .catch((error) => {
       check = 1;
-      
+
       errorMessage = error.message;
-      console.log("error: ", errorMessage); 
+      console.log("error: ", errorMessage);
       res.json({
         status: "Fail",
         message: errorMessage,
-      });       
+      });
     });
 });
 
@@ -235,7 +235,7 @@ router.post("/loginFacebook", async function (req, res) {
         "developer",
         "active",
         req.body.DevImage,
-        req.body.Name
+        req.body.DevName,
       );
     else if (type === "creator")
       await userModel.createUserCreator(
@@ -246,6 +246,7 @@ router.post("/loginFacebook", async function (req, res) {
         req.body.DevImage,
         req.body.Name
       );
+    await userModel.updateRefreshToken(refreshToken);
   }
 
   const result = {
@@ -260,31 +261,32 @@ router.post("/loginFacebook", async function (req, res) {
 router.post("/loginGoogle", async function (req, res) {
   const uid = req.body.UserID;
   const user = await userModel.getByUID(uid);
-
-  var accessToken = jwt.sign(
-    {
-      uid: uid,
-      type: user.UserType,
-    },
-    "secretkeyy",
-    {
-      expiresIn: "1d",
-    }
-  );
-
-  var refreshToken = jwt.sign(
-    {
-      uid: uid,
-    },
-    "secretkeyy",
-    {
-      expiresIn: "7d",
-    }
-  );
+  console.log(req.body);
   var result;
-  
-  if (user == null || user == undefined) {
+
+  if (!user) {
     const type = req.body.UserType;
+    let accessToken = jwt.sign(
+      {
+        uid: uid,
+        type: type,
+      },
+      "secretkeyy",
+      {
+        expiresIn: "1d",
+      }
+    );
+
+    let refreshToken = jwt.sign(
+      {
+        uid: uid,
+      },
+      "secretkeyy",
+      {
+        expiresIn: "7d",
+      }
+    );
+
     if (type === "developer")
       await userModel.createUserDeveloper(
         uid,
@@ -292,7 +294,7 @@ router.post("/loginGoogle", async function (req, res) {
         "developer",
         "active",
         req.body.DevImage,
-        req.body.Name
+        req.body.DevName
       );
     else if (type === "creator")
       await userModel.createUserCreator(
@@ -301,9 +303,9 @@ router.post("/loginGoogle", async function (req, res) {
         "creator",
         "active",
         req.body.DevImage,
-        req.body.Name
+        req.body.DevName
       );
-    
+
     result = {
       status: "OK",
       message: {
@@ -312,12 +314,37 @@ router.post("/loginGoogle", async function (req, res) {
         type: req.body.UserType,
       },
     };
-  } else if (user.UserStatus === "lock")
+
+    await userModel.updateRefreshToken(uid, refreshToken);
+  } 
+  else if (user.UserStatus === "lock") {
     result = {
       status: "error",
       message: "Your email has been locked, please contact admin for more.",
     };
-  else if (user.UserStatus === "active")
+  }
+  else {
+    let accessToken = jwt.sign(
+      {
+        uid: uid,
+        type: user.UserType,
+      },
+      "secretkeyy",
+      {
+        expiresIn: "1d",
+      }
+    );
+
+    let refreshToken = jwt.sign(
+      {
+        uid: uid,
+      },
+      "secretkeyy",
+      {
+        expiresIn: "7d",
+      }
+    );
+
     result = {
       status: "OK",
       message: {
@@ -326,7 +353,9 @@ router.post("/loginGoogle", async function (req, res) {
         type: req.body.UserType,
       },
     };
-  await userModel.updateRefreshToken(uid, refreshToken);
+    await userModel.updateRefreshToken(uid, refreshToken);
+    
+  }
   res.json(result);
 });
 
