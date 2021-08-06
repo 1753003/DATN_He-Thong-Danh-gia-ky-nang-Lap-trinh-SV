@@ -1,7 +1,7 @@
 const db = require('../utils/db');
 
 module.exports = {
-  async createUserDeveloper(uid, email, type, status, image, name ) {
+  async createUserDeveloper(uid, email, type, status, image, name) {
     await db('userlogin').insert({
         UserID: uid,
         UserName: email,
@@ -13,7 +13,7 @@ module.exports = {
       UserID: uid,
       DevImage: image,
       DevName: name,
-      DevMail: email
+      DevMail: email,
     })
     return uid;
   },
