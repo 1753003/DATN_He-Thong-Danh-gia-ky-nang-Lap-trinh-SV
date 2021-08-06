@@ -271,7 +271,7 @@ const TestSetList = ({ location, dispatch, testDev, loading }) => {
                       state: {id: item.ID, type:"test", name: item.Name}
                     });
                   }}>
-                      Ranking
+                      {Language.pages_test_ranking}
                     </Button>
                   {item.SubmissionID != null && (
                     <Button size="large" style={{ width: '100px' }}onClick={() => {

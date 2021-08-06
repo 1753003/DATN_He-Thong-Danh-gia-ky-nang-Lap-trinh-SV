@@ -26,7 +26,7 @@ class Home extends React.PureComponent {
   }
   render() {
     return (
-      <DocumentTitle title="Welcome to Codejoy">
+      <DocumentTitle title={Language.welcome}>
           <div className="home-wrapper">
             <Banner isMobile={this.state.isMobile} />
           </div>

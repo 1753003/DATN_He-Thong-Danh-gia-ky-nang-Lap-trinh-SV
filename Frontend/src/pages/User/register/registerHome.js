@@ -77,7 +77,7 @@ class RegisterHomepage extends React.Component {
                                     marginTop: '20px',
                                     fontSize: '18px'
                                 }}>
-                                    {Language.pages_registerHome_alreadySignUp} <a href="user/login">{Language.home_login} {Language.pages_registerHome_now}</a>
+                                    {Language.pages_registerHome_alreadySignUp} <a href="/user/login">{Language.home_login} {Language.pages_registerHome_now}</a>
                                 </div>
                             </Col>
                             

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { CheckCircleTwoTone, CloseCircleTwoTone } from '@ant-design/icons';
 import AceEditor from 'react-ace';
 import styles from './style.less';
+import Language from '@/locales/index';
 // import 'brace/mode/javascript';
 // import 'brace/mode/c_cpp';
 // import 'brace/mode/java';
@@ -85,7 +86,7 @@ const SubmissionDetail = ({ dispatch, data, listQuestion, loading }) => {
             >
               {res.compile_output != '' && (
                 <>
-                  {<h3>Compiler Message</h3>}
+                  {<h3>{Language.sd_compiler}</h3>}
                   {editor(u_atob(res.compile_output))}
                 </>
               )}
@@ -97,13 +98,13 @@ const SubmissionDetail = ({ dispatch, data, listQuestion, loading }) => {
               )}
               {res.expected_output != '' && (
                 <>
-                  <h3>Expected Output</h3>
+                  <h3>{Language.sd_exOutput}</h3>
                   {editor(res.expected_output)}
                 </>
               )}
               {res.stdout != '' && (
                 <>
-                  <h3>Your Ourput</h3>
+                  <h3>{Language.sd_exOutput}</h3>
                   {editor(u_atob(res.stdout))}
                 </>
               )}
@@ -126,36 +127,36 @@ const SubmissionDetail = ({ dispatch, data, listQuestion, loading }) => {
                 payload: null,
               });
             }}
-            title="Back to Your Submmission List"
+            title={Language.sd_back}
           />
           <Typography.Text>
-            Submitted at{' '}
+            {Language.sd_submitted}{' '}
             {moment(data.info.CreatedAt).locale('en').format('MMMM Do YYYY, h:mm:ss a')}
           </Typography.Text>
           <Row>
             <Col span={12}>
-              <Tooltip placement="topLeft" title="This is calculated using total questions number.">
+              <Tooltip placement="topLeft" title={Language.sd_calc}>
                 <span>
-                  <Statistic title="Your score" value={data.info.Score} precision={0} />
+                  <Statistic title={Language.sd_yourScore} value={data.info.Score} precision={0} />
                 </span>
               </Tooltip>
             </Col>
             <Col span={12}>
               <Tooltip
                 placement="topLeft"
-                title="This is calculated using number of answer you submitted."
+                title={Language.sd_calc}
               >
                 <span>
-                  <Statistic title="Correct Percent" value={data.info.CorrectPercent} suffix="%" />
+                  <Statistic title={Language.sd_correctPer} value={data.info.CorrectPercent} suffix="%" />
                 </span>
               </Tooltip>
             </Col>
           </Row>
           <Divider></Divider>
-          <Typography.Title level={3}>Submitted Answer</Typography.Title>
+          <Typography.Title level={3}>{Language.sd_submittedAns}</Typography.Title>
           {data.info.SubmissionType === 'Coding' ? (
             <div>
-              <Divider orientation="left">Submitted Answer</Divider>
+              <Divider orientation="left">{Language.sd_submittedAns}</Divider>
               {editor(u_atob(data.data[0].DescriptionCode))}
               <Divider orientation="left">Test Cases</Divider>
               {Testcases(result)}
@@ -172,10 +173,10 @@ const SubmissionDetail = ({ dispatch, data, listQuestion, loading }) => {
                 return (
                   <div key={i}>
                     <h3 style={data.data[i]?.status === 1 ? { color: 'green' } : { color: 'red' }}>
-                      Question {i + 1}. {item.Description}
+                      {Language.pages_test_testDetail_question} {i + 1}. {item.Description}
                     </h3>
                     <h4>
-                      Your answer:{' '}
+                      {Language.sd_yourAns}{' '}
                       <CheckboxGroup
                         style={{ display: 'flex', flexDirection: 'column' }}
                         onChange={() => console.log('')}

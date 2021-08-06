@@ -4,6 +4,7 @@ import MDEditor from '@uiw/react-md-editor';
 import { useState } from 'react';
 import { Button, Space } from 'antd';
 import firebase from '@/utils/firebase';
+import Language from '@/locales/index';
 import './reply.less'
 const ReplyEditor = ({ type, id, pid, dispatch, handleDiscard }) => {
   const [value, setValue] = useState('');
@@ -40,7 +41,7 @@ const ReplyEditor = ({ type, id, pid, dispatch, handleDiscard }) => {
       <span>
         <Space style={{ marginTop: '6px' }}>
           <Button type="primary" onClick={(value) => handleReply(value)}>
-            Post Your Reply
+            {Language.postReply}
           </Button>
           <Button
             className="discard-button"
@@ -51,7 +52,7 @@ const ReplyEditor = ({ type, id, pid, dispatch, handleDiscard }) => {
               if (handleDiscard) handleDiscard();
             }}
           >
-            Discard
+            {Language.discard}
           </Button>
         </Space>
       </span>
