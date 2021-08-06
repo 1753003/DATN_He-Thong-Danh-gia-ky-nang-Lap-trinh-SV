@@ -18,6 +18,7 @@ import QueueAnim from 'rc-queue-anim';
 import { connect } from 'dva';
 import Language from '@/locales/index';
 import { MailOutlined } from '@ant-design/icons';
+import {c_set, cpp_set, java_set, js_set} from '@/utils/image.js'
 
 const customizeRenderEmpty = () => (
   <div style={{ textAlign: 'center' }}>
@@ -25,22 +26,23 @@ const customizeRenderEmpty = () => (
     <p>You have no invitation!</p>
   </div>
 );
+
 const data = [
   {
     title: 'C Programming Set',
-    img: 'https://firebasestorage.googleapis.com/v0/b/devcheckpro.appspot.com/o/Language%2FC_set%20(1).png?alt=media&token=29dece54-d20c-4155-b05d-8ad6b0dad0f1',
+    img: c_set,
   },
   {
     title: 'C++ Programming Set',
-    img: 'https://firebasestorage.googleapis.com/v0/b/devcheckpro.appspot.com/o/Language%2Fcpp_set%20(1).png?alt=media&token=84498d05-6728-402e-afb8-43421b4a487d',
+    img: cpp_set,
   },
   {
     title: 'Java Programming Set',
-    img: 'https://firebasestorage.googleapis.com/v0/b/devcheckpro.appspot.com/o/Language%2Fjava_set%20.png?alt=media&token=d4a36599-487d-42ad-bba1-af575fab82c0',
+    img: java_set,
   },
   {
     title: 'JavaScript Programming Set',
-    img: 'https://firebasestorage.googleapis.com/v0/b/devcheckpro.appspot.com/o/Language%2Fjs_set.png?alt=media&token=dcfebb65-0e26-4799-9c2e-632f89745f1f',
+    img: js_set,
   },
 ];
 
