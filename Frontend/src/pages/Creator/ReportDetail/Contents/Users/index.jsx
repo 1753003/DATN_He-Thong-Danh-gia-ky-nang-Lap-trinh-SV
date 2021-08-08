@@ -3,6 +3,7 @@ import styles from './index.less';
 import { Table } from 'antd';
 import '@/components/GlobalHeader/style.less';
 import { useHistory } from 'umi';
+import NoData from '@/components/NoData';
 
 const Users = ({ summaryUser, reportID }) => {
   const history = useHistory();
@@ -46,6 +47,8 @@ const Users = ({ summaryUser, reportID }) => {
       <Table
         dataSource={summaryUser}
         columns={columns}
+        locale={{ emptyText: NoData }}
+        style={{ cursor: 'pointer' }}
         onRow={(record, rowIndex) => {
           return {
             onClick: (event) => {

@@ -5,6 +5,7 @@ import styles from './styles.less';
 import MDEditor from '@uiw/react-md-editor';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import '@/components/GlobalHeader/style.less';
+import NoData from '@/components/NoData';
 
 const CompareCode = ({ location, dispatch }) => {
   const [list, setList] = useState([]);
@@ -65,6 +66,8 @@ const CompareCode = ({ location, dispatch }) => {
       <Table
         dataSource={list}
         columns={columns}
+        locale={{ emptyText: NoData }}
+        style={{ cursor: 'pointer' }}
         onRow={(record, rowIndex) => {
           return {
             onClick: (event) => {

@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import styles from './styles.less';
-import { Button, Card, List, Skeleton, Modal, Input, message } from 'antd';
+import { Button, Card, List, Skeleton, Modal, Input, message, ConfigProvider } from 'antd';
 import { DeleteOutlined, MoreOutlined } from '@ant-design/icons';
 import { connect, useHistory } from 'umi';
 import '../../../components/GlobalHeader/style.less';
 import _ from 'lodash';
 import PageLoading from '@/components/PageLoading';
 import Constants from '@/utils/constants';
+import NoData from '@/components/NoData';
+import { getLocale } from 'umi';
 
 const { Search } = Input;
 
@@ -28,6 +30,8 @@ const CollectionDetail = ({ location, collection, dispatch, testList, loading })
   useEffect(() => {
     setTestAddList(_.differenceBy(testList, collection.Test, 'TestID'));
   }, [testList]);
+
+  console.log(collection.Test);
 
   const onTestSearch = (value) => {
     const list = _.differenceBy(testList, collection.Test, 'TestID');
@@ -52,61 +56,63 @@ const CollectionDetail = ({ location, collection, dispatch, testList, loading })
   return loading ? (
     <PageLoading />
   ) : (
-    <div className={`${styles.container} custom`}>
-      <div className={styles.header}>
-        <div className={styles.headerLeft}>
-          <img src={collection.CoverImage} />
-          <h1>{collection.CollectionName}</h1>
-        </div>
-        {/* <div className={styles.headerRight}>
+    <ConfigProvider locale={getLocale()}>
+      <div className={`${styles.container} custom`}>
+        <div className={styles.header}>
+          <div className={styles.headerLeft}>
+            <img src={collection.CoverImage} />
+            <h1>{collection.CollectionName}</h1>
+          </div>
+          {/* <div className={styles.headerRight}>
           <Button className={styles.button}>Exit</Button>
           <Button type="primary" className={styles.button}>
             Done
           </Button>
         </div> */}
-      </div>
-      <div className={styles.content}>
-        <div className={styles.testContainer}>
-          <div className={styles.testContainerHeader}>
-            <h3>Add collection content</h3>
-            <Button
-              className={styles.buttonAddTest}
-              type="primary"
-              onClick={() => {
-                setModalVisible(true);
-              }}
-            >
-              Add tests
-            </Button>
-          </div>
-          <div className={styles.listTest}>
-            <div className={styles.testCount}>{collection.Test?.length} tests</div>
-            <div className={styles.testInfo}>
-              <Test
-                list={collection.Test}
-                collectionID={location.query.id}
-                dispatch={dispatch}
-                handleTestOnClick={handleTestOnClick}
-              />
+        </div>
+        <div className={styles.content}>
+          <div className={styles.testContainer}>
+            <div className={styles.testContainerHeader}>
+              <h3>Add collection content</h3>
+              <Button
+                className={styles.buttonAddTest}
+                type="primary"
+                onClick={() => {
+                  setModalVisible(true);
+                }}
+              >
+                Add tests
+              </Button>
+            </div>
+            <div className={styles.listTest}>
+              <div className={styles.testCount}>Total: {collection.Test?.length} tests</div>
+              <div className={styles.testInfo}>
+                <Test
+                  list={collection.Test}
+                  collectionID={location.query.id}
+                  dispatch={dispatch}
+                  handleTestOnClick={handleTestOnClick}
+                />
+              </div>
             </div>
           </div>
+          <div className={styles.description}>
+            <Card title="Description" bordered={false} style={{ width: '100%' }}>
+              {collection.CollectionDescription}
+            </Card>
+          </div>
         </div>
-        <div className={styles.description}>
-          <Card title="Description" bordered={false} style={{ width: '100%' }}>
-            {collection.CollectionDescription}
-          </Card>
-        </div>
+        <AddTestModal
+          visible={modalVisible}
+          handleCancel={handleModalCancel}
+          testList={testAddList}
+          dispatch={dispatch}
+          collectionID={location.query.id}
+          testIDInCollection={collection.TestID}
+          onTestSearch={onTestSearch}
+        />
       </div>
-      <AddTestModal
-        visible={modalVisible}
-        handleCancel={handleModalCancel}
-        testList={testAddList}
-        dispatch={dispatch}
-        collectionID={location.query.id}
-        testIDInCollection={collection.TestID}
-        onTestSearch={onTestSearch}
-      />
-    </div>
+    </ConfigProvider>
   );
 };
 
@@ -137,8 +143,11 @@ const Test = ({ list, collectionID, dispatch, handleTestOnClick }) => {
         <List.Item>
           <Skeleton avatar title={false} loading={item.loading} active>
             <div className={styles.testInfoContainer}>
-              <div className={styles.questions}>{item.TotalQuestion} questions</div>
-              <img src={item.TestImage} className={styles.collectionImg} />
+              <div className={styles.questions}>{item.QuestionID.length} questions</div>
+              <img
+                src={'https://image.flaticon.com/icons/png/512/1039/1039328.png'}
+                className={styles.collectionImg}
+              />
               <div className={styles.infoContainer}>
                 <h3 className={styles.title}>{item.TestName}</h3>
                 <div className={styles.testMoreInfo}>
@@ -204,6 +213,8 @@ const AddTestModal = ({
     }
     return false;
   };
+
+  console.log(testList);
   return (
     <Modal
       title="Add test to this collection"
@@ -220,12 +231,13 @@ const AddTestModal = ({
     >
       <Search placeholder="Search tests..." enterButton onSearch={onTestSearch} />
       <div className={styles.modalList}>
-        <div className={styles.testCount}>{testList.length} tests</div>
+        <div className={styles.testCount}>Total: {testList.length} Tests</div>
         <div className={styles.testInfo}>
           <List
             itemLayout="horizontal"
             dataSource={testList}
             style={{ height: '380px', overflow: 'scroll' }}
+            locale={{ emptyText: NoData }}
             renderItem={(item) =>
               !checkExist(item.TestID) && (
                 <List.Item>
@@ -235,7 +247,10 @@ const AddTestModal = ({
                       style={{ backgroundColor: '#35577a' }}
                     >
                       <div className={styles.questions}>{item.TotalQuestion} questions</div>
-                      <img src={item.TestImage} className={styles.collectionImg} />
+                      <img
+                        src={'https://image.flaticon.com/icons/png/512/1039/1039328.png'}
+                        className={styles.collectionImg}
+                      />
                       <div className={styles.infoContainer}>
                         <h3 className={styles.title} style={{ color: 'white' }}>
                           {item.TestName}
@@ -244,7 +259,6 @@ const AddTestModal = ({
                           <div className={styles.MoreOutlined}>
                             <Button onClick={() => handleAddTestClick(item.TestID)}>Add</Button>
                           </div>
-                          <div>{item.TotalDone} done</div>
                         </div>
                       </div>
                     </div>

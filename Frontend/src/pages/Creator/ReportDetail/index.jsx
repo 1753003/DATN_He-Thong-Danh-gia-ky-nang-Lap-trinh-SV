@@ -40,12 +40,6 @@ const ReportDetail = ({ summaryReport, location, dispatch, loading, summaryUser 
             <Menu.Item key="users" style={{ color: menuKey === 'users' ? '#00F3FA' : 'white' }}>
               Users
             </Menu.Item>
-            <Menu.Item
-              key="questions"
-              style={{ color: menuKey === 'questions' ? '#00F3FA' : 'white' }}
-            >
-              Questions
-            </Menu.Item>
           </Menu>
         </div>
       </div>
@@ -67,8 +61,6 @@ const RenderBody = ({ menuKey, summaryReport, summaryUser, location }) => {
       return <Summary summaryReport={summaryReport} summaryUser={summaryUser} />;
     case 'users':
       return <Users summaryUser={summaryUser} reportID={location.query?.id} />;
-    case 'questions':
-      return <Questions summaryReport={summaryReport} id={location.query?.id} />;
     default:
       return <Summary summaryReport={summaryReport} summaryUser={summaryUser} />;
   }
