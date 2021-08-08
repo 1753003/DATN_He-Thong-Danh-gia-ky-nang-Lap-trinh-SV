@@ -1,17 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Table, Input, Upload, Dropdown, Menu } from 'antd';
+import { Button, Table, Input, Menu, Alert } from 'antd';
 import { useHistory, connect } from 'umi';
 import styles from './index.less';
-import {
-  MoreOutlined,
-  EditOutlined,
-  DeleteOutlined,
-  LockOutlined,
-  UnlockOutlined,
-} from '@ant-design/icons';
+import { EditOutlined, DeleteOutlined, LockOutlined, UnlockOutlined } from '@ant-design/icons';
+import NoData from '@/components/NoData';
+
 const { Search } = Input;
-const { Dragger } = Upload;
-import Constants from '@/utils/constants';
 
 const MyTests = ({ testList, dispatch, loading }) => {
   const history = useHistory();
@@ -76,23 +70,6 @@ const MyTests = ({ testList, dispatch, loading }) => {
         return permissions === 'private' ? <LockOutlined /> : <UnlockOutlined />;
       },
     },
-    {
-      title: 'Action',
-      render: (item) => {
-        return (
-          <>
-            <EditOutlined
-              onClick={() => handleEditCollection(item.TestID)}
-              style={{ width: '25px', height: '25px' }}
-            />
-            <DeleteOutlined
-              onClick={() => handleDeleteCollection(item.TestID)}
-              style={{ width: '25px', height: '25px' }}
-            />
-          </>
-        );
-      },
-    },
   ];
 
   const onSearch = (value) => {
@@ -140,11 +117,13 @@ const MyTests = ({ testList, dispatch, loading }) => {
       />
 
       <div className={styles.content}>
+        <Alert message="Double click to show detail" type="info" showIcon />
         <Table
           columns={columns}
           dataSource={list}
           loading={loading}
-          scroll={{ y: '60vh' }}
+          locale={{ emptyText: NoData }}
+          style={{ cursor: 'pointer' }}
           onRow={(record, rowIndex) => {
             return {
               onDoubleClick: (event) => {

@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Table, Input, Modal, Upload, Image, message } from 'antd';
+import { Button, Table, Input, Modal, Upload, Image, message, Alert } from 'antd';
 import { useHistory, connect } from 'umi';
 import styles from './index.less';
 import { InboxOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
 const { Search } = Input;
 const { Dragger } = Upload;
-import Constants from '@/utils/constants';
+import NoData from '@/components/NoData';
 
 import _ from 'lodash';
 
@@ -62,11 +62,11 @@ const Collection = ({ collectionList, dispatch, loading }) => {
           <>
             <EditOutlined
               onClick={() => handleEditCollection(item)}
-              style={{ width: '25px', height: '25px' }}
+              style={{ width: '25px', height: '25px', cursor: 'pointer' }}
             />
             <DeleteOutlined
               onClick={() => handleDeleteCollection(item.CollectionID)}
-              style={{ width: '25px', height: '25px' }}
+              style={{ width: '25px', height: '25px', cursor: 'pointer' }}
             />
           </>
         );
@@ -117,12 +117,15 @@ const Collection = ({ collectionList, dispatch, loading }) => {
         enterButton
         className={styles.searchBar}
       />
+
       <div className={styles.content}>
+        <Alert message="Double click to show detail" type="info" showIcon />
         <Table
           columns={columns}
           dataSource={list}
-          scroll={{ y: '60vh' }}
           loading={loading}
+          locale={{ emptyText: NoData }}
+          style={{ cursor: 'pointer' }}
           onRow={(record, rowIndex) => {
             return {
               onDoubleClick: (event) => {

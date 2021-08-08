@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import styles from './index.less';
-import { Button, Modal, Upload, Select, message, List } from 'antd';
+import { Button, Modal, Upload, Select, message, List, ConfigProvider } from 'antd';
 import { CheckCircleTwoTone, CloseCircleTwoTone, UploadOutlined } from '@ant-design/icons';
-import { connect, useHistory } from 'umi';
+import { connect, useHistory, getLocale } from 'umi';
 import PageLoading from '@/components/PageLoading';
 import NotFound from '@/pages/404';
 import MDEditor from '@uiw/react-md-editor';
@@ -63,74 +63,80 @@ const TestDetail = ({ dispatch, location }) => {
   if (loading) return <PageLoading />;
   if (test)
     return (
-      <div className={styles.container}>
-        <div className={styles.left}>
-          <div className={styles.testName}>{test.generalInformation?.TestName}</div>
+      <ConfigProvider locale={getLocale()}>
+        <div className={styles.container}>
+          <div className={styles.left}>
+            <div className={styles.testName}>{test.generalInformation?.TestName}</div>
 
-          <div className={styles.otherInfo}>
-            <p>
-              <b>Permission: </b>
-              {test.generalInformation?.Permissions || 'Public'}
-            </p>
-
-            <p>
-              <b>TestCode: </b>
-              {test.generalInformation?.TestCode}
-            </p>
-
-            <p>
-              <b>Time: </b>
-              {test.generalInformation?.TestTime}
-            </p>
-            <p>
-              <b className={styles.bold}>Do again: </b>
-              {test.generalInformation?.Again || 'false'}
-            </p>
-            <p>
-              <b className={styles.bold}>Total of questions: </b>
-              {test.listQuestion?.length}
-            </p>
-            <p>
-              <b className={styles.bold}>Max score: </b>
-              {test.generalInformation?.MaxScore} marks
-            </p>
-            {test.generalInformation?.StartTime && (
+            <div className={styles.otherInfo}>
               <p>
-                <b className={styles.bold}>Start date: </b>
-                {test.generalInformation?.StartTime} marks
+                <b>Permission: </b>
+                {test.generalInformation?.Permissions || 'Public'}
               </p>
-            )}
 
-            {test.generalInformation?.EndTime && (
               <p>
-                <b className={styles.bold}>End Time: </b>
-                {test.generalInformation?.EndTime} marks
+                <b>TestCode: </b>
+                {test.generalInformation?.TestCode}
               </p>
-            )}
-          </div>
-          <div className={styles.editContainer}>
-            <Button type="primary" onClick={handleEditClick}>
-              Edit
-            </Button>
-            <Button type="primary" onClick={() => setVisibleModal(true)} style={{ marginLeft: 10 }}>
-              Invite
-            </Button>
-          </div>
-        </div>
 
-        <div className={styles.right}>
-          <h3>Questions</h3>
-          <Question list={test?.listQuestion} />
+              <p>
+                <b>Time: </b>
+                {test.generalInformation?.TestTime}
+              </p>
+              <p>
+                <b className={styles.bold}>Do again: </b>
+                {test.generalInformation?.Again || 'false'}
+              </p>
+              <p>
+                <b className={styles.bold}>Total of questions: </b>
+                {test.listQuestion?.length}
+              </p>
+              <p>
+                <b className={styles.bold}>Max score: </b>
+                {test.generalInformation?.MaxScore} marks
+              </p>
+              {test.generalInformation?.StartTime && (
+                <p>
+                  <b className={styles.bold}>Start date: </b>
+                  {test.generalInformation?.StartTime} marks
+                </p>
+              )}
+
+              {test.generalInformation?.EndTime && (
+                <p>
+                  <b className={styles.bold}>End Time: </b>
+                  {test.generalInformation?.EndTime} marks
+                </p>
+              )}
+            </div>
+            <div className={styles.editContainer}>
+              <Button type="primary" onClick={handleEditClick}>
+                Edit
+              </Button>
+              <Button
+                type="primary"
+                onClick={() => setVisibleModal(true)}
+                style={{ marginLeft: 10 }}
+              >
+                Invite
+              </Button>
+            </div>
+          </div>
+
+          <div className={styles.right}>
+            <h3>Questions</h3>
+            <Question list={test?.listQuestion} />
+          </div>
+          <InviteModal
+            isModalVisible={visibleModal}
+            testID={location.query?.id}
+            closeModal={closeModal}
+            dispatch={dispatch}
+            listInvitedList={listInvitedEmail}
+            setListInvitedEmail={setListInvitedEmail}
+          />
         </div>
-        <InviteModal
-          isModalVisible={visibleModal}
-          testID={location.query?.id}
-          closeModal={closeModal}
-          dispatch={dispatch}
-          listInvitedList={listInvitedEmail}
-          setListInvitedEmail={setListInvitedEmail}
-        />
-      </div>
+      </ConfigProvider>
     );
 
   if (!test) {
