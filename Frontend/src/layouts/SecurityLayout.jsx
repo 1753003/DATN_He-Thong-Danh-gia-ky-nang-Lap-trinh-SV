@@ -21,7 +21,7 @@ class SecurityLayout extends React.Component {
     //   });
     // }
   }
-  
+
   render() {
     const { isReady } = this.state;
     const { children, loading } = this.props; // You can replace it to your authentication rule (such as check token exists)
@@ -31,7 +31,7 @@ class SecurityLayout extends React.Component {
     const queryString = stringify({
       redirect: window.location.href,
     });
-    
+
     if ((!isLogin && loading) || !isReady) {
       return <PageLoading />;
     }
@@ -40,11 +40,9 @@ class SecurityLayout extends React.Component {
       return <Redirect to={`/user/login?${queryString}`} />;
     }
 
-    var type = localStorage.getItem('codejoy-authority');
-    if (type.includes("creator"))
-      type = "creator"
-    else if (type.includes("developer"))
-      type = "developer";
+    var type = localStorage.getItem('codejoy-authority') || 'developer';
+    if (type.includes('creator')) type = 'creator';
+    else if (type.includes('developer')) type = 'developer';
 
     if (!children.props.location.pathname.includes(type))
       return (
@@ -54,9 +52,11 @@ class SecurityLayout extends React.Component {
             title="403"
             subTitle="Sorry, you are not authorized to access this page."
           />
-          <Button type="primary" href="/">Back home</Button>
+          <Button type="primary" href="/">
+            Back home
+          </Button>
         </div>
-      )
+      );
     return children;
   }
 }

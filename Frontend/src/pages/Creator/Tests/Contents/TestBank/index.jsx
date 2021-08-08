@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Input, Tag, Card } from 'antd';
+import { Table, Input, Tag, Card, Alert } from 'antd';
 import { connect } from 'umi';
 import styles from './index.less';
 import MDEditor from '@uiw/react-md-editor';
 import { CheckCircleTwoTone, CloseCircleTwoTone, LeftOutlined } from '@ant-design/icons';
-import Constants from '@/utils/constants';
+import NoData from '@/components/NoData';
 
 const { Search } = Input;
 
@@ -88,10 +88,13 @@ const TestBank = ({ testBankList, dispatch, loading }) => {
         />
 
         <div className={styles.content}>
+          <Alert message="Click to show detail" type="info" showIcon />
           <Table
             columns={columns}
             dataSource={list}
             loading={loading}
+            locale={{ emptyText: NoData }}
+            style={{ cursor: 'pointer' }}
             scroll={{ y: '60vh' }}
             onRow={(record, rowIndex) => {
               return {

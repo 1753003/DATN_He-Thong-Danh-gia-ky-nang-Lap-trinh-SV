@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import styles from './styles.less';
 import { Table, Input } from 'antd';
 import { useHistory, connect } from 'umi';
-import '../../../components/GlobalHeader/style.less';
+import '@/components/GlobalHeader/style.less';
+import NoData from '@/components/NoData';
 
 const { Search } = Input;
 const Report = ({ reportList, dispatch, loading }) => {
@@ -53,6 +54,8 @@ const Report = ({ reportList, dispatch, loading }) => {
         dataSource={list}
         columns={columns}
         scroll={{ y: '70vh' }}
+        locale={{ emptyText: NoData }}
+        style={{ cursor: 'pointer' }}
         onRow={(record, rowIndex) => {
           return {
             onClick: (event) => {
