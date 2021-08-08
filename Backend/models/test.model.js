@@ -241,10 +241,12 @@ module.exports = {
     return list;
   },
   async updateTest(test, testID) {
+    var moment = require('moment');
     test.generalInformation.QuestionID = JSON.stringify(
       test.generalInformation.QuestionID
     );
-
+    delete test.generalInformation.CreatedAt;
+    delete test.generalInformation.UpdatedAt;
     await db("test").where("TestID", testID).update(test.generalInformation);
     for (let question of test.listQuestion) {
       if (question.ID == undefined) {
