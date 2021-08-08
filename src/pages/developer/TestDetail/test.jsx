@@ -665,7 +665,7 @@ class TestDetail extends React.Component {
                           const args = {
                             message: `${Language.test_success}`,
                             description: `${Language.test_record}`,
-                            duration: 0,
+                            
                           };
                           notification.open(args);
                           history.push('/developer/test');
