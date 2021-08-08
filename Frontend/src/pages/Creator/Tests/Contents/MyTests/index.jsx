@@ -70,23 +70,6 @@ const MyTests = ({ testList, dispatch, loading }) => {
         return permissions === 'private' ? <LockOutlined /> : <UnlockOutlined />;
       },
     },
-    {
-      title: 'Action',
-      render: (item) => {
-        return (
-          <>
-            <EditOutlined
-              onClick={() => handleEditCollection(item.TestID)}
-              style={{ width: '25px', height: '25px' }}
-            />
-            <DeleteOutlined
-              onClick={() => handleDeleteCollection(item.TestID)}
-              style={{ width: '25px', height: '25px' }}
-            />
-          </>
-        );
-      },
-    },
   ];
 
   const onSearch = (value) => {
@@ -139,8 +122,6 @@ const MyTests = ({ testList, dispatch, loading }) => {
           columns={columns}
           dataSource={list}
           loading={loading}
-          locale={{ emptyText: 'No Data' }}
-          scroll={{ y: '60vh' }}
           locale={{ emptyText: NoData }}
           style={{ cursor: 'pointer' }}
           onRow={(record, rowIndex) => {
