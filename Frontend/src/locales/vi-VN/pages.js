@@ -1,6 +1,6 @@
 export default {
   'pages.layouts.userLayout.title':
-    'CodeJoy là sự lựa chọn tốt nhất của bạn!',
+    'CodeJoy là sự lựa chọn tốt nhất cho bạn!',
   'pages.login.accountLogin.tab': 'Đăng nhập tài khoản',
   'pages.login.accountLogin.errorMessage': 'Tên đăng nhập/Mật khẩu không hợp lệ',
   'pages.login.username.placeholder': 'Tên tài khoản',
