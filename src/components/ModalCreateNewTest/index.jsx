@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Alert, Modal, Table, Tag } from 'antd';
+import { Button, Alert, Modal, Table, Tag, ConfigProvider } from 'antd';
+import { getLocale } from 'umi';
 
 export const ModalCreateNewTest = ({
   visible,
@@ -45,38 +46,41 @@ export const ModalCreateNewTest = ({
   ];
 
   return (
-    <Modal
-      title="Create Test"
-      visible={visible}
-      onCancel={onCancel}
-      width={'80vw'}
-      footer={[
-        <Button key="back" onClick={onCancel}>
-          Close
-        </Button>,
+    <ConfigProvider locale={getLocale()}>
+      <Modal
+        title="Create Test"
+        visible={visible}
+        onCancel={onCancel}
+        width={'80vw'}
+        footer={[
+          <Button key="back" onClick={onCancel}>
+            Close
+          </Button>,
 
-        <Button key="create" onClick={createNewEmptyTest} type="primary">
-          Create New Plank Test
-        </Button>,
-      ]}
-    >
-      <Alert message="Click at a test to select them" type="info" showIcon />
-      <Table
-        loading={true}
-        columns={columns}
-        dataSource={testBankList}
-        loading={loading}
-        scroll={{ y: '55vh' }}
-        rowKey="ID"
-        onRow={(record, rowIndex) => {
-          return {
-            onClick: (event) => {
-              onPressBankTest(record);
-              setLoading(true);
-            },
-          };
-        }}
-      />
-    </Modal>
+          <Button key="create" onClick={createNewEmptyTest} type="primary">
+            Create New Plank Test
+          </Button>,
+        ]}
+      >
+        <Alert message="Click at a test to select them" type="info" showIcon />
+        <Table
+          loading={true}
+          columns={columns}
+          dataSource={testBankList}
+          loading={loading}
+          scroll={{ y: '55vh' }}
+          style={{ cursor: 'pointer' }}
+          rowKey="ID"
+          onRow={(record, rowIndex) => {
+            return {
+              onClick: (event) => {
+                onPressBankTest(record);
+                setLoading(true);
+              },
+            };
+          }}
+        />
+      </Modal>
+    </ConfigProvider>
   );
 };
