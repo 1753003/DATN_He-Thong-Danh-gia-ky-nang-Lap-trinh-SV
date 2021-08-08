@@ -95,7 +95,6 @@ const TestBank = ({ testBankList, dispatch, loading }) => {
             loading={loading}
             locale={{ emptyText: NoData }}
             style={{ cursor: 'pointer' }}
-            scroll={{ y: '60vh' }}
             onRow={(record, rowIndex) => {
               return {
                 onClick: (event) => {
