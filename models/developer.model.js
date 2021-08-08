@@ -2,7 +2,8 @@ const db = require('../utils/db');
 
 module.exports = {
     async get(id){
-        return (await db('developer').where('UserID', id))[0];
+        console.log("ABV")
+        return (await db('developer').where('UserID', id))[0]; 
     },
     async update(id, data) {
         await db('developer').where('UserID', id).update(data);

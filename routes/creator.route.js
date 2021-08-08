@@ -74,7 +74,7 @@ router.post('/test', async function (req, res) {
    generalInformation.CreatedBy = req.uid;
    generalInformation.TestCode = result;
    await testModel.createTest(generalInformation, req.body.listQuestion, listEmail, result, req.uid);
-   writeNewNotification(req.uid, 'You have a new test invitation.', 'Notification')
+   //writeNewNotification(req.uid, 'You have a new test invitation.', 'Notification')
    res.json(result);
   
 })
