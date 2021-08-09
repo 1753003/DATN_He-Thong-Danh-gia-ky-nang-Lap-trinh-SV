@@ -108,7 +108,6 @@ const TestBank = ({ testBankList, dispatch, loading }) => {
 
   if (!selectTest)
     return (
-      <ConfigProvider locale={getLocale()}>
         <div className={styles.container}>
         <div className={styles.header}>
         <Typography.Title level={2} className={styles.title}>Questions Bank</Typography.Title>
@@ -136,7 +135,8 @@ const TestBank = ({ testBankList, dispatch, loading }) => {
               };
             }}
           />
-      </ConfigProvider>
+      </div>
+      </div>
     );
 
   return <RenderTestDetail test={selectTest} onBack={onBack} />;

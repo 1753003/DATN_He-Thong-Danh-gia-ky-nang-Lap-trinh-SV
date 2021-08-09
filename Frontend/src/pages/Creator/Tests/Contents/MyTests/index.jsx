@@ -85,8 +85,6 @@ const MyTests = ({ testList, dispatch, loading }) => {
   }, []);
 
   return (
-
-    <ConfigProvider locale={getLocale()}>
       <div className={styles.container}>
       <div className={styles.header}>
       <Typography.Title level={2} className={styles.title}>My Tests</Typography.Title>
@@ -118,7 +116,7 @@ const MyTests = ({ testList, dispatch, loading }) => {
           }}
         />
       </div>
-    </ConfigProvider>
+      </div>
   );
 };
 
