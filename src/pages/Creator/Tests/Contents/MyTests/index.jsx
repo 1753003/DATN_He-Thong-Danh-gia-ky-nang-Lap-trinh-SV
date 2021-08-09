@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Table, Input, Menu, Alert, ConfigProvider } from 'antd';
+import { Button, Table, Input, Menu, Alert, ConfigProvider, Typography } from 'antd';
 import { useHistory, connect, getLocale } from 'umi';
 import styles from './index.less';
-import { EditOutlined, DeleteOutlined, LockOutlined, UnlockOutlined } from '@ant-design/icons';
+import { EditOutlined, DeleteOutlined, LockOutlined, UnlockOutlined, PlusOutlined } from '@ant-design/icons';
 import NoData from '@/components/NoData';
 import { removeAccents } from '@/utils/string';
 
@@ -85,37 +85,38 @@ const MyTests = ({ testList, dispatch, loading }) => {
   }, []);
 
   return (
+
     <ConfigProvider locale={getLocale()}>
       <div className={styles.container}>
-        <div className={styles.header}>
-          <Search
-            placeholder="Please input search text"
-            onSearch={onSearch}
-            enterButton
-            className={styles.searchBar}
-          />
-          <Button type="primary" className={styles.button} onClick={buttonModalOnClick}>
-            Create test
-          </Button>
-        </div>
+      <div className={styles.header}>
+      <Typography.Title level={2} className={styles.title}>My Tests</Typography.Title>
+        <Button icon={<PlusOutlined/>} className={styles.button} onClick={buttonModalOnClick}>
+          Create test
+        </Button>
+      </div>
+      <Search
+        placeholder="input search text"
+        onSearch={onSearch}
+        enterButton
+        className={styles.searchBar}
+      />
 
-        <div className={styles.content}>
-          <Alert message="Double click to show detail" type="info" showIcon />
-          <Table
-            columns={columns}
-            dataSource={list}
-            loading={loading}
-            locale={{ emptyText: NoData }}
-            style={{ cursor: 'pointer' }}
-            onRow={(record, rowIndex) => {
-              return {
-                onDoubleClick: (event) => {
-                  handleTestOnClick(record.TestID);
-                },
-              };
-            }}
-          />
-        </div>
+      <div className={styles.content}>
+        <Alert message="Double click to view detail" type="info" showIcon />
+        <Table
+          columns={columns}
+          dataSource={list}
+          loading={loading}
+          locale={{ emptyText: NoData }}
+          style={{ cursor: 'pointer' }}
+          onRow={(record, rowIndex) => {
+            return {
+              onDoubleClick: (event) => {
+                handleTestOnClick(record.TestID);
+              },
+            };
+          }}
+        />
       </div>
     </ConfigProvider>
   );
