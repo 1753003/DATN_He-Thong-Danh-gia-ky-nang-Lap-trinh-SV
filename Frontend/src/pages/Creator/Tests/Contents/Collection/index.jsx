@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Table, Input, Modal, Upload, Image, message, Alert, ConfigProvider } from 'antd';
+import { Button, Table, Input, Modal, Upload, Image, message, Alert, ConfigProvider, Row, Col } from 'antd';
 import { useHistory, connect, getLocale } from 'umi';
 import styles from './index.less';
 import { InboxOutlined, EditOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
@@ -113,17 +113,20 @@ const Collection = ({ collectionList, dispatch, loading }) => {
   return (
     <ConfigProvider locale={getLocale()}>
       <div className={styles.container}>
-        <div className={styles.header}>
+        <Row gutter={16} className={styles.header}>
+          <Col md={16} lg={16} xs={24}>
           <Search
             placeholder="Please input search text"
             onSearch={onSearch}
             enterButton
             className={styles.searchBar}
           />
-          <Button icon={<PlusOutlined />} className={styles.button} onClick={buttonModalOnClick}>
-            {window.innerWidth > Constants.MIN_SCREEN_WIDTH ? 'Create Collection' : null}
+          </Col>
+          <Col md={8} lg={6} xs={24}>
+          <Button block icon={<PlusOutlined />} className={styles.button} onClick={buttonModalOnClick}>Create Collection
           </Button>
-        </div>
+          </Col>
+        </Row>
 
         <div className={styles.content}>
           <Alert message="Double click to show detail" type="info" showIcon />

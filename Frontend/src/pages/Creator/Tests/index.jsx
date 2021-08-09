@@ -133,7 +133,7 @@ const Tests = ({ location }) => {
       <div
         className={styles.right}
         style={{
-          width: toggle || window.innerWidth < Constants.MIN_SCREEN_WIDTH ? '98%' : '85%',
+          width: toggle || window.innerWidth < Constants.MIN_SCREEN_WIDTH ? '98%' : '88%',
           paddingLeft: 20,
           paddingTop: window.innerWidth < Constants.MIN_SCREEN_WIDTH && 0,
           paddingRight: window.innerWidth < Constants.MIN_SCREEN_WIDTH || !toggle ? 0 : 32,
