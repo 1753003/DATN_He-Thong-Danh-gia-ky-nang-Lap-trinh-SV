@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Table, Input, Menu, Alert, ConfigProvider, Typography } from 'antd';
+import { Button, Table, Input, Menu, Alert, ConfigProvider, Typography, Row, Col } from 'antd';
 import { useHistory, connect, getLocale } from 'umi';
 import styles from './index.less';
 import {
@@ -53,7 +53,7 @@ const MyTests = ({ testList, dispatch, loading }) => {
       ],
       onFilter: (value, record) => record.Permissions === value,
       render: (permissions) => {
-        return permissions === 'private' ? <LockOutlined /> : <UnlockOutlined />;
+        return permissions === 'private' ? <div><LockOutlined />{` Private`}</div>  : <div><UnlockOutlined />{` Public`}</div>;
       },
     },
   ];
@@ -95,17 +95,20 @@ const MyTests = ({ testList, dispatch, loading }) => {
   return (
     <ConfigProvider locale={getLocale()}>
       <div className={styles.container}>
-        <div className={styles.header}>
+      <Row gutter={16} className={styles.header}>
+          <Col md={16} lg={16} xs={24}>
           <Search
             placeholder="Please input search text"
             onSearch={onSearch}
             enterButton
             className={styles.searchBar}
           />
-          <Button icon={<PlusOutlined />} className={styles.button} onClick={buttonModalOnClick}>
-            {window.innerWidth > Constants.MIN_SCREEN_WIDTH ? 'Create test' : null}
+          </Col>
+          <Col md={8} lg={6} xs={24}>
+          <Button block icon={<PlusOutlined />} className={styles.button} onClick={buttonModalOnClick}>Create Test
           </Button>
-        </div>
+          </Col>
+        </Row>
 
         <div className={styles.content}>
           <Alert message="Double click to view detail" type="info" showIcon />
