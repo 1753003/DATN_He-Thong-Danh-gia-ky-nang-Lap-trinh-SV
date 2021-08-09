@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Input, Tag, Card, Alert } from 'antd';
-import { connect } from 'umi';
+import { Table, Input, Tag, Card, Alert, ConfigProvider } from 'antd';
+import { connect, getLocale } from 'umi';
 import styles from './index.less';
 import MDEditor from '@uiw/react-md-editor';
 import { CheckCircleTwoTone, CloseCircleTwoTone, LeftOutlined } from '@ant-design/icons';
 import NoData from '@/components/NoData';
+import { removeAccents } from '@/utils/string';
 
 const { Search } = Input;
 
@@ -30,6 +31,17 @@ const TestBank = ({ testBankList, dispatch, loading }) => {
       title: 'Question Type',
       dataIndex: 'QuestionType',
       key: 'QuestionType',
+      filters: [
+        {
+          text: 'Multiple Choice',
+          value: 'MultipleChoice',
+        },
+        {
+          text: 'Code',
+          value: 'Code',
+        },
+      ],
+      onFilter: (value, record) => record.QuestionType === value,
     },
     {
       title: 'Description',
@@ -40,6 +52,25 @@ const TestBank = ({ testBankList, dispatch, loading }) => {
       title: 'Language Allowed',
       dataIndex: 'Language_allowed',
       key: 'Language_allowed',
+      filters: [
+        {
+          text: 'C',
+          value: 'C',
+        },
+        {
+          text: 'C++',
+          value: 'C++',
+        },
+        {
+          text: 'Javascript',
+          value: 'Javascript',
+        },
+        {
+          text: 'Java',
+          value: 'Java',
+        },
+      ],
+      onFilter: (value, record) => record.Language_allowed?.includes(value),
       render: (list) => {
         return (
           <div>
@@ -54,8 +85,9 @@ const TestBank = ({ testBankList, dispatch, loading }) => {
 
   const onSearch = (value) => {
     const searchList = [];
-    testList.forEach((element) => {
-      if (element.TestName.includes(value)) {
+    const refactorValue = removeAccents(value).toLowerCase();
+    testBankList.forEach((element) => {
+      if (removeAccents(element?.Description).toLowerCase().includes(refactorValue)) {
         searchList.push(element);
       }
     });
@@ -76,35 +108,35 @@ const TestBank = ({ testBankList, dispatch, loading }) => {
 
   if (!selectTest)
     return (
-      <div className={styles.container}>
-        <div className={styles.header}>
-          <h3 className={styles.title}>Test Bank</h3>
+      <ConfigProvider locale={getLocale()}>
+        <div className={styles.container}>
+          <div className={styles.header}>
+            <Search
+              placeholder="Please input search text"
+              onSearch={onSearch}
+              enterButton
+              className={styles.searchBar}
+            />
+          </div>
+          <div className={styles.content}>
+            <Alert message="Double Click to show detail" type="info" showIcon />
+            <Table
+              columns={columns}
+              dataSource={list}
+              loading={loading}
+              locale={{ emptyText: NoData }}
+              style={{ cursor: 'pointer' }}
+              onRow={(record, rowIndex) => {
+                return {
+                  onDoubleClick: (event) => {
+                    handleTestOnClick(record);
+                  },
+                };
+              }}
+            />
+          </div>
         </div>
-        <Search
-          placeholder="input search text"
-          onSearch={onSearch}
-          enterButton
-          className={styles.searchBar}
-        />
-
-        <div className={styles.content}>
-          <Alert message="Click to show detail" type="info" showIcon />
-          <Table
-            columns={columns}
-            dataSource={list}
-            loading={loading}
-            locale={{ emptyText: NoData }}
-            style={{ cursor: 'pointer' }}
-            onRow={(record, rowIndex) => {
-              return {
-                onClick: (event) => {
-                  handleTestOnClick(record);
-                },
-              };
-            }}
-          />
-        </div>
-      </div>
+      </ConfigProvider>
     );
 
   return <RenderTestDetail test={selectTest} onBack={onBack} />;
