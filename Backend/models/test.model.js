@@ -235,15 +235,16 @@ module.exports = {
     return await db("test").where("TestCode", code);
   },
   async getTestBySet(set, uid) {
-    console.log(uid, set)
     const list = (await db.raw(`call getTestSet ('${uid}', '${set}')`))[0][0];
-   
     return list;
   },
   async updateTest(test, testID) {
-    var moment = require('moment');
+    var moment = require("moment");
     test.generalInformation.QuestionID = JSON.stringify(
       test.generalInformation.QuestionID
+    );
+    test.generalInformation.listUser = JSON.stringify(
+      test.generalInformation.listUser
     );
     delete test.generalInformation.CreatedAt;
     delete test.generalInformation.UpdatedAt;

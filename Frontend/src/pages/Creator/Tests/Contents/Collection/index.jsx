@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Table, Input, Modal, Upload, Image, message, Alert } from 'antd';
-import { useHistory, connect } from 'umi';
+import { Button, Table, Input, Modal, Upload, Image, message, Alert, ConfigProvider } from 'antd';
+import { useHistory, connect, getLocale } from 'umi';
 import styles from './index.less';
 import { InboxOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
 const { Search } = Input;
 const { Dragger } = Upload;
 import NoData from '@/components/NoData';
+import { removeAccents } from '@/utils/string';
 
 import _ from 'lodash';
 
@@ -54,6 +55,8 @@ const Collection = ({ collectionList, dispatch, loading }) => {
       title: 'Created date',
       dataIndex: 'CreatedAt',
       key: 'CreatedAt',
+      sorter: (a, b) => Date.parse(a.CreatedAt) > Date.parse(b.CreatedAt),
+      sortDirections: ['descend'],
     },
     {
       title: 'Action',
@@ -76,9 +79,12 @@ const Collection = ({ collectionList, dispatch, loading }) => {
 
   const onSearch = (value) => {
     const searchList = [];
+    const refactorValue = removeAccents(value).toLowerCase();
     collectionList.forEach((element) => {
-      if (element.CollectionName.includes(value)) {
-        console.log(element);
+      if (
+        removeAccents(element?.CollectionName).toLowerCase().includes(refactorValue) ||
+        removeAccents(element?.CollectionDescription).toLowerCase().includes(refactorValue)
+      ) {
         searchList.push(element);
       }
     });
@@ -104,44 +110,45 @@ const Collection = ({ collectionList, dispatch, loading }) => {
   };
 
   return (
-    <div className={styles.container}>
-      <div className={styles.header}>
-        <h3 className={styles.title}>Collections</h3>
-        <Button type="primary" className={styles.button} onClick={buttonModalOnClick}>
-          Create Collection
-        </Button>
-      </div>
-      <Search
-        placeholder="input search text"
-        onSearch={onSearch}
-        enterButton
-        className={styles.searchBar}
-      />
+    <ConfigProvider locale={getLocale()}>
+      <div className={styles.container}>
+        <div className={styles.header}>
+          <Search
+            placeholder="Please input search text"
+            onSearch={onSearch}
+            enterButton
+            className={styles.searchBar}
+          />
+          <Button type="primary" className={styles.button} onClick={buttonModalOnClick}>
+            Create Collection
+          </Button>
+        </div>
 
-      <div className={styles.content}>
-        <Alert message="Double click to show detail" type="info" showIcon />
-        <Table
-          columns={columns}
-          dataSource={list}
-          loading={loading}
-          locale={{ emptyText: NoData }}
-          style={{ cursor: 'pointer' }}
-          onRow={(record, rowIndex) => {
-            return {
-              onDoubleClick: (event) => {
-                handleCollectionOnClick(record.CollectionID);
-              },
-            };
-          }}
+        <div className={styles.content}>
+          <Alert message="Double click to show detail" type="info" showIcon />
+          <Table
+            columns={columns}
+            dataSource={list}
+            loading={loading}
+            locale={{ emptyText: NoData }}
+            style={{ cursor: 'pointer' }}
+            onRow={(record, rowIndex) => {
+              return {
+                onDoubleClick: (event) => {
+                  handleCollectionOnClick(record.CollectionID);
+                },
+              };
+            }}
+          />
+        </div>
+        <CreateCollectionModal
+          visible={modalVisible}
+          handleCancel={handleModalCancel}
+          dispatch={dispatch}
+          currentCollection={currentCollection}
         />
       </div>
-      <CreateCollectionModal
-        visible={modalVisible}
-        handleCancel={handleModalCancel}
-        dispatch={dispatch}
-        currentCollection={currentCollection}
-      />
-    </div>
+    </ConfigProvider>
   );
 };
 
