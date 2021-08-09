@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Input, Tag, Card, Alert } from 'antd';
+import { Space, Table, Input, Tag, Card, Alert, Typography, PageHeader, Divider } from 'antd';
 import { connect } from 'umi';
 import styles from './index.less';
 import MDEditor from '@uiw/react-md-editor';
-import { CheckCircleTwoTone, CloseCircleTwoTone, LeftOutlined } from '@ant-design/icons';
+import { CheckCircleTwoTone, CloseCircleTwoTone } from '@ant-design/icons';
 import NoData from '@/components/NoData';
 
 const { Search } = Input;
@@ -78,7 +78,7 @@ const TestBank = ({ testBankList, dispatch, loading }) => {
     return (
       <div className={styles.container}>
         <div className={styles.header}>
-          <h3 className={styles.title}>Test Bank</h3>
+        <Typography.Title level={2} className={styles.title}>Questions Bank</Typography.Title>
         </div>
         <Search
           placeholder="input search text"
@@ -116,29 +116,19 @@ const RenderTestDetail = ({ test, onBack }) => {
   };
   return (
     <div className={styles.testContainer}>
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          alignItems: 'center',
-          cursor: 'pointer',
-        }}
-        onClick={onBack}
-      >
-        <LeftOutlined />
-        <h3
-          style={{ justifySelf: 'center', paddingTop: 8, paddingRight: 16 }}
-        >{`${test.ID}-${test.QuestionType}`}</h3>
-      </div>
-
+      <PageHeader
+    onBack={() => onBack()}
+    title={`Question ${test.ID} - ${test.QuestionType}`}
+    subTitle={` ${test.Score} mark(s)`}
+  />
       <Card className={styles.questionContainer}>
         <div className={styles.question}>{test.Question}</div>
-        <b>Description: </b>
         <MDEditor.Markdown className="problem" source={test.Description}></MDEditor.Markdown>
-
-        <div className={styles.mark}>{test.Score} mark</div>
+    
         {test.QuestionType === 'Code' ? (
-          <div>
+          
+          <Space direction="vertical" style={{width:"100%"}}>
+            <Divider/>
             <div>
               <b>Language Allowed: </b>
               {test.Language_allowed}
@@ -151,15 +141,15 @@ const RenderTestDetail = ({ test, onBack }) => {
               <b>Running Time: </b>
               {test.RunningTime}
             </div>
-            <div>
-              <b>CodeSample: </b>
+            {test?.CodeSample && test?.CodeSample!== null && test?.CodeSample.length > 0 &&<div>
+              <Divider orientation="left"><b>CodeSample: </b> </Divider>
               <br />
               <MDEditor.Markdown
                 className="problem"
                 source={`\`\`\` \n${test?.CodeSample}\n\`\`\`` || 'Empty'}
               ></MDEditor.Markdown>
               <br />
-            </div>
+            </div>}
             {test?.TestCase?.map((tc, index) => {
               return (
                 <div className={styles.multipleChoiceContainer}>
@@ -174,30 +164,28 @@ const RenderTestDetail = ({ test, onBack }) => {
                 </div>
               );
             })}
-          </div>
+          </Space>
         ) : (
           <>
-            <div>
+            {test?.CodeSample && test?.CodeSample!== null && test?.CodeSample.length > 0 &&<div>
               <b>CodeSample: </b>
               <MDEditor.Markdown
                 className="problem"
                 source={`\`\`\`\n${test?.CodeSample}\n\`\`\`` || 'Empty'}
               ></MDEditor.Markdown>
               <br />
-            </div>
+            </div>}
+            <Divider orientation="left">Answer</Divider>
             {test?.Answer?.map((choice, index) => {
-              return (
-                <div className={styles.multipleChoiceContainer}>
-                  <div className={styles.answer}>{choice}</div>
-                  <div className={styles.answer}>
-                    {checkCorrect(test.CorrectAnswer, index) ? (
-                      <CheckCircleTwoTone twoToneColor="#52c41a" style={{ fontSize: '32px' }} />
-                    ) : (
-                      <CloseCircleTwoTone twoToneColor="red" style={{ fontSize: '32px' }} />
-                    )}
-                  </div>
-                </div>
-              );
+              return (<>
+              <Alert showIcon style={{marginBottom:"4px", fontSize:"18px"}} type={checkCorrect(test.CorrectAnswer, index) ? "success":"error"} message={<MDEditor.Markdown
+                className="problem"
+                style={{backgroundColor:"rgba(0, 0, 0, 0)"}}
+                source={choice}
+              ></MDEditor.Markdown>}/>
+              
+              </>
+                );
             })}
           </>
         )}

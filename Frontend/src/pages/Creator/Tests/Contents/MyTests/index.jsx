@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Table, Input, Menu, Alert } from 'antd';
+import { Button, Table, Input, Menu, Alert, Typography } from 'antd';
 import { useHistory, connect } from 'umi';
 import styles from './index.less';
-import { EditOutlined, DeleteOutlined, LockOutlined, UnlockOutlined } from '@ant-design/icons';
+import { EditOutlined, DeleteOutlined, LockOutlined, UnlockOutlined, PlusOutlined } from '@ant-design/icons';
 import NoData from '@/components/NoData';
 
 const { Search } = Input;
@@ -104,8 +104,8 @@ const MyTests = ({ testList, dispatch, loading }) => {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h3 className={styles.title}>My Tests</h3>
-        <Button type="primary" className={styles.button} onClick={buttonModalOnClick}>
+      <Typography.Title level={2} className={styles.title}>My Tests</Typography.Title>
+        <Button icon={<PlusOutlined/>} className={styles.button} onClick={buttonModalOnClick}>
           Create test
         </Button>
       </div>
@@ -117,7 +117,7 @@ const MyTests = ({ testList, dispatch, loading }) => {
       />
 
       <div className={styles.content}>
-        <Alert message="Double click to show detail" type="info" showIcon />
+        <Alert message="Double click to view detail" type="info" showIcon />
         <Table
           columns={columns}
           dataSource={list}

@@ -7,5 +7,5 @@
       "@/*": ["./src/*"]
     }
   },
-  "exclude": ["node_modules", "./src/.umi/*", "./src/.umi-production/*"]
+  "exclude": ["node_modules", "./src/.umi/*", "./src/.umi-production/*","./dist", "dist"]
 }

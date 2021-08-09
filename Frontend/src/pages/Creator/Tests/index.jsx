@@ -8,6 +8,7 @@ import {
   StarOutlined,
   MenuUnfoldOutlined,
   MenuFoldOutlined,
+  BankOutlined,
 } from '@ant-design/icons';
 import Collection from './Contents/Collection';
 import MyTests from './Contents/MyTests';
@@ -89,8 +90,8 @@ const Tests = ({ location }) => {
         <Menu.Item key="tests" icon={<StarOutlined />}>
           My Tests
         </Menu.Item>
-        <Menu.Item key="testBank" icon={<StarOutlined />}>
-          Test Bank
+        <Menu.Item key="testBank" icon={<BankOutlined />}>
+          Questions Bank
         </Menu.Item>
       </Menu>
     );
@@ -103,9 +104,9 @@ const Tests = ({ location }) => {
         style={{
           width:
             // eslint-disable-next-line no-nested-ternary
-            window.innerWidth > Constants.MIN_SCREEN_WIDTH ? (toggle ? '2%' : '15%') : '0px',
+            window.innerWidth > Constants.MIN_SCREEN_WIDTH ? (toggle ? '2%' : '12%') : '0px',
           // eslint-disable-next-line no-nested-ternary
-          minWidth: window.innerWidth > Constants.MIN_SCREEN_WIDTH ? (toggle ? 55 : 205) : 0,
+          minWidth: window.innerWidth > Constants.MIN_SCREEN_WIDTH ? (toggle ? 55 : 181) : 0,
         }}
       >
         {window.innerWidth > Constants.MIN_SCREEN_WIDTH ? (

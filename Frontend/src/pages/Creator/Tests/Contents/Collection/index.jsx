@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Table, Input, Modal, Upload, Image, message, Alert } from 'antd';
+import { Button, Table, Input, Modal, Upload, Image, message, Alert, Typography } from 'antd';
 import { useHistory, connect } from 'umi';
 import styles from './index.less';
-import { InboxOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import { InboxOutlined, EditOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 const { Search } = Input;
 const { Dragger } = Upload;
 import NoData from '@/components/NoData';
@@ -106,8 +106,8 @@ const Collection = ({ collectionList, dispatch, loading }) => {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h3 className={styles.title}>Collections</h3>
-        <Button type="primary" className={styles.button} onClick={buttonModalOnClick}>
+        <Typography.Title level={2} className={styles.title}>Collections</Typography.Title>
+        <Button icon={<PlusOutlined/>} className={styles.button} onClick={buttonModalOnClick}>
           Create Collection
         </Button>
       </div>

@@ -1,6 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import styles from './styles.less';
-import { Button, Card, List, Skeleton, Modal, Input, message, ConfigProvider } from 'antd';
+import './custom.less'
+import {
+  PageHeader,
+  Button,
+  Card,
+  List,
+  Skeleton,
+  Modal,
+  Input,
+  message,
+  ConfigProvider,
+  Row,
+  Col,
+} from 'antd';
 import { DeleteOutlined, MoreOutlined } from '@ant-design/icons';
 import { connect, useHistory } from 'umi';
 import '../../../components/GlobalHeader/style.less';
@@ -59,10 +72,14 @@ const CollectionDetail = ({ location, collection, dispatch, testList, loading })
     <ConfigProvider locale={getLocale()}>
       <div className={`${styles.container} custom`}>
         <div className={styles.header}>
-          <div className={styles.headerLeft}>
+          <PageHeader
+            onBack={() => history.goBack()}
+            title={`Collection: ${collection.CollectionName}`}
+          />
+          {/* <div className={styles.headerLeft}>
             <img src={collection.CoverImage} />
             <h1>{collection.CollectionName}</h1>
-          </div>
+          </div> */}
           {/* <div className={styles.headerRight}>
           <Button className={styles.button}>Exit</Button>
           <Button type="primary" className={styles.button}>
@@ -97,8 +114,18 @@ const CollectionDetail = ({ location, collection, dispatch, testList, loading })
             </div>
           </div>
           <div className={styles.description}>
-            <Card title="Description" bordered={false} style={{ width: '100%' }}>
-              {collection.CollectionDescription}
+            <Card
+              cover={
+                <img
+                alt="Collection cover image"
+                  style={{ width:"auto", height:"50%",maxHeight: '100%', minHeight: '240px', margin: '0 auto' }}
+                  src={collection.CoverImage}
+                />
+              }
+              bordered={false}
+              style={{ width: '100%',position: "relative",overflow:"hidden" }}
+            >
+              <Card.Meta title="Description" description={collection.CollectionDescription} />
             </Card>
           </div>
         </div>
@@ -142,14 +169,13 @@ const Test = ({ list, collectionID, dispatch, handleTestOnClick }) => {
       renderItem={(item) => (
         <List.Item>
           <Skeleton avatar title={false} loading={item.loading} active>
-            <div className={styles.testInfoContainer}>
-              <div className={styles.questions}>{item.QuestionID.length} questions</div>
-              <img
-                src={'https://image.flaticon.com/icons/png/512/1039/1039328.png'}
-                className={styles.collectionImg}
-              />
-              <div className={styles.infoContainer}>
+            <Card style={{width:"100%"}} hoverable className={styles.testInfoContainer}>
+              <Row align="middle" style={{width:"100%"}}>
+                <Col span={3}>
                 <h3 className={styles.title}>{item.TestName}</h3>
+                <div className={styles.questions}>{item.QuestionID.length} questions</div>
+                </Col>
+                <Col offset={11} span={8} >
                 <div className={styles.testMoreInfo}>
                   <div
                     style={{
@@ -177,8 +203,18 @@ const Test = ({ list, collectionID, dispatch, handleTestOnClick }) => {
                     </Button>
                   </div>
                 </div>
-              </div>
-            </div>
+                </Col>
+              </Row>
+              
+              {/* <img
+                src={'https://image.flaticon.com/icons/png/512/1039/1039328.png'}
+                className={styles.collectionImg}
+              /> */}
+              {/* <div className={styles.infoContainer}>
+                
+                
+              </div> */}
+            </Card>
           </Skeleton>
         </List.Item>
       )}
