@@ -3,25 +3,28 @@
 .container {
   height: calc(100vh - 48px - 92px - 30px - 44px);
   overflow-y: scroll;
-
+  padding-right: 16px;
   .header {
+    display: block;
+    align-items: center;
     display: flex;
     justify-content: space-between;
 
     .button {
+      font-size: 2rem;
+      display: block;
       z-index: 100;
+      margin-right: 30px;
       color: white;
       font-size: larger;
       background: linear-gradient(135deg, #34a0ff 1%, #8cb7e7 100%);
-
-      // background-color: #c;
+      // width: 188px;
+      height: 48px;
       border-radius: 5px;
-
-      img {
-        height: 100%;
-        width: 100%;
+      
+      @media only screen and (max-width: @screen-md){
+        margin-top: 4px;
       }
-
       //
       @keyframes TransitioningBackground {
         0% {
@@ -98,7 +101,7 @@
   }
 
   .searchBar {
-    width: 475px;
+    width: 100%;
   }
 
   .modal {
@@ -128,7 +131,7 @@
 @media screen and (max-width: 768px) {
   .container {
     .searchBar {
-      width: 90%;
+      width: 100%;
     }
   }
 }

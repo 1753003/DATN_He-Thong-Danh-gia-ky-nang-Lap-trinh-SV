@@ -14,7 +14,7 @@ import {
   Row,
   Col,
 } from 'antd';
-import { DeleteOutlined, MoreOutlined } from '@ant-design/icons';
+import { DeleteOutlined, MoreOutlined, PlusOutlined } from '@ant-design/icons';
 import { connect, useHistory } from 'umi';
 import '../../../components/GlobalHeader/style.less';
 import _ from 'lodash';
@@ -44,7 +44,7 @@ const CollectionDetail = ({ location, collection, dispatch, testList, loading })
     setTestAddList(_.differenceBy(testList, collection.Test, 'TestID'));
   }, [testList]);
 
-  console.log(collection.Test);
+  // console.log(collection.Test);
 
   const onTestSearch = (value) => {
     const list = _.differenceBy(testList, collection.Test, 'TestID');
@@ -92,6 +92,7 @@ const CollectionDetail = ({ location, collection, dispatch, testList, loading })
             <div className={styles.testContainerHeader}>
               <h3>Add collection content</h3>
               <Button
+              icon={<PlusOutlined/>}
                 className={styles.buttonAddTest}
                 type="primary"
                 onClick={() => {
@@ -118,7 +119,7 @@ const CollectionDetail = ({ location, collection, dispatch, testList, loading })
               cover={
                 <img
                 alt="Collection cover image"
-                  style={{ width:"auto", height:"50%",maxHeight: '100%', minHeight: '240px', margin: '0 auto' }}
+                  style={{ width:"auto", maxWidth:"32vw", height:"50%",maxHeight: '100%', minHeight: '240px', margin: '0 auto' }}
                   src={collection.CoverImage}
                 />
               }
@@ -169,33 +170,32 @@ const Test = ({ list, collectionID, dispatch, handleTestOnClick }) => {
       renderItem={(item) => (
         <List.Item>
           <Skeleton avatar title={false} loading={item.loading} active>
-            <Card style={{width:"100%"}} hoverable className={styles.testInfoContainer}>
+            <Card style={{width:"96%",minHeight:"120px"}} hoverable className={styles.testInfoContainer}>
               <Row align="middle" style={{width:"100%"}}>
-                <Col span={3}>
+                <Col xs = {24} md = {8} lg = {11}>
                 <h3 className={styles.title}>{item.TestName}</h3>
                 <div className={styles.questions}>{item.QuestionID.length} questions</div>
                 </Col>
-                <Col offset={11} span={8} >
+                <Col offset={4} xs = {10} md = {10} lg = {8} >
                 <div className={styles.testMoreInfo}>
                   <div
                     style={{
-                      flexDirection: 'row',
+                      flexDirection: 'column',
                       display: 'flex',
                     }}
                   >
                     <Button
+                    icon={<DeleteOutlined />}
+                    block
                       className={styles.description}
                       style={{ width: 'auto' }}
                       onClick={() => handleRemoveTest(item.TestID)}
-                    >
-                      <DeleteOutlined />
-                      {window.innerWidth < Constants.MIN_SCREEN_WIDTH
-                        ? null
-                        : `${' '}Delete from the collection`}
+                    >Remove
                     </Button>
                     <Button
+                    block
                       className={styles.description}
-                      style={{ width: 'auto', marginLeft: 10 }}
+                      style={{ width: 'auto', marginTop:"6px" }}
                       onClick={() => handleTestOnClick(item.TestID)}
                       type="primary"
                     >
@@ -250,7 +250,7 @@ const AddTestModal = ({
     return false;
   };
 
-  console.log(testList);
+  // console.log(testList);
   return (
     <Modal
       title="Add test to this collection"
@@ -278,27 +278,44 @@ const AddTestModal = ({
               !checkExist(item.TestID) && (
                 <List.Item>
                   <Skeleton avatar title={false} loading={item.loading} active>
-                    <div
-                      className={styles.testInfoContainer}
-                      style={{ backgroundColor: '#35577a' }}
+                  <Card style={{width:"96%"}} hoverable className={styles.testInfoContainer}>
+              <Row align="middle" style={{width:"100%"}}>
+                <Col span={18}>
+                <h3 className={styles.title}>{item.TestName}</h3>
+                <div className={styles.questions}>{item.TotalQuestion} questions</div>
+                </Col>
+                <Col offset={1} span={2} >
+                <div className={styles.testMoreInfo}>
+                  <div
+                    style={{
+                      flexDirection: 'row',
+                      display: 'flex',
+                    }}
+                  >
+                    <Button
+                    icon={<PlusOutlined/>}
+                    block
+                      className={styles.description}
+                      style={{ width: 'auto', marginLeft: 10 }}
+                      onClick={() => handleAddTestClick(item.TestID)}
                     >
-                      <div className={styles.questions}>{item.TotalQuestion} questions</div>
-                      <img
-                        src={'https://image.flaticon.com/icons/png/512/1039/1039328.png'}
-                        className={styles.collectionImg}
-                      />
-                      <div className={styles.infoContainer}>
-                        <h3 className={styles.title} style={{ color: 'white' }}>
-                          {item.TestName}
-                        </h3>
-                        <div className={styles.testMoreInfo} style={{ color: 'white' }}>
-                          <div className={styles.MoreOutlined}>
-                            <Button onClick={() => handleAddTestClick(item.TestID)}>Add</Button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </Skeleton>
+                      Add
+                    </Button>
+                  </div>
+                </div>
+                </Col>
+              </Row>
+              
+              {/* <img
+                src={'https://image.flaticon.com/icons/png/512/1039/1039328.png'}
+                className={styles.collectionImg}
+              /> */}
+              {/* <div className={styles.infoContainer}>
+                
+                
+              </div> */}
+            </Card>
+                    </Skeleton>
                 </List.Item>
               )
             }
