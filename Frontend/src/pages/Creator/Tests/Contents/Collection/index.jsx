@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-
-import { Button, Table, Input, Modal, Upload, Image, message, Alert, Typography, ConfigProvider } from 'antd';
+import { Button, Table, Input, Modal, Upload, Image, message, Alert, ConfigProvider } from 'antd';
 import { useHistory, connect, getLocale } from 'umi';
 import styles from './index.less';
 import { InboxOutlined, EditOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
@@ -8,6 +7,7 @@ const { Search } = Input;
 const { Dragger } = Upload;
 import NoData from '@/components/NoData';
 import { removeAccents } from '@/utils/string';
+import Constants from '@/utils/constants';
 
 import _ from 'lodash';
 
@@ -57,7 +57,7 @@ const Collection = ({ collectionList, dispatch, loading }) => {
       dataIndex: 'CreatedAt',
       key: 'CreatedAt',
       sorter: (a, b) => Date.parse(a.CreatedAt) > Date.parse(b.CreatedAt),
-      sortDirections: ['descend'],
+      defaultSortOrder: 'descend',
     },
     {
       title: 'Action',
@@ -113,19 +113,17 @@ const Collection = ({ collectionList, dispatch, loading }) => {
   return (
     <ConfigProvider locale={getLocale()}>
       <div className={styles.container}>
-      <div className={styles.header}>
-        <Typography.Title level={2} className={styles.title}>Collections</Typography.Title>
-        <Button icon={<PlusOutlined/>} className={styles.button} onClick={buttonModalOnClick}>
-          Create Collection
-        </Button>
-      </div>
-      <Search
-        placeholder="input search text"
-        onSearch={onSearch}
-        enterButton
-        className={styles.searchBar}
-      />
-        
+        <div className={styles.header}>
+          <Search
+            placeholder="Please input search text"
+            onSearch={onSearch}
+            enterButton
+            className={styles.searchBar}
+          />
+          <Button icon={<PlusOutlined />} className={styles.button} onClick={buttonModalOnClick}>
+            {window.innerWidth > Constants.MIN_SCREEN_WIDTH ? 'Create Collection' : null}
+          </Button>
+        </div>
 
         <div className={styles.content}>
           <Alert message="Double click to show detail" type="info" showIcon />
