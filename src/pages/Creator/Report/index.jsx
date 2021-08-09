@@ -53,7 +53,6 @@ const Report = ({ reportList, dispatch, loading }) => {
         loading={loading}
         dataSource={list}
         columns={columns}
-        scroll={{ y: '70vh' }}
         locale={{ emptyText: NoData }}
         style={{ cursor: 'pointer' }}
         onRow={(record, rowIndex) => {

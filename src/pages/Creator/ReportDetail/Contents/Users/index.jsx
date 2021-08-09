@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './index.less';
-import { Table } from 'antd';
+import { Table, ConfigProvider, Input } from 'antd';
 import '@/components/GlobalHeader/style.less';
-import { useHistory } from 'umi';
+import { useHistory, getLocale } from 'umi';
 import NoData from '@/components/NoData';
+import { removeAccents } from '@/utils/string';
+
+const { Search } = Input;
 
 const Users = ({ summaryUser, reportID }) => {
   const history = useHistory();
+  const [data, setData] = useState(summaryUser || []);
   const columns = [
     {
       title: 'Name',
@@ -27,7 +31,7 @@ const Users = ({ summaryUser, reportID }) => {
       sorter: (a, b) => a.CorrectPercent - b.CorrectPercent,
     },
     {
-      title: 'Answerd',
+      title: 'Answered',
       dataIndex: 'AnsweredNumber',
       key: 'AnsweredNumber',
       defaultSortOrder: 'ascend',
@@ -42,29 +46,48 @@ const Users = ({ summaryUser, reportID }) => {
     },
   ];
 
+  const onSearch = (value) => {
+    const searchList = [];
+    const refactorValue = removeAccents(value).toLowerCase();
+    summaryUser.forEach((element) => {
+      if (removeAccents(element?.UserName).toLowerCase().includes(refactorValue)) {
+        searchList.push(element);
+      }
+    });
+    setData(searchList);
+  };
+
   return (
-    <div className={`${styles.container} custom`}>
-      <Table
-        dataSource={summaryUser}
-        columns={columns}
-        locale={{ emptyText: NoData }}
-        style={{ cursor: 'pointer' }}
-        onRow={(record, rowIndex) => {
-          return {
-            onClick: (event) => {
-              console.log(record);
-              history.push({
-                pathname: '/creator/report/user',
-                query: {
-                  userName: encodeURIComponent(record.UserName),
-                  reportID: reportID,
-                },
-              });
-            }, // double click row
-          };
-        }}
-      />
-    </div>
+    <ConfigProvider locale={getLocale()}>
+      <div className={`${styles.container} custom`}>
+        <Search
+          placeholder="Please input UserName to search"
+          enterButton
+          // className={styles.searchBar}
+          onSearch={onSearch}
+        />
+        <Table
+          dataSource={data}
+          columns={columns}
+          locale={{ emptyText: NoData }}
+          style={{ cursor: 'pointer' }}
+          onRow={(record, rowIndex) => {
+            return {
+              onClick: (event) => {
+                console.log(record);
+                history.push({
+                  pathname: '/creator/report/user',
+                  query: {
+                    userName: encodeURIComponent(record.UserName),
+                    reportID: reportID,
+                  },
+                });
+              }, // double click row
+            };
+          }}
+        />
+      </div>
+    </ConfigProvider>
   );
 };
 

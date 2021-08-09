@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import styles from './styles.less';
 import { Menu, Drawer, Button } from 'antd';
 import { useHistory } from 'umi';
@@ -72,6 +72,12 @@ const Tests = ({ location }) => {
     }
   };
 
+  const returnTitle = useMemo(() => {
+    if (query.menuKey === 'collection') return 'Collections';
+    if (query.menuKey === 'tests') return 'My Tests';
+    if (query.menuKey === 'testBank') return 'Test Bank';
+  }, [query.menuKey]);
+
   const renderMenu = (theme) => {
     return (
       <Menu
@@ -131,18 +137,28 @@ const Tests = ({ location }) => {
           paddingTop: window.innerWidth < Constants.MIN_SCREEN_WIDTH && 0,
         }}
       >
-        <Button
-          type="primary"
-          onClick={
-            window.innerWidth > Constants.MIN_SCREEN_WIDTH
-              ? toggleCollapsed
-              : () => setMenuDrawerVisibility(true)
-          }
-          style={{ marginTop: 16 }}
-          size="small"
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}
         >
-          {React.createElement(toggle ? MenuUnfoldOutlined : MenuFoldOutlined)}
-        </Button>
+          <Button
+            type="primary"
+            onClick={
+              window.innerWidth > Constants.MIN_SCREEN_WIDTH
+                ? toggleCollapsed
+                : () => setMenuDrawerVisibility(true)
+            }
+            size="small"
+            style={{ margin: 10 }}
+          >
+            {React.createElement(toggle ? MenuUnfoldOutlined : MenuFoldOutlined)}
+          </Button>
+          <h1 style={{ paddingTop: 9 }}>{returnTitle}</h1>
+        </div>
+
         <RightContent />
       </div>
     </div>
