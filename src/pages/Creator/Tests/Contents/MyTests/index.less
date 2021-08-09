@@ -2,34 +2,15 @@
 
 .container {
   height: calc(100vh - 48px - 92px - 30px - 44px);
-  margin-top: 20px;
   overflow-y: scroll;
   .header {
     display: flex;
     justify-content: space-between;
     .button {
       z-index: 100;
-      margin-top: 32px;
-      margin-right: 30px;
       color: white;
       font-size: larger;
       background: linear-gradient(135deg, #34a0ff 1%, #8cb7e7 100%);
-      width: 14vw;
-      height: 3vw;
-
-      @media only screen and (max-width: @screen-md) {
-        width: 38vw;
-        height: 38vw;
-        margin-bottom: 4vw;
-        margin-left: 4vw;
-        margin-right: 0vw;
-      }
-
-      @media only screen and (max-width: @screen-sm) {
-        width: 80vw;
-        height: 80vw;
-        margin-bottom: 4vw;
-      }
 
       // background-color: #c;
       border-radius: 5px;
@@ -110,7 +91,6 @@
   .content {
     width: 100%;
     margin-top: 20px;
-    padding-right: 30px;
   }
   .searchBar {
     width: 475px;

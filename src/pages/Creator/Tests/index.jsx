@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import styles from './styles.less';
-import { Menu, Drawer, Button } from 'antd';
+import { Menu, Drawer, Button, Typography } from 'antd';
 import { useHistory } from 'umi';
 import {
   UserOutlined,
@@ -136,6 +136,7 @@ const Tests = ({ location }) => {
           width: toggle || window.innerWidth < Constants.MIN_SCREEN_WIDTH ? '98%' : '85%',
           paddingLeft: 20,
           paddingTop: window.innerWidth < Constants.MIN_SCREEN_WIDTH && 0,
+          paddingRight: window.innerWidth < Constants.MIN_SCREEN_WIDTH || !toggle ? 0 : 32,
         }}
       >
         <div
@@ -157,7 +158,9 @@ const Tests = ({ location }) => {
           >
             {React.createElement(toggle ? MenuUnfoldOutlined : MenuFoldOutlined)}
           </Button>
-          <h1 style={{ paddingTop: 9 }}>{returnTitle}</h1>
+          <Typography.Title level={2} style={{ paddingTop: 14 }}>
+            {returnTitle}
+          </Typography.Title>
         </div>
 
         <RightContent />
