@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styles from './index.less';
 import { Button, Modal, Upload, Select, message, List, ConfigProvider } from 'antd';
-import { CheckCircleTwoTone, CloseCircleTwoTone, UploadOutlined } from '@ant-design/icons';
+import { CheckCircleFilled, CloseCircleFilled, UploadOutlined } from '@ant-design/icons';
 import { connect, useHistory, getLocale } from 'umi';
 import PageLoading from '@/components/PageLoading';
 import NotFound from '@/pages/404';
@@ -151,14 +151,17 @@ const Question = ({ list }) => {
   return list?.map((item) => {
     return (
       <div className={styles.questionContainer} key={item.ID}>
-        <div className={styles.questionHead}>
-          {item.ID}-{item.QuestionType}
-        </div>
+        <span className={styles.questionHead}>
+          <div><b>ID:</b>{` ${item.ID} - ${item.QuestionType}`}</div>
+          <div className={styles.mark}>{`Score: ${item.Score} `}mark(s)</div>
+          
+        </span>
         <div className={styles.question}>{item.Question}</div>
+        
         <b>Description: </b>
+        <br/>
         <MDEditor.Markdown className="problem" source={item.Description}></MDEditor.Markdown>
-
-        <div className={styles.mark}>{item.Score} mark</div>
+        <br/>
         {item.QuestionType === 'Code' ? (
           <div>
             <div>
@@ -213,9 +216,9 @@ const Question = ({ list }) => {
                   <div className={styles.answer}>{choice}</div>
                   <div className={styles.answer}>
                     {checkCorrect(item.CorrectAnswer, index) ? (
-                      <CheckCircleTwoTone twoToneColor="#52c41a" style={{ fontSize: '32px' }} />
+                      <CheckCircleFilled style={{ color:"green", fontSize: '32px' }} />
                     ) : (
-                      <CloseCircleTwoTone twoToneColor="red" style={{ fontSize: '32px' }} />
+                      <CloseCircleFilled  style={{ color:"red", fontSize: '32px' }} />
                     )}
                   </div>
                 </div>
