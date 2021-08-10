@@ -28,11 +28,15 @@ const TestBank = ({ testBankList, dispatch, loading }) => {
       key: 'ID',
       sorter: (a, b) => a.ID > b.ID,
       defaultSortOrder: 'ascend',
+      width: '10%',
+      ellipsis: true,
     },
     {
       title: 'Question Type',
       dataIndex: 'QuestionType',
       key: 'QuestionType',
+      width: '15%',
+      ellipsis: true,
       filters: [
         {
           text: 'Multiple Choice',
@@ -49,11 +53,15 @@ const TestBank = ({ testBankList, dispatch, loading }) => {
       title: 'Description',
       dataIndex: 'Description',
       key: 'Description',
+      ellipsis: true,
+      width: '60%',
     },
     {
       title: 'Language Allowed',
       dataIndex: 'Language_allowed',
       key: 'Language_allowed',
+      width: '15%',
+      ellipsis: true,
       filters: [
         {
           text: 'C',

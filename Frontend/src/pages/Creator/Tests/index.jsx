@@ -136,7 +136,7 @@ const Tests = ({ location }) => {
           width: toggle || window.innerWidth < Constants.MIN_SCREEN_WIDTH ? '98%' : '88%',
           paddingLeft: 20,
           paddingTop: window.innerWidth < Constants.MIN_SCREEN_WIDTH && 0,
-          paddingRight: window.innerWidth < Constants.MIN_SCREEN_WIDTH || !toggle ? 0 : 32,
+          paddingRight: 32,
         }}
       >
         <div
