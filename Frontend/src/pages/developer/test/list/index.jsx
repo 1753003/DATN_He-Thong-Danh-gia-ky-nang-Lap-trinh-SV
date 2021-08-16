@@ -261,7 +261,7 @@ const TestSetList = ({ location, dispatch, testDev, loading }) => {
                         >
                           {item.DifficultLevel}
                         </Typography.Text>
-                        {',' + item.Type + ',' + item.Score} <br></br> {item.BriefDescription}
+                        {', Score: ' + item.Score} <br></br> {item.BriefDescription}
                       </div>
                     }
                   />
@@ -325,15 +325,6 @@ const TestSetList = ({ location, dispatch, testDev, loading }) => {
           <br></br>
           <Checkbox onChange={onChange} value="Hard">
             {Language.pages_practice_list_hard}
-          </Checkbox>
-          <Divider />
-          <Title level={4}>{Language.pages_practice_list_type}</Title>
-          <Checkbox onChange={onChange} value="Multiple">
-            {Language.pages_practice_list_multipleChoice}
-          </Checkbox>
-          <br></br>
-          <Checkbox onChange={onChange} value="Coding">
-            {Language.pages_practice_list_coding}
           </Checkbox>
           <Divider />
         </Col>

@@ -221,6 +221,7 @@ class TestDetail extends React.Component {
   returnQuizQuestion = () => {
     return (
       <Quiz
+        style = {{marginBottom: '50px'}}
         key={this.getQuestion()?.ID}
         options={this.getQuestion()?.Answer}
         value={this.props.test.answer[this.props.test.question]?.data}
@@ -269,7 +270,7 @@ class TestDetail extends React.Component {
   returnNavigateQuestion = () => {
     if (this.props.test.question === 0)
       return (
-        <Row>
+        <Row styles = {{marginTop: '20px'}}>
           <Button
             type="primary"
             disabled

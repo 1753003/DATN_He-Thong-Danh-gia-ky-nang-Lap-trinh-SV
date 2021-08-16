@@ -118,7 +118,7 @@ class CodeEditor extends Component {
       return;
     }
     this.props.checkCustom(!this.state.showCustom);
-    this.handleSendCode(this.props.testCases[0]?.Input[0], this.props.testCases[0]?.Output[0]);
+    this.handleSendCode(this.props.testCases[0]?.Input, this.props.testCases[0]?.Output);
   };
 
   handleThemeChange = (value) => {
