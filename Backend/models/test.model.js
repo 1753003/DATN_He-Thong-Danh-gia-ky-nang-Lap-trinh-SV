@@ -5,6 +5,7 @@ const { getPracticeQuestionList } = require("./question.model");
 
 module.exports = {
   async createTest(generalInformation, listQuestion, listEmail, result, uid) {
+    console.log(generalInformation)
     await db("test")
       .insert(generalInformation)
       .then(async (TestID) => {
