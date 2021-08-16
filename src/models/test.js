@@ -301,8 +301,8 @@ const TestModel = {
           if (data.answer[count].data !== '') numAnswer++;
           for (var tc of e.TestCase) {
             // console.log(tc.Input[0])
-            var input = tc.Input[0];
-            var expected_output = tc.Output[0];
+            var input = tc.Input;
+            var expected_output = tc.Output;
             console.log(tc.Input, tc.Input[0], u_btoa(input));
             let data = {
               source_code: code,

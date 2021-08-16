@@ -24,6 +24,7 @@ const Model = {
       yield put({
         type: 'setDone',
       })
+      console.log(payload)
       const res = yield createSubmission(payload)
       yield put({
         type: 'setToken',
@@ -36,7 +37,7 @@ const Model = {
       data = JSON.parse(JSON.stringify(data, function (key, value) {
         return (value == null) ? "" : value
       }));
-      // console.log('res',res)
+     
       yield put({
         type: 'setResult',
         payload: data

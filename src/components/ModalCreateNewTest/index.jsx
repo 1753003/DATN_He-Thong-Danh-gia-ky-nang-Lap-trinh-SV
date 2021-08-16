@@ -22,11 +22,15 @@ export const ModalCreateNewTest = ({
       title: 'ID',
       dataIndex: 'ID',
       key: 'ID',
+      ellipsis: true,
+      width: '10%',
     },
     {
       title: 'Question Type',
       dataIndex: 'QuestionType',
       key: 'QuestionType',
+      width: '15%',
+      ellipsis: true,
       filters: [
         {
           text: 'Multiple Choice',
@@ -43,11 +47,15 @@ export const ModalCreateNewTest = ({
       title: 'Description',
       dataIndex: 'Description',
       key: 'Description',
+      ellipsis: true,
+      width: '60%',
     },
     {
       title: 'Language Allowed',
       dataIndex: 'Language_allowed',
       key: 'Language_allowed',
+      width: '15%',
+      ellipsis: true,
       filters: [
         {
           text: 'C',
@@ -97,6 +105,8 @@ export const ModalCreateNewTest = ({
         visible={visible}
         onCancel={onCancel}
         width={'80vw'}
+        bodyStyle={{ height: '70vh', overflow: 'scroll' }}
+        style={{ marginTop: -70 }}
         footer={[
           <Button key="back" onClick={onCancel}>
             Close
@@ -107,14 +117,18 @@ export const ModalCreateNewTest = ({
           </Button>,
         ]}
       >
-        <Search placeholder="input search text" onSearch={onSearch} enterButton />
+        <Search
+          placeholder="Please input search text"
+          onSearch={onSearch}
+          enterButton
+          style={{ marginBottom: 20 }}
+        />
         <Alert message="Click at a test to select them" type="info" showIcon />
         <Table
           loading={true}
           columns={columns}
           dataSource={data}
           loading={loading}
-          scroll={{ y: '55vh' }}
           style={{ cursor: 'pointer' }}
           rowKey="ID"
           onRow={(record, rowIndex) => {
