@@ -30,7 +30,7 @@ module.exports = {
         PracticeID: null,
         DevID: uid,
         AnsweredNumber: submission.AnsweredNumber,
-        CorrectPercent: submission.CorrectPercent,
+        CorrectPercent: Math.round(submission.CorrectPercent),
         DoingTime: submission.DoingTime,
         Score: submission.Score,
       })

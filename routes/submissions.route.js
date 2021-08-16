@@ -72,7 +72,7 @@ router.post('/test', async function(req,res) {
             percentSuccess = (statics.PercentSuccess * (statics.Num - 1) / 100) * 100 / (statics.Num);
     }
     console.log(percentPass, percentSuccess)
-    await reportModel.updateReport(submission.TestID, percentPass, percentSuccess)
+    await reportModel.updateReport(submission.TestID, Math.round(percentPass), Math.round(percentSuccess))
 
     res.json(
         'OK'
