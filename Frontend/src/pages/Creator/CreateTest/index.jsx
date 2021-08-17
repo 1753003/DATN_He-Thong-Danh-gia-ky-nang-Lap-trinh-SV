@@ -346,6 +346,7 @@ const CreateTest = ({ dispatch, location, testBankList }) => {
           createNewEmptyTest={createNewEmptyTest}
           onPressBankTest={handleTestBankOnClick}
           testBankList={testBankList}
+          quiz={quiz}
         />
       </div>
     );
