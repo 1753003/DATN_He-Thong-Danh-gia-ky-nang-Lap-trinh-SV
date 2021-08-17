@@ -226,7 +226,6 @@ const Login = (props) => {
       </ProForm>
       <Space className={styles.other}>
         <FormattedMessage id="pages.login.loginWith" defaultMessage="Login with" />
-        <FacebookOutlined className={styles.icon} onClick = {()=>{loginFacebook()}} />
         <GoogleOutlined className={styles.icon} onClick = {() => {loginGoogle()}} />
       </Space>
     </div>
