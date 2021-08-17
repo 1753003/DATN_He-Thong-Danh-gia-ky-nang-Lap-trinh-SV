@@ -323,7 +323,7 @@ else Language = {
     'pages_test_testDetail_seconds': 'seconds',
     'pages_test_testDetail_question': 'Question ',
     'pages_test_testDetail_score': 'Score:',
-    'pages_test_testDetail_submit': 'Submit:',
+    'pages_test_testDetail_submit': 'Submit',
     'pages_test_testDetail_waitingATest': 'Waiting seconds to load a test ...',
     'pages_test_testDetail_listQuestion': 'List question',
     'pages_test_testDetail_submitSure': 'Are you sure to submit this test',
