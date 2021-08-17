@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Alert, Modal, Table, Tag, ConfigProvider, Input } from 'antd';
+import { Button, Alert, Modal, Table, Tag, ConfigProvider, Input, message } from 'antd';
 import { getLocale } from 'umi';
 import { removeAccents } from '@/utils/string';
 
@@ -11,12 +11,18 @@ export const ModalCreateNewTest = ({
   createNewEmptyTest,
   onPressBankTest,
   testBankList,
+  quiz,
 }) => {
   const [loading, setLoading] = useState(false);
-  const [data, setData] = useState(testBankList || []);
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    setData(testBankList);
+  }, [testBankList]);
+
   useEffect(() => {
     setLoading(false);
-  }, []);
+  }, [visible]);
+
   const columns = [
     {
       title: 'ID',
@@ -134,8 +140,18 @@ export const ModalCreateNewTest = ({
           onRow={(record, rowIndex) => {
             return {
               onClick: (event) => {
-                onPressBankTest(record);
-                setLoading(true);
+                let isExist = false;
+                quiz.forEach((item) => {
+                  if (item.ID === record.ID) {
+                    isExist = true;
+                  }
+                });
+                if (!isExist) {
+                  onPressBankTest(record);
+                  setLoading(true);
+                } else {
+                  message.error('This question is already in Test List !!!');
+                }
               },
             };
           }}
