@@ -119,7 +119,7 @@ export const ModalCreateNewTest = ({
           </Button>,
 
           <Button key="create" onClick={createNewEmptyTest} type="primary">
-            Create New Plank Test
+            Create Blank Question
           </Button>,
         ]}
       >
