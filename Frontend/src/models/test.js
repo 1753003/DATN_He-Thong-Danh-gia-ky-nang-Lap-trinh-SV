@@ -74,6 +74,7 @@ const TestModel = {
     *getTestByIdModel({ payload }, { call, put }) {
       try {
         const response = yield call(getTestById, payload.id);
+        console.log(response);
         yield put({
           type: 'saveTestById',
           payload: response,
@@ -110,10 +111,10 @@ const TestModel = {
       } else {
         const checkSubmit = yield call(checkSubmission, payload.id);
         const response = yield call(getTestById, payload.id);
-
-        console.log('Error:', response.error, response.error.localeCompare('none'));
+        console.log(response);
+        
         if (response.error.localeCompare('none') != 1) {
-          console.log('BB');
+         
           if (response.generalInformation.Again === 0 && checkSubmit) {
             yield put({
               type: 'saveIsDid',
@@ -364,10 +365,7 @@ const TestModel = {
             QuestionID: data.answer[count].id,
           };
 
-          if (TestCasePassed.length === OutputTestcase.length) {
-            score += e.Score;
-            numCorrect++;
-          }
+          
         } else if (e.QuestionType === 'MultipleChoice') {
           let Choice = [];
           for (let item of data.answer[count].data) {
@@ -407,9 +405,9 @@ const TestModel = {
       yield call(postSubmission, {
         TestID: data.test.generalInformation.TestID,
         AnsweredNumber: numAnswer,
-        CorrectPercent: numCorrect,
+        CorrectPercent: 0,
         DoingTime: time,
-        Score: score,
+        Score: 0,
         ListAnswer: listAnswer,
       });
     },

@@ -44,6 +44,7 @@ class CodeEditor extends Component {
   constructor(props) {
     super(props);
     let temp = 'c_cpp';
+    console.log(this.props)
     if (this.props.language[0] === 'Java') temp = 'java';
     else if (this.props.language[0] === 'Javascript') temp = 'javascript';
 
@@ -102,6 +103,7 @@ class CodeEditor extends Component {
         type: 'judge/sendCode',
         payload: data,
       });
+
       resolve();
     });
   handleRun = () => {
@@ -118,6 +120,7 @@ class CodeEditor extends Component {
       return;
     }
     this.props.checkCustom(!this.state.showCustom);
+    
     this.handleSendCode(this.props.testCases[0]?.Input, this.props.testCases[0]?.Output);
   };
 

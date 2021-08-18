@@ -12,9 +12,7 @@ module.exports = {
         var questionID = [];
         var oldQuestionID = (await db("userlogin").where("UserID", uid))[0]
           .QuestionID;
-        console.log(listQuestion);
         for (const element of listQuestion) {
-          console.log(element.ID);
           if (element.ID == undefined || element.ID == "undefined") {
             await db("question")
               .insert({
@@ -22,6 +20,7 @@ module.exports = {
                 QuestionType: element.QuestionType,
                 Score: element.Score,
                 PracticeID: null,
+                Method: element.Method
               })
               .then(async (result) => {
                 questionID.push(result[0]);
@@ -55,7 +54,7 @@ module.exports = {
             QuestionID: JSON.stringify(questionID),
           })
           .where("TestID", TestID[0]);
-        console.log(oldQuestionID);
+        
         await db("userlogin")
           .update({ QuestionID: JSON.stringify(oldQuestionID) })
           .where("UserID", uid);
@@ -358,6 +357,7 @@ module.exports = {
       res.ID = question.ID;
       res.QuestionType = question.QuestionType;
       res.Score = question.Score;
+      res.Method = question.Method;
       if (question.QuestionType == "MultipleChoice") {
         const multipleQuestion = (
           await db("multiplechoice").where("QuestionID", question.ID)
@@ -400,6 +400,7 @@ module.exports = {
     const temp = (await db("test").where("TestID", testID))[0];
     const oldList = temp.listUser || [];
     const finalList = listEmail.filter((x) => !oldList.includes(x));
+    console.log(finalList, testID)
     await db.raw(
       `call updatePermission('${JSON.stringify(finalList)}', ${testID})`
     );
