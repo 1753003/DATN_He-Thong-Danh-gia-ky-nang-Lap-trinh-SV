@@ -36,7 +36,7 @@ export const exportToCSV = (summaryUser, summaryReport) => {
     listNotFinish,
   } = summaryReport;
   const newItem = {
-    'Percent Pass': PercentPass,
+    'Percent Perfect': PercentPass,
     PercentSuccess: PercentSuccess,
     'Test Name': ReportName,
     'Number of questions': numOfQuestion,

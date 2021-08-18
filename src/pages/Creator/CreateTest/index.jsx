@@ -3,7 +3,12 @@ import styles from './index.less';
 import moment from 'moment';
 import PageLoading from '@/components/PageLoading';
 import { Button, Select, Form, InputNumber, message } from 'antd';
-import { PlusOutlined, QuestionOutlined, DollarCircleOutlined } from '@ant-design/icons';
+import {
+  PlusOutlined,
+  QuestionOutlined,
+  DollarCircleOutlined,
+  PieChartOutlined,
+} from '@ant-design/icons';
 import { connect } from 'umi';
 import NotFound from '@/pages/404';
 import { DrawerForm } from '@/components/DrawerForm';
@@ -290,22 +295,23 @@ const CreateTest = ({ dispatch, location, testBankList }) => {
                           item.Answer = [];
                           item.CorrectAnswer = [];
                           item.CodeSample = '';
+                          item.Method = 1;
                           delete item.TestCase;
-                          delete item.Description;
                           delete item.RunningTime;
                           delete item.MemoryUsage;
                         }
                         if (value === 'code') {
                           item.QuestionType = 'code';
                           item.Score = 0;
-                          item.Description = '';
+                          item.Method = 1;
+                          item.Description =
+                            '**Objective:**\n\n**Tasks:**\n\n**Function Description:**\n\n**Returns:**\n\n**Input Format:**\n\n**Output Format:**\n\n';
                           item.TestCase = [];
                           item.RunningTime = '';
                           item.MemoryUsage = '';
                           item.CodeSample = '';
                           delete item.CorrectAnswer;
                           delete item.Answer;
-                          delete item.Description;
                         }
                       }
                     });
@@ -314,6 +320,26 @@ const CreateTest = ({ dispatch, location, testBankList }) => {
                 >
                   <Option value="quiz">Quiz</Option>
                   <Option value="code">Code</Option>
+                </Select>
+              </div>
+              <div className={styles.option}>
+                <div className={styles.optionTitle}>
+                  <PieChartOutlined />
+                  Method
+                </div>
+                <Select
+                  style={{ width: '100%' }}
+                  value={selectedQuiz?.Method || 1}
+                  onChange={(value) => {
+                    const newQuiz = [...quiz];
+                    newQuiz.forEach((item) => {
+                      if (item.ID === selectedQuiz.ID) item.Method = value;
+                    });
+                    setQuiz(newQuiz);
+                  }}
+                >
+                  <Option value={1}>All Corrects</Option>
+                  <Option value={2}>Percentage</Option>
                 </Select>
               </div>
               <div className={styles.option}>
