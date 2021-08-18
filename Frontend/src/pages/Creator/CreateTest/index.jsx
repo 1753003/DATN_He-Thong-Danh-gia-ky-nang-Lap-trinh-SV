@@ -77,7 +77,7 @@ const CreateTest = ({ dispatch, location, testBankList }) => {
   };
 
   const createSuccess = (testCode) => {
-    message.success(`Create test successfully with TestCode: ${testCode} !!!`);
+    message.success(`Test was created with TestCode: ${testCode} !!!`);
     setLoading(false);
     history.back();
   };
@@ -88,7 +88,7 @@ const CreateTest = ({ dispatch, location, testBankList }) => {
   };
 
   const updateSuccess = () => {
-    message.success('Update test successfully !!!');
+    message.success('Success to update test !!!');
     history.back();
   };
 
@@ -165,7 +165,7 @@ const CreateTest = ({ dispatch, location, testBankList }) => {
         });
       }
     } else {
-      message.error('Please fill in all off the information !!!');
+      message.error('Please fill in all information !!!');
     }
   };
 
@@ -189,20 +189,15 @@ const CreateTest = ({ dispatch, location, testBankList }) => {
   };
 
   const onPressBankTest = (test) => {
-    const newQuiz = [...quiz];
-    const newTest = { ...test };
-    newTest.key = newQuiz.length;
+    const oldQuiz = [...quiz];
 
-    if (test.QuestionType === 'MultipleChoice') {
-      newTest.QuestionType = 'quiz';
-    }
-    if (test.QuestionType === 'Code') {
-      newTest.QuestionType = 'code';
-    }
-    newQuiz.push(newTest);
-    setQuiz(newQuiz);
+    const lastQuiz = _.unionBy(oldQuiz, [...test], 'ID');
+    lastQuiz.forEach((item, index) => {
+      item.key = index;
+    });
+    setQuiz(lastQuiz);
     setVisibleModal(false);
-    setSelectedQuiz(newTest);
+    setSelectedQuiz(lastQuiz[0]);
   };
 
   const createNewTestClick = () => {
@@ -211,10 +206,20 @@ const CreateTest = ({ dispatch, location, testBankList }) => {
 
   const handleTestBankOnClick = (record) => {
     const payload = {
-      id: record.ID,
-      callback: (response) => onPressBankTest(response),
+      list: record,
+      callback: (response) => {
+        response.forEach((item) => {
+          if (item.QuestionType === 'MultipleChoice') {
+            item.QuestionType = 'quiz';
+          }
+          if (item.QuestionType === 'Code') {
+            item.QuestionType = 'code';
+          }
+        });
+        onPressBankTest(response);
+      },
     };
-    dispatch({ type: 'test/getTestBankByIdModel', payload });
+    dispatch({ type: 'test/getTestBankListByListId', payload });
   };
 
   if (loading) {
@@ -231,7 +236,7 @@ const CreateTest = ({ dispatch, location, testBankList }) => {
               setVisibleDrawer(true);
             }}
           >
-            Test Infomation <PlusOutlined />
+            Input Information <PlusOutlined />
           </Button>
           <Button onClick={handleSubmitTest} className={styles.submitBtn}>
             {action === 'CREATE' ? 'CREATE' : 'UPDATE'}

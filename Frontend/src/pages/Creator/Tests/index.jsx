@@ -94,10 +94,10 @@ const Tests = ({ location }) => {
           Collections
         </Menu.Item>
         <Menu.Item key="tests" icon={<StarOutlined />}>
-          My Tests
+          Tests
         </Menu.Item>
         <Menu.Item key="testBank" icon={<BankOutlined />}>
-          Questions Bank
+          Questions
         </Menu.Item>
       </Menu>
     );
