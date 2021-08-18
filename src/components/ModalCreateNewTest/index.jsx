@@ -135,6 +135,7 @@ export const ModalCreateNewTest = ({
           <Button
             key="create"
             onClick={() => {
+              setLoading(true);
               onPressBankTest(selectedRowKeys);
             }}
             type="primary"
