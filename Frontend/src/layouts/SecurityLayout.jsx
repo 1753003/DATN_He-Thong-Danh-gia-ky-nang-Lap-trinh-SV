@@ -1,8 +1,8 @@
 import React from 'react';
 import PageLoading from '@/components/PageLoading';
-import { Redirect, connect } from 'umi';
+import { Redirect, connect, getLocale } from 'umi';
 import { stringify } from 'querystring';
-import { Result, Button } from 'antd';
+import { Result, Button, ConfigProvider } from 'antd';
 
 class SecurityLayout extends React.Component {
   state = {
@@ -57,7 +57,7 @@ class SecurityLayout extends React.Component {
           </Button>
         </div>
       );
-    return children;
+    return <ConfigProvider locale={getLocale()}>{children}</ConfigProvider>;
   }
 }
 
