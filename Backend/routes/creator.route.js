@@ -107,6 +107,7 @@ router.get('/test/:id', async function (req, res) {
 })
 
 router.patch('/test/:id', async function (req, res) {
+   console.log(req.body);
    await testModel.updateTest(req.body, req.params.id);
    res.json("OK")
 })

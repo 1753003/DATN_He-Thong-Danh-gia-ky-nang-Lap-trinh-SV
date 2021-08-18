@@ -85,10 +85,12 @@ module.exports = {
       await db.raw(`call getUserDetailReport(${testID}, '${userName}', 'Code')`)
     )[0][0];
 
-    for (let e of b) {
-      for (let i of e.StudentOutput) {
+    for (let e of b) {   
+      e.StudentOutput = e.StudentOutput.map(i => {
         i = Buffer.from(i, "base64").toString();
-      }
+        return i;
+      })
+      console.log(e.StudentOutput)
       e.StudentCodeScript = Buffer.from(
         e.StudentCodeScript,
         "base64"
