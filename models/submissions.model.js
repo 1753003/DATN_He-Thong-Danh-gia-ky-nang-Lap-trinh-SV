@@ -23,6 +23,7 @@ module.exports = {
     return res;
   },
   async postTestSubmission(uid, submission) {
+    await db.raw(`call dropExist(${submission.TestID}, '${uid}')`);
     await db("submissions")
       .insert({
         SubmissionType: "MultipleChoice",
@@ -37,15 +38,16 @@ module.exports = {
       .then(async (SubmissionID) => {
         const ID = SubmissionID[0];
         for (item of submission.ListAnswer) {
-          console.log(item.Type)
+          
           if (item.Type === "MultipleChoice") {
             await db("answermultiplechoice").insert({
               SubmissionID: ID,
               QuestionID: item.QuestionID,
               Choice: JSON.stringify(item.Choice),
+              Point: item.Point
             });
           } else if (item.Type === "Code") {
-            console.log(item)
+            
             await db("answercoding").insert({
               SubmissionID: ID,
               QuestionID: item.QuestionID,
@@ -55,6 +57,7 @@ module.exports = {
               RunningTime: item.RunningTime,
               MemoryUsage: item.MemoryUsage,
               OutputTestcase: JSON.stringify(item.OutputTestcase),
+              Point: item.Point
             });
           }
         }
