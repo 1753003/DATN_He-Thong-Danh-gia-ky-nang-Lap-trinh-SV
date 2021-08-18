@@ -15,12 +15,14 @@ export const ModalCreateNewTest = ({
 }) => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   useEffect(() => {
     setData(testBankList);
   }, [testBankList]);
 
   useEffect(() => {
     setLoading(false);
+    setSelectedRowKeys([]);
   }, [visible]);
 
   const columns = [
@@ -104,6 +106,16 @@ export const ModalCreateNewTest = ({
     setData(searchList);
   };
 
+  const onSelectChange = (selectedRowKeys) => {
+    console.log('selectedRowKeys changed: ', selectedRowKeys);
+    setSelectedRowKeys(selectedRowKeys);
+  };
+
+  const rowSelection = {
+    selectedRowKeys,
+    onChange: onSelectChange,
+  };
+
   return (
     <ConfigProvider locale={getLocale()}>
       <Modal
@@ -117,9 +129,17 @@ export const ModalCreateNewTest = ({
           <Button key="back" onClick={onCancel}>
             Close
           </Button>,
-
           <Button key="create" onClick={createNewEmptyTest} type="primary">
             Create Blank Question
+          </Button>,
+          <Button
+            key="create"
+            onClick={() => {
+              onPressBankTest(selectedRowKeys);
+            }}
+            type="primary"
+          >
+            Add Selected Questions
           </Button>,
         ]}
       >
@@ -129,32 +149,14 @@ export const ModalCreateNewTest = ({
           enterButton
           style={{ marginBottom: 20 }}
         />
-        <Alert message="Click at a test to select them" type="info" showIcon />
         <Table
           loading={true}
           columns={columns}
           dataSource={data}
           loading={loading}
+          rowSelection={rowSelection}
           style={{ cursor: 'pointer' }}
           rowKey="ID"
-          onRow={(record, rowIndex) => {
-            return {
-              onClick: (event) => {
-                let isExist = false;
-                quiz.forEach((item) => {
-                  if (item.ID === record.ID) {
-                    isExist = true;
-                  }
-                });
-                if (!isExist) {
-                  onPressBankTest(record);
-                  setLoading(true);
-                } else {
-                  message.error('This question is already in Test List !!!');
-                }
-              },
-            };
-          }}
         />
       </Modal>
     </ConfigProvider>

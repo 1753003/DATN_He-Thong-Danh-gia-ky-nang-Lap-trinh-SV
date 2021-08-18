@@ -101,6 +101,24 @@ const TestModel = {
         }
       }
     },
+    *getTestBankListByListId({ payload }, { call, put }) {
+      try {
+        const listQuestions = [];
+        for (let i = 0; i < payload?.list.length; i++) {
+          const response = yield call(getTestBankById, payload?.list[i]);
+          listQuestions.push(response);
+        }
+
+        if (payload?.callback) {
+          payload.callback(listQuestions);
+        }
+      } catch (e) {
+        console.log(e);
+        if (payload.callback) {
+          payload.callback(undefined);
+        }
+      }
+    },
     *getTestByID({ payload }, { put, call, select }) {
       if (payload.id.toString().localeCompare(' ') == -1) {
         yield put({

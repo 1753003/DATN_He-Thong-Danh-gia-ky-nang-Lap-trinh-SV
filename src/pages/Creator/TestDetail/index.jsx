@@ -254,7 +254,7 @@ const InviteModal = ({
           const ws = wb.Sheets[wsname];
           resolve(ws);
         } catch (error) {
-          reject('You must upload xlxs file !!!');
+          reject('You must upload excel file !!!');
         }
       };
       reader.onerror = (error) => reject('Something wrong happened !!!!');
@@ -271,7 +271,7 @@ const InviteModal = ({
         testID,
         listEmail: _.difference(listEmail, listInvitedList),
         onSuccess: () => {
-          message.success('Send invite successfully !!!');
+          message.success('Invitation was sent!!!');
           setSendLoading(false);
           dispatch({
             type: 'test/getInvitedEmailList',
@@ -290,7 +290,7 @@ const InviteModal = ({
           setFileList([]);
         },
         onFail: () => {
-          message.error('Cannot send invite, something wrong happened !!!');
+          message.error('Cannot send invitation, something wrong happened !!!');
           setSendLoading(false);
           closeModal();
           setListEmail([]);
@@ -338,7 +338,7 @@ const InviteModal = ({
     <Modal
       title="Invite User By Email"
       visible={isModalVisible}
-      okText="Send invite"
+      okText="Send invitation"
       onOk={sendInvite}
       onCancel={closeModal}
       confirmLoading={sendLoading}
@@ -347,7 +347,7 @@ const InviteModal = ({
       <div className={`custom`}>
         <div style={{ width: '100%', marginBottom: 10 }}>
           <Select
-            placeholder="Please select which student you want to send mail"
+            placeholder="Please choose which student you want to send invitation"
             mode="tags"
             onChange={handleChange}
             style={{ width: '100%' }}
