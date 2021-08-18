@@ -3,7 +3,7 @@ import { Table, Progress, Typography, Divider, Alert, Button } from 'antd';
 import { connect, useHistory } from 'umi';
 import styles from './styles.less';
 import MDEditor from '@uiw/react-md-editor';
-import { CheckCircleTwoTone, CloseCircleTwoTone, LeftOutlined } from '@ant-design/icons';
+import { CheckCircleTwoTone, CloseCircleTwoTone } from '@ant-design/icons';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import '@/components/GlobalHeader/style.less';
 import NoData from '@/components/NoData';
@@ -143,6 +143,7 @@ const UserReport = ({ summaryUser, location, dispatch }) => {
         columns={userColumns}
         locale={{ emptyText: NoData }}
         style={{ cursor: 'pointer' }}
+        pagination
         onRow={(record, rowIndex) => {
           return {
             onClick: (event) => {
@@ -165,7 +166,7 @@ const RenderTestDetail = ({ test, onBack, onClickCompareCode }) => {
     if (test.QuestionType === 'Code') {
       let count = 0;
       for (let i = 0; i < test?.TestCase?.length; i++) {
-        if (test?.TestCase[i] === test?.StudentOutput[i]) {
+        if (test?.TestCase[i].Output === test?.StudentOutput[i]) {
           count = count + 1;
         }
       }
