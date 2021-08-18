@@ -14,6 +14,7 @@ import {
   ConfigProvider,
   message,
   Upload,
+  Tooltip,
 } from 'antd';
 import moment from 'moment';
 import { UploadOutlined } from '@ant-design/icons';
@@ -296,11 +297,13 @@ export const DrawerForm = ({ visible, onClose, form, setInformation, action }) =
           )}
           {action === 'CREATE' && (
             <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-start' }}>
-              <Upload {...props} maxCount={1}>
-                <Button icon={<UploadOutlined />} style={{ marginRight: 12 }}>
-                  Select Excel File
-                </Button>
-              </Upload>
+              <Tooltip placement="top" title={'Import excel file, use first column with no title'}>
+                <Upload {...props} maxCount={1}>
+                  <Button icon={<UploadOutlined />} style={{ marginRight: 12 }}>
+                    Select Excel File
+                  </Button>
+                </Upload>
+              </Tooltip>
               <Button
                 type="primary"
                 onClick={handleUpload}

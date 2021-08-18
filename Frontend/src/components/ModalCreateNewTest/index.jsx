@@ -1,5 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Alert, Modal, Table, Tag, ConfigProvider, Input } from 'antd';
+import {
+  Button,
+  Alert,
+  Modal,
+  Table,
+  Tag,
+  ConfigProvider,
+  Input,
+  message,
+  InputNumber,
+  Tooltip,
+  Select,
+} from 'antd';
 import { getLocale } from 'umi';
 import { removeAccents } from '@/utils/string';
 
@@ -11,12 +23,23 @@ export const ModalCreateNewTest = ({
   createNewEmptyTest,
   onPressBankTest,
   testBankList,
+  quiz,
 }) => {
   const [loading, setLoading] = useState(false);
-  const [data, setData] = useState(testBankList || []);
+  const [data, setData] = useState([]);
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+
+  const [nRandom, setNRandom] = useState(1);
+  const [randomType, setRandomType] = useState(0);
+  useEffect(() => {
+    setData(testBankList);
+  }, [testBankList]);
+
   useEffect(() => {
     setLoading(false);
-  }, []);
+    setSelectedRowKeys([]);
+  }, [visible]);
+
   const columns = [
     {
       title: 'ID',
@@ -98,6 +121,70 @@ export const ModalCreateNewTest = ({
     setData(searchList);
   };
 
+  const onSelectChange = (selectedRowKeys) => {
+    console.log('selectedRowKeys changed: ', selectedRowKeys);
+    setSelectedRowKeys(selectedRowKeys);
+  };
+
+  const rowSelection = {
+    selectedRowKeys,
+    onChange: onSelectChange,
+  };
+
+  function getRandom(arr, n) {
+    var result = new Array(n),
+      len = arr.length,
+      taken = new Array(len);
+    if (n > len) message.error('More elements taken than available');
+    while (n--) {
+      var x = Math.floor(Math.random() * len);
+      result[n] = arr[x in taken ? taken[x] : x];
+      taken[x] = --len in taken ? taken[len] : len;
+    }
+    return result;
+  }
+
+  const onPressRandom = () => {
+    if (randomType === 0) {
+      const randomArr = getRandom(testBankList, nRandom);
+      const randomId = [];
+      randomArr.forEach((item) => {
+        randomId.push(item.ID);
+      });
+      setSelectedRowKeys(randomId);
+    }
+
+    if (randomType === 1) {
+      const multiList = [];
+      testBankList.forEach((item) => {
+        if (item.QuestionType === 'MultipleChoice') {
+          multiList.push(item);
+        }
+      });
+      const randomArr = getRandom(multiList, nRandom);
+      const randomId = [];
+      randomArr.forEach((item) => {
+        randomId.push(item.ID);
+      });
+      setSelectedRowKeys(randomId);
+    }
+
+    if (randomType === 2) {
+      const codeList = [];
+      testBankList.forEach((item) => {
+        if (item.QuestionType === 'Code') {
+          codeList.push(item);
+        }
+      });
+      const randomArr = getRandom(codeList, nRandom);
+      const randomId = [];
+      randomArr.forEach((item) => {
+        randomId.push(item.ID);
+      });
+      setSelectedRowKeys(randomId);
+    }
+  };
+
   return (
     <ConfigProvider locale={getLocale()}>
       <Modal
@@ -111,9 +198,18 @@ export const ModalCreateNewTest = ({
           <Button key="back" onClick={onCancel}>
             Close
           </Button>,
-
           <Button key="create" onClick={createNewEmptyTest} type="primary">
             Create Blank Question
+          </Button>,
+          <Button
+            key="create"
+            onClick={() => {
+              setLoading(true);
+              onPressBankTest(selectedRowKeys);
+            }}
+            type="primary"
+          >
+            Add Selected Questions
           </Button>,
         ]}
       >
@@ -123,22 +219,40 @@ export const ModalCreateNewTest = ({
           enterButton
           style={{ marginBottom: 20 }}
         />
-        <Alert message="Click at a test to select them" type="info" showIcon />
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10 }}>
+          <Tooltip placement="top" title={'Select number of questions you want to select'}>
+            <InputNumber
+              style={{ width: '20%' }}
+              placeholder={'Hello'}
+              value={nRandom}
+              onChange={(value) => {
+                setNRandom(value);
+              }}
+            />
+          </Tooltip>
+          <Select
+            style={{ width: '40%' }}
+            value={randomType}
+            onChange={(value) => {
+              setRandomType(value);
+            }}
+          >
+            <Option value={0}>All</Option>
+            <Option value={1}>Multiple Choice Only</Option>
+            <Option value={2}>Code Only</Option>
+          </Select>
+          <Button type="primary" onClick={onPressRandom} style={{ width: '30%' }}>
+            Random
+          </Button>
+        </div>
         <Table
           loading={true}
           columns={columns}
           dataSource={data}
           loading={loading}
+          rowSelection={rowSelection}
           style={{ cursor: 'pointer' }}
           rowKey="ID"
-          onRow={(record, rowIndex) => {
-            return {
-              onClick: (event) => {
-                onPressBankTest(record);
-                setLoading(true);
-              },
-            };
-          }}
         />
       </Modal>
     </ConfigProvider>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styles from './index.less';
-import { Button, Modal, Upload, Select, message, List, ConfigProvider } from 'antd';
+import { Button, Modal, Upload, Select, message, List, ConfigProvider, Tooltip } from 'antd';
 import { CheckCircleFilled, CloseCircleFilled, UploadOutlined } from '@ant-design/icons';
 import { connect, useHistory, getLocale } from 'umi';
 import PageLoading from '@/components/PageLoading';
@@ -152,16 +152,18 @@ const Question = ({ list }) => {
     return (
       <div className={styles.questionContainer} key={item.ID}>
         <span className={styles.questionHead}>
-          <div><b>ID:</b>{` ${item.ID} - ${item.QuestionType}`}</div>
+          <div>
+            <b>ID:</b>
+            {` ${item.ID} - ${item.QuestionType}`}
+          </div>
           <div className={styles.mark}>{`Score: ${item.Score} `}mark(s)</div>
-          
         </span>
         <div className={styles.question}>{item.Question}</div>
-        
+
         <b>Description: </b>
-        <br/>
+        <br />
         <MDEditor.Markdown className="problem" source={item.Description}></MDEditor.Markdown>
-        <br/>
+        <br />
         {item.QuestionType === 'Code' ? (
           <div>
             <div>
@@ -216,9 +218,9 @@ const Question = ({ list }) => {
                   <div className={styles.answer}>{choice}</div>
                   <div className={styles.answer}>
                     {checkCorrect(item.CorrectAnswer, index) ? (
-                      <CheckCircleFilled style={{ color:"green", fontSize: '32px' }} />
+                      <CheckCircleFilled style={{ color: 'green', fontSize: '32px' }} />
                     ) : (
-                      <CloseCircleFilled  style={{ color:"red", fontSize: '32px' }} />
+                      <CloseCircleFilled style={{ color: 'red', fontSize: '32px' }} />
                     )}
                   </div>
                 </div>
@@ -254,7 +256,7 @@ const InviteModal = ({
           const ws = wb.Sheets[wsname];
           resolve(ws);
         } catch (error) {
-          reject('You must upload xlxs file !!!');
+          reject('You must upload excel file !!!');
         }
       };
       reader.onerror = (error) => reject('Something wrong happened !!!!');
@@ -271,7 +273,7 @@ const InviteModal = ({
         testID,
         listEmail: _.difference(listEmail, listInvitedList),
         onSuccess: () => {
-          message.success('Send invite successfully !!!');
+          message.success('Invitation was sent!!!');
           setSendLoading(false);
           dispatch({
             type: 'test/getInvitedEmailList',
@@ -290,7 +292,7 @@ const InviteModal = ({
           setFileList([]);
         },
         onFail: () => {
-          message.error('Cannot send invite, something wrong happened !!!');
+          message.error('Cannot send invitation, something wrong happened !!!');
           setSendLoading(false);
           closeModal();
           setListEmail([]);
@@ -338,7 +340,7 @@ const InviteModal = ({
     <Modal
       title="Invite User By Email"
       visible={isModalVisible}
-      okText="Send invite"
+      okText="Send invitation"
       onOk={sendInvite}
       onCancel={closeModal}
       confirmLoading={sendLoading}
@@ -347,7 +349,7 @@ const InviteModal = ({
       <div className={`custom`}>
         <div style={{ width: '100%', marginBottom: 10 }}>
           <Select
-            placeholder="Please select which student you want to send mail"
+            placeholder="Please choose which student you want to send invitation"
             mode="tags"
             onChange={handleChange}
             style={{ width: '100%' }}
@@ -360,11 +362,14 @@ const InviteModal = ({
           </Select>
         </div>
         <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-start' }}>
-          <Upload {...props} maxCount={1}>
-            <Button icon={<UploadOutlined />} style={{ marginRight: 12 }}>
-              Select Excel File
-            </Button>
-          </Upload>
+          <Tooltip placement="top" title={'Import excel file, use first column with no title'}>
+            <Upload {...props} maxCount={1}>
+              <Button icon={<UploadOutlined />} style={{ marginRight: 12 }}>
+                Select Excel File
+              </Button>
+            </Upload>
+          </Tooltip>
+
           <Button
             type="primary"
             onClick={handleUpload}
