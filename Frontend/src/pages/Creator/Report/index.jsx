@@ -31,7 +31,7 @@ const Report = ({ reportList, dispatch, loading }) => {
       key: 'ReportName',
     },
     {
-      title: 'Percent Pass',
+      title: 'Percent Perfect',
       dataIndex: 'PercentPass',
       key: 'PercentPass',
     },
