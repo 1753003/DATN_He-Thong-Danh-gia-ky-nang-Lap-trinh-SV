@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Table, Progress, Typography, Divider, Alert, Button } from 'antd';
 import { connect, useHistory } from 'umi';
 import styles from './styles.less';
@@ -79,6 +79,11 @@ const UserReport = ({ summaryUser, location, dispatch }) => {
       dataIndex: 'QuestionType',
       key: 'QuestionType',
     },
+    {
+      title: 'Score',
+      dataIndex: 'Point',
+      key: 'Point',
+    },
   ];
   return currentTest ? (
     <RenderTestDetail
@@ -156,6 +161,19 @@ const RenderTestDetail = ({ test, onBack, onClickCompareCode }) => {
     return listCorrect.includes(index);
   };
 
+  const testCasePass = useMemo(() => {
+    if (test.QuestionType === 'Code') {
+      let count = 0;
+      for (let i = 0; i < test?.TestCase?.length; i++) {
+        if (test?.TestCase[i] === test?.StudentOutput[i]) {
+          count = count + 1;
+        }
+      }
+      return `${count}/${test?.TestCase.length}`;
+    }
+    return '';
+  }, [test?.TestCase, test?.StudentOutput, test?.QuestionType]);
+
   const renderExtra = () => {
     if (test.QuestionType === 'Code') {
       return [
@@ -173,6 +191,8 @@ const RenderTestDetail = ({ test, onBack, onClickCompareCode }) => {
       title={`${test.ID}-${test.QuestionType}`}
       extra={renderExtra()}
     >
+      <Alert message={`Points achieved: ${test?.Point}`} type="success" showIcon />
+      <br />
       <Alert message="Question information" type="info" showIcon />
       <br />
       <b>Description: </b>
@@ -219,6 +239,8 @@ const RenderTestDetail = ({ test, onBack, onClickCompareCode }) => {
           <br />
           <Alert message="Student submission" type="info" showIcon />
           <br />
+          <Alert message={`Test Case Pass: ${testCasePass}`} type="success" showIcon />
+          <br />
           <div>
             <b>Student Submit Script: </b>
             <br />
@@ -237,10 +259,7 @@ const RenderTestDetail = ({ test, onBack, onClickCompareCode }) => {
             <b>Student Running Time:</b>
             {test?.StudentRunningTime}
           </div>
-          <div>
-            <b>Student TC Output: </b>
-            {test?.StudentRunningTime}
-          </div>
+
           <b>Student TC Output:</b>
           <br />
           {test?.TestCase?.map((tc, index) => {

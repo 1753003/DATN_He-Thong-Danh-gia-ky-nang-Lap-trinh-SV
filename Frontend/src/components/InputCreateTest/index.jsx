@@ -17,9 +17,9 @@ import { Button, Input, InputNumber, Alert } from 'antd';
 import styles from './styles.less';
 
 export const InputCreateTest = ({ option, selectedQuiz, setQuiz, quiz, action }) => {
-  const [description, setDescription] = useState(
-    selectedQuiz?.Description ? selectedQuiz?.Description : selectedQuiz?.Description,
-  );
+  console.log(selectedQuiz);
+  console.log(selectedQuiz.Description);
+  const [description, setDescription] = useState(selectedQuiz?.Description);
   useEffect(() => {
     const newQuiz = [...quiz];
     newQuiz.forEach((item) => {

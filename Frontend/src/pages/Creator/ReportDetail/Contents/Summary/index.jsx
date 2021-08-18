@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './index.less';
-import { Progress, Card, Tag } from 'antd';
+import { Progress, Card, Tag, Tooltip } from 'antd';
 import {
   UserOutlined,
   FileTextTwoTone,
@@ -17,40 +17,44 @@ const Summary = ({ summaryReport, summaryUser }) => {
     <div className={styles.container}>
       <div className={styles.analysis}>
         <div className={styles.chart}>
-          <div>
-            <Progress
-              type="circle"
-              // trailColor={'#f5222d'}
-              strokeColor={'#a0d911'}
-              percent={summaryReport?.PercentSuccess}
-              width={140}
-              format={(percent) => {
-                return (
-                  <div>
-                    <div style={{ fontSize: 32 }}>{percent}%</div>
-                    <div style={{ fontSize: 18 }}>Success</div>
-                  </div>
-                );
-              }}
-            />
-          </div>
-          <div>
-            <Progress
-              type="circle"
-              trailColor={'#f5222d'}
-              strokeColor={'#a0d911'}
-              percent={summaryReport?.PercentPass}
-              width={140}
-              format={(percent) => {
-                return (
-                  <div>
-                    <div style={{ fontSize: 32 }}>{percent}%</div>
-                    <div style={{ fontSize: 18 }}>Pass</div>
-                  </div>
-                );
-              }}
-            />
-          </div>
+          <Tooltip placement="topLeft" title={'Percentage of users correct all'}>
+            <div>
+              <Progress
+                type="circle"
+                // trailColor={'#f5222d'}
+                strokeColor={'#a0d911'}
+                percent={summaryReport?.PercentSuccess}
+                width={140}
+                format={(percent) => {
+                  return (
+                    <div>
+                      <div style={{ fontSize: 32 }}>{percent}%</div>
+                      <div style={{ fontSize: 18 }}>Perfect</div>
+                    </div>
+                  );
+                }}
+              />
+            </div>
+          </Tooltip>
+          <Tooltip placement="topLeft" title={'Percentage of users pass'}>
+            <div>
+              <Progress
+                type="circle"
+                trailColor={'#f5222d'}
+                strokeColor={'#a0d911'}
+                percent={summaryReport?.PercentPass}
+                width={140}
+                format={(percent) => {
+                  return (
+                    <div>
+                      <div style={{ fontSize: 32 }}>{percent}%</div>
+                      <div style={{ fontSize: 18 }}>Pass</div>
+                    </div>
+                  );
+                }}
+              />
+            </div>
+          </Tooltip>
         </div>
         <div className={styles.info}>
           {window.innerWidth > Constants.MIN_SCREEN_WIDTH && (
