@@ -23,6 +23,7 @@ module.exports = {
     return res;
   },
   async postTestSubmission(uid, submission) {
+    console.log(submission.TestID, uid)
     await db.raw(`call dropExist(${submission.TestID}, '${uid}')`);
     await db("submissions")
       .insert({

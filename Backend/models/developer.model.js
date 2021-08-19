@@ -35,7 +35,8 @@ module.exports = {
         coding.CodeDescription as Description,
         coding.CodeSample,
         question.QuestionType,
-        question.Score
+        question.Score,
+        answercoding.DescriptionCode
         from answercoding, coding, submissions, question
         where submissions.SubmissionID = answercoding.SubmissionID
         and submissions.DevID = '${uid}'
