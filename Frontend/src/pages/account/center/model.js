@@ -1,4 +1,4 @@
-import { queryCurrent, queryFakeList, getHistory, getInfo, updateInfo } from './service';
+import { queryCurrent, queryFakeList, getHistory, getInfo, updateInfo, queryAnswerSheet } from './service';
 
 const Model = {
   namespace: 'accountAndcenter',
@@ -7,6 +7,7 @@ const Model = {
     list: [],
     storeList: [],
     info: {},
+    answerSheet: []
   },
   effects: {
     *fetchCurrent(_, { call, put }) {
@@ -71,6 +72,14 @@ const Model = {
         type: 'queryInfo',
         payload: response
       })
+    },
+
+    *fetchAnswer({ payload }, { put, call}) {
+      var response = yield call(queryAnswerSheet, payload);
+      yield put({
+        type: 'queryAnswer',
+        payload: response
+      })
     }
   },
   reducers: {
@@ -84,6 +93,10 @@ const Model = {
 
     queryInfo(state, action) {
       return { ...state, info: action.payload };
+    },
+
+    queryAnswer(state, action) {
+      return { ...state, answerSheet: action.payload };
     }
   },
 };

@@ -1,7 +1,7 @@
 import { StarTwoTone, LikeOutlined, MessageFilled } from '@ant-design/icons';
-import { List, Tag, Radio, Row, Col } from 'antd';
+import { List, Tag, Radio, Row, Col, Button, ConfigProvider } from 'antd';
 import React, { useState } from 'react';
-import { connect } from 'umi';
+import { connect, history } from 'umi';
 import TestListContent from '../TestListContent';
 import styles from './index.less';
 import '../../../../../components/GlobalHeader/style.less';
@@ -107,7 +107,7 @@ const Test = (props) => {
           <Radio.Button value="Private">{Language.pages_profile_private}</Radio.Button>
         </Radio.Group>
       </Row>
-
+      <ConfigProvider locale="en">
       <List
         size="large"
         className={`${styles.articleList} custom`}
@@ -115,23 +115,47 @@ const Test = (props) => {
         pagination={{
           pageSize: 3,
         }}
-        itemLayout="vertical"
+       
         dataSource={testList}
         renderItem={(item) => (
           <List.Item key={item.key}>
             <List.Item.Meta
               title={<a className={styles.listItemMetaTitle}>{item.TestName}</a>}
               description={
+                <>
                 <span>
                   <Tag color="green">{item.DifficultLevel}</Tag>
                   {renderTestSet(JSON.parse(item.LanguageAllowed))}
                 </span>
+                <br/>
+                <TestListContent data={item} style={{paddingTop: '10px'}}/>
+                </>
               }
             />
-            <TestListContent data={item} />
+            
+            <Button 
+              type = "primary"
+              onClick = {() => {
+              history.push({
+                pathname: '/developer/profile/review',
+                state: {id:item.TestID,type:"test", name: item.TestName},
+              });
+            }}>{Language.pages_profile_review}</Button>
+
+            <Button 
+              style = {{marginLeft: '10px', backgroundColor: '#011B33', color: 'white'}}
+              
+              onClick = {() => {
+              history.push({
+                pathname: '/developer/test/questions',
+                state: {id:item.TestID,type:"test", name: item.TestName},
+              });
+            }}>{Language.pages_profile_doagain}</Button>
           </List.Item>
         )}
       />
+      </ConfigProvider>
+      
     </div>
   );
 };

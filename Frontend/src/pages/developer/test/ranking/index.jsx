@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'dva';
 import { history } from 'umi';
-import { PageHeader, Table } from 'antd'
+import { PageHeader, Table, ConfigProvider } from 'antd'
 import PageLoading from '@/components/PageLoading';
 import moment from 'moment';
 import Language from '@/locales/index';
@@ -70,8 +70,10 @@ class Ranking extends React.Component {
                     subTitle={this.props.location.state.name}
                     onBack={() => history.goBack()}
                     />
-                <Table loading={{spinning:this.props.loading,indicator:<PageLoading/>}} style= {{width:'100%'}}columns={this.getColumns()} dataSource={this.getData()} />
-            </>
+                <ConfigProvider locale = "en">
+                    <Table loading={{spinning:this.props.loading,indicator:<PageLoading/>}} style= {{width:'100%'}}columns={this.getColumns()} dataSource={this.getData()} />
+                </ConfigProvider>
+                </>
         )
     }
 }

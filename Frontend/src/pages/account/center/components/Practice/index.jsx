@@ -1,5 +1,5 @@
 import { StarTwoTone, LikeOutlined, MessageFilled } from '@ant-design/icons';
-import { List, Tag, Radio, Row } from 'antd';
+import { List, Tag, Radio, Row, ConfigProvider } from 'antd';
 import React from 'react';
 import { connect } from 'umi';
 import PracticeListContent from '../PracticeListContent';
@@ -30,6 +30,7 @@ const Practice = (props) => {
           <Radio.Button value="b">Private</Radio.Button>
         </Radio.Group>
       </Row> */}
+      <ConfigProvider locale="en">
       <List
       size="large"
       className={`${styles.articleList} custom`}
@@ -62,6 +63,8 @@ const Practice = (props) => {
         </List.Item>
       )}
     />
+      </ConfigProvider>
+     
     </div>
   );
 };
