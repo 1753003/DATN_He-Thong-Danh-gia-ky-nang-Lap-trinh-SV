@@ -13,9 +13,15 @@ router.get('/invite', async function(req, res){
     // console.log(list)
     res.json(list);
 })
+router.get('/answersheet/:id', async function(req, res){
+    const list = await developerModel.getAnswerSheet(req.uid, req.params.id);
+    console.log(list)
+    res.json(list);
+})
 router.patch('/', async (req, res) => {
     await developerModel.update(req.uid, req.body)
     res.json (await developerModel.get(req.uid))
 })
+
 
 module.exports = router;
