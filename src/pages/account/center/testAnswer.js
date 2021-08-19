@@ -7,8 +7,9 @@ import moment from 'moment';
 import MDEditor from '@uiw/react-md-editor';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { docco } from 'react-syntax-highlighter/dist/esm/styles/hljs';
-import "@/components/GlobalHeader/style.less";
+import '@/components/GlobalHeader/style.less';
 import Language from '@/locales/index';
+import { CheckCircleTwoTone, CloseCircleTwoTone } from '@ant-design/icons';
 class TestAnswer extends React.Component {
   constructor(props) {
     super(props);
@@ -42,7 +43,7 @@ class TestAnswer extends React.Component {
         />
         <List
           dataSource={this.getData()}
-          className = "custom"
+          className="custom"
           style={{
             backgroundColor: 'white',
             marginLeft: '25px',
@@ -56,7 +57,7 @@ class TestAnswer extends React.Component {
                 description={
                   <>
                     <MDEditor.Markdown source={item.Description} />
-                    {item.CodeSample != null && item.CodeSample != "" ? (
+                    {item.CodeSample != null && item.CodeSample != '' ? (
                       <SyntaxHighlighter language="javascript" style={docco}>
                         {item.CodeSample}
                       </SyntaxHighlighter>
@@ -64,8 +65,65 @@ class TestAnswer extends React.Component {
                       ''
                     )}
                     <p>
-                      {Language.pages_profile_yougot} {item.Point} / {item.Score} {Language.pages_profile_point}
+                      {Language.pages_profile_yougot} {item.Point} / {item.Score}{' '}
+                      {Language.pages_profile_point}
                     </p>
+                    {item.QuestionType == 'MultipleChoice' ? (
+                      <List
+                        dataSource={item.Answer}
+                        renderItem={(e) => {
+                          let color = '';
+                          console.log(item.Choice, item.Answer, item.CorrectAnswer, e);
+                          if (item.Choice.includes(item.Answer.indexOf(e))) {
+                            if (item.CorrectAnswer.includes(item.Answer.indexOf(e)))
+                              color = 'green';
+                            else color = 'red';
+                          }
+                          if (color == 'green')
+                            return (
+                              <List.Item
+                                style={{
+                                  paddingLeft: '25px',
+                                  paddingRight: '25px'
+                                }}
+                              >
+                                <p>
+                                  Answer {item.Answer.indexOf(e) + 1}: {e}
+                                </p>
+                                <CheckCircleTwoTone twoToneColor="#52c41a" style={{fontSize: '30px'}}/>
+                              </List.Item>
+                            );
+                          if (color == 'red')
+                            return (
+                              <List.Item
+                                style={{
+                                  paddingLeft: '25px',
+                                  paddingRight: '25px'
+                                }}
+                              >
+                                <p>
+                                  Answer {item.Answer.indexOf(e) + 1}: {e}
+                                </p>
+                                <CloseCircleTwoTone twoToneColor="#eb2f96" style={{fontSize: '30px'}}/>
+                              </List.Item>
+                            );
+                          return (
+                            <List.Item style={{ backgroundColor: '', paddingLeft: '25px' }}>
+                              <p>
+                                {Language.pages_profile_answer} {item.Answer.indexOf(e) + 1}: {e}
+                              </p>
+                            </List.Item>
+                          );
+                        }}
+                      />
+                    ) : (
+                      <>
+                      <SyntaxHighlighter language="javascript" style={docco}>
+                        {Buffer.from(item.DescriptionCode, 'base64').toString()}
+                      </SyntaxHighlighter>
+                      {Language.pages_profile_youpass} {item.TestCasePassed.length} / {item.OutputTestcase.length} testcase(s)
+                      </>
+                    )}
                   </>
                 }
               ></List.Item.Meta>

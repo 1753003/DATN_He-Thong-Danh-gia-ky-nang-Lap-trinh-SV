@@ -67,6 +67,8 @@ if (getLocale() === 'vi-VN') Language = {
     'pages_profile_reviewTitle': 'Xem lại kết quả',
     'pages_profile_review': 'Xem lại kết quả',
     'pages_profile_doagain': 'Làm lại',
+    'pages_profile_answer': 'Đáp án',
+    'pages_profile_youpass': 'Bạn vượt qua',
 
     'pages_welcome_hiDev': 'Xin chào lập trình viên',
     'pages_welcome_whatToDoing': 'Bạn dự định làm gì ?',
@@ -288,6 +290,8 @@ else Language = {
     'pages_profile_reviewTitle': 'Review test',
     'pages_profile_review': 'Review',
     'pages_profile_doagain': 'Try again',
+    'pages_profile_answer': 'Answer',
+    'pages_profile_youpass': 'You pass',
 
     'pages_welcome_hiDev': 'Hi Developer',
     'pages_welcome_whatToDoing': 'What are you going to do ?',
