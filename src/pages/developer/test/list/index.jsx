@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Typography, List, PageHeader, Row, Col, Divider, Checkbox, Button, Card } from 'antd';
-import { history, Link } from 'umi';
+import { Typography, List, PageHeader, Row, Col, Divider, Checkbox, Button, Card, ConfigProvider } from 'antd';
+import { history, Link, getLocale } from 'umi';
 import { connect } from 'dva';
 import './style.less';
 import Language from '@/locales/index';
 import PageLoading from '@/components/PageLoading';
-
+import moment from 'moment';
 const { Title } = Typography;
 
 const TestSetList = ({ location, dispatch, testDev, loading }) => {
@@ -222,87 +222,104 @@ const TestSetList = ({ location, dispatch, testDev, loading }) => {
       />
       <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
         <Col className="gutter-row" span={18}>
-          {loading?<PageLoading/>:<List
-            className="custom"
-            style={{ margin: '30px 0px 10px 10px' }}
-            itemLayout="horizontal"
-            pagination={{
-              onChange: (page) => {
-                console.log(page);
-              },
-              pageSize: 6,
-            }}
-            dataSource={list}
-            renderItem={(item) => (
-              <Card bordered size="small" hoverable style={{ marginBottom: '12px' }}>
-                <List.Item
-                  
-                  style={{
-                    // backgroundColor: 'white',
-                    // margin: '10px 5px 10px 20px',
-                    padding: '5px 20px 5px 10px',
-                    // borderRadius: '5px',
-                  }}
-                >
-                  <List.Item.Meta
-                    title={item.Name}
-                    description={
-                      <div>
-                        {' '}
-                        <Typography.Text
-                          strong
-                          style={
-                            item.DifficultLevel === 'Easy'
-                              ? { color: 'green' }
-                              : item.DifficultLevel === 'Medium'
-                              ? { color: '#ed7e0c' }
-                              : { color: 'red' }
-                          }
-                        >
-                          {item.DifficultLevel}
-                        </Typography.Text>
-                        {', Score: ' + item.Score} <br></br> {item.BriefDescription}
-                      </div>
-                    }
-                  />
-                  <Button size="large" style={{ width: '100px', marginRight: '10px' }} onClick = {() => {
-                    history.push({
-                      pathname: `/developer/test/rank`,
-                      state: {id: item.ID, type:"test", name: item.Name}
-                    });
-                  }}>
-                      {Language.pages_test_ranking}
-                    </Button>
-                  {item.SubmissionID != null && (
-                    <Button size="large" style={{ width: '100px' }}onClick={() => {
-                      history.push({
-                        pathname: '/developer/test/questions',
-                        state: {id:item.ID,type:"test", name: item.Name},
-                      });
-                    }}>
-                      {Language.pages_practice_list_solved}
-                    </Button>
-                  )}
-                  {item.SubmissionID == null && (
+          {loading ? (
+            <PageLoading />
+          ) : (
+            <ConfigProvider locale={getLocale()}>
+              <List
+              className="custom"
+              style={{ margin: '30px 0px 10px 10px' }}
+              itemLayout="horizontal"
+              pagination={{
+                onChange: (page) => {
+                  console.log(page);
+                },
+                pageSize: 6,
+              }}
+              dataSource={list}
+              renderItem={(item) => (
+                <Card bordered size="small" hoverable style={{ marginBottom: '12px' }}>
+                  <List.Item
+                    style={{
+                      // backgroundColor: 'white',
+                      // margin: '10px 5px 10px 20px',
+                      padding: '5px 20px 5px 10px',
+                      // borderRadius: '5px',
+                    }}
+                  >
+                    <List.Item.Meta
+                      title={item.Name}
+                      description={
+                        <div>
+                          {' '}
+                          <Typography.Text
+                            strong
+                            style={
+                              item.DifficultLevel === 'Easy'
+                                ? { color: 'green' }
+                                : item.DifficultLevel === 'Medium'
+                                ? { color: '#ed7e0c' }
+                                : { color: 'red' }
+                            }
+                          >
+                            {item.DifficultLevel}
+                          </Typography.Text>
+                          {', Score: ' + item.Score} <br></br> {item.BriefDescription}
+                        </div>
+                      }
+                    />
                     <Button
                       size="large"
-                      style={{ background: '#3ebae0', border: '2px solid #3ebae0', width: '100px' }}
-                      type="primary"
+                      style={{ width: '100px', marginRight: '10px' }}
                       onClick={() => {
                         history.push({
-                          pathname: '/developer/test/questions',
-                          state: {id:item.ID,type:"test"},
+                          pathname: `/developer/test/rank`,
+                          state: { id: item.ID, type: 'test', name: item.Name },
                         });
                       }}
                     >
-                      {' '}
-                      {Language.pages_search_start}{' '}
+                      {Language.pages_test_ranking}
                     </Button>
-                  )}
-                </List.Item>
-              </Card>
-            )}
-          />}
+                    {item.SubmissionID != null && (
+                      <Button
+                        size="large"
+                        style={{ width: '100px' }}
+                        onClick={() => {
+                          history.push({
+                            pathname: '/developer/test/questions',
+                            state: { id: item.ID, type: 'test', name: item.Name },
+                          });
+                        }}
+                      >
+                        {Language.pages_practice_list_solved}
+                      </Button>
+                    )}
+                    {item.SubmissionID == null && (
+                      <Button
+                        size="large"
+                        style={{
+                          background: '#3ebae0',
+                          border: '2px solid #3ebae0',
+                          width: '100px',
+                        }}
+                        type="primary"
+                        onClick={() => {
+                          history.push({
+                            pathname: '/developer/test/questions',
+                            state: { id: item.ID, type: 'test' },
+                          });
+                        }}
+                      >
+                        {' '}
+                        {Language.pages_search_start}{' '}
+                      </Button>
+                    )}
+                  </List.Item>
+                </Card>
+              )}
+            />
+            </ConfigProvider>
+          )}
         </Col>
         <Col className="gutter-row" span={6} style={{ margin: '30px 0px 10px 0px' }}>
           <Title level={4}>{Language.pages_practice_list_status}</Title>

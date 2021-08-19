@@ -56,6 +56,7 @@ class TestDetail extends React.Component {
         var originalText = bytes.toString(CryptoJS.enc.Utf8);
 
         id = originalText;
+        props.location.state = {id: id, type: "test"}
       }
     }
     this.state = { id: id };
