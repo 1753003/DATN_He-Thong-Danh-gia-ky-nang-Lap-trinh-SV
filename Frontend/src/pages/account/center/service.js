@@ -93,3 +93,25 @@ export function updateInfo(data) {
   })
 }
 
+export function queryAnswerSheet(testID) {
+  return new Promise((resolve, reject) => {
+    var options = {
+      method: 'GET',
+      withCredentials: true,
+      url: `${Constant.API}/api/developer/answersheet/${testID}`,
+      headers: {
+        'access-control-allow-origin': Constant.CORS,
+        accessToken: Cookies.get('accessToken'),
+      },
+    };
+    axios
+      .request(options)
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        const message = error.response?.data?.message;
+        tokenHandling(message, resolve, options);
+      });
+  });
+}

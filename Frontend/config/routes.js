@@ -254,6 +254,10 @@ export default [
                 component: './account/center',
               },
               {
+                path: '/developer/profile/review',
+                component: './account/center/testAnswer'
+              },
+              {
                 component: './404',
               },
             ],
