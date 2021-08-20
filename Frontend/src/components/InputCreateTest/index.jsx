@@ -13,11 +13,30 @@ import 'brace/ext/language_tools';
 import 'brace/ext/searchbox';
 import MDEditor from '@uiw/react-md-editor';
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
-import { Button, Input, InputNumber, Alert, Collapse, Divider, Table, Image, ConfigProvider } from 'antd';
+import {
+  Button,
+  Input,
+  InputNumber,
+  Alert,
+  Collapse,
+  Divider,
+  Table,
+  Image,
+  ConfigProvider,
+} from 'antd';
+import { DeleteOutlined } from '@ant-design/icons';
 const { Panel } = Collapse;
 import styles from './styles.less';
 
-export const InputCreateTest = ({ option, selectedQuiz, setQuiz, quiz, action }) => {
+export const InputCreateTest = ({
+  option,
+  selectedQuiz,
+  setQuiz,
+  quiz,
+  action,
+  removeAnswer,
+  removeTC,
+}) => {
   const [description, setDescription] = useState(selectedQuiz?.Description);
   useEffect(() => {
     const newQuiz = [...quiz];
@@ -62,12 +81,14 @@ export const InputCreateTest = ({ option, selectedQuiz, setQuiz, quiz, action })
     {
       key: '3',
       obj: 'Output format',
-      des: 'Describe the problem to be solveDescribe the output structure to be able to run the test case correctly',
+      des:
+        'Describe the problem to be solveDescribe the output structure to be able to run the test case correctly',
     },
     {
       key: '4',
       obj: 'How to write program',
-      des: 'Describe the task as writing a complete program or completing a certain function. If testers need to complete a certain function, you need to provide them with a sample code script of how the main function works, the structure of the function needs to complete.',
+      des:
+        'Describe the task as writing a complete program or completing a certain function. If testers need to complete a certain function, you need to provide them with a sample code script of how the main function works, the structure of the function needs to complete.',
     },
   ];
 
@@ -88,7 +109,6 @@ export const InputCreateTest = ({ option, selectedQuiz, setQuiz, quiz, action })
     case 'quiz':
       return (
         <div className={styles.quizInfoContainer}>
-          
           <h3>Description</h3>
           <MDEditor
             style={{ width: '100%' }}
@@ -170,6 +190,20 @@ export const InputCreateTest = ({ option, selectedQuiz, setQuiz, quiz, action })
                     onClick={() => onChangeAnswer(index, selectedQuiz.key)}
                   />
                 </div>
+                <Button
+                  type="primary"
+                  icon={
+                    <DeleteOutlined
+                      size={50}
+                      style={{
+                        cursor: 'pointer',
+                      }}
+                    />
+                  }
+                  onClick={() => {
+                    removeAnswer(index);
+                  }}
+                />
               </div>
             );
           })}
@@ -199,15 +233,11 @@ export const InputCreateTest = ({ option, selectedQuiz, setQuiz, quiz, action })
       return (
         <div className={styles.codeContainer}>
           <ConfigProvider locale="en">
-          <Alert
-            message="View the sample code question here"
-            type="info"
-            showIcon
-          />
-          <Image
-            width={50}
-            src="https://firebasestorage.googleapis.com/v0/b/devcheckpro.appspot.com/o/DESCRIPTION-1.jpg?alt=media&token=7d0964bc-c1b7-4091-85d4-2670a491585a"
-          ></Image>
+            <Alert message="View the sample code question here" type="info" showIcon />
+            <Image
+              width={50}
+              src="https://firebasestorage.googleapis.com/v0/b/devcheckpro.appspot.com/o/DESCRIPTION-1.jpg?alt=media&token=7d0964bc-c1b7-4091-85d4-2670a491585a"
+            ></Image>
           </ConfigProvider>
           <h3>Description</h3>
           <Alert
@@ -235,7 +265,7 @@ export const InputCreateTest = ({ option, selectedQuiz, setQuiz, quiz, action })
               <div className={styles.TC}>
                 <h4>Test Case {index + 1}</h4>
                 <div className={styles.TCConatiner}>
-                  <div style={{ width: '50%' }}>
+                  <div style={{ width: '45%' }}>
                     <p>Input: </p>
                     <Input.TextArea
                       style={{ height: '40px', width: '98%' }}
@@ -258,7 +288,7 @@ export const InputCreateTest = ({ option, selectedQuiz, setQuiz, quiz, action })
                     />
                   </div>
 
-                  <div style={{ width: '50%' }}>
+                  <div style={{ width: '45%' }}>
                     <p>Output : </p>
                     <Input.TextArea
                       style={{ height: '40px', width: '100%' }}
@@ -280,12 +310,26 @@ export const InputCreateTest = ({ option, selectedQuiz, setQuiz, quiz, action })
                       }}
                     />
                   </div>
+                  <Button
+                    type="primary"
+                    icon={
+                      <DeleteOutlined
+                        size={50}
+                        style={{
+                          cursor: 'pointer',
+                        }}
+                      />
+                    }
+                    onClick={() => {
+                      removeTC(index);
+                    }}
+                  />
                 </div>
               </div>
             );
           })}
           <Button
-            style={{ width: '100%' }}
+            style={{ width: '100%', marginTop: 10 }}
             type="primary"
             onClick={() => {
               const newQuiz = [...quiz];

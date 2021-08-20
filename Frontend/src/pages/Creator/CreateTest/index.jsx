@@ -243,6 +243,26 @@ const CreateTest = ({ dispatch, location, testBankList }) => {
     }
   };
 
+  const removeAnswer = (index) => {
+    const newQuiz = [...quiz];
+    newQuiz.forEach((item) => {
+      if (item.key === selectedQuiz.key) {
+        item.Answer.splice(index, 1);
+      }
+    });
+    setQuiz(newQuiz);
+  };
+
+  const removeTC = (index) => {
+    const newQuiz = [...quiz];
+    newQuiz.forEach((item) => {
+      if (item.key === selectedQuiz.key) {
+        item.TestCase.splice(index, 1);
+      }
+    });
+    setQuiz(newQuiz);
+  };
+
   if (loading) {
     return <PageLoading />;
   }
@@ -288,6 +308,8 @@ const CreateTest = ({ dispatch, location, testBankList }) => {
               setQuiz={setQuiz}
               quiz={quiz}
               action={action}
+              removeAnswer={removeAnswer}
+              removeTC={removeTC}
             />
           </div>
           {selectedQuiz.ID && (
