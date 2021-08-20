@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styles from './index.less';
 import moment from 'moment';
 import PageLoading from '@/components/PageLoading';
-import { Button, Select, Form, InputNumber, message } from 'antd';
+import { Button, Select, Form, InputNumber, message, Tooltip } from 'antd';
 import {
   PlusOutlined,
   QuestionOutlined,
@@ -291,7 +291,7 @@ const CreateTest = ({ dispatch, location, testBankList }) => {
                         if (value === 'quiz') {
                           item.QuestionType = 'quiz';
                           item.Score = 0;
-                          item.Description = '';
+                          item.Description = '//You write your question description here';
                           item.Answer = [];
                           item.CorrectAnswer = [];
                           item.CodeSample = '';
@@ -304,8 +304,7 @@ const CreateTest = ({ dispatch, location, testBankList }) => {
                           item.QuestionType = 'code';
                           item.Score = 0;
                           item.Method = 1;
-                          item.Description =
-                            '**Objective:**\n\n**Tasks:**\n\n**Function Description:**\n\n**Returns:**\n\n**Input Format:**\n\n**Output Format:**\n\n';
+                          item.Description = '//You write your question description here';
                           item.TestCase = [];
                           item.RunningTime = '';
                           item.MemoryUsage = '';
@@ -323,10 +322,12 @@ const CreateTest = ({ dispatch, location, testBankList }) => {
                 </Select>
               </div>
               <div className={styles.option}>
+                <Tooltip title = "Here is the grading option for your question. The first method requires all correct answers / test cases to get points, the second method allows candidates to correct as many answers / test cases will get as many points on the question.">
                 <div className={styles.optionTitle}>
                   <PieChartOutlined />
                   Method
                 </div>
+                </Tooltip>
                 <Select
                   style={{ width: '100%' }}
                   value={selectedQuiz?.Method || 1}
