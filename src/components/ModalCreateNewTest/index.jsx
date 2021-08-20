@@ -204,8 +204,12 @@ export const ModalCreateNewTest = ({
           <Button
             key="create"
             onClick={() => {
-              setLoading(true);
-              onPressBankTest(selectedRowKeys);
+              if (selectedRowKeys.length === 0) {
+                createNewEmptyTest();
+              } else {
+                setLoading(true);
+                onPressBankTest(selectedRowKeys);
+              }
             }}
             type="primary"
           >

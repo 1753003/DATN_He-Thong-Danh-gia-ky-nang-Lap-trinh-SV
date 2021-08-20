@@ -227,6 +227,22 @@ const CreateTest = ({ dispatch, location, testBankList }) => {
     dispatch({ type: 'test/getTestBankListByListId', payload });
   };
 
+  const handleRemoveTest = () => {
+    if (quiz.length > 1) {
+      const removeList = _.remove(quiz, function (item) {
+        return item.key !== selectedQuiz.key;
+      });
+      removeList.forEach((item, index) => {
+        item.key = index;
+      });
+      setQuiz(removeList);
+      setSelectedQuiz(removeList[0]);
+    } else {
+      setQuiz([]);
+      setSelectedQuiz({});
+    }
+  };
+
   if (loading) {
     return <PageLoading />;
   }
@@ -322,11 +338,11 @@ const CreateTest = ({ dispatch, location, testBankList }) => {
                 </Select>
               </div>
               <div className={styles.option}>
-                <Tooltip title = "Here is the grading option for your question. The first method requires all correct answers / test cases to get points, the second method allows candidates to correct as many answers / test cases will get as many points on the question.">
-                <div className={styles.optionTitle}>
-                  <PieChartOutlined />
-                  Method
-                </div>
+                <Tooltip title="Here is the grading option for your question. The first method requires all correct answers / test cases to get points, the second method allows candidates to correct as many answers / test cases will get as many points on the question.">
+                  <div className={styles.optionTitle}>
+                    <PieChartOutlined />
+                    Method
+                  </div>
                 </Tooltip>
                 <Select
                   style={{ width: '100%' }}
@@ -360,6 +376,9 @@ const CreateTest = ({ dispatch, location, testBankList }) => {
                   style={{ width: '100%' }}
                 />
               </div>
+              <Button type="primary" danger onClick={handleRemoveTest}>
+                Remove Question
+              </Button>
             </div>
           )}
         </div>
