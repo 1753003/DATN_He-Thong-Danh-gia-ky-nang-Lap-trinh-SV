@@ -28,10 +28,13 @@ export function removeAccents(str = '') {
     'yỳỷỹýỵ',
     'YỲỶỸÝỴ',
   ];
-  for (var i = 0; i < AccentsMap.length; i++) {
-    var re = new RegExp('[' + AccentsMap[i].substr(1) + ']', 'g');
-    var char = AccentsMap[i][0];
-    str = str.replace(re, char);
+  if (str) {
+    for (var i = 0; i < AccentsMap.length; i++) {
+      var re = new RegExp('[' + AccentsMap[i].substr(1) + ']', 'g');
+      var char = AccentsMap[i][0];
+      str = str.replace(re, char);
+    }
+    return str;
   }
-  return str;
+  return '';
 }
