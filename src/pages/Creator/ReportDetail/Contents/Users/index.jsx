@@ -61,7 +61,7 @@ const Users = ({ summaryUser, reportID }) => {
     <ConfigProvider locale={getLocale()}>
       <div className={`${styles.container} custom`}>
         <Search
-          placeholder="Please input UserName to search"
+          placeholder="Please input username to search"
           enterButton
           // className={styles.searchBar}
           onSearch={onSearch}

@@ -74,7 +74,7 @@ export const ModalCreateNewTest = ({
       width: '60%',
     },
     {
-      title: 'Language Allowed',
+      title: 'Allowed Language',
       dataIndex: 'Language_allowed',
       key: 'Language_allowed',
       width: '15%',

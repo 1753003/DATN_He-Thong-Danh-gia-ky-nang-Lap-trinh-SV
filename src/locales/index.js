@@ -228,7 +228,7 @@ else Language = {
     'welcome': 'Welcome to CodeJoy',
 
     'home_home': 'Home',
-    'home_introduce': 'Introduce',
+    'home_introduce': 'Introduction',
     'home_signOut': 'Sign out',
     'home_login': 'Login',
     'home_codejoy': 'What is CodeJoy?',

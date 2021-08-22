@@ -106,7 +106,7 @@ const Summary = ({ summaryReport, summaryUser }) => {
           title={
             <div className={styles.cardTitle}>
               <div className={styles.cardTitleLeft}>
-                <div style={{ marginRight: 20 }}>Diffcult questions</div>
+                <div style={{ marginRight: 20 }}>Difficult questions</div>
                 <Tag color="#f50">0</Tag>
               </div>
               <div className={styles.cardTitleRight}>
@@ -136,7 +136,7 @@ const Summary = ({ summaryReport, summaryUser }) => {
           title={
             <div className={styles.cardTitle}>
               <div className={styles.cardTitleLeft}>
-                <div style={{ marginRight: 20 }}>Didn’t finish</div>
+                <div style={{ marginRight: 20 }}>Did not finish</div>
                 <Tag color="#63b1f6">{summaryReport?.listNotFinish?.length}</Tag>
               </div>
               <div className={styles.cardTitleRight}>
