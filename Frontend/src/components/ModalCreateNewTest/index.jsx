@@ -114,7 +114,11 @@ export const ModalCreateNewTest = ({
     const searchList = [];
     const refactorValue = removeAccents(value).toLowerCase();
     testBankList.forEach((element) => {
-      if (removeAccents(element?.Description).toLowerCase().includes(refactorValue)) {
+      if (
+        removeAccents(element?.Description || '')
+          .toLowerCase()
+          .includes(refactorValue)
+      ) {
         searchList.push(element);
       }
     });
