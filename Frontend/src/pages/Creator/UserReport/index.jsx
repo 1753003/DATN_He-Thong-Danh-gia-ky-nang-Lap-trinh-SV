@@ -203,7 +203,7 @@ const RenderTestDetail = ({ test, onBack, onClickCompareCode }) => {
       {test.QuestionType === 'Code' ? (
         <div>
           <div>
-            <b>Language Allowed: </b>
+            <b>Allowed Language: </b>
             {test.Language_allowed}
           </div>
           <div>
@@ -215,7 +215,7 @@ const RenderTestDetail = ({ test, onBack, onClickCompareCode }) => {
             {test.RunningTime}
           </div>
           <div>
-            <b>CodeSample: </b>
+            <b>Code Sample: </b>
             <br />
             <MDEditor.Markdown
               className="problem"
@@ -281,7 +281,7 @@ const RenderTestDetail = ({ test, onBack, onClickCompareCode }) => {
       ) : (
         <>
           <div>
-            <b>CodeSample: </b>
+            <b>Code Sample: </b>
             <MDEditor.Markdown
               className="problem"
               source={`\`\`\`\n${test?.CodeSample}\n\`\`\`` || 'Empty'}

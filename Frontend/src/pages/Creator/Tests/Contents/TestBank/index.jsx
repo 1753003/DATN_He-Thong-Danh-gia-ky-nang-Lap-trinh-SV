@@ -57,7 +57,7 @@ const TestBank = ({ testBankList, dispatch, loading }) => {
       width: '60%',
     },
     {
-      title: 'Language Allowed',
+      title: 'Allowed Language',
       dataIndex: 'Language_allowed',
       key: 'Language_allowed',
       width: '15%',
@@ -174,7 +174,7 @@ const RenderTestDetail = ({ test, onBack }) => {
             <Space direction="vertical" style={{ width: '100%' }}>
               <Divider />
               <div>
-                <b>Language Allowed: </b>
+                <b>Allowed Language: </b>
                 {test.Language_allowed}
               </div>
               <div>
@@ -188,7 +188,7 @@ const RenderTestDetail = ({ test, onBack }) => {
               {test?.CodeSample && test?.CodeSample !== null && test?.CodeSample.length > 0 && (
                 <div>
                   <Divider orientation="left">
-                    <b>CodeSample: </b>{' '}
+                    <b>Code Sample: </b>{' '}
                   </Divider>
                   <br />
                   <MDEditor.Markdown
@@ -217,7 +217,7 @@ const RenderTestDetail = ({ test, onBack }) => {
             <>
               {test?.CodeSample && test?.CodeSample !== null && test?.CodeSample.length > 0 && (
                 <div>
-                  <b>CodeSample: </b>
+                  <b>Code Sample: </b>
                   <MDEditor.Markdown
                     className="problem"
                     source={`\`\`\`\n${test?.CodeSample}\n\`\`\`` || 'Empty'}

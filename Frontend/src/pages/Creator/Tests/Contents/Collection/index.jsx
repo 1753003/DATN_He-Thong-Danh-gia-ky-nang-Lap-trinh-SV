@@ -255,7 +255,7 @@ const CreateCollectionModal = ({ visible, handleCancel, dispatch, currentCollect
       <div className={styles.formContainer}>
         <div className={styles.formInfo}>
           <div className={styles.formTitleContainer}>
-            <h3 className={styles.formTitle}>Title(Require)</h3>
+            <h3 className={styles.formTitle}>Title (*)</h3>
             <Input
               className={styles.titleInput}
               placeholder="Collection Name"

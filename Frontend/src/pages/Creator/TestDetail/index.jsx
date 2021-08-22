@@ -75,7 +75,7 @@ const TestDetail = ({ dispatch, location }) => {
               </p>
 
               <p>
-                <b>TestCode: </b>
+                <b>Test Code: </b>
                 {test.generalInformation?.TestCode}
               </p>
 
@@ -88,24 +88,24 @@ const TestDetail = ({ dispatch, location }) => {
                 {test.generalInformation?.Again || 'false'}
               </p>
               <p>
-                <b className={styles.bold}>Total of questions: </b>
+                <b className={styles.bold}>Total questions: </b>
                 {test.listQuestion?.length}
               </p>
               <p>
                 <b className={styles.bold}>Max score: </b>
-                {test.generalInformation?.MaxScore} marks
+                {test.generalInformation?.MaxScore} points
               </p>
               {test.generalInformation?.StartTime && (
                 <p>
-                  <b className={styles.bold}>Start date: </b>
-                  {test.generalInformation?.StartTime} marks
+                  <b className={styles.bold}>Start Date: </b>
+                  {test.generalInformation?.StartTime} points
                 </p>
               )}
 
               {test.generalInformation?.EndTime && (
                 <p>
                   <b className={styles.bold}>End Time: </b>
-                  {test.generalInformation?.EndTime} marks
+                  {test.generalInformation?.EndTime} points
                 </p>
               )}
             </div>
@@ -156,7 +156,7 @@ const Question = ({ list }) => {
             <b>ID:</b>
             {` ${item.ID} - ${item.QuestionType}`}
           </div>
-          <div className={styles.mark}>{`Score: ${item.Score} `}mark(s)</div>
+          <div className={styles.mark}>{`Score: ${item.Score} `}point(s)</div>
         </span>
         <div className={styles.question}>{item.Question}</div>
 
@@ -167,7 +167,7 @@ const Question = ({ list }) => {
         {item.QuestionType === 'Code' ? (
           <div>
             <div>
-              <b>Language Allowed: </b>
+              <b>Allowed Language: </b>
               {item.Language_allowed}
             </div>
             <div>
@@ -179,7 +179,7 @@ const Question = ({ list }) => {
               {item.RunningTime}
             </div>
             <div>
-              <b>CodeSample: </b>
+              <b>Code Sample: </b>
               <br />
               <MDEditor.Markdown
                 className="problem"
@@ -205,7 +205,7 @@ const Question = ({ list }) => {
         ) : (
           <>
             <div>
-              <b>CodeSample: </b>
+              <b>Code Sample: </b>
               <MDEditor.Markdown
                 className="problem"
                 source={`\`\`\`\n${item?.CodeSample}\n\`\`\`` || 'Empty'}
@@ -382,7 +382,7 @@ const InviteModal = ({
         <div style={{ marginTop: 20, maxHeight: 500, overflowY: 'scroll' }}>
           <List
             size="small"
-            header={<b>Invited list</b>}
+            header={<b>Invitations list</b>}
             bordered
             dataSource={listInvitedList}
             renderItem={(item) => <List.Item>{item}</List.Item>}
