@@ -53,7 +53,17 @@ const MyTests = ({ testList, dispatch, loading }) => {
       ],
       onFilter: (value, record) => record.Permissions === value,
       render: (permissions) => {
-        return permissions === 'private' ? <div><LockOutlined />{` Private`}</div>  : <div><UnlockOutlined />{` Public`}</div>;
+        return permissions === 'private' ? (
+          <div>
+            <LockOutlined />
+            {` Private`}
+          </div>
+        ) : (
+          <div>
+            <UnlockOutlined />
+            {` Public`}
+          </div>
+        );
       },
     },
   ];
@@ -64,8 +74,12 @@ const MyTests = ({ testList, dispatch, loading }) => {
     testList.forEach((element) => {
       console.log(element);
       if (
-        removeAccents(element?.TestName).toLowerCase().includes(refactorValue) ||
-        removeAccents(element?.BriefDescription).toLowerCase().includes(refactorValue)
+        removeAccents(element?.TestName || '')
+          .toLowerCase()
+          .includes(refactorValue) ||
+        removeAccents(element?.BriefDescription || '')
+          .toLowerCase()
+          .includes(refactorValue)
       ) {
         searchList.push(element);
       }
@@ -95,18 +109,24 @@ const MyTests = ({ testList, dispatch, loading }) => {
   return (
     <ConfigProvider locale={getLocale()}>
       <div className={styles.container}>
-      <Row gutter={16} className={styles.header}>
+        <Row gutter={16} className={styles.header}>
           <Col md={16} lg={16} xs={24}>
-          <Search
-            placeholder="Please input search text"
-            onSearch={onSearch}
-            enterButton
-            className={styles.searchBar}
-          />
+            <Search
+              placeholder="Please input search text"
+              onSearch={onSearch}
+              enterButton
+              className={styles.searchBar}
+            />
           </Col>
           <Col md={8} lg={6} xs={24}>
-          <Button block icon={<PlusOutlined />} className={styles.button} onClick={buttonModalOnClick}>Create Test
-          </Button>
+            <Button
+              block
+              icon={<PlusOutlined />}
+              className={styles.button}
+              onClick={buttonModalOnClick}
+            >
+              Create Test
+            </Button>
           </Col>
         </Row>
 

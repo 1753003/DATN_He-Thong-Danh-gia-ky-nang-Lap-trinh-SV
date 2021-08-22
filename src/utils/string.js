@@ -11,7 +11,7 @@ export function u_btoa(buffer) {
   return btoa(binary.join(''));
 }
 
-export function removeAccents(str) {
+export function removeAccents(str = '') {
   var AccentsMap = [
     'aàảãáạăằẳẵắặâầẩẫấậ',
     'AÀẢÃÁẠĂẰẲẴẮẶÂẦẨẪẤẬ',
